@@ -1,0 +1,13 @@
+## Title: KyzderpsDerps
+## A collection of random utilities
+## Author: Kyzeragon
+## Version: 0.0.0
+## APIVersion: 100026
+
+## DependsOn: LibStub LibAddonMenu-2.0
+
+## SavedVariables: KyzderpsDerpsSavedVariables
+
+KyzderpsDerps.lua
+KyzderpsDerpsSettings.lua
+KyzderpsDerps.xml
