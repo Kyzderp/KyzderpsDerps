@@ -8,6 +8,9 @@
 
 ## SavedVariables: KyzderpsDerpsSavedVariables
 
+modules/CustomTargetName.lua
+modules/Grievous.lua
+
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua
 KyzderpsDerps.xml

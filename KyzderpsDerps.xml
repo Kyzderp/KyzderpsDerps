@@ -4,7 +4,7 @@
                <Dimensions x="100" y="50"/>
                <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
                <OnMoveStop>
-                    KyzderpsDerps.SavePosition()
+                    CustomTargetName.SavePosition()
                </OnMoveStop>
                <Controls>
                     <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|$(KB_48)|soft-shadow-thick" color="ffffff" text="Name" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
@@ -17,7 +17,7 @@
                <Dimensions x="0" y="50"/>
                <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
                <OnMoveStop>
-                    KyzderpsDerps.SavePosition()
+                    Grievous.SavePosition()
                </OnMoveStop>
                <Controls>
                     <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
