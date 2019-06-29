@@ -109,6 +109,15 @@ function KyzderpsDerps:CreateSettingsMenu()
             setFunc = function(value) KyzderpsDerps.savedOptions.grievous.enable = value end,
             width = "full",
         },
+        [13] = {
+            type = "checkbox",
+            name = "Show Self Only",
+            tooltip = "Show the alert only if you are the one dying from rezzing",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.grievous.selfOnly end,
+            setFunc = function(value) KyzderpsDerps.savedOptions.grievous.selfOnly = value end,
+            width = "full",
+        },
     }
 
     LAM:RegisterAddonPanel("KyzderpsDerpsOptions", panelData)

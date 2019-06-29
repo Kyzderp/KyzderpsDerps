@@ -5,7 +5,7 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "0.0.1"
+KyzderpsDerps.version = "0.0.2"
 
 -- Defaults
 local defaultOptions = {
@@ -25,6 +25,7 @@ local defaultOptions = {
     },
     grievous = {
         enable = true,
+        selfOnly = true,
     },
 }
 
