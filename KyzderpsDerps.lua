@@ -30,7 +30,6 @@ local defaultOptions = {
     },
 }
 
--- TODO: make name the key?
 local defaultValues = {
     customTargetFrame = {
         x = GuiRoot:GetWidth() / 2,
@@ -50,10 +49,6 @@ local defaultValues = {
             },
         },
         playerCustom = {
-            ["@Example"] = {
-                customName = "Example",
-                color = {0, 1, 0}
-            }
         },
     },
     grievous = {
@@ -68,8 +63,8 @@ function KyzderpsDerps:Initialize()
     d("Initializing Kyzderp's Derps...")
 
     -- Settings and saved variables
-    self.savedOptions = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 2, "Options", defaultOptions)
-    self.savedValues = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 2, "Values", defaultValues)
+    self.savedOptions = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Options", defaultOptions)
+    self.savedValues = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Values", defaultValues)
     KyzderpsDerps:CreateSettingsMenu()
 
     -- Initialize modules

@@ -36,6 +36,7 @@ function CustomTargetName.OnReticleTargetChanged()
     ------------------------------------------------------------
     -- 1 means player
     if (GetUnitType("reticleover") == 1) then
+        targetName = GetUnitDisplayName("reticleover")
         if (not KyzderpsDerps.savedOptions.customTargetFrame.player.enable) then
             if (KyzderpsDerps.savedOptions.customTargetFrame.move == false) then
                 CustomTargetCustomName:SetHidden(true)
@@ -43,7 +44,6 @@ function CustomTargetName.OnReticleTargetChanged()
             return
         end
 
-        targetName = GetUnitDisplayName("reticleover")
         local entry = KyzderpsDerps.savedValues.customTargetFrame.playerCustom[targetName]
         if (entry) then
             customName = entry.customName
@@ -54,10 +54,15 @@ function CustomTargetName.OnReticleTargetChanged()
             customName = targetName
         end
 
+        if (customName ~= "") then
+            CustomTargetName.recentPlayer = targetName
+        end
+
         -- local targetPlayerId = GetUnitDisplayName("reticleover")
         -- customName = targetPlayerId
     ------------------------------------------------------------
     else -- NPCs
+        CustomTargetName.recentNpc = targetName
         if (not KyzderpsDerps.savedOptions.customTargetFrame.npc.enable) then
             if (KyzderpsDerps.savedOptions.customTargetFrame.move == false) then
                 CustomTargetCustomName:SetHidden(true)
@@ -73,6 +78,10 @@ function CustomTargetName.OnReticleTargetChanged()
             -- If no custom name is found, leave it empty if the filter is on
             -- If filter is not on, then we display the regular target name
             customName = targetName
+        end
+
+        if (customName ~= "") then
+            CustomTargetName.recentNpc = targetName
         end
     end
 
