@@ -58,8 +58,6 @@ function CustomTargetName.OnReticleTargetChanged()
             CustomTargetName.recentPlayer = targetName
         end
 
-        -- local targetPlayerId = GetUnitDisplayName("reticleover")
-        -- customName = targetPlayerId
     ------------------------------------------------------------
     else -- NPCs
         CustomTargetName.recentNpc = targetName
