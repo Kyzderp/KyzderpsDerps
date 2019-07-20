@@ -5,7 +5,7 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "0.0.2"
+KyzderpsDerps.version = "0.1.0"
 
 -- Defaults
 local defaultOptions = {
@@ -14,6 +14,7 @@ local defaultOptions = {
     },
     customTargetFrame = {
         move = false,
+        size = 48,
         npc = {
             enable = true,
             useFilter = true,
@@ -29,11 +30,28 @@ local defaultOptions = {
     },
 }
 
+-- TODO: make name the key?
 local defaultValues = {
     customTargetFrame = {
         x = GuiRoot:GetWidth() / 2,
         y = GuiRoot:GetHeight() / 4 * 3,
-        npcFilter = {},
+        npcCustom = {
+            {
+                name = "Saint Olms the Just",
+                customName = "[Olms]",
+                color = {1, 0.7, 0.2},
+            },
+            {
+                name = "Saint Felms the Bold",
+                customName = "[Felms]",
+                color = {1, 0, 0},
+            },
+            {
+                name = "Saint Llothis the Pious",
+                customName = "[Llothis]",
+                color = {0, 1, 0},
+            },
+        },
         playerFilter = {},
     },
     grievous = {
