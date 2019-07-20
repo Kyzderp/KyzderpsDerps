@@ -49,7 +49,12 @@ local defaultValues = {
                 color = {0, 1, 0},
             },
         },
-        playerFilter = {},
+        playerCustom = {
+            ["@Example"] = {
+                customName = "Example",
+                color = {0, 1, 0}
+            }
+        },
     },
     grievous = {
         x = GuiRoot:GetWidth() / 2,

@@ -16,6 +16,19 @@ local function getNpcNames()
     return newArray
 end
 
+-- Return a new array of just player names, to be used in dropdown
+local function getPlayerNames()
+    local newArray = {}
+
+    if not KyzderpsDerps.savedValues.customTargetFrame.playerCustom then return newArray end
+
+    for name, _ in pairs(KyzderpsDerps.savedValues.customTargetFrame.playerCustom) do
+        table.insert(newArray, name)
+    end
+
+    return newArray
+end
+
 function KyzderpsDerps:CreateSettingsMenu()
     local LAM = LibStub:GetLibrary("LibAddonMenu-2.0")
     -- Register the Options panel with LAM
@@ -202,6 +215,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                         namesDropdown:UpdateChoices(getNpcNames())
                     end
                 },
+-------------------------------------------------------------------------------
                 {
                     type = "header",
                     name = "Player Target",
@@ -218,13 +232,107 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "checkbox",
-                    name = "Player Name Filter (TODO)",
-                    tooltip = "Use player filter when displaying player target",
+                    name = "Show Only Filter",
+                    tooltip = "Show player name only if they are in the custom filter",
                     default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.customTargetFrame.player.useFilter end,
                     setFunc = function(value) KyzderpsDerps.savedOptions.customTargetFrame.player.useFilter = value end,
                     width = "full",
                     disabled = function() return not KyzderpsDerps.savedOptions.customTargetFrame.player.enable end,
+                },
+                {
+                    type = "header",
+                    name = "Custom Filter",
+                    width = "half",
+                },
+                {
+                    type = "editbox",
+                    name = "Add a Player",
+                    width = "full",
+                    tooltip = "Enter the full player name exactly as it appears, including the @",
+                    getFunc = function() return WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterBox").editbox:GetText() end,
+                    setFunc = function(name)
+                        if (name == "") then return end
+
+                        -- Clear the textbox
+                        WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterBox").editbox:SetText("")
+
+                        -- Add it to the dropdown
+                        local namesDropdown = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList")
+                        local newEntry = {
+                            customName = name,
+                            color = {1, 1, 1},
+                        }
+                        KyzderpsDerps.savedValues.customTargetFrame.playerCustom[name] = newEntry
+                        namesDropdown:UpdateChoices(getPlayerNames())
+                        namesDropdown.dropdown:SetSelectedItem(name)
+                    end,
+                    isMultiline = false,
+                    isExtraWide = false,
+                    reference = "KyzderpsDerps#PlayerFilterBox",
+                },
+                {
+                    type = "dropdown",
+                    name = "Select Player",
+                    width = "full",
+                    tooltip = "Choose a player",
+                    choices = getPlayerNames(),
+                    getFunc = function() return WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem() end,
+                    setFunc = function(name) end,
+                    reference = "KyzderpsDerps#PlayerFilterList",
+                },
+                {
+                    type = "editbox",
+                    name = "Custom Name",
+                    width = "full",
+                    tooltip = "Enter what you want the name to show up as",
+                    getFunc = function()
+                        local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem()
+                        local selected = KyzderpsDerps.savedValues.customTargetFrame.playerCustom[selectedName]
+                        if (selected) then return selected.customName end
+                        return ""
+                    end,
+                    setFunc = function(name)
+                        local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem()
+                        KyzderpsDerps.savedValues.customTargetFrame.playerCustom[selectedName].customName = name
+                    end,
+                    isMultiline = false,
+                    isExtraWide = false,
+                    reference = "KyzderpsDerps#PlayerCustomBox",
+                    disabled = function()
+                        local selected = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem()
+                        return selected == ""
+                    end
+                },
+                {
+                    type = "colorpicker",
+                    name = "Custom Color",
+                    getFunc = function()
+                        local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem()
+
+                        local selected = KyzderpsDerps.savedValues.customTargetFrame.playerCustom[selectedName]
+                        if (selected) then return unpack(selected.color) end
+                        return unpack({1, 1, 1})
+                    end,
+                    setFunc = function(r, g, b)
+                        local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem()
+                        KyzderpsDerps.savedValues.customTargetFrame.playerCustom[selectedName].color = {r, g, b}
+                    end,
+                    disabled = function()
+                        local selected = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem()
+                        return selected == ""
+                    end
+                },
+                {
+                    type = "button",
+                    name = "Remove",
+                    width = "full",
+                    func = function()
+                        local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList").combobox.m_comboBox:GetSelectedItem()
+                        KyzderpsDerps.savedValues.customTargetFrame.playerCustom[selectedName] = nil
+                        local namesDropdown = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterList")
+                        namesDropdown:UpdateChoices(getPlayerNames())
+                    end
                 },
             },
         },
