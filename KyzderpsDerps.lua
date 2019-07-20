@@ -36,18 +36,15 @@ local defaultValues = {
         x = GuiRoot:GetWidth() / 2,
         y = GuiRoot:GetHeight() / 4 * 3,
         npcCustom = {
-            {
-                name = "Saint Olms the Just",
+            ["Saint Olms the Just"] = {
                 customName = "[Olms]",
                 color = {1, 0.7, 0.2},
             },
-            {
-                name = "Saint Felms the Bold",
+            ["Saint Felms the Bold"] = {
                 customName = "[Felms]",
                 color = {1, 0, 0},
             },
-            {
-                name = "Saint Llothis the Pious",
+            ["Saint Llothis the Pious"] = {
                 customName = "[Llothis]",
                 color = {0, 1, 0},
             },

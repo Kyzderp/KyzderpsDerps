@@ -3,13 +3,14 @@
 -- @author Kyzeragon
 -----------------------------------------------------------
 
+-- Return a new array of just NPC names, to be used in dropdown
 local function getNpcNames()
     local newArray = {}
 
     if not KyzderpsDerps.savedValues.customTargetFrame.npcCustom then return newArray end
 
-    for _, entry in pairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
-        table.insert(newArray, entry.name)
+    for name, _ in pairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
+        table.insert(newArray, name)
     end
 
     return newArray
@@ -127,11 +128,10 @@ function KyzderpsDerps:CreateSettingsMenu()
                         -- Add it to the dropdown
                         local namesDropdown = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList")
                         local newEntry = {
-                            name = name,
                             customName = name,
                             color = {1, 1, 1},
                         }
-                        table.insert(KyzderpsDerps.savedValues.customTargetFrame.npcCustom, newEntry)
+                        KyzderpsDerps.savedValues.customTargetFrame.npcCustom[name] = newEntry
                         namesDropdown:UpdateChoices(getNpcNames())
                         namesDropdown.dropdown:SetSelectedItem(name)
                     end,
@@ -156,20 +156,13 @@ function KyzderpsDerps:CreateSettingsMenu()
                     tooltip = "Enter what you want the name to show up as",
                     getFunc = function()
                         local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList").combobox.m_comboBox:GetSelectedItem()
-                        for i, entry in pairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
-                            if (entry.name == selectedName) then
-                                return entry.customName
-                            end
-                        end
+                        local selected = KyzderpsDerps.savedValues.customTargetFrame.npcCustom[selectedName]
+                        if (selected) then return selected.customName end
+                        return ""
                     end,
                     setFunc = function(name)
                         local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList").combobox.m_comboBox:GetSelectedItem()
-                        for i, entry in pairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
-                            if (entry.name == selectedName) then
-                                KyzderpsDerps.savedValues.customTargetFrame.npcCustom[i].customName = name
-                                return
-                            end
-                        end
+                        KyzderpsDerps.savedValues.customTargetFrame.npcCustom[selectedName].customName = name
                     end,
                     isMultiline = false,
                     isExtraWide = false,
@@ -184,21 +177,14 @@ function KyzderpsDerps:CreateSettingsMenu()
                     name = "Custom Color",
                     getFunc = function()
                         local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList").combobox.m_comboBox:GetSelectedItem()
-                        for i, entry in pairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
-                            if (entry.name == selectedName) then
-                                return unpack(entry.color)
-                            end
-                        end
+
+                        local selected = KyzderpsDerps.savedValues.customTargetFrame.npcCustom[selectedName]
+                        if (selected) then return unpack(selected.color) end
                         return unpack({1, 1, 1})
                     end,
                     setFunc = function(r, g, b)
                         local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList").combobox.m_comboBox:GetSelectedItem()
-                        for i, entry in pairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
-                            if (entry.name == selectedName) then
-                                KyzderpsDerps.savedValues.customTargetFrame.npcCustom[i].color = {r, g, b}
-                                return
-                            end
-                        end
+                        KyzderpsDerps.savedValues.customTargetFrame.npcCustom[selectedName].color = {r, g, b}
                     end,
                     disabled = function()
                         local selected = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList").combobox.m_comboBox:GetSelectedItem()
@@ -211,15 +197,9 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                     func = function()
                         local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList").combobox.m_comboBox:GetSelectedItem()
-                        d(selectedName)
-                        for i, entry in pairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
-                            if (entry.name == selectedName) then
-                                table.remove(KyzderpsDerps.savedValues.customTargetFrame.npcCustom, i)
-                                local namesDropdown = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList")
-                                namesDropdown:UpdateChoices(getNpcNames())
-                                return
-                            end
-                        end
+                        KyzderpsDerps.savedValues.customTargetFrame.npcCustom[selectedName] = nil
+                        local namesDropdown = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterList")
+                        namesDropdown:UpdateChoices(getNpcNames())
                     end
                 },
                 {

@@ -1,13 +1,5 @@
 CustomTargetName = {}
 
--- KyzderpsDerps.savedValues.customTargetFrame.npcCustom = {
-    -- {
-    --     name = "Saint Llothis the Pious",
-    --     customName = "[Llothis]",
-    --     color = {0, 1, 0},
-    -- }
--- }
-
 function CustomTargetName:Initialize()
     if (KyzderpsDerps.savedOptions.general.debug) then
         d("    Initializing CustomTargetName module...")
@@ -62,35 +54,15 @@ function CustomTargetName.OnReticleTargetChanged()
             return
         end
 
-        for _, filterEntry in ipairs(KyzderpsDerps.savedValues.customTargetFrame.npcCustom) do
-            if (filterEntry.name == targetName) then
-                customName = filterEntry.customName
-                customColor = filterEntry.color
-                break
-            end
-        end
-
-        -- If no custom name is found, leave it empty if the filter is on
-        -- If filter is not on, then we display the regular target name
-        if (customName == "" and
-            not KyzderpsDerps.savedOptions.customTargetFrame.npc.useFilter) then
+        local entry = KyzderpsDerps.savedValues.customTargetFrame.npcCustom[targetName]
+        if (entry) then
+            customName = entry.customName
+            customColor = entry.color
+        elseif (not KyzderpsDerps.savedOptions.customTargetFrame.npc.useFilter) then
+            -- If no custom name is found, leave it empty if the filter is on
+            -- If filter is not on, then we display the regular target name
             customName = targetName
         end
-
-
-        -- if (targetName == "Saint Olms the Just") then
-        --     customName = "[Olms]"
-        --     customColor = {1,0.7,0.2}
-        -- elseif (targetName == "Saint Felms the Bold") then
-        --     customName = "[Felms]"
-        --     customColor = {1,0,0}
-        -- elseif (targetName == "Saint Llothis the Pious") then
-        --     customName = "[Llothis]"
-        --     customColor = {0,1,0}
-        --     -- TODO: add filter here
-        -- elseif (not KyzderpsDerps.savedOptions.customTargetFrame.npc.useFilter) then -- Just show regular name if filter is disabled
-        --     customName = targetName
-        -- end
     end
 
     ------------------------------------------------------------
