@@ -26,7 +26,7 @@ function Grievous.OnCombatIn(_, result, isError, aName, aGraphic, aActionSlotTyp
             return
         end
         GrievousRetaliation:SetHidden(false)
-        EVENT_MANAGER:RegisterForUpdate("KDD_HideGrievous", 3000, function()
+        EVENT_MANAGER:RegisterForUpdate("KDD_HideGrievous", KyzderpsDerps.savedOptions.grievous.timer, function()
             GrievousRetaliation:SetHidden(true)
             EVENT_MANAGER:UnregisterForUpdate("KDD_HideGrievous")
         end)

@@ -355,6 +355,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
             },
         },
+-------------------------------------------------------------------------------
         {
             type = "submenu",
             name = "Grievous Retaliation Alert",
@@ -376,6 +377,20 @@ function KyzderpsDerps:CreateSettingsMenu()
                     getFunc = function() return KyzderpsDerps.savedOptions.grievous.selfOnly end,
                     setFunc = function(value) KyzderpsDerps.savedOptions.grievous.selfOnly = value end,
                     width = "full",
+                },
+                {
+                    type = "slider",
+                    name = "Fade Time",
+                    tooltip = "Time in milliseconds after the damage taken in which the overlay will fade. Grievous Retaliation ticks every half a second",
+                    min = 100,
+                    max = 3000,
+                    step = 100,
+                    default = 1000,
+                    width = full,
+                    getFunc = function() return KyzderpsDerps.savedOptions.grievous.timer end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.grievous.timer = value
+                    end,
                 },
                 {
                     type = "description",

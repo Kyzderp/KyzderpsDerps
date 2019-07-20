@@ -27,6 +27,7 @@ local defaultOptions = {
     grievous = {
         enable = true,
         selfOnly = true,
+        timer = 1000,
     },
 }
 
