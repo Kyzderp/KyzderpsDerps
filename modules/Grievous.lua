@@ -1,12 +1,11 @@
 Grievous = {}
 
 function Grievous:Initialize()
-    if (KyzderpsDerps.savedOptions.general.debug) then
-        d("    Initializing Grievous module...")
-    end
+    KyzderpsDerps:dbg("    Initializing Grievous module...")
 
     -- Register
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_COMBAT_EVENT, self.OnCombatIn)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "Grievous", EVENT_COMBAT_EVENT, self.OnCombatIn)
+    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "Grievous", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_DAMAGE)
 
     -- Position
     GrievousRetaliation:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,

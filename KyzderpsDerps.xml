@@ -13,6 +13,7 @@
                     </Label>
                </Controls>
           </TopLevelControl>
+
           <TopLevelControl name="GrievousRetaliation" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
                <Dimensions x="0" y="50"/>
                <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
@@ -77,5 +78,68 @@
                     </Label>
                </Controls>
           </TopLevelControl>
+
+          <TopLevelControl name="SpawnTimerContainer" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
+               <Dimensions x="304" y="124"/>
+               <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+               <OnMoveStop>
+                    SpawnTimer.SavePosition()
+               </OnMoveStop>
+               <Controls>
+                    <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="88000000" hidden="false">
+                         <AnchorFill/>
+                         <Edge edgeSize="2"/>
+                    </Backdrop>
+                    <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="Boss Timers" verticalAlignment="TOP" horizontalAlignment="LEFT" hidden="false">
+                         <Dimensions x="300" y="24"/>
+                         <Anchor point="TOPLEFT" offsetX="2" offsetY="2"/>
+                    </Label>
+               </Controls>
+          </TopLevelControl>
+
+          <Control name="SpawnTimer_Line_Template" virtual="true">
+               <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" />
+               <Dimensions x="300" y="24" />
+               <Controls>
+                    <Button name="$(parent)Remove" alpha="1" clickSound="Default_Click" topmost="true">
+                         <Textures normal="/esoui/art/hud/radialicon_cancel_up.dds" mouseOver="/esoui/art/hud/radialicon_cancel_over.dds" />
+                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-2" offsetY="-2" />
+                         <Dimensions x="32" y="32" />
+                         <OnClicked>
+                              SpawnTimer.removeBoss(self:GetParent():GetNamedChild("BossText"):GetText())
+                         </OnClicked>
+                         <OnMouseEnter>
+                              ZO_Tooltips_ShowTextTooltip(self, LEFT, "Remove " .. self:GetParent():GetNamedChild("BossText"):GetText() .. " from watched bosses")
+                         </OnMouseEnter>
+                         <OnMouseExit>
+                              ZO_Tooltips_HideTextTooltip()
+                         </OnMouseExit>
+                    </Button>
+                    <Button name="$(parent)Print" alpha="1" clickSound="Default_Click" topmost="true">
+                         <Textures normal="/esoui/art/contacts/social_note_up.dds" mouseOver="/esoui/art/contacts/social_note_over.dds" />
+                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="18" offsetY="-2" />
+                         <Dimensions x="32" y="32" />
+                         <OnClicked>
+                              SpawnTimer.printBoss(self:GetParent():GetNamedChild("BossText"):GetText())
+                         </OnClicked>
+                         <OnMouseEnter>
+                              ZO_Tooltips_ShowTextTooltip(self, LEFT, "Post the time remaining until spawn to chat")
+                         </OnMouseEnter>
+                         <OnMouseExit>
+                              ZO_Tooltips_HideTextTooltip()
+                         </OnMouseExit>
+                    </Button>
+                    <Label name="$(parent)TimerText" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="0:00"
+                              verticalAlignment="TOP" horizontalAlignment="LEFT" alpha="1" hidden="false">
+                         <Dimensions x="100" y="24"/>
+                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="48" offsetY="0"/>
+                    </Label>
+                    <Label name="$(parent)BossText" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="Boss Name"
+                              verticalAlignment="TOP" horizontalAlignment="LEFT" alpha="1" hidden="false">
+                         <Dimensions x="200" y="24"/>
+                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="100" offsetY="0"/>
+                    </Label>
+               </Controls>
+          </Control>
      </Controls>
 </GuiXml>

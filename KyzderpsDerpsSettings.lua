@@ -29,8 +29,21 @@ local function getPlayerNames()
     return newArray
 end
 
+-- Return a new array of just boss names, to be used in dropdown
+local function getBossNames()
+    local newArray = {}
+
+    if not KyzderpsDerps.savedOptions.spawnTimer.ignoreList then return newArray end
+
+    for name, _ in pairs(KyzderpsDerps.savedOptions.spawnTimer.ignoreList) do
+        table.insert(newArray, name)
+    end
+
+    return newArray
+end
+
 function KyzderpsDerps:CreateSettingsMenu()
-    local LAM = LibStub:GetLibrary("LibAddonMenu-2.0")
+    local LAM = LibAddonMenu2
     -- Register the Options panel with LAM
     local panelData = 
     {
@@ -400,7 +413,143 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
             }
         },
-        
+-------------------------------------------------------------------------------
+        {
+            type = "submenu",
+            name = "Boss Timer",
+            controls = {
+                {
+                    type = "description",
+                    title = nil,
+                    text = "World and public dungeon bosses respawn approximately 5:06 after they die. Delve bosses have the same base cooldown, but they respawn earlier if a player who has not completed it enters the delve area.",
+                    width = "full",
+                },
+                {
+                    type = "description",
+                    title = nil,
+                    text = "The death detection only works if the boss has a boss HP bar at the top of the screen, which includes all world bosses but not delve or public dungeon bosses except Summerset and newer. There is also currently no smart detection of bosses, so a single boss event with multiple boss enemies will display as separate deaths.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Enable Boss List Panel",
+                    tooltip = "Display the timers on recently killed bosses",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.enable end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.spawnTimer.enable = value
+                        SpawnTimerContainer:SetHidden(not value)
+                    end,
+                    width = "full",
+                    reference = "KyzderpsDerps#SpawnTimerEnable"
+                },
+                {
+                    type = "checkbox",
+                    name = "Boss List Panel Background",
+                    tooltip = "Display a background for the panel",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.background end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.spawnTimer.background = value
+                        SpawnTimerContainerBackdrop:SetHidden(not value)
+                    end,
+                    width = "full",
+                    disabled = function() return not KyzderpsDerps.savedOptions.spawnTimer.enable end,
+                },
+                {
+                    type = "checkbox",
+                    name = "Enable Respawn Alert",
+                    tooltip = "Display a center-screen announcement and notification sound when a boss is about to respawn",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.alert.enable end,
+                    setFunc = function(value) KyzderpsDerps.savedOptions.spawnTimer.alert.enable = value end,
+                    width = "full",
+                },
+                {
+                    type = "slider",
+                    name = "Alert Time",
+                    tooltip = "How many seconds before a boss is predicted to respawn should the alert be shown?",
+                    min = 0,
+                    max = 60,
+                    step = 1,
+                    default = 10,
+                    width = full,
+                    getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.alert.seconds end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.spawnTimer.alert.seconds = value
+                    end,
+                    disabled = function() return not KyzderpsDerps.savedOptions.spawnTimer.alert.enable end,
+                },
+                {
+                    type = "checkbox",
+                    name = "Enable Chat Output",
+                    tooltip = "Display a message in chat when a boss dies",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.chat.enable end,
+                    setFunc = function(value) KyzderpsDerps.savedOptions.spawnTimer.chat.enable = value end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Chat Timestamp",
+                    tooltip = "Add a timestamp to the boss death chat message",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp end,
+                    setFunc = function(value) KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp = value end,
+                    width = "full",
+                    disabled = function() return not KyzderpsDerps.savedOptions.spawnTimer.chat.enable end,
+                },
+                {
+                    type = "header",
+                    name = "Ignore Filter",
+                    width = "half",
+                },
+                {
+                    type = "editbox",
+                    name = "Add a Boss",
+                    width = "full",
+                    tooltip = "Enter the full Boss name exactly as it appears, case sensitive!",
+                    getFunc = function() return WINDOW_MANAGER:GetControlByName("KyzderpsDerps#IgnoreFilterBox").editbox:GetText() end,
+                    setFunc = function(name)
+                        if (name == "") then return end
+
+                        -- Clear the textbox
+                        WINDOW_MANAGER:GetControlByName("KyzderpsDerps#IgnoreFilterBox").editbox:SetText("")
+
+                        -- Add it to the dropdown
+                        local namesDropdown = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#IgnoreFilterList")
+                        KyzderpsDerps.savedOptions.spawnTimer.ignoreList[name] = true
+                        namesDropdown:UpdateChoices(getBossNames())
+                        namesDropdown.dropdown:SetSelectedItem(name)
+                    end,
+                    isMultiline = false,
+                    isExtraWide = false,
+                    reference = "KyzderpsDerps#IgnoreFilterBox",
+                },
+                {
+                    type = "dropdown",
+                    name = "Select Boss",
+                    width = "full",
+                    tooltip = "Choose a boss name to delete",
+                    choices = getBossNames(),
+                    getFunc = function() return WINDOW_MANAGER:GetControlByName("KyzderpsDerps#IgnoreFilterList").combobox.m_comboBox:GetSelectedItem() end,
+                    setFunc = function(name) end,
+                    reference = "KyzderpsDerps#IgnoreFilterList",
+                },
+                {
+                    type = "button",
+                    name = "Remove",
+                    width = "full",
+                    func = function()
+                        local selectedName = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#IgnoreFilterList").combobox.m_comboBox:GetSelectedItem()
+                        if (not selectedName or selectedName == "") then return end
+                        KyzderpsDerps.savedOptions.spawnTimer.ignoreList[selectedName] = nil
+                        local namesDropdown = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#IgnoreFilterList")
+                        namesDropdown:UpdateChoices(getBossNames())
+                    end,
+                },
+            },
+        },
     }
 
     LAM:RegisterAddonPanel("KyzderpsDerpsOptions", panelData)

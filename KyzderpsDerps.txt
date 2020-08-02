@@ -1,15 +1,18 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 0.1.0
-## APIVersion: 100027
+## Version: 1.0.0
+## APIVersion: 100031
+## DependsOn: LibAddonMenu-2.0
 
-## DependsOn: LibStub LibAddonMenu-2.0
+## Just to make sure loading occurs after pChat load, for debug messaging purposes
+## OptionalDependsOn: pChat
 
 ## SavedVariables: KyzderpsDerpsSavedVariables
 
 modules/CustomTargetName.lua
 modules/Grievous.lua
+modules/SpawnTimer.lua
 
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua

@@ -1,9 +1,7 @@
 CustomTargetName = {}
 
 function CustomTargetName:Initialize()
-    if (KyzderpsDerps.savedOptions.general.debug) then
-        d("    Initializing CustomTargetName module...")
-    end
+    KyzderpsDerps:dbg("    Initializing CustomTargetName module...")
 
     -- Register
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_RETICLE_TARGET_CHANGED, self.OnReticleTargetChanged)
