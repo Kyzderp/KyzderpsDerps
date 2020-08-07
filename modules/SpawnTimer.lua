@@ -175,6 +175,7 @@ end
 function SpawnTimer.removeBoss(bossName)
     CHAT_SYSTEM:AddMessage("You removed " .. bossName .. " from the boss timers.")
     KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = nil
+    SpawnTimer.pollTimer() -- Update it immediately
 end
 
 -- Fill the chat text field with the spawn timer for the clicked boss
