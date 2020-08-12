@@ -59,6 +59,10 @@ function SpawnTimer:Initialize()
     SpawnTimerContainer:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
         KyzderpsDerps.savedValues.spawnTimer.x, KyzderpsDerps.savedValues.spawnTimer.y)
     SpawnTimerContainer:SetHidden(not KyzderpsDerps.savedOptions.spawnTimer.enable)
+
+    local fragment = ZO_HUDFadeSceneFragment:New(SpawnTimerContainer)
+    HUD_SCENE:AddFragment(fragment)
+    HUD_UI_SCENE:AddFragment(fragment)
 end
 
 -- Save boss list position
@@ -154,7 +158,7 @@ function SpawnTimer.pollTimer()
     -- Hide the panel if there are no timers
     if (index == 0) then
         SpawnTimerContainer:SetHidden(true)
-    else
+    elseif (HUD_SCENE:IsShowing() or HUD_UI_SCENE:IsShowing()) then
         SpawnTimerContainer:SetHidden(not KyzderpsDerps.savedOptions.spawnTimer.enable)
     end
 end
