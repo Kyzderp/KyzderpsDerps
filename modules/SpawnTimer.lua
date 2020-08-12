@@ -60,9 +60,24 @@ function SpawnTimer:Initialize()
         KyzderpsDerps.savedValues.spawnTimer.x, KyzderpsDerps.savedValues.spawnTimer.y)
     SpawnTimerContainer:SetHidden(not KyzderpsDerps.savedOptions.spawnTimer.enable)
 
-    local fragment = ZO_HUDFadeSceneFragment:New(SpawnTimerContainer)
-    HUD_SCENE:AddFragment(fragment)
-    HUD_UI_SCENE:AddFragment(fragment)
+    -- Hide panel while in menus
+    HUD_SCENE:RegisterCallback("StateChange", fragmentChange)
+    HUD_UI_SCENE:RegisterCallback("StateChange", fragmentChange)
+end
+
+-- Hide panel while in menus
+function fragmentChange(oldState, newState)
+    if (newState == SCENE_FRAGMENT_HIDDEN) then
+        SpawnTimerContainer:SetHidden(true)
+    elseif (newState == SCENE_FRAGMENT_SHOWN) then
+        local index = 0
+        for bossName, bossVals in pairs(KyzderpsDerps.savedValues.spawnTimer.timers) do
+            index = index + 1
+        end
+        if (index > 0) then
+            SpawnTimerContainer:SetHidden(not KyzderpsDerps.savedOptions.spawnTimer.enable)
+        end
+    end
 end
 
 -- Save boss list position
