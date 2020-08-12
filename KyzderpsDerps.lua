@@ -5,7 +5,7 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.0.1"
+KyzderpsDerps.version = "1.1.0"
 
 -- Defaults
 local defaultOptions = {
@@ -45,6 +45,11 @@ local defaultOptions = {
         ignoreList = {
         },
     },
+    deathAlert = {
+        enable = true,
+        unlock = false,
+        size = 30,
+    },
 }
 
 local defaultValues = {
@@ -79,6 +84,10 @@ local defaultValues = {
         timers = {
         },
     },
+    deathAlert = {
+        x = GuiRoot:GetWidth() / 3 * 2,
+        y = GuiRoot:GetHeight() / 3,
+    },
 }
 
 ---------------------------------------------------------------------
@@ -94,6 +103,7 @@ function KyzderpsDerps:Initialize()
     CustomTargetName:Initialize()
     Grievous:Initialize()
     SpawnTimer:Initialize()
+    DeathAlert:Initialize()
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
@@ -153,11 +163,13 @@ end
 -- Commands
 function KyzderpsDerps.handleCommand(argString)
     local args = {}
+    local length = 0
     for word in argString:gmatch("%S+") do
         table.insert(args, word)
+        length = length + 1
     end
 
-    if (args.length == 0) then
+    if (length == 0) then
         CHAT_SYSTEM:AddMessage("Usage: /kdd <grievous||bosstimer>")
         return
     end
@@ -184,6 +196,14 @@ function KyzderpsDerps.handleCommand(argString)
         SpawnTimerContainer:SetHidden(not SpawnTimerContainer:IsHidden())
         if (WINDOW_MANAGER:GetControlByName("KyzderpsDerps#SpawnTimerEnable")) then
             WINDOW_MANAGER:GetControlByName("KyzderpsDerps#SpawnTimerEnable"):UpdateValue()
+        end
+
+    -- test death
+    elseif (args[1] == "death") then
+        if (length > 1) then
+            DeathAlert.OnDeathStateChanged(1, args[2], true)
+        else
+            DeathAlert.OnDeathStateChanged(1, "group1", true)
         end
 
     -- Unknown
