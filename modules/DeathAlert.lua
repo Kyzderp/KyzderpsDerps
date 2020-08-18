@@ -100,6 +100,9 @@ function DeathAlert.changeFontSize()
         DeathAlert.freeControls[2] = ""
     end
 
+    DeathAlertContainer:GetNamedChild("Death1"):GetNamedChild("Label"):SetText(getRoleString(LFG_ROLE_TANK) .. "@Player1 is dead!")
+    DeathAlertContainer:GetNamedChild("Death2"):GetNamedChild("Label"):SetText(getRoleString(LFG_ROLE_DPS) .. "@ExamplePlayer is dead!")
+
     -- Change all the current ones
     local fontSize = KyzderpsDerps.savedOptions.deathAlert.size
     for i, name in pairs(DeathAlert.freeControls) do
