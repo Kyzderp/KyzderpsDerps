@@ -44,6 +44,24 @@ SpawnTimer = {
         ["1123"] = true,  -- Lair of Maarselok
         ["1152"] = true,  -- Icereach
         ["1153"] = true,  -- Unhallowed Grave
+        ["1197"] = true,  -- Stone Garden
+        ["1201"] = true,  -- Castle Thorn
+    },
+
+    -- Trial zoneIds
+    TRIAL_ZONEIDS = {
+        ["635" ] = true,  -- Dragonstar Arena
+        ["636" ] = true,  -- Hel Ra Citadel
+        ["638" ] = true,  -- Aetherian Archive
+        ["639" ] = true,  -- Sanctum Ophidia
+        ["677" ] = true,  -- Maelstrom Arena
+        ["725" ] = true,  -- Maw of Lorkhaj
+        ["975" ] = true,  -- Halls of Fabrication
+        ["1000"] = true,  -- Asylum Sanctorium
+        ["1051"] = true,  -- Cloudrest
+        ["1082"] = true,  -- Blackrose Prison
+        ["1121"] = true,  -- Sunspire
+        ["1196"] = true,  -- Kyne's Aegis
     },
 }
 
@@ -92,7 +110,9 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
         local bossName = GetUnitName(unitTag)
 
         -- Skip trial or dungeon bosses
-        if (GetCurrentParticipatingRaidId() ~= 0 or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
+        if (GetCurrentParticipatingRaidId() ~= 0
+            or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
+            or SpawnTimer.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
             KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is a trial/dungeon boss.")
             return
         end
