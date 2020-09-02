@@ -5,7 +5,7 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.1.1"
+KyzderpsDerps.version = "1.2.0"
 
 -- Defaults
 local defaultOptions = {
@@ -88,6 +88,9 @@ local defaultValues = {
         x = GuiRoot:GetWidth() / 3 * 2,
         y = GuiRoot:GetHeight() / 3,
     },
+    playedChart = {
+        characters = {},
+    }
 }
 
 ---------------------------------------------------------------------
@@ -104,6 +107,7 @@ function KyzderpsDerps:Initialize()
     Grievous:Initialize()
     SpawnTimer:Initialize()
     DeathAlert:Initialize()
+    PlayedChart:Initialize()
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
@@ -151,6 +155,7 @@ end
 -- Collect messages for displaying later when addon is not fully loaded
 KyzderpsDerps.messages = {}
 function KyzderpsDerps:dbg(msg)
+    if (not msg) then return end
     if (not KyzderpsDerps.savedOptions.general.debug) then return end
     if (CHAT_SYSTEM.primaryContainer) then
         d(msg)
@@ -205,6 +210,10 @@ function KyzderpsDerps.handleCommand(argString)
         else
             DeathAlert.OnDeathStateChanged(1, "group1", true)
         end
+
+    -- played
+    elseif (args[1] == "played") then
+        CHAT_SYSTEM:AddMessage(PlayedChart.buildPlayed())
 
     -- Unknown
     else
