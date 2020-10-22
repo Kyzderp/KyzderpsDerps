@@ -2,46 +2,42 @@ PlayedChart = {
     currentChar = GetUnitName("player")
 }
 
+local function updateSkillPoints()
+    KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar].availPoints = GetAvailableSkillPoints()
+end
+
+local function updatePlayedTime()
+    KyzderpsDerps.savedValues.playedChart.characters[PlayedChart.currentChar] = GetSecondsPlayed()
+    KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar].playedTime = GetSecondsPlayed() -- Start migrating
+end
+
+local function updateAll()
+    updatePlayedTime()
+    updateSkillPoints()
+end
+
+---------------------------------------------------------------------
+-- Hooks
 function PlayedChart:Initialize()
     KyzderpsDerps:dbg("    Initializing PlayedChart module...")
 
-    PlayedChart.updatePlayedTime()
-
-    ZO_PreHook("ReloadUI", PlayedChart.updatePlayedTime)
-    ZO_PreHook("Logout", PlayedChart.updatePlayedTime)
-    ZO_PreHook("SetCVar", PlayedChart.updatePlayedTime)
-    ZO_PreHook("Quit", PlayedChart.updatePlayedTime)
-end
-
-function PlayedChart.updatePlayedTime()
-    KyzderpsDerps.savedValues.playedChart.characters[PlayedChart.currentChar] = GetSecondsPlayed()
-end
-
--- Build the entire string for all played
-function PlayedChart.buildPlayed()
-    PlayedChart.updatePlayedTime()
-
-    local result = "=== Time Played ==="
-    local totalTime = 0
-
-    -- sort by descending amount played
-    for name, seconds in spairs(KyzderpsDerps.savedValues.playedChart.characters, function(t, a, b) return t[b] < t[a] end) do
-        totalTime = totalTime + seconds
-        result = result .. "\n|cFFFFFF" .. name .. " -|r "
-        result = result .. ZO_FormatTime(seconds, TIME_FORMAT_STYLE_DESCRIPTIVE_MINIMAL, TIME_FORMAT_PRECISION_SECONDS)
-        result = result .. "|cFFFFFF" .. string.format(" (%.2f hours)", seconds / 3600) .. "|r"
+    if (not KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar]) then
+        KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar] = {}
     end
 
-    -- print the total as well
-    result = result .. "\n\n|cFFFFFFTOTAL -|r "
-    result = result .. ZO_FormatTime(totalTime, TIME_FORMAT_STYLE_DESCRIPTIVE_MINIMAL, TIME_FORMAT_PRECISION_SECONDS)
-    result = result .. "|cFFFFFF" .. string.format(" (%.2f hours)", totalTime / 3600) .. "|r"
+    updateAll()
 
-    return result
+    ZO_PreHook("ReloadUI", updateAll)
+    ZO_PreHook("Logout", updateAll)
+    ZO_PreHook("SetCVar", updateAll)
+    ZO_PreHook("Quit", updateAll)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SkillPoint", EVENT_SKILL_POINTS_CHANGED, updateSkillPoints)
 end
 
+---------------------------------------------------------------------
 -- lazy, copied from https://stackoverflow.com/questions/15706270/sort-a-table-in-lua
-function spairs(t, order)
+local function spairs(t, order)
     -- collect the keys
     local keys = {}
     for k in pairs(t) do keys[#keys+1] = k end
@@ -62,4 +58,43 @@ function spairs(t, order)
             return keys[i], t[keys[i]]
         end
     end
+end
+
+---------------------------------------------------------------------
+-- Build the entire string for all played
+function PlayedChart.buildPlayed()
+    updatePlayedTime()
+
+    local result = "=== Time Played ==="
+    local totalTime = 0
+
+    -- sort by descending amount played
+    for name, seconds in spairs(KyzderpsDerps.savedValues.playedChart.characters, function(t, a, b) return t[b] < t[a] end) do
+        totalTime = totalTime + seconds
+        result = result .. "\n|cFFFFFF" .. name .. " -|r "
+        result = result .. ZO_FormatTime(seconds, TIME_FORMAT_STYLE_DESCRIPTIVE_MINIMAL, TIME_FORMAT_PRECISION_SECONDS)
+        result = result .. "|cFFFFFF" .. string.format(" (%.2f hours)", seconds / 3600) .. "|r"
+    end
+
+    -- print the total as well
+    result = result .. "\n\n|cFFFFFFTOTAL -|r "
+    result = result .. ZO_FormatTime(totalTime, TIME_FORMAT_STYLE_DESCRIPTIVE_MINIMAL, TIME_FORMAT_PRECISION_SECONDS)
+    result = result .. "|cFFFFFF" .. string.format(" (%.2f hours)", totalTime / 3600) .. "|r"
+
+    return result
+end
+
+-- Build the entire string for available skill points
+function PlayedChart.buildPoints()
+    updateSkillPoints()
+
+    local result = "=== Unspent Skill Points ==="
+
+    -- sort by descending unspent skill points
+    for name, info in spairs(KyzderpsDerps.savedValues.charInfo.characters, function(t, a, b) return t[b].availPoints < t[a].availPoints end) do
+        result = result .. "\n|cFFFFFF" .. name .. " -|r "
+        result = result .. tostring(info.availPoints)
+    end
+
+    return result
 end

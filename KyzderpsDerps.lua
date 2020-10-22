@@ -5,7 +5,7 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.2.0"
+KyzderpsDerps.version = "1.3.0"
 
 -- Defaults
 local defaultOptions = {
@@ -89,6 +89,9 @@ local defaultValues = {
         y = GuiRoot:GetHeight() / 3,
     },
     playedChart = {
+        characters = {},
+    },
+    charInfo = {
         characters = {},
     }
 }
@@ -174,8 +177,10 @@ function KyzderpsDerps.handleCommand(argString)
         length = length + 1
     end
 
+    local usage = "Usage: /kdd <grievous || bosstimer || played>"
+
     if (length == 0) then
-        CHAT_SYSTEM:AddMessage("Usage: /kdd <grievous||bosstimer>")
+        CHAT_SYSTEM:AddMessage(usage)
         return
     end
 
@@ -215,9 +220,13 @@ function KyzderpsDerps.handleCommand(argString)
     elseif (args[1] == "played") then
         CHAT_SYSTEM:AddMessage(PlayedChart.buildPlayed())
 
+    -- points
+    elseif (args[1] == "points") then
+        CHAT_SYSTEM:AddMessage(PlayedChart.buildPoints())
+
     -- Unknown
     else
-        CHAT_SYSTEM:AddMessage("Usage: /kdd <grievous||bosstimer>")
+        CHAT_SYSTEM:AddMessage(usage)
     end
 end
 
