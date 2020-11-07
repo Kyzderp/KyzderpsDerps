@@ -548,6 +548,25 @@ function KyzderpsDerps:CreateSettingsMenu()
                         namesDropdown:UpdateChoices(getBossNames())
                     end,
                 },
+                {
+                    type = "header",
+                    name = "Imperial City Scamps",
+                    width = "half",
+                },
+                {
+                    type = "slider",
+                    name = "Respawn Time",
+                    tooltip = "How many seconds does it take for the Trove or Cunning Scamp to respawn? This value can be different depending on Imperial City events and location of the scamp, e.g. the EP location with 2 rooms spawns every 150s during the IC event.",
+                    min = 150,
+                    max = 900,
+                    step = 15,
+                    default = 150,
+                    width = full,
+                    getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.scamp end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.spawnTimer.scamp = value
+                    end,
+                },
             },
         },
         -------------------------------------------------------------------------------

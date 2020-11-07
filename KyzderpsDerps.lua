@@ -5,7 +5,7 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.3.0"
+KyzderpsDerps.version = "1.3.1"
 
 -- Defaults
 local defaultOptions = {
@@ -44,6 +44,7 @@ local defaultOptions = {
         ignoreListFirstTime = true,
         ignoreList = {
         },
+        scamp = 150,
     },
     deathAlert = {
         enable = true,

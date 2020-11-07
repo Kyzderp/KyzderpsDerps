@@ -62,6 +62,7 @@ SpawnTimer = {
         ["1082"] = true,  -- Blackrose Prison
         ["1121"] = true,  -- Sunspire
         ["1196"] = true,  -- Kyne's Aegis
+        ["1227"] = true,  -- Vateshran Hollows
     },
 }
 
@@ -69,6 +70,8 @@ function SpawnTimer:Initialize()
     KyzderpsDerps:dbg("    Initializing SpawnTimer module...")
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpawnTimerDeath", EVENT_UNIT_DEATH_STATE_CHANGED, SpawnTimer.OnDeathStateChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpawnTimerDeathXP", EVENT_COMBAT_EVENT, SpawnTimer.OnCombatXP)
+    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "SpawnTimerDeathXP", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_DIED_XP)
 
     -- Register timer update
     EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer", 900, SpawnTimer.pollTimer)
@@ -106,7 +109,11 @@ end
 
 --  EVENT_UNIT_DEATH_STATE_CHANGED (number eventCode, string unitTag, boolean isDead)
 function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
-    if (isDead and string.find(unitTag, "^boss")) then
+    if (not isDead) then
+        return
+    end
+
+    if (string.find(unitTag, "^boss")) then
         local bossName = GetUnitName(unitTag)
 
         -- Skip trial or dungeon bosses
@@ -134,6 +141,52 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
             end
             CHAT_SYSTEM:AddMessage(msg)
         end
+    elseif (unitTag == "reticleover") then
+        local bossName = GetUnitName(unitTag)
+
+        -- Try all deadly and hard mobs?
+        local diff = GetUnitDifficulty(unitTag)
+        if (diff ~= MONSTER_DIFFICULTY_DEADLY and diff ~= MONSTER_DIFFICULTY_HARD) then
+            if (bossName == "Trove Scamp" or bossName == "Cunning Scamp") then
+                KyzderpsDerps.savedValues.spawnTimer.timers["Sewers Scamp"] = { startTime = GetTimeStamp(), alerted = false, }
+            else
+                return
+            end
+        end
+
+        -- Skip trial or dungeon bosses
+        if (GetCurrentParticipatingRaidId() ~= 0
+            or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
+            or SpawnTimer.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
+            return
+        end
+
+        -- Only care about "dungeons", this will be public dungeons and delves because group dungeons are skipped already
+        if (not IsUnitInDungeon("player")) then
+            return
+        end
+
+    
+        -- Add it to the list of bosses and create an entry in the panel
+        KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = { startTime = GetTimeStamp(), alerted = false, }
+
+        -- Display chat message if enabled
+        if (KyzderpsDerps.savedOptions.spawnTimer.chat.enable) then
+            local msg = "|cFFFFFF" .. bossName .. "|r died"
+            if (KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp) then
+                msg = "[" .. GetTimeString() .. "] " .. msg
+            end
+            CHAT_SYSTEM:AddMessage(msg)
+        end
+    end
+end
+
+-- This seems to filter to killing blows, but only shows the string information for your own killing blows
+-- EVENT_COMBAT_EVENT (number eventCode, number ActionResult result, boolean isError, string abilityName, number abilityGraphic, number ActionSlotType abilityActionSlotType, string sourceName, number CombatUnitType sourceType, string targetName, number CombatUnitType targetType, number hitValue, number CombatMechanicType powerType, number DamageType damageType, boolean log, number sourceUnitId, number targetUnitId, number abilityId, number overflow)
+function SpawnTimer.OnCombatXP(_, _, _, abilityName, _, _, sourceName, _, targetName, _, _, _, _, _, sourceUnitId, targetUnitId, abilityId, _)
+    -- KyzderpsDerps:dbg(string.format("%s(%d) killed %s(%d) with %s", sourceName, sourceUnitId, targetName, targetUnitId, abilityName))
+    if (targetName == "Trove Scamp" or targetName == "Cunning Scamp") then
+        KyzderpsDerps.savedValues.spawnTimer.timers["Sewers Scamp"] = { startTime = GetTimeStamp(), alerted = false, }
     end
 end
 
@@ -167,12 +220,26 @@ function SpawnTimer.pollTimer()
             bossControl:GetNamedChild("BossText"):SetText(bossName)
             bossControl:SetHidden(false)
 
+            -- Special scamp handling during event?
+            if (bossName == "Sewers Scamp") then
+                -- Display an alert X seconds prior to respawn
+                if (elapsed >= (KyzderpsDerps.savedOptions.spawnTimer.scamp - KyzderpsDerps.savedOptions.spawnTimer.alert.seconds)
+                    and not KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted) then
+                    KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted = true
+                    if (KyzderpsDerps.savedOptions.spawnTimer.alert.enable) then
+                        SpawnTimer.showAnnouncement(bossName,
+                                         "Respawning in " .. KyzderpsDerps.savedOptions.spawnTimer.alert.seconds .. " seconds!",
+                                         SOUNDS.BATTLEGROUND_NEARING_VICTORY)
+                    end
+                end
+            end
+
             -- Display an alert X seconds prior to respawn
             if (elapsed >= (306 - KyzderpsDerps.savedOptions.spawnTimer.alert.seconds)
                 and not KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted) then
                 KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted = true
                 if (KyzderpsDerps.savedOptions.spawnTimer.alert.enable) then
-                    showAnnouncement(bossName,
+                    SpawnTimer.showAnnouncement(bossName,
                                      "Respawning in " .. KyzderpsDerps.savedOptions.spawnTimer.alert.seconds .. " seconds!",
                                      SOUNDS.BATTLEGROUND_NEARING_VICTORY)
                 end
@@ -225,9 +292,9 @@ function SpawnTimer.printBoss(bossName)
 end
 
 -- Display a center-screen announcement with sound effect
-function showAnnouncement(msgText, secondText, sound)
-    sound = sound or SOUNDS.CHAMPION_POINT_GAINED
-    local msg = CENTER_SCREEN_ANNOUNCE:CreateMessageParams(CSA_CATEGORY_LARGE_TEXT, sound)
+function SpawnTimer.showAnnouncement(msgText, secondText, sound)
+    local msgSound = sound or SOUNDS.CHAMPION_POINT_GAINED
+    local msg = CENTER_SCREEN_ANNOUNCE:CreateMessageParams(CSA_CATEGORY_LARGE_TEXT, msgSound)
     msg:SetText(msgText, secondText)
     msg:SetCSAType(CENTER_SCREEN_ANNOUNCE_TYPE_CHAMPION_POINT_GAINED)
     msg:MarkSuppressIconFrame()
