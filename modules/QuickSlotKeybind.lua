@@ -65,4 +65,5 @@ function KDD_QuickSlots:Initialize()
 
     UpdateSlots()
     OnSlotChanged(0, GetCurrentQuickslot())
+    KDDQuickSlot:SetHidden(not KyzderpsDerps.savedOptions.quickSlots.enable)
 end

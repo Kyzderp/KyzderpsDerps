@@ -615,6 +615,31 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
             }
         },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
+            name = "Quickslots",
+            controls = {
+                {
+                    type = "description",
+                    title = nil,
+                    text = "You can set keybinds in your controls settings to select a quickslot with one key - though you still need to press your Quickslot Item key to use the item!",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Enable Indicator",
+                    tooltip = "Show 3 small icons above the default quickslot to indicate which one is selected",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.quickSlots.enable end,
+                    setFunc = function(value)
+                            KyzderpsDerps.savedOptions.quickSlots.enable = value
+                            KDDQuickSlot:SetHidden(not value)
+                        end,
+                    width = "full",
+                },
+            }
+        },
     }
 
     KyzderpsDerps.addonPanel = LAM:RegisterAddonPanel("KyzderpsDerpsOptions", panelData)

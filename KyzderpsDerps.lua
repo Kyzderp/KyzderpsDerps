@@ -51,6 +51,9 @@ local defaultOptions = {
         unlock = false,
         size = 30,
     },
+    quickSlots = {
+        enable = true,
+    },
 }
 
 local defaultValues = {
