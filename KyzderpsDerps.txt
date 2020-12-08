@@ -1,7 +1,7 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.3.1
+## Version: 1.4.0
 ## APIVersion: 100033
 ## DependsOn: LibAddonMenu-2.0>=31
 
@@ -15,7 +15,10 @@ modules/Grievous.lua
 modules/SpawnTimer.lua
 modules/DeathAlert.lua
 modules/PlayedChart.lua
+modules/QuickSlotKeybind.lua
 
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua
 KyzderpsDerps.xml
+
+bindings.xml

@@ -5,7 +5,7 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.3.1"
+KyzderpsDerps.version = "1.4.0"
 
 -- Defaults
 local defaultOptions = {
@@ -154,6 +154,8 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
         d(KyzderpsDerps.messages[i])
     end
     KyzderpsDerps.messages = {}
+
+    KDD_QuickSlots:Initialize()
 end
 
 -- Collect messages for displaying later when addon is not fully loaded

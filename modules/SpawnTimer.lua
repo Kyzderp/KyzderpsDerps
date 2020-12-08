@@ -66,6 +66,8 @@ SpawnTimer = {
     },
 }
 
+local running = false
+
 function SpawnTimer:Initialize()
     KyzderpsDerps:dbg("    Initializing SpawnTimer module...")
 
@@ -75,6 +77,8 @@ function SpawnTimer:Initialize()
 
     -- Register timer update
     EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer", 900, SpawnTimer.pollTimer)
+    KyzderpsDerps:dbg("Starting SpawnTimer polling")
+    running = true
 
     -- Initialize position
     SpawnTimerContainer:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
@@ -131,7 +135,7 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
         end
 
         -- Add it to the list of bosses and create an entry in the panel
-        KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = { startTime = GetTimeStamp(), alerted = false, }
+        SpawnTimer.BossKilled(bossName)
 
         -- Display chat message if enabled
         if (KyzderpsDerps.savedOptions.spawnTimer.chat.enable) then
@@ -148,7 +152,7 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
         local diff = GetUnitDifficulty(unitTag)
         if (diff ~= MONSTER_DIFFICULTY_DEADLY and diff ~= MONSTER_DIFFICULTY_HARD) then
             if (bossName == "Trove Scamp" or bossName == "Cunning Scamp") then
-                KyzderpsDerps.savedValues.spawnTimer.timers["Sewers Scamp"] = { startTime = GetTimeStamp(), alerted = false, }
+                SpawnTimer.BossKilled("Sewers Scamp")
             else
                 return
             end
@@ -168,7 +172,7 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
 
     
         -- Add it to the list of bosses and create an entry in the panel
-        KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = { startTime = GetTimeStamp(), alerted = false, }
+        SpawnTimer.BossKilled(bossName)
 
         -- Display chat message if enabled
         if (KyzderpsDerps.savedOptions.spawnTimer.chat.enable) then
@@ -186,7 +190,16 @@ end
 function SpawnTimer.OnCombatXP(_, _, _, abilityName, _, _, sourceName, _, targetName, _, _, _, _, _, sourceUnitId, targetUnitId, abilityId, _)
     -- KyzderpsDerps:dbg(string.format("%s(%d) killed %s(%d) with %s", sourceName, sourceUnitId, targetName, targetUnitId, abilityName))
     if (targetName == "Trove Scamp" or targetName == "Cunning Scamp") then
-        KyzderpsDerps.savedValues.spawnTimer.timers["Sewers Scamp"] = { startTime = GetTimeStamp(), alerted = false, }
+        SpawnTimer.BossKilled("Sewers Scamp")
+    end
+end
+
+function SpawnTimer.BossKilled(bossName)
+    KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = { startTime = GetTimeStamp(), alerted = false, }
+    if (not running) then
+        KyzderpsDerps:dbg("Starting SpawnTimer polling")
+        EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer", 900, SpawnTimer.pollTimer)
+        running = true
     end
 end
 
@@ -260,6 +273,9 @@ function SpawnTimer.pollTimer()
     -- Hide the panel if there are no timers
     if (index == 0) then
         SpawnTimerContainer:SetHidden(true)
+        EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer")
+        KyzderpsDerps:dbg("Stopping SpawnTimer polling")
+        running = false
     elseif (HUD_SCENE:IsShowing() or HUD_UI_SCENE:IsShowing()) then
         SpawnTimerContainer:SetHidden(not KyzderpsDerps.savedOptions.spawnTimer.enable)
     end
