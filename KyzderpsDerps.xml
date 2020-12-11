@@ -1,229 +1,229 @@
 <GuiXml>
-     <Controls>
-          <TopLevelControl name="CustomTargetCustomName" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
-               <Dimensions x="100" y="50"/>
-               <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
-               <OnMoveStop>
-                    CustomTargetName.SavePosition()
-               </OnMoveStop>
-               <Controls>
-                    <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|$(KB_48)|soft-shadow-thick" color="ffffff" text="Name" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="950" y="50"/>
-                         <Anchor point="CENTER" offsetX="0" offsetY="0"/>
-                    </Label>
-               </Controls>
-          </TopLevelControl>
+    <Controls>
+        <TopLevelControl name="CustomTargetCustomName" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
+            <Dimensions x="100" y="50"/>
+            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+            <OnMoveStop>
+                CustomTargetName.SavePosition()
+            </OnMoveStop>
+            <Controls>
+                <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|$(KB_48)|soft-shadow-thick" color="ffffff" text="Name" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="950" y="50"/>
+                    <Anchor point="CENTER" offsetX="0" offsetY="0"/>
+                </Label>
+            </Controls>
+        </TopLevelControl>
 
 <!-- ======================================================================================================================= -->
-          <TopLevelControl name="GrievousRetaliation" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
-               <Dimensions x="0" y="50"/>
-               <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
-               <OnMoveStop>
-                    Grievous.SavePosition()
-               </OnMoveStop>
-               <Controls>
-                    <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="0" offsetY="0"/>
-                    </Label>
+        <TopLevelControl name="GrievousRetaliation" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
+            <Dimensions x="0" y="50"/>
+            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+            <OnMoveStop>
+                Grievous.SavePosition()
+            </OnMoveStop>
+            <Controls>
+                <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="0" offsetY="0"/>
+                </Label>
 
-                    <Label name="$(parent)Label1" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="500" offsetY="200"/>
-                    </Label>
-                    <Label name="$(parent)Label2" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="-500" offsetY="200"/>
-                    </Label>
-                    <Label name="$(parent)Label3" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="500" offsetY="-200"/>
-                    </Label>
-                    <Label name="$(parent)Label4" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="-500" offsetY="-200"/>
-                    </Label>
+                <Label name="$(parent)Label1" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="500" offsetY="200"/>
+                </Label>
+                <Label name="$(parent)Label2" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="-500" offsetY="200"/>
+                </Label>
+                <Label name="$(parent)Label3" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="500" offsetY="-200"/>
+                </Label>
+                <Label name="$(parent)Label4" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="-500" offsetY="-200"/>
+                </Label>
 
-                    <Label name="$(parent)Label5" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="0" offsetY="400"/>
-                    </Label>
-                    <Label name="$(parent)Label6" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="0" offsetY="-400"/>
-                    </Label>
-                    <Label name="$(parent)Label7" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="1000" offsetY="0"/>
-                    </Label>
-                    <Label name="$(parent)Label8" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="-1000" offsetY="0"/>
-                    </Label>
+                <Label name="$(parent)Label5" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="0" offsetY="400"/>
+                </Label>
+                <Label name="$(parent)Label6" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="0" offsetY="-400"/>
+                </Label>
+                <Label name="$(parent)Label7" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="1000" offsetY="0"/>
+                </Label>
+                <Label name="$(parent)Label8" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="-1000" offsetY="0"/>
+                </Label>
 
-                    <Label name="$(parent)Label9" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="1000" offsetY="400"/>
-                    </Label>
-                    <Label name="$(parent)Label10" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="-1000" offsetY="400"/>
-                    </Label>
-                    <Label name="$(parent)Label11" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="1000" offsetY="-400"/>
-                    </Label>
-                    <Label name="$(parent)Label12" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                         <Dimensions x="1000" y="50"/>
-                         <Anchor point="CENTER" offsetX="-1000" offsetY="-400"/>
-                    </Label>
-               </Controls>
-          </TopLevelControl>
-
-<!-- ======================================================================================================================= -->
-          <TopLevelControl name="SpawnTimerContainer" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
-               <Dimensions x="304" y="124"/>
-               <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
-               <OnMoveStop>
-                    SpawnTimer.SavePosition()
-               </OnMoveStop>
-               <Controls>
-                    <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="88000000" hidden="false">
-                         <AnchorFill/>
-                         <Edge edgeSize="2"/>
-                    </Backdrop>
-                    <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="Boss Timers" verticalAlignment="TOP" horizontalAlignment="LEFT" hidden="false">
-                         <Dimensions x="300" y="24"/>
-                         <Anchor point="TOPLEFT" offsetX="2" offsetY="2"/>
-                    </Label>
-               </Controls>
-          </TopLevelControl>
-
-          <Control name="SpawnTimer_Line_Template" virtual="true">
-               <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" />
-               <Dimensions x="300" y="24" />
-               <Controls>
-                    <Button name="$(parent)Remove" alpha="1" clickSound="Default_Click" topmost="true">
-                         <Textures normal="/esoui/art/hud/radialicon_cancel_up.dds" mouseOver="/esoui/art/hud/radialicon_cancel_over.dds" />
-                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-2" offsetY="-2" />
-                         <Dimensions x="32" y="32" />
-                         <OnClicked>
-                              SpawnTimer.removeBoss(self:GetParent():GetNamedChild("BossText"):GetText())
-                         </OnClicked>
-                         <OnMouseEnter>
-                              ZO_Tooltips_ShowTextTooltip(self, LEFT, "Remove " .. self:GetParent():GetNamedChild("BossText"):GetText() .. " from watched bosses")
-                         </OnMouseEnter>
-                         <OnMouseExit>
-                              ZO_Tooltips_HideTextTooltip()
-                         </OnMouseExit>
-                    </Button>
-                    <Button name="$(parent)Print" alpha="1" clickSound="Default_Click" topmost="true">
-                         <Textures normal="/esoui/art/contacts/social_note_up.dds" mouseOver="/esoui/art/contacts/social_note_over.dds" />
-                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="18" offsetY="-2" />
-                         <Dimensions x="32" y="32" />
-                         <OnClicked>
-                              SpawnTimer.printBoss(self:GetParent():GetNamedChild("BossText"):GetText())
-                         </OnClicked>
-                         <OnMouseEnter>
-                              ZO_Tooltips_ShowTextTooltip(self, LEFT, "Post the time remaining until spawn to chat")
-                         </OnMouseEnter>
-                         <OnMouseExit>
-                              ZO_Tooltips_HideTextTooltip()
-                         </OnMouseExit>
-                    </Button>
-                    <Label name="$(parent)TimerText" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="0:00"
-                              verticalAlignment="TOP" horizontalAlignment="LEFT" alpha="1" hidden="false">
-                         <Dimensions x="100" y="24"/>
-                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="48" offsetY="0"/>
-                    </Label>
-                    <Label name="$(parent)BossText" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="Boss Name"
-                              verticalAlignment="TOP" horizontalAlignment="LEFT" alpha="1" hidden="false">
-                         <Dimensions x="200" y="24"/>
-                         <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="100" offsetY="0"/>
-                    </Label>
-               </Controls>
-          </Control>
+                <Label name="$(parent)Label9" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="1000" offsetY="400"/>
+                </Label>
+                <Label name="$(parent)Label10" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="-1000" offsetY="400"/>
+                </Label>
+                <Label name="$(parent)Label11" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="1000" offsetY="-400"/>
+                </Label>
+                <Label name="$(parent)Label12" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="1000" y="50"/>
+                    <Anchor point="CENTER" offsetX="-1000" offsetY="-400"/>
+                </Label>
+            </Controls>
+        </TopLevelControl>
 
 <!-- ======================================================================================================================= -->
-          <TopLevelControl name="DeathAlertContainer" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="false">
-               <Dimensions x="40" y="40"/>
-               <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
-               <OnMoveStop>
-                    DeathAlert.SavePosition()
-               </OnMoveStop>
-               <Controls>
-                    <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="88000000" hidden="true">
-                         <AnchorFill/>
-                         <Edge edgeSize="1"/>
-                    </Backdrop>
-                    <Texture name="$(parent)Skull" textureFile="esoui/art/icons/mapkey/mapkey_groupboss.dds" hidden="true">
-                         <Dimensions x="40" y="40"/>
-                         <Anchor point="CENTER" offsetX="0" offsetY="0"/>
-                    </Texture>
-               </Controls>
-          </TopLevelControl>
+        <TopLevelControl name="SpawnTimerContainer" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
+            <Dimensions x="304" y="124"/>
+            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+            <OnMoveStop>
+                SpawnTimer.SavePosition()
+            </OnMoveStop>
+            <Controls>
+                <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="88000000" hidden="false">
+                    <AnchorFill/>
+                    <Edge edgeSize="2"/>
+                </Backdrop>
+                <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="Boss Timers" verticalAlignment="TOP" horizontalAlignment="LEFT" hidden="false">
+                    <Dimensions x="300" y="24"/>
+                    <Anchor point="TOPLEFT" offsetX="2" offsetY="2"/>
+                </Label>
+            </Controls>
+        </TopLevelControl>
 
-           <Control name="DeathAlert_Line_Template" virtual="true">
-               <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" />
-               <Dimensions x="600" y="36" />
-               <Controls>
-                    <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|30|soft-shadow-thick" color="ffffff"
-                         text="|t24:24:esoui/art/lfg/lfg_tank_down.dds|t@Player1 is dead!" verticalAlignment="TOP" horizontalAlignment="CENTER" hidden="false">
-                         <Dimensions x="600" y="36"/>
-                         <Anchor point="CENTER" offsetX="0" offsetY="0"/>
-                    </Label>
-               </Controls>
-          </Control>
+        <Control name="SpawnTimer_Line_Template" virtual="true">
+            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" />
+            <Dimensions x="300" y="24" />
+            <Controls>
+                <Button name="$(parent)Remove" alpha="1" clickSound="Default_Click" topmost="true">
+                    <Textures normal="/esoui/art/hud/radialicon_cancel_up.dds" mouseOver="/esoui/art/hud/radialicon_cancel_over.dds" />
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-2" offsetY="-2" />
+                    <Dimensions x="32" y="32" />
+                    <OnClicked>
+                        SpawnTimer.removeBoss(self:GetParent():GetNamedChild("BossText"):GetText())
+                    </OnClicked>
+                    <OnMouseEnter>
+                        ZO_Tooltips_ShowTextTooltip(self, LEFT, "Remove " .. self:GetParent():GetNamedChild("BossText"):GetText() .. " from watched bosses")
+                    </OnMouseEnter>
+                    <OnMouseExit>
+                        ZO_Tooltips_HideTextTooltip()
+                    </OnMouseExit>
+                </Button>
+                <Button name="$(parent)Print" alpha="1" clickSound="Default_Click" topmost="true">
+                    <Textures normal="/esoui/art/contacts/social_note_up.dds" mouseOver="/esoui/art/contacts/social_note_over.dds" />
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="18" offsetY="-2" />
+                    <Dimensions x="32" y="32" />
+                    <OnClicked>
+                        SpawnTimer.printBoss(self:GetParent():GetNamedChild("BossText"):GetText())
+                    </OnClicked>
+                    <OnMouseEnter>
+                        ZO_Tooltips_ShowTextTooltip(self, LEFT, "Post the time remaining until spawn to chat")
+                    </OnMouseEnter>
+                    <OnMouseExit>
+                        ZO_Tooltips_HideTextTooltip()
+                    </OnMouseExit>
+                </Button>
+                <Label name="$(parent)TimerText" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="0:00"
+                        verticalAlignment="TOP" horizontalAlignment="LEFT" alpha="1" hidden="false">
+                    <Dimensions x="100" y="24"/>
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="48" offsetY="0"/>
+                </Label>
+                <Label name="$(parent)BossText" fontName="ZoFontWinH1" font="$(BOLD_FONT)|20|soft-shadow-thick" color="ffffff" text="Boss Name"
+                        verticalAlignment="TOP" horizontalAlignment="LEFT" alpha="1" hidden="false">
+                    <Dimensions x="200" y="24"/>
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="100" offsetY="0"/>
+                </Label>
+            </Controls>
+        </Control>
+
 <!-- ======================================================================================================================= -->
-          <TopLevelControl name="KDDQuickSlot" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="false">
-               <Dimensions x="54" y="22"/>
-               <Anchor point="BOTTOMLEFT" relativeTo="ActionButton9" relativePoint="TOPLEFT" offsetX="-2" offsetY="-2"/>
-               <OnInitialized>self:SetParent(ZO_ActionBar1)</OnInitialized>
-               <Controls>
-                    <Backdrop name="$(parent)Backdrop" centerColor="80000000" edgeColor="CC000000" hidden="false" tier="LOW">
-                         <AnchorFill/>
-                         <Edge edgeSize="2"/>
-                    </Backdrop>
-                    <Control name="$(parent)Slot1">
-                         <Anchor point="LEFT" relativeTo="$(parent)" relativePoint="LEFT" offsetX="2"/>
-                         <Dimensions x="18" y="18"/>
-                         <Controls>
-                              <Texture name="$(parent)Texture" textureFile="esoui/art/icons/consumable_potion_001_type_001.dds" tier="HIGH">
-                                   <AnchorFill/>
-                              </Texture>
-                              <Backdrop name="$(parent)Backdrop" centerColor="8000FF00" edgeColor="00000000" hidden="true" tier="MEDIUM">
-                                   <AnchorFill/>
-                                   <Edge edgeSize="1"/>
-                              </Backdrop>
-                         </Controls>
-                    </Control>
-                    <Control name="$(parent)Slot2">
-                         <Anchor point="LEFT" relativeTo="$(parent)Slot1" relativePoint="RIGHT" offsetX="-2"/>
-                         <Dimensions x="18" y="18"/>
-                         <Controls>
-                              <Texture name="$(parent)Texture" textureFile="esoui/art/icons/consumable_potion_001_type_001.dds" tier="HIGH">
-                                   <AnchorFill/>
-                              </Texture>
-                              <Backdrop name="$(parent)Backdrop" centerColor="8000FF00" edgeColor="00000000" hidden="true" tier="MEDIUM">
-                                   <AnchorFill/>
-                                   <Edge edgeSize="1"/>
-                              </Backdrop>
-                         </Controls>
-                    </Control>
-                    <Control name="$(parent)Slot3">
-                         <Anchor point="LEFT" relativeTo="$(parent)Slot2" relativePoint="RIGHT" offsetX="-2"/>
-                         <Dimensions x="18" y="18"/>
-                         <Controls>
-                              <Texture name="$(parent)Texture" textureFile="esoui/art/icons/consumable_potion_001_type_001.dds" tier="HIGH">
-                                   <AnchorFill/>
-                              </Texture>
-                              <Backdrop name="$(parent)Backdrop" centerColor="8000FF00" edgeColor="00000000" hidden="true" tier="MEDIUM">
-                                   <AnchorFill/>
-                                   <Edge edgeSize="1"/>
-                              </Backdrop>
-                         </Controls>
-                    </Control>
-               </Controls>
-          </TopLevelControl>
-     </Controls>
+        <TopLevelControl name="DeathAlertContainer" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="false">
+            <Dimensions x="40" y="40"/>
+            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+            <OnMoveStop>
+                DeathAlert.SavePosition()
+            </OnMoveStop>
+            <Controls>
+                <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="88000000" hidden="true">
+                    <AnchorFill/>
+                    <Edge edgeSize="1"/>
+                </Backdrop>
+                <Texture name="$(parent)Skull" textureFile="esoui/art/icons/mapkey/mapkey_groupboss.dds" hidden="true">
+                    <Dimensions x="40" y="40"/>
+                    <Anchor point="CENTER" offsetX="0" offsetY="0"/>
+                </Texture>
+            </Controls>
+        </TopLevelControl>
+
+         <Control name="DeathAlert_Line_Template" virtual="true">
+            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" />
+            <Dimensions x="600" y="36" />
+            <Controls>
+                <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|30|soft-shadow-thick" color="ffffff"
+                    text="|t24:24:esoui/art/lfg/lfg_tank_down.dds|t@Player1 is dead!" verticalAlignment="TOP" horizontalAlignment="CENTER" hidden="false">
+                    <Dimensions x="600" y="36"/>
+                    <Anchor point="CENTER" offsetX="0" offsetY="0"/>
+                </Label>
+            </Controls>
+        </Control>
+<!-- ======================================================================================================================= -->
+        <TopLevelControl name="KDDQuickSlot" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="false">
+            <Dimensions x="54" y="22"/>
+            <Anchor point="BOTTOMLEFT" relativeTo="ActionButton9" relativePoint="TOPLEFT" offsetX="-2" offsetY="-2"/>
+            <OnInitialized>self:SetParent(ZO_ActionBar1)</OnInitialized>
+            <Controls>
+                <Backdrop name="$(parent)Backdrop" centerColor="80000000" edgeColor="CC000000" hidden="false" tier="LOW">
+                    <AnchorFill/>
+                    <Edge edgeSize="2"/>
+                </Backdrop>
+                <Control name="$(parent)Slot1">
+                    <Anchor point="LEFT" relativeTo="$(parent)" relativePoint="LEFT" offsetX="2"/>
+                    <Dimensions x="18" y="18"/>
+                    <Controls>
+                        <Texture name="$(parent)Texture" textureFile="esoui/art/icons/consumable_potion_001_type_001.dds" tier="HIGH">
+                            <AnchorFill/>
+                        </Texture>
+                        <Backdrop name="$(parent)Backdrop" centerColor="8000FF00" edgeColor="00000000" hidden="true" tier="MEDIUM">
+                            <AnchorFill/>
+                            <Edge edgeSize="1"/>
+                        </Backdrop>
+                    </Controls>
+                </Control>
+                <Control name="$(parent)Slot2">
+                    <Anchor point="LEFT" relativeTo="$(parent)Slot1" relativePoint="RIGHT" offsetX="-2"/>
+                    <Dimensions x="18" y="18"/>
+                    <Controls>
+                        <Texture name="$(parent)Texture" textureFile="esoui/art/icons/consumable_potion_001_type_001.dds" tier="HIGH">
+                            <AnchorFill/>
+                        </Texture>
+                        <Backdrop name="$(parent)Backdrop" centerColor="8000FF00" edgeColor="00000000" hidden="true" tier="MEDIUM">
+                            <AnchorFill/>
+                            <Edge edgeSize="1"/>
+                        </Backdrop>
+                    </Controls>
+                </Control>
+                <Control name="$(parent)Slot3">
+                    <Anchor point="LEFT" relativeTo="$(parent)Slot2" relativePoint="RIGHT" offsetX="-2"/>
+                    <Dimensions x="18" y="18"/>
+                    <Controls>
+                        <Texture name="$(parent)Texture" textureFile="esoui/art/icons/consumable_potion_001_type_001.dds" tier="HIGH">
+                            <AnchorFill/>
+                        </Texture>
+                        <Backdrop name="$(parent)Backdrop" centerColor="8000FF00" edgeColor="00000000" hidden="true" tier="MEDIUM">
+                            <AnchorFill/>
+                            <Edge edgeSize="1"/>
+                        </Backdrop>
+                    </Controls>
+                </Control>
+            </Controls>
+        </TopLevelControl>
+    </Controls>
 </GuiXml>
