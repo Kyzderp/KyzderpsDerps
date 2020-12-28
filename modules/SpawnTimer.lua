@@ -64,31 +64,24 @@ SpawnTimer = {
         ["1196"] = true,  -- Kyne's Aegis
         ["1227"] = true,  -- Vateshran Hollows
     },
+
+    BOSS_NAMES = {
+        ["Curnard the Generous"] = true, -- Viridian Watch
+        -- Malabal Tor Delves
+        ["Arrai"] = true, -- Shael Ruins
+
+    -- Stonefalls
+        -- Crow's Wood Public Dungeon
+        ["The Moonlit Maiden"] = 305, -- wispmother boss
+
+        -- Western Skyrim
+        -- WBs
+        ["Shademother"] = 606,
+        ["Tulnir"] = 301
+    },
 }
 
 local running = false
-
-function SpawnTimer:Initialize()
-    KyzderpsDerps:dbg("    Initializing SpawnTimer module...")
-
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpawnTimerDeath", EVENT_UNIT_DEATH_STATE_CHANGED, SpawnTimer.OnDeathStateChanged)
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpawnTimerDeathXP", EVENT_COMBAT_EVENT, SpawnTimer.OnCombatXP)
-    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "SpawnTimerDeathXP", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_DIED_XP)
-
-    -- Register timer update
-    EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer", 900, SpawnTimer.pollTimer)
-    KyzderpsDerps:dbg("Starting SpawnTimer polling")
-    running = true
-
-    -- Initialize position
-    SpawnTimerContainer:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
-        KyzderpsDerps.savedValues.spawnTimer.x, KyzderpsDerps.savedValues.spawnTimer.y)
-    SpawnTimerContainer:SetHidden(not KyzderpsDerps.savedOptions.spawnTimer.enable)
-
-    -- Hide panel while in menus
-    HUD_SCENE:RegisterCallback("StateChange", fragmentChange)
-    HUD_UI_SCENE:RegisterCallback("StateChange", fragmentChange)
-end
 
 -- Hide panel while in menus
 function fragmentChange(oldState, newState)
@@ -111,12 +104,9 @@ function SpawnTimer.SavePosition()
     KyzderpsDerps.savedValues.spawnTimer.y = SpawnTimerContainer:GetTop()
 end
 
---  EVENT_UNIT_DEATH_STATE_CHANGED (number eventCode, string unitTag, boolean isDead)
-function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
-    if (not isDead) then
-        return
-    end
 
+---------------------------------------------------------------------------------------------------
+local function IsBossByUnitTag(unitTag)
     if (string.find(unitTag, "^boss")) then
         local bossName = GetUnitName(unitTag)
 
@@ -125,26 +115,16 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
             or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
             or SpawnTimer.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
             KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is a trial/dungeon boss.")
-            return
+            return false
         end
 
         -- Skip bosses in the ignore list
         if (KyzderpsDerps.savedOptions.spawnTimer.ignoreList[bossName]) then
             KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is in the ignore filter.")
-            return
+            return false
         end
 
-        -- Add it to the list of bosses and create an entry in the panel
-        SpawnTimer.BossKilled(bossName)
-
-        -- Display chat message if enabled
-        if (KyzderpsDerps.savedOptions.spawnTimer.chat.enable) then
-            local msg = "|cFFFFFF" .. bossName .. "|r died"
-            if (KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp) then
-                msg = "[" .. GetTimeString() .. "] " .. msg
-            end
-            CHAT_SYSTEM:AddMessage(msg)
-        end
+        return true
     elseif (unitTag == "reticleover") then
         local bossName = GetUnitName(unitTag)
 
@@ -153,8 +133,9 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
         if (diff ~= MONSTER_DIFFICULTY_DEADLY and diff ~= MONSTER_DIFFICULTY_HARD) then
             if (bossName == "Trove Scamp" or bossName == "Cunning Scamp") then
                 SpawnTimer.BossKilled("Sewers Scamp")
-            else
-                return
+                return false
+            elseif (not SpawnTimer.BOSS_NAMES[bossName]) then
+                return false
             end
         end
 
@@ -162,32 +143,36 @@ function SpawnTimer.OnDeathStateChanged(eventCode, unitTag, isDead)
         if (GetCurrentParticipatingRaidId() ~= 0
             or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
             or SpawnTimer.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
-            return
+            return false
         end
 
         -- Only care about "dungeons", this will be public dungeons and delves because group dungeons are skipped already
         if (not IsUnitInDungeon("player")) then
-            return
+            return false
         end
 
-    
-        -- Add it to the list of bosses and create an entry in the panel
-        SpawnTimer.BossKilled(bossName)
+        return true
+    end
 
-        -- Display chat message if enabled
-        if (KyzderpsDerps.savedOptions.spawnTimer.chat.enable) then
-            local msg = "|cFFFFFF" .. bossName .. "|r died"
-            if (KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp) then
-                msg = "[" .. GetTimeString() .. "] " .. msg
-            end
-            CHAT_SYSTEM:AddMessage(msg)
-        end
+    return false
+end
+
+
+---------------------------------------------------------------------------------------------------
+--  EVENT_UNIT_DEATH_STATE_CHANGED (number eventCode, string unitTag, boolean isDead)
+local function OnDeathStateChanged(_, unitTag, isDead)
+    if (not isDead) then
+        return
+    end
+
+    if (IsBossByUnitTag(unitTag)) then
+        SpawnTimer.BossKilled(GetUnitName(unitTag))
     end
 end
 
 -- This seems to filter to killing blows, but only shows the string information for your own killing blows
 -- EVENT_COMBAT_EVENT (number eventCode, number ActionResult result, boolean isError, string abilityName, number abilityGraphic, number ActionSlotType abilityActionSlotType, string sourceName, number CombatUnitType sourceType, string targetName, number CombatUnitType targetType, number hitValue, number CombatMechanicType powerType, number DamageType damageType, boolean log, number sourceUnitId, number targetUnitId, number abilityId, number overflow)
-function SpawnTimer.OnCombatXP(_, _, _, abilityName, _, _, sourceName, _, targetName, _, _, _, _, _, sourceUnitId, targetUnitId, abilityId, _)
+local function OnCombatXP(_, _, _, abilityName, _, _, sourceName, _, targetName, _, _, _, _, _, sourceUnitId, targetUnitId, abilityId, _)
     -- KyzderpsDerps:dbg(string.format("%s(%d) killed %s(%d) with %s", sourceName, sourceUnitId, targetName, targetUnitId, abilityName))
     if (targetName == "Trove Scamp" or targetName == "Cunning Scamp") then
         SpawnTimer.BossKilled("Sewers Scamp")
@@ -200,6 +185,36 @@ function SpawnTimer.BossKilled(bossName)
         KyzderpsDerps:dbg("Starting SpawnTimer polling")
         EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer", 900, SpawnTimer.pollTimer)
         running = true
+    end
+
+    -- Display chat message if enabled
+    if (KyzderpsDerps.savedOptions.spawnTimer.chat.enable) then
+        local msg = "|cFFFFFF" .. bossName .. "|r died"
+        if (KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp) then
+            msg = "[" .. GetTimeString() .. "] " .. msg
+        end
+        CHAT_SYSTEM:AddMessage(msg)
+    end
+end
+
+-- EVENT_LOOT_RECEIVED (number eventCode, string receivedBy, string itemName, number quantity, ItemUISoundCategory soundCategory, LootItemType lootType, boolean self, boolean isPickpocketLoot, string questItemIcon, number itemId, boolean isStolen)
+local function OnLootReceived(_, _, itemLink, _, _, lootType, isSelf)
+    if (not isSelf) then return end
+    if (lootType == LOOT_TYPE_ITEM) then
+        local itemType = GetItemLinkItemType(itemLink)
+
+        if (itemType == ITEMTYPE_WEAPON or itemType == ITEMTYPE_ARMOR) then
+            if (GetItemLinkSetInfo(itemLink, false)) then
+                -- This is a set item
+                if (IsBossByUnitTag("reticleover")) then
+                    local bossName = GetUnitName("reticleover")
+                    local startTime = KyzderpsDerps.savedValues.spawnTimer.timers[bossName]
+                    if (not startTime or (GetTimeStamp() - startTime < 5)) then -- Only consider the loot reticle if it's not "new"
+                        SpawnTimer.BossKilled(bossName)
+                    end
+                end
+            end
+        end
     end
 end
 
@@ -216,11 +231,16 @@ function SpawnTimer.pollTimer()
             KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = nil
             KyzderpsDerps:dbg("Removed " .. bossName .. " from respawn timers")
         else
+            local respawnTime = 306 -- default of 5:06
+            if (type(SpawnTimer.BOSS_NAMES[bossName]) == "number") then
+                respawnTime = SpawnTimer.BOSS_NAMES[bossName]
+            end
+
             local timerFormatted = string.format("%02d:%02d", zo_floor(elapsed / 60), elapsed % 60)
             local color = "00FF00" -- green
-            if (elapsed >= 306) then color = "FF0000" -- red
-            elseif (elapsed >= 296) then color = "FF9100" -- orange
-            elseif (elapsed >= 276) then color = "FFFF00" -- yellow
+            if (elapsed >= respawnTime) then color = "FF0000" -- red
+            elseif (elapsed >= respawnTime - 10) then color = "FF9100" -- orange
+            elseif (elapsed >= respawnTime - 30) then color = "FFFF00" -- yellow
             end
             
 
@@ -248,7 +268,7 @@ function SpawnTimer.pollTimer()
             end
 
             -- Display an alert X seconds prior to respawn
-            if (elapsed >= (306 - KyzderpsDerps.savedOptions.spawnTimer.alert.seconds)
+            if (elapsed >= (respawnTime - KyzderpsDerps.savedOptions.spawnTimer.alert.seconds)
                 and not KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted) then
                 KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted = true
                 if (KyzderpsDerps.savedOptions.spawnTimer.alert.enable) then
@@ -302,8 +322,13 @@ end
 
 -- Fill the chat text field with the spawn timer for the clicked boss
 function SpawnTimer.printBoss(bossName)
+    local respawnTime = 306 -- default of 5:06
+    if (type(SpawnTimer.BOSS_NAMES[bossName]) == "number") then
+        respawnTime = SpawnTimer.BOSS_NAMES[bossName]
+    end
+
     local startTime = KyzderpsDerps.savedValues.spawnTimer.timers[bossName].startTime
-    local seconds = 306 - GetTimeStamp() + startTime
+    local seconds = respawnTime - GetTimeStamp() + startTime
     CHAT_SYSTEM:StartTextEntry(bossName .. string.format(" should respawn in %d mins %d secs", zo_floor(seconds / 60), seconds % 60))
 end
 
@@ -315,4 +340,27 @@ function SpawnTimer.showAnnouncement(msgText, secondText, sound)
     msg:SetCSAType(CENTER_SCREEN_ANNOUNCE_TYPE_CHAMPION_POINT_GAINED)
     msg:MarkSuppressIconFrame()
     CENTER_SCREEN_ANNOUNCE:DisplayMessage(msg)
+end
+
+function SpawnTimer:Initialize()
+    KyzderpsDerps:dbg("    Initializing SpawnTimer module...")
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpawnTimerDeath", EVENT_UNIT_DEATH_STATE_CHANGED, OnDeathStateChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpawnTimerDeathXP", EVENT_COMBAT_EVENT, OnCombatXP)
+    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "SpawnTimerDeathXP", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_DIED_XP)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpawnTimerLootReceived", EVENT_LOOT_RECEIVED, OnLootReceived)
+
+    -- Register timer update
+    EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer", 900, SpawnTimer.pollTimer)
+    KyzderpsDerps:dbg("Starting SpawnTimer polling")
+    running = true
+
+    -- Initialize position
+    SpawnTimerContainer:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
+        KyzderpsDerps.savedValues.spawnTimer.x, KyzderpsDerps.savedValues.spawnTimer.y)
+    SpawnTimerContainer:SetHidden(not KyzderpsDerps.savedOptions.spawnTimer.enable)
+
+    -- Hide panel while in menus
+    HUD_SCENE:RegisterCallback("StateChange", fragmentChange)
+    HUD_UI_SCENE:RegisterCallback("StateChange", fragmentChange)
 end
