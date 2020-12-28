@@ -208,8 +208,11 @@ local function OnLootReceived(_, _, itemLink, _, _, lootType, isSelf)
                 -- This is a set item
                 if (IsBossByUnitTag("reticleover")) then
                     local bossName = GetUnitName("reticleover")
-                    local startTime = KyzderpsDerps.savedValues.spawnTimer.timers[bossName]
-                    if (not startTime or (GetTimeStamp() - startTime < 5)) then -- Only consider the loot reticle if it's not "new"
+                    local startTime
+                    if (KyzderpsDerps.savedValues.spawnTimer.timers[bossName]) then
+                        startTime = KyzderpsDerps.savedValues.spawnTimer.timers[bossName].startTime
+                    end
+                    if (not startTime or (GetTimeStamp() - startTime > 30)) then -- Only consider the loot reticle if it's not "new"
                         SpawnTimer.BossKilled(bossName)
                     end
                 end
