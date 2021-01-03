@@ -65,19 +65,80 @@ SpawnTimer = {
         ["1227"] = true,  -- Vateshran Hollows
     },
 
+    -- "Name" of boss (including location/groups) to the number of seconds it takes to respawn. true = default 306s
     BOSS_NAMES = {
-        ["Curnard the Generous"] = true, -- Viridian Watch
-        -- Malabal Tor Delves
-        ["Arrai"] = true, -- Shael Ruins
+    -- Dolmens - TODO: 5:18?
+
+    -- Bangkorai
+        ["Curnard the Generous"] = true, -- Delve: Viridian Watch
+
+    -- Malabal Tor
+        ["Arrai"] = true, -- Delve: Shael Ruins
 
     -- Stonefalls
-        -- Crow's Wood Public Dungeon
-        ["The Moonlit Maiden"] = 305, -- wispmother boss
+        ["The Moonlit Maiden"] = 305, -- PD: Crow's Wood - Wispmother next to skyshard
 
-        -- Western Skyrim
-        -- WBs
-        ["Shademother"] = 606,
-        ["Tulnir"] = 301
+    -- Summerset
+        ["Direnni Abyssal Geyser"] = 645, -- Abyssal Geyser
+        ["Sil-Var-Woad Abyssal Geyser"] = 645, -- Abyssal Geyser
+        ["Rellenthil Abyssal Geyser"] = 645, -- Abyssal Geyser
+        ["Corgrad Abyssal Geyser"] = 645, -- Abyssal Geyser
+        ["Welenkin Abyssal Geyser"] = 645, -- Abyssal Geyser
+        ["Sunhold Abyssal Geyser"] = 645, -- Abyssal Geyser
+
+    -- Northern Elsweyr
+        ["Dragon"] = 620, -- It spawns on the map at around 10:20 (or at least, once), but landed at 11:00
+
+    -- Western Skyrim
+        ["Shademother"] = 606, -- WB
+        ["Tulnir"] = 301 -- PD: Labyrinthian - Exterior altar
+    },
+
+    -- Boss actual names to name of the group. GetPlayerLocationName = should use output of that method
+    BOSS_GROUPS = {
+    -- Dolmens
+        ["Dread Daedroth"] = "GetPlayerLocationName", -- Dolmen unnamed
+        ["Dread Frost Atronach"] = "GetPlayerLocationName", -- Dolmen unnamed
+
+        ["Lord Dregas Volar"] = "GetPlayerLocationName", -- Dolmen - holder of the Daedric Crescent
+        ["Gedna Relvel"] = "GetPlayerLocationName", -- Dolmen - Lich of Mournhold
+        ["Vika"] = "GetPlayerLocationName", -- Dolmen - Dark Seducer sister
+        ["Dylora"] = "GetPlayerLocationName", -- Dolmen - Dark Seducer sister
+        ["Jansa"] = "GetPlayerLocationName", -- Dolmen - Dark Seducer sister
+        ["Nomeg Haga"] = "GetPlayerLocationName", -- Dolmen - Frost Atronach
+        ["Hrelvesuu"] = "GetPlayerLocationName", -- Dolmen - Daedroth
+        ["Zymel Hriz"] = "GetPlayerLocationName", -- Dolmen - Storm Atronach
+        ["Menta Na"] = "GetPlayerLocationName", -- Dolmen - Daedroth
+        ["Kathutet"] = "GetPlayerLocationName", -- Dolmen - Torturer
+        ["Amkaos"] = "GetPlayerLocationName", -- Dolmen - Torturer
+        ["Ranyu"] = "GetPlayerLocationName", -- Dolmen - Torturer
+        ["Yggmanei the Ever-Open Eye"] = "GetPlayerLocationName", -- Dolmen - Molag Bal's greatest spy
+        ["Velehk Sain"] = "GetPlayerLocationName", -- Dolmen - Dremora pirate
+        ["Anaxes"] = "GetPlayerLocationName", -- Dolmen - Xivilai torturer
+        ["Medrike"] = "GetPlayerLocationName", -- Dolmen - Xivilai torturer
+        ["King Styriche of Verkarth"] = "GetPlayerLocationName", -- Dolmen
+        ["Fangaril"] = "GetPlayerLocationName", -- Dolmen - companion of the King
+        ["Zayzahad"] = "GetPlayerLocationName", -- Dolmen - companion of the King
+        ["Rhagothan"] = "GetPlayerLocationName", -- Dolmen - Devourer of Souls
+        ["Glut"] = "GetPlayerLocationName", -- Dolmen - Ogrim brother
+        ["Hogshead"] = "GetPlayerLocationName", -- Dolmen - Ogrim brother
+        ["Stumble"] = "GetPlayerLocationName", -- Dolmen - Ogrim brother
+        ["Ozozzachar"] = "GetPlayerLocationName", -- Dolmen - Titan
+        ["Methats"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
+        ["Vonshala"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
+        ["Sumeer"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
+
+    -- Summerset
+        ["Ruella Many-Claws"] = "GetPlayerLocationName", -- Abyssal Geyser
+        ["Churug of the Abyss"] = "GetPlayerLocationName", -- Abyssal Geyser
+        ["Sheefar of the Depths"] = "GetPlayerLocationName", -- Abyssal Geyser
+        ["Girawell the Erratic"] = "GetPlayerLocationName", -- Abyssal Geyser - Salamander
+        ["Muustikar Wave-Eater"] = "GetPlayerLocationName", -- Abyssal Geyser
+        ["Reefhammer"] = "GetPlayerLocationName", -- Abyssal Geyser - Haj Mota
+        ["Darkstorm the Alluring"] = "GetPlayerLocationName", -- Abyssal Geyser - Nereid thing
+        ["Eejoba the Radiant"] = "GetPlayerLocationName", -- Abyssal Geyser - Wispmother
+        ["Tidewrack"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Lurcher
+        ["Vsskalvor"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Viper
     },
 }
 
@@ -106,55 +167,68 @@ end
 
 
 ---------------------------------------------------------------------------------------------------
+-- Display a center-screen announcement with sound effect
+local function ShowAnnouncement(msgText, secondText, sound)
+    local msgSound = sound or SOUNDS.CHAMPION_POINT_GAINED
+    local msg = CENTER_SCREEN_ANNOUNCE:CreateMessageParams(CSA_CATEGORY_LARGE_TEXT, msgSound)
+    msg:SetText(msgText, secondText)
+    msg:SetCSAType(CENTER_SCREEN_ANNOUNCE_TYPE_CHAMPION_POINT_GAINED)
+    msg:MarkSuppressIconFrame()
+    CENTER_SCREEN_ANNOUNCE:DisplayMessage(msg)
+end
+
+
+---------------------------------------------------------------------------------------------------
+-- Check if a unit is a boss
 local function IsBossByUnitTag(unitTag)
+    local bossName = GetUnitName(unitTag)
     if (string.find(unitTag, "^boss")) then
-        local bossName = GetUnitName(unitTag)
-
-        -- Skip trial or dungeon bosses
-        if (GetCurrentParticipatingRaidId() ~= 0
-            or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
-            or SpawnTimer.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
-            KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is a trial/dungeon boss.")
-            return false
-        end
-
-        -- Skip bosses in the ignore list
-        if (KyzderpsDerps.savedOptions.spawnTimer.ignoreList[bossName]) then
-            KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is in the ignore filter.")
-            return false
-        end
-
-        return true
+        -- Should handle all world bosses, newer public dungeons, and world events
     elseif (unitTag == "reticleover") then
-        local bossName = GetUnitName(unitTag)
-
         -- Try all deadly and hard mobs?
         local diff = GetUnitDifficulty(unitTag)
         if (diff ~= MONSTER_DIFFICULTY_DEADLY and diff ~= MONSTER_DIFFICULTY_HARD) then
             if (bossName == "Trove Scamp" or bossName == "Cunning Scamp") then
                 SpawnTimer.BossKilled("Sewers Scamp")
                 return false
-            elseif (not SpawnTimer.BOSS_NAMES[bossName]) then
+            elseif (not SpawnTimer.BOSS_NAMES[bossName] and not SpawnTimer.BOSS_GROUPS[bossName]) then
                 return false
             end
         end
 
-        -- Skip trial or dungeon bosses
-        if (GetCurrentParticipatingRaidId() ~= 0
-            or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
-            or SpawnTimer.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
+        -- Only care about "dungeons", this will be public dungeons and delves because group dungeons are skipped below
+        if (not IsUnitInDungeon("player") and bossName ~= "Dragon") then
+            -- This can be overland, so unnamed bosses at dolmens, or dragons
+            local groupName = GetPlayerLocationName()
+            if (string.find(groupName, "Dolmen$")) then
+                return groupName
+            end
             return false
         end
-
-        -- Only care about "dungeons", this will be public dungeons and delves because group dungeons are skipped already
-        if (not IsUnitInDungeon("player")) then
-            return false
-        end
-
-        return true
+    else
+        return false
     end
 
-    return false
+    -- Skip trial or dungeon bosses
+    if (GetCurrentParticipatingRaidId() ~= 0
+        or SpawnTimer.DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
+        or SpawnTimer.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
+        KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is a trial/dungeon boss.")
+        return false
+    end
+
+    -- Skip bosses in the ignore list
+    if (KyzderpsDerps.savedOptions.spawnTimer.ignoreList[bossName]) then
+        KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is in the ignore filter.")
+        return false
+    end
+
+    -- Check the data
+    local groupName = SpawnTimer.BOSS_GROUPS[bossName] or bossName
+    if (groupName == "GetPlayerLocationName") then
+        groupName = GetPlayerLocationName()
+    end
+    return groupName
 end
 
 
@@ -165,8 +239,9 @@ local function OnDeathStateChanged(_, unitTag, isDead)
         return
     end
 
-    if (IsBossByUnitTag(unitTag)) then
-        SpawnTimer.BossKilled(GetUnitName(unitTag))
+    local groupName = IsBossByUnitTag(unitTag)
+    if (groupName) then
+        SpawnTimer.BossKilled(groupName, GetUnitName(unitTag))
     end
 end
 
@@ -179,8 +254,8 @@ local function OnCombatXP(_, _, _, abilityName, _, _, sourceName, _, targetName,
     end
 end
 
-function SpawnTimer.BossKilled(bossName)
-    KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = { startTime = GetTimeStamp(), alerted = false, }
+function SpawnTimer.BossKilled(groupName, bossName)
+    KyzderpsDerps.savedValues.spawnTimer.timers[groupName] = { startTime = GetTimeStamp(), alerted = false, }
     if (not running) then
         KyzderpsDerps:dbg("Starting SpawnTimer polling")
         EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpawnTimerTimer", 900, SpawnTimer.pollTimer)
@@ -189,7 +264,10 @@ function SpawnTimer.BossKilled(bossName)
 
     -- Display chat message if enabled
     if (KyzderpsDerps.savedOptions.spawnTimer.chat.enable) then
-        local msg = "|cFFFFFF" .. bossName .. "|r died"
+        local msg = "|cFFFFFF" .. groupName .. "|r died"
+        if (bossName ~= nil and groupName ~= bossName) then
+            msg = "|cFFFFFF" .. bossName .. "|r died at |cFFFFFF" .. groupName .. "|r"
+        end
         if (KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp) then
             msg = "[" .. GetTimeString() .. "] " .. msg
         end
@@ -206,14 +284,14 @@ local function OnLootReceived(_, _, itemLink, _, _, lootType, isSelf)
         if (itemType == ITEMTYPE_WEAPON or itemType == ITEMTYPE_ARMOR) then
             if (GetItemLinkSetInfo(itemLink, false)) then
                 -- This is a set item
-                if (IsBossByUnitTag("reticleover")) then
-                    local bossName = GetUnitName("reticleover")
+                local groupName = IsBossByUnitTag("reticleover")
+                if (groupName) then
                     local startTime
-                    if (KyzderpsDerps.savedValues.spawnTimer.timers[bossName]) then
-                        startTime = KyzderpsDerps.savedValues.spawnTimer.timers[bossName].startTime
+                    if (KyzderpsDerps.savedValues.spawnTimer.timers[groupName]) then
+                        startTime = KyzderpsDerps.savedValues.spawnTimer.timers[groupName].startTime
                     end
                     if (not startTime or (GetTimeStamp() - startTime > 30)) then -- Only consider the loot reticle if it's not "new"
-                        SpawnTimer.BossKilled(bossName)
+                        SpawnTimer.BossKilled(groupName)
                     end
                 end
             end
@@ -221,6 +299,8 @@ local function OnLootReceived(_, _, itemLink, _, _, lootType, isSelf)
     end
 end
 
+
+---------------------------------------------------------------------------------------------------
 -- Poll every 900ms to update the timer
 function SpawnTimer.pollTimer()
     local index = 0
@@ -263,7 +343,7 @@ function SpawnTimer.pollTimer()
                     and not KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted) then
                     KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted = true
                     if (KyzderpsDerps.savedOptions.spawnTimer.alert.enable) then
-                        SpawnTimer.showAnnouncement(bossName,
+                        ShowAnnouncement(bossName,
                                          "Respawning in " .. KyzderpsDerps.savedOptions.spawnTimer.alert.seconds .. " seconds!",
                                          SOUNDS.BATTLEGROUND_NEARING_VICTORY)
                     end
@@ -275,7 +355,7 @@ function SpawnTimer.pollTimer()
                 and not KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted) then
                 KyzderpsDerps.savedValues.spawnTimer.timers[bossName].alerted = true
                 if (KyzderpsDerps.savedOptions.spawnTimer.alert.enable) then
-                    SpawnTimer.showAnnouncement(bossName,
+                    ShowAnnouncement(bossName,
                                      "Respawning in " .. KyzderpsDerps.savedOptions.spawnTimer.alert.seconds .. " seconds!",
                                      SOUNDS.BATTLEGROUND_NEARING_VICTORY)
                 end
@@ -304,6 +384,8 @@ function SpawnTimer.pollTimer()
     end
 end
 
+
+---------------------------------------------------------------------------------------------------
 -- Initialize a timer line and add to the panel
 function SpawnTimer.addBoss(bossName)
     local index = SpawnTimerContainer:GetNumChildren() - 1
@@ -335,16 +417,9 @@ function SpawnTimer.printBoss(bossName)
     CHAT_SYSTEM:StartTextEntry(bossName .. string.format(" should respawn in %d mins %d secs", zo_floor(seconds / 60), seconds % 60))
 end
 
--- Display a center-screen announcement with sound effect
-function SpawnTimer.showAnnouncement(msgText, secondText, sound)
-    local msgSound = sound or SOUNDS.CHAMPION_POINT_GAINED
-    local msg = CENTER_SCREEN_ANNOUNCE:CreateMessageParams(CSA_CATEGORY_LARGE_TEXT, msgSound)
-    msg:SetText(msgText, secondText)
-    msg:SetCSAType(CENTER_SCREEN_ANNOUNCE_TYPE_CHAMPION_POINT_GAINED)
-    msg:MarkSuppressIconFrame()
-    CENTER_SCREEN_ANNOUNCE:DisplayMessage(msg)
-end
 
+---------------------------------------------------------------------------------------------------
+-- Entry
 function SpawnTimer:Initialize()
     KyzderpsDerps:dbg("    Initializing SpawnTimer module...")
 
