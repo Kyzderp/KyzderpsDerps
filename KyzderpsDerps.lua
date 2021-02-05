@@ -115,6 +115,7 @@ function KyzderpsDerps:Initialize()
     SpawnTimer:Initialize()
     DeathAlert:Initialize()
     PlayedChart:Initialize()
+    KDD_AntiSpud:Initialize()
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
@@ -236,4 +237,47 @@ function KyzderpsDerps.handleCommand(argString)
     end
 end
 
+local function FixUI()
+    if (MajorCourageTracker) then
+        MajorCourageTracker.Reset()
+    end
+    if (PurgeTracker) then
+        PurgeTracker.Reset()
+    end
+    if (HealerBFF) then
+        HealerBFF.Reset()
+    end
+    if (JoGroup) then
+        JoGroup.ReAnchor()
+    end
+end
+
+local function PortToKyzersHouse()
+    CHAT_SYSTEM:AddMessage("Porting to @Kyzeragon's primary residence...")
+    if (GetUnitDisplayName("player") == "@Kyzeragon") then
+        RequestJumpToHouse(GetHousingPrimaryHouse())
+    else
+        JumpToHouse("@Kyzeragon")
+    end
+end
+
+local function PortToHouse(argString)
+    local args = {}
+    local length = 0
+    for word in argString:gmatch("%S+") do
+        table.insert(args, word)
+        length = length + 1
+    end
+
+    if (length == 0) then
+        PortToKyzersHouse()
+        return
+    end
+
+    CHAT_SYSTEM:AddMessage("Attempting to port to @" .. args[1] .. "'s primary residence...")
+    JumpToHouse("@" .. args[1])
+end
+
 SLASH_COMMANDS["/kdd"] = KyzderpsDerps.handleCommand
+SLASH_COMMANDS["/fixui"] = FixUI
+SLASH_COMMANDS["/khouse"] = PortToHouse

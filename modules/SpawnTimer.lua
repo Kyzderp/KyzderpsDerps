@@ -65,9 +65,10 @@ SpawnTimer = {
         ["1227"] = true,  -- Vateshran Hollows
     },
 
-    -- "Name" of boss (including location/groups) to the number of seconds it takes to respawn. true = default 306s
+
+-- "Name" of boss (including location/groups) to the number of seconds it takes to respawn. true = default 306s
     BOSS_NAMES = {
-    -- Dolmens - TODO: 5:18?
+    -- Dolmens - TODO: 5:18? stonefalls 6:14?
 
     -- Bangkorai
         ["Curnard the Generous"] = true, -- Delve: Viridian Watch
@@ -88,17 +89,35 @@ SpawnTimer = {
 
     -- Northern Elsweyr
         ["Dragon"] = 620, -- It spawns on the map at around 10:20 (or at least, once), but landed at 11:00
+        ["Lieutenant Kurzatha"] = 300, -- PD: Rimmen Necropolis
 
     -- Western Skyrim
         ["Shademother"] = 606, -- WB
-        ["Tulnir"] = 301 -- PD: Labyrinthian - Exterior altar
+        ["Tulnir"] = 301, -- PD: Labyrinthian - Exterior altar
+
+    -- Imperial City Sewers (event?)
+        ["Hzu-Hakan"] = 600, -- Irrigation Tunnels (AD)
+        ["Emperor Leovic"] = 600, -- Abyssal Depths (AD)
+        ["General Kryozote"] = 600, -- Abyssal Depths (AD)
+        ["Lady of the Depths"] = 600, -- Weaver's Nest (AD)
+        ["Gati the Storm Sister"] = 600, -- Lambent Passage (DC)
+        ["General Zamachar"] = 600, -- Lambent Passage (DC)
+        ["Otholug gro-Goldfolly"] = 600, -- Vile Drainage (DC)
+        ["Taebod the Gatekeeper"] = 600, -- Wavering Veil (DC)
+        ["Wadracki"] = 600, -- Harena Hypogeum (EP)
+        ["Ebral the Betrayer"] = 600, -- Antediluvian Vaults (EP)
+        ["General Nazenaechar"] = 600, -- Antediluvian Vaults (EP)
+        ["Secundinus the Despoiler"] = 600, -- Alessian Tombs (EP)
     },
 
-    -- Boss actual names to name of the group. GetPlayerLocationName = should use output of that method
+
+-- Boss actual names to name of the group. GetPlayerLocationName = should use output of that method
     BOSS_GROUPS = {
     -- Dolmens
         ["Dread Daedroth"] = "GetPlayerLocationName", -- Dolmen unnamed
         ["Dread Frost Atronach"] = "GetPlayerLocationName", -- Dolmen unnamed
+        ["Dread Xivkyn Banelord"] = "GetPlayerLocationName", -- Dolmen unnamed
+        ["Dread Lich"] = "GetPlayerLocationName", -- Dolmen unnamed
 
         ["Lord Dregas Volar"] = "GetPlayerLocationName", -- Dolmen - holder of the Daedric Crescent
         ["Gedna Relvel"] = "GetPlayerLocationName", -- Dolmen - Lich of Mournhold

@@ -17,6 +17,9 @@ modules/DeathAlert.lua
 modules/PlayedChart.lua
 modules/QuickSlotKeybind.lua
 
+modules/antispud/main.lua
+modules/antispud/mundus.lua
+
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua
 KyzderpsDerps.xml
