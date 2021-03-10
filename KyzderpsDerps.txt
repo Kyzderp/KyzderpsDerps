@@ -1,8 +1,8 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.4.1
-## APIVersion: 100033
+## Version: 1.5.0
+## APIVersion: 100034
 ## DependsOn: LibAddonMenu-2.0>=31
 
 ## Just to make sure loading occurs after pChat load, for debug messaging purposes

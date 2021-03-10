@@ -5,12 +5,13 @@
 
 KyzderpsDerps = {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.4.1"
+KyzderpsDerps.version = "1.5.0"
 
 -- Defaults
 local defaultOptions = {
     general = {
         debug = false,
+        experimental = false,
     },
     customTargetFrame = {
         move = false,
@@ -115,8 +116,11 @@ function KyzderpsDerps:Initialize()
     SpawnTimer:Initialize()
     DeathAlert:Initialize()
     PlayedChart:Initialize()
-    KDD_AntiSpud:Initialize()
-    KDD_Aoe:Initialize()
+
+    if (KyzderpsDerps.savedOptions.general.experimental) then
+        KDD_AntiSpud:Initialize()
+        KDD_Aoe:Initialize()
+    end
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
@@ -271,7 +275,12 @@ local function PortToHouse(argString)
     end
 
     if (length == 0) then
-        PortToKyzersHouse()
+        if (KyzderpsDerps.savedOptions.general.experimental) then
+            PortToKyzersHouse()
+        else
+            CHAT_SYSTEM:AddMessage("Porting to your primary residence...")
+            RequestJumpToHouse(GetHousingPrimaryHouse())
+        end
         return
     end
 
