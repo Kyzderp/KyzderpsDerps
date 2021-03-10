@@ -591,6 +591,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.unlock end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.deathAlert.unlock = value
+                        DeathAlertContainer:SetMouseEnabled(value)
                         DeathAlertContainerBackdrop:SetHidden(not value)
                         DeathAlertContainerSkull:SetHidden(not value)
                     end,

@@ -116,6 +116,7 @@ function KyzderpsDerps:Initialize()
     DeathAlert:Initialize()
     PlayedChart:Initialize()
     KDD_AntiSpud:Initialize()
+    KDD_Aoe:Initialize()
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee

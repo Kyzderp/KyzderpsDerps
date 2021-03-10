@@ -1,6 +1,19 @@
 KDD_AntiSpud = KDD_AntiSpud or {}
 local Spud = KDD_AntiSpud
 
+--[[
+summon pets after dying
+resummon pets on zhajhassa
+5 piece armor
+addons not enabled
+wrong mundus
+wrong cp
+missing gear
+incomplete sets
+take off alkosh on spooder
+reequip alkosh
+]]
+
 local currentState = "NONE"
 
 function Spud.DisplayWarning(message)
@@ -28,7 +41,9 @@ function Spud.IsDoingGroupPVE()
 end
 
 function Spud.IsDoingPVP()
-    d(string.format("|cAAAAAAIsActiveWorldBattleground: " .. tostring(IsActiveWorldBattleground()) .. "|r"))
+    if (IsActiveWorldBattleground()) then
+        return true
+    end
 
     if (IsInAvAZone()) then
         return true
@@ -44,6 +59,55 @@ function Spud.IsDoingPVP()
 
 
     -- TODO: check LFG queue
+end
+
+---------------------------------------------------------------------
+-- Dungeon / Battlegrounds Finder
+local HEADER_MAPPING = {
+    [LFG_ACTIVITY_DUNGEON] = GetString(SI_ACTIVITY_FINDER_CATEGORY_DUNGEON_FINDER),
+    [LFG_ACTIVITY_MASTER_DUNGEON] = GetString(SI_ACTIVITY_FINDER_CATEGORY_DUNGEON_FINDER),
+    [LFG_ACTIVITY_BATTLE_GROUND_CHAMPION] = GetString(SI_ACTIVITY_FINDER_CATEGORY_BATTLEGROUNDS),
+    [LFG_ACTIVITY_BATTLE_GROUND_NON_CHAMPION] = GetString(SI_ACTIVITY_FINDER_CATEGORY_BATTLEGROUNDS),
+    [LFG_ACTIVITY_BATTLE_GROUND_LOW_LEVEL] = GetString(SI_ACTIVITY_FINDER_CATEGORY_BATTLEGROUNDS),
+}
+
+-- Code from esoui/ingame/lfg/activitytracker.lua
+local function GetCurrentFinderType()
+    local activityId = 0
+
+    if (IsCurrentlySearchingForGroup()) then
+        activityId = GetActivityRequestIds(1)
+    elseif (IsInLFGGroup()) then
+        activityId = GetCurrentLFGActivityId()
+    end
+
+    if (activityId <= 0) then
+        return "NONE"
+    end
+
+    local activityType = GetActivityType(activityId)
+    KyzderpsDerps:dbg(string.format("|cAAAAAAActivity Finder: %s", HEADER_MAPPING[activityType]))
+
+    if (activityType == LFG_ACTIVITY_DUNGEON or activityType == LFG_ACTIVITY_MASTER_DUNGEON) then
+        return "PVE"
+    elseif (activityType == LFG_ACTIVITY_BATTLE_GROUND_CHAMPION or activityType == LFG_ACTIVITY_BATTLE_GROUND_NON_CHAMPION or activityType == LFG_ACTIVITY_BATTLE_GROUND_LOW_LEVEL) then
+        return "PVP"
+    else
+        KyzderpsDerps:dbg(string.format("|cFF0000THIS SHOULDN'T BE POSSIBLE? %d", activityType))
+        return "NONE"
+    end
+end
+
+-- EVENT_ACTIVITY_FINDER_STATUS_UPDATE (number eventCode, ActivityFinderStatus result)
+local function OnFinderStatusUpdate(_, result)
+    local finderType = GetCurrentFinderType()
+    -- TODO: do checks
+
+    if (finderType == "PVE" and currentState ~= "PVE") then
+        Spud.CheckMundus()
+    elseif (finderType == "PVP" and currentState ~= "PVP") then
+        Spud.CheckMundus()
+    end
 end
 
 ---------------------------------------------------------------------
@@ -72,16 +136,6 @@ local function OnPlayerActivated(_, initial)
     end
 end
 
-local finderStatus = {
-    [ACTIVITY_FINDER_STATUS_COMPLETE] = "COMPLETE",
-    [ACTIVITY_FINDER_STATUS_FORMING_GROUP] = "FORMING_GROUP",
-    [ACTIVITY_FINDER_STATUS_IN_PROGRESS] = "IN_PROGRESS",
-    [ACTIVITY_FINDER_STATUS_NONE] = "NONE",
-    [ACTIVITY_FINDER_STATUS_QUEUED] = "QUEUED",
-    [ACTIVITY_FINDER_STATUS_READY_CHECK] = "READY_CHECK",
-}
-
-
 ---------------------------------------------------------------------
 -- Entry
 function Spud:Initialize()
@@ -89,7 +143,7 @@ function Spud:Initialize()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
     OnPlayerActivated()
 
-    -- EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, function(_, result) d(string.format("|cAAAAAAActivityFinderStatus %s|r", finderStatus[result])) end)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
 end
 
 -- ACTIVITY_FINDER_STATUS_COMPLETE

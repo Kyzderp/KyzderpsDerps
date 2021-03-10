@@ -18,12 +18,15 @@ local MUNDUS_BUFFS = {
 }
 
 function Spud.CheckMundus()
+    local currentMundus = "NONE"
     for i = 1, GetNumBuffs("player") do
         -- string buffName, number timeStarted, number timeEnding, number buffSlot, number stackCount, textureName iconFilename, string buffType, number BuffEffectType effectType, number AbilityType abilityType, number StatusEffectType statusEffectType, number abilityId, boolean canClickOff, boolean castByPlayer
         local buffName, _, _, _, _, iconFilename, _, _, _, _, abilityId, _, _ = GetUnitBuffInfo("player", i)
         -- KyzderpsDerps:dbg(string.format("%s %s %s(%d)", buffName, iconFilename, GetAbilityName(abilityId), abilityId))
         if (MUNDUS_BUFFS[abilityId]) then
             Spud.DisplayWarning("You are using |cFFFFFF" .. buffName .. "|r")
+            currentMundus = MUNDUS_BUFFS[abilityId]
         end
     end
+    return currentMundus
 end

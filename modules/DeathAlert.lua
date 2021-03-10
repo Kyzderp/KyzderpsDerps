@@ -15,6 +15,7 @@ function DeathAlert:Initialize()
     DeathAlertContainer:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
         KyzderpsDerps.savedValues.deathAlert.x, KyzderpsDerps.savedValues.deathAlert.y)
     DeathAlertContainer:SetHidden(not KyzderpsDerps.savedOptions.deathAlert.enable)
+    DeathAlertContainer:SetMouseEnabled(KyzderpsDerps.savedOptions.deathAlert.unlock)
     DeathAlertContainerBackdrop:SetHidden(not KyzderpsDerps.savedOptions.deathAlert.unlock)
     DeathAlertContainerSkull:SetHidden(not KyzderpsDerps.savedOptions.deathAlert.unlock)
 end

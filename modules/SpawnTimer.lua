@@ -46,6 +46,8 @@ SpawnTimer = {
         ["1153"] = true,  -- Unhallowed Grave
         ["1197"] = true,  -- Stone Garden
         ["1201"] = true,  -- Castle Thorn
+        ["1228"] = true,  -- Black Drake Villa
+        ["1229"] = true,  -- The Cauldron
     },
 
     -- Trial zoneIds
@@ -90,6 +92,11 @@ SpawnTimer = {
     -- Northern Elsweyr
         ["Dragon"] = 620, -- It spawns on the map at around 10:20 (or at least, once), but landed at 11:00
         ["Lieutenant Kurzatha"] = 300, -- PD: Rimmen Necropolis
+        ["Lieutenant Fazumir"] = 300, -- PD: Rimmen Necropolis
+
+    -- Southern Elsweyr
+        ["Ri'Atahrashi"] = 600, -- WB
+        ["Iratan the Lightbringer"] = 600, -- WB
 
     -- Western Skyrim
         ["Shademother"] = 606, -- WB
