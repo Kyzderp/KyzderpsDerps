@@ -42,6 +42,21 @@ local function getBossNames()
     return newArray
 end
 
+local collectibleIds = {
+    479, -- Witchmother's Whistle
+    1167, -- The Pie of Misrule
+    1168, -- Breda's Bottomless Mead Mug
+    9012, -- Jubilee Cake 2021
+    0, -- None
+}
+local collectibleNames = {
+    GetCollectibleName(479), -- Witchmother's Whistle
+    GetCollectibleName(1167), -- The Pie of Misrule
+    GetCollectibleName(1168), -- Breda's Bottomless Mead Mug
+    GetCollectibleName(9012), -- Jubilee Cake 2021
+    "- None -", -- None
+}
+
 function KyzderpsDerps:CreateSettingsMenu()
     local LAM = LibAddonMenu2
     -- Register the Options panel with LAM
@@ -636,6 +651,26 @@ function KyzderpsDerps:CreateSettingsMenu()
                     setFunc = function(value)
                             KyzderpsDerps.savedOptions.quickSlots.enable = value
                             KDDQuickSlot:SetHidden(not value)
+                        end,
+                    width = "full",
+                },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
+            name = "Miscellaneous",
+            controls = {
+                {
+                    type = "dropdown",
+                    name = "Use collectible on login",
+                    tooltip = "Specify a collectible to use when you first load into a character",
+                    choices = collectibleNames,
+                    choicesValues = collectibleIds,
+                    getFunc = function() return KyzderpsDerps.savedOptions.misc.loginCollectible end,
+                    setFunc = function(id)
+                            KyzderpsDerps:dbg("selected " .. tostring(id))
+                            KyzderpsDerps.savedOptions.misc.loginCollectible = id
                         end,
                     width = "full",
                 },

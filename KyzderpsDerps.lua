@@ -55,6 +55,9 @@ local defaultOptions = {
     quickSlots = {
         enable = true,
     },
+    misc = {
+        loginCollectible = 1167, -- Pie of Misrule
+    },
 }
 
 local defaultValues = {
@@ -159,21 +162,47 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name, EVENT_PLAYER_ACTIVATED)
 
     -- Soft dependency on pChat because its chat restore will overwrite
+    for i = 1, #KyzderpsDerps.dbgMessages do
+        d(KyzderpsDerps.dbgMessages[i])
+    end
+    KyzderpsDerps.dbgMessages = {}
     for i = 1, #KyzderpsDerps.messages do
-        d(KyzderpsDerps.messages[i])
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.messages[i])
     end
     KyzderpsDerps.messages = {}
 
     KDD_QuickSlots:Initialize()
+
+    if (KyzderpsDerps.savedOptions.misc.loginCollectible ~= 0) then
+        if (IsCollectibleUnlocked(KyzderpsDerps.savedOptions.misc.loginCollectible)) then
+            KyzderpsDerps:msg("Using " .. GetCollectibleLink(KyzderpsDerps.savedOptions.misc.loginCollectible, LINK_STYLE_BRACKETS))
+            UseCollectible(KyzderpsDerps.savedOptions.misc.loginCollectible)
+        else
+            KyzderpsDerps:msg("You haven't unlocked " .. GetCollectibleLink(KyzderpsDerps.savedOptions.misc.loginCollectible, LINK_STYLE_BRACKETS))
+        end
+    end
+end
+
+-- Collect messages for displaying later when addon is not fully loaded
+KyzderpsDerps.dbgMessages = {}
+function KyzderpsDerps:dbg(msg)
+    if (not msg) then return end
+    msg = "|c3bdb5e[KD] |r" .. msg
+    if (not KyzderpsDerps.savedOptions.general.debug) then return end
+    if (CHAT_SYSTEM.primaryContainer) then
+        d(msg)
+    else
+        KyzderpsDerps.dbgMessages[#KyzderpsDerps.dbgMessages + 1] = msg
+    end
 end
 
 -- Collect messages for displaying later when addon is not fully loaded
 KyzderpsDerps.messages = {}
-function KyzderpsDerps:dbg(msg)
+function KyzderpsDerps:msg(msg)
     if (not msg) then return end
-    if (not KyzderpsDerps.savedOptions.general.debug) then return end
+    msg = "|c3bdb5e[Kyzderp's Derps] |caaaaaa" .. msg .. "|r"
     if (CHAT_SYSTEM.primaryContainer) then
-        d(msg)
+        CHAT_SYSTEM:AddMessage(msg)
     else
         KyzderpsDerps.messages[#KyzderpsDerps.messages + 1] = msg
     end
