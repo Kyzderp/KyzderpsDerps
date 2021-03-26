@@ -19,9 +19,6 @@ local function OnBossesChanged()
         if (name == "Lokkestiiz") then
             SetRGB(255, 0, 0)
             return
-        elseif (name == "Pinnacle Factotum") then
-            SetRGB(255, 0, 0)
-            return
         end
     end
     SetRGB(0, 255, 255)

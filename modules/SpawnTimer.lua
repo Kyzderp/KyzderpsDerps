@@ -74,6 +74,7 @@ SpawnTimer = {
 
     -- Bangkorai
         ["Curnard the Generous"] = true, -- Delve: Viridian Watch
+        ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
 
     -- Malabal Tor
         ["Arrai"] = true, -- Delve: Shael Ruins
