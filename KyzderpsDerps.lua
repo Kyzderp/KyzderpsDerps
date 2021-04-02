@@ -3,9 +3,9 @@
 -- @author Kyzeragon
 -----------------------------------------------------------
 
-KyzderpsDerps = {}
+KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.6.1"
+KyzderpsDerps.version = "1.6.2"
 
 -- Defaults
 local defaultOptions = {
@@ -119,9 +119,9 @@ function KyzderpsDerps:Initialize()
     SpawnTimer:Initialize()
     DeathAlert:Initialize()
     PlayedChart:Initialize()
+    KyzderpsDerps.InitializeKHouse() -- I think I want to use this format from now on. Gotta refactor.
 
     if (KyzderpsDerps.savedOptions.general.experimental) then
-        KDD_AntiSpud:Initialize()
         KDD_Aoe:Initialize()
     end
 
@@ -157,7 +157,7 @@ end
 EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_ADD_ON_LOADED, KyzderpsDerps.OnAddOnLoaded)
 
 ---------------------------------------------------------------------
--- Post Load (player loaded)
+-- Post Load (player loaded) one-time only
 function KyzderpsDerps.OnPlayerActivated(_, initial)
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name, EVENT_PLAYER_ACTIVATED)
 
@@ -172,6 +172,9 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     KyzderpsDerps.messages = {}
 
     KDD_QuickSlots:Initialize()
+    if (KyzderpsDerps.savedOptions.general.experimental) then
+        KDD_AntiSpud:Initialize()
+    end
 
     if (KyzderpsDerps.savedOptions.misc.loginCollectible ~= 0) then
         if (IsCollectibleUnlocked(KyzderpsDerps.savedOptions.misc.loginCollectible)) then
@@ -187,7 +190,7 @@ end
 KyzderpsDerps.dbgMessages = {}
 function KyzderpsDerps:dbg(msg)
     if (not msg) then return end
-    msg = "|c3bdb5e[KD] |r" .. msg
+    msg = "|c3bdb5e[KD] |r" .. tostring(msg)
     if (not KyzderpsDerps.savedOptions.general.debug) then return end
     if (CHAT_SYSTEM.primaryContainer) then
         d(msg)
@@ -200,7 +203,7 @@ end
 KyzderpsDerps.messages = {}
 function KyzderpsDerps:msg(msg)
     if (not msg) then return end
-    msg = "|c3bdb5e[Kyzderp's Derps] |caaaaaa" .. msg .. "|r"
+    msg = "|c3bdb5e[Kyzderp's Derps] |caaaaaa" .. tostring(msg) .. "|r"
     if (CHAT_SYSTEM.primaryContainer) then
         CHAT_SYSTEM:AddMessage(msg)
     else
@@ -286,37 +289,5 @@ local function FixUI()
     end
 end
 
-local function PortToKyzersHouse()
-    CHAT_SYSTEM:AddMessage("Porting to @Kyzeragon's primary residence...")
-    if (GetUnitDisplayName("player") == "@Kyzeragon") then
-        RequestJumpToHouse(GetHousingPrimaryHouse())
-    else
-        JumpToHouse("@Kyzeragon")
-    end
-end
-
-local function PortToHouse(argString)
-    local args = {}
-    local length = 0
-    for word in argString:gmatch("%S+") do
-        table.insert(args, word)
-        length = length + 1
-    end
-
-    if (length == 0) then
-        if (KyzderpsDerps.savedOptions.general.experimental) then
-            PortToKyzersHouse()
-        else
-            CHAT_SYSTEM:AddMessage("Porting to your primary residence...")
-            RequestJumpToHouse(GetHousingPrimaryHouse())
-        end
-        return
-    end
-
-    CHAT_SYSTEM:AddMessage("Attempting to port to @" .. args[1] .. "'s primary residence...")
-    JumpToHouse("@" .. args[1])
-end
-
 SLASH_COMMANDS["/kdd"] = KyzderpsDerps.handleCommand
 SLASH_COMMANDS["/fixui"] = FixUI
-SLASH_COMMANDS["/khouse"] = PortToHouse

@@ -1,12 +1,9 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.6.1
+## Version: 1.6.2
 ## APIVersion: 100034
 ## DependsOn: LibAddonMenu-2.0>=31
-
-## Just to make sure loading occurs after pChat load, for debug messaging purposes
-## OptionalDependsOn: pChat
 
 ## SavedVariables: KyzderpsDerpsSavedVariables
 
@@ -17,6 +14,7 @@ modules/DeathAlert.lua
 modules/PlayedChart.lua
 modules/QuickSlotKeybind.lua
 modules/AoeColors.lua
+modules/KHouse.lua
 
 modules/antispud/main.lua
 modules/antispud/mundus.lua

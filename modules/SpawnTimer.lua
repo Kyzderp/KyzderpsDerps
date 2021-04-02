@@ -76,6 +76,13 @@ SpawnTimer = {
         ["Curnard the Generous"] = true, -- Delve: Viridian Watch
         ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
 
+    -- Grahtwood
+        ["Great Thorn"] = 300, -- PD: Rood Sunder Ruins
+        ["The Devil Wrathmaw"] = 300, -- PD: Rood Sunder Ruins
+        ["Rustjaw"] = 300, -- PD: Rood Sunder Ruins
+        ["Thick-Bark"] = 300, -- PD: Rood Sunder Ruins
+        ["Silent Claw"] = 300, -- PD: Rood Sunder Ruins
+
     -- Malabal Tor
         ["Arrai"] = true, -- Delve: Shael Ruins
 

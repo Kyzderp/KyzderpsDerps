@@ -142,6 +142,7 @@ function Spud:Initialize()
     KyzderpsDerps:dbg("    Initializing AntiSpud module...")
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
     OnPlayerActivated()
+    Spud.CheckMundus()
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
 end
