@@ -289,5 +289,16 @@ local function FixUI()
     end
 end
 
+local function ToggleLuiIds()
+    if (not LUIE or not LUIE.SpellCastBuffs) then
+        KyzderpsDerps:msg("LUI SpellCastBuffs is not enabled")
+        return
+    end
+    LUIE.SpellCastBuffs.SV.ShowDebugAbilityId = not LUIE.SpellCastBuffs.SV.ShowDebugAbilityId
+    LUIE.SpellCastBuffs.Reset()
+    KyzderpsDerps:msg("Toggled showing IDs on LUI buffs/debuffs")
+end
+
 SLASH_COMMANDS["/kdd"] = KyzderpsDerps.handleCommand
 SLASH_COMMANDS["/fixui"] = FixUI
+SLASH_COMMANDS["/ids"] = ToggleLuiIds
