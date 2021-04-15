@@ -12,6 +12,7 @@ missing gear
 incomplete sets
 take off alkosh on spooder
 reequip alkosh
+low soul gems
 ]]
 
 local currentState = "NONE"
@@ -31,7 +32,7 @@ end
 
 function Spud.IsDoingGroupPVE()
     local zoneId = GetZoneId(GetUnitZoneIndex("player"))
-    d(string.format("|cAAAAAAIsActiveWorldGroupOwnable: " .. tostring(IsActiveWorldGroupOwnable()) .. "|r"))
+    -- d(string.format("|cAAAAAAIsActiveWorldGroupOwnable: " .. tostring(IsActiveWorldGroupOwnable()) .. "|r"))
 
     if (IsUnitInDungeon("player")) then
         return SpawnTimer.DUNGEON_ZONEIDS[tostring(zoneId)] ~= nil or SpawnTimer.TRIAL_ZONEIDS[tostring(zoneId)] ~= nil

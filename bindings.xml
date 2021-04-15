@@ -12,4 +12,18 @@
             </Action>
         </Category>
     </Layer>
+    <Layer name="SI_KEYBINDINGS_LAYER_USER_INTERFACE_SHORTCUTS">
+        <Category name="Kyzderp's Derps">
+            <Action name="KDD_CLEARSEARCH">
+                <Down>
+                    KyzderpsDerps:dbg("Clearing all search boxes")
+                    ZO_PlayerInventorySearchBox:SetText("")
+                    ZO_PlayerBankSearchBox:SetText("")
+                    ZO_HouseBankSearchBox:SetText("")
+                    ZO_GuildBankSearchBox:SetText("")
+                    ZO_CraftBagSearchBox:SetText("")
+                </Down>
+            </Action>
+        </Category>
+    </Layer>
 </Bindings>

@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.6.2"
+KyzderpsDerps.version = "1.7.0"
 
 -- Defaults
 local defaultOptions = {
@@ -56,7 +56,7 @@ local defaultOptions = {
         enable = true,
     },
     misc = {
-        loginCollectible = 1167, -- Pie of Misrule
+        loginCollectible = 0, -- None
     },
 }
 
@@ -120,6 +120,8 @@ function KyzderpsDerps:Initialize()
     DeathAlert:Initialize()
     PlayedChart:Initialize()
     KyzderpsDerps.InitializeKHouse() -- I think I want to use this format from now on. Gotta refactor.
+
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
 
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KDD_Aoe:Initialize()
@@ -221,7 +223,7 @@ function KyzderpsDerps.handleCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played>"
+    local usage = "Usage: /kdd <grievous || bosstimer || played || points || junkstyle>"
 
     if (length == 0) then
         CHAT_SYSTEM:AddMessage(usage)
@@ -267,6 +269,31 @@ function KyzderpsDerps.handleCommand(argString)
     -- points
     elseif (args[1] == "points") then
         CHAT_SYSTEM:AddMessage(PlayedChart.buildPoints())
+
+    -- junk style pages
+    elseif (args[1] == "junkstyle" or args[1] == "junkstyles") then
+        local junkedItems = {}
+        local bagCache = SHARED_INVENTORY:GetOrCreateBagCache(BAG_BACKPACK)
+        for _, item in pairs(bagCache) do
+            -- Skip items that are already junk, obviously
+            if (not IsItemJunk(item.bagId, item.slotIndex)) then
+                local itemLink = GetItemLink(item.bagId, item.slotIndex, LINK_STYLE_BRACKETS)
+                local itemType, specializedType = GetItemLinkItemType(itemLink)
+                if (itemType == ITEMTYPE_CONTAINER and specializedType == SPECIALIZED_ITEMTYPE_CONTAINER_STYLE_PAGE) then
+                    SetItemIsJunk(item.bagId, item.slotIndex, true)
+                    if (not junkedItems[itemLink]) then
+                        junkedItems[itemLink] = 0
+                    end
+                    junkedItems[itemLink] = junkedItems[itemLink] + 1
+                end
+            end
+        end
+
+        local displayMessage = "Marked the following items as junk:"
+        for itemLink, num in pairs(junkedItems) do
+            displayMessage = string.format("%s\n|cDDDDDD%s x%d", displayMessage, itemLink, num)
+        end
+        KyzderpsDerps:msg(displayMessage)
 
     -- Unknown
     else
