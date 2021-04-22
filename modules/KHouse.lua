@@ -46,6 +46,7 @@ local function PortToHouse(argString)
     local name = nil
     local houseId = -1
     local toFindString = ""
+    local outside = false
     if (string.sub(args[1], 1, 1) == "@") then
         name = args[1]
         if (length > 1) then
@@ -62,15 +63,20 @@ local function PortToHouse(argString)
             KyzderpsDerps:msg("Couldn't find a house matching " .. args[1])
             return
         end
+
+        if (length > 1 and (args[2] == "out" or args[2] == "outside")) then
+            outside = true
+        end
     end
 
-    KyzderpsDerps:msg(string.format("Attempting to port to %s %s...",
+    KyzderpsDerps:msg(string.format("Attempting to port %s %s %s...",
+        (outside) and "outside" or "to",
         (name == nil) and "your" or (name .. "'s"),
         (houseId == -1) and "primary residence" or GetCollectibleName(GetCollectibleIdForHouse(houseId))
     ))
 
     if (name == nil) then
-        RequestJumpToHouse(houseId) 
+        RequestJumpToHouse(houseId, outside) 
     elseif (houseId == -1) then
         JumpToHouse(name)
     else
