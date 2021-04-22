@@ -5,6 +5,7 @@ function CustomTargetName:Initialize()
 
     -- Register
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_RETICLE_TARGET_CHANGED, self.OnReticleTargetChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "CustomTargetPlayerActivated", EVENT_PLAYER_ACTIVATED, self.OnReticleTargetChanged)
 
     -- Position
     CustomTargetCustomName:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,

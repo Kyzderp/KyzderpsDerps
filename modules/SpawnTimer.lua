@@ -65,6 +65,7 @@ SpawnTimer = {
         ["1121"] = true,  -- Sunspire
         ["1196"] = true,  -- Kyne's Aegis
         ["1227"] = true,  -- Vateshran Hollows
+        ["1263"] = true,  -- Rockgrove
     },
 
 
@@ -75,6 +76,9 @@ SpawnTimer = {
     -- Bangkorai
         ["Curnard the Generous"] = true, -- Delve: Viridian Watch
         ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
+
+    -- Glenumbra
+        ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
 
     -- Grahtwood
         ["Great Thorn"] = 300, -- PD: Rood Sunder Ruins
