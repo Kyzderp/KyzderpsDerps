@@ -90,6 +90,9 @@ SpawnTimer = {
     -- Malabal Tor
         ["Arrai"] = true, -- Delve: Shael Ruins
 
+    -- Reaper's March
+        ["Sergeant Atilus"] = 300, -- PD: Vile Manse
+
     -- Stonefalls
         ["The Moonlit Maiden"] = 305, -- PD: Crow's Wood - Wispmother next to skyshard
 
@@ -114,7 +117,10 @@ SpawnTimer = {
         ["Shademother"] = 606, -- WB
         ["Tulnir"] = 301, -- PD: Labyrinthian - Exterior altar
 
-    -- Imperial City Sewers (event?)
+    -- Cyrodiil
+        ["Bear Matriarch"] = 302, -- Delve: Temple to the Divines
+
+    -- Imperial City Sewers (non-event 10 mins, event same I think?)
         ["Hzu-Hakan"] = 600, -- Irrigation Tunnels (AD)
         ["Emperor Leovic"] = 600, -- Abyssal Depths (AD)
         ["General Kryozote"] = 600, -- Abyssal Depths (AD)
@@ -127,6 +133,21 @@ SpawnTimer = {
         ["Ebral the Betrayer"] = 600, -- Antediluvian Vaults (EP)
         ["General Nazenaechar"] = 600, -- Antediluvian Vaults (EP)
         ["Secundinus the Despoiler"] = 600, -- Alessian Tombs (EP)
+
+    -- Imperial City (non-event 15 mins)
+        ["Lady Malygda"] = 900, -- Arboretum
+        ["Ysenda Resplendent"] = 900, -- Arboretum
+        ["Glorgoloch the Destroyer"] = 900, -- Arena
+        ["King Khrogo"] = 900, -- Arena
+        ["The Screeching Matron"] = 900, -- Elven Gardens
+        ["Zoal the Ever-Wakeful"] = 900, -- Elven Gardens
+        ["Nunatak"] = 900, -- Memorial
+        ["Volghass"] = 900, -- Memorial
+        ["Amoncrul"] = 900, -- Nobles
+        ["Baron Thirsk"] = 900, -- Nobles
+        ["Immolator Charr"] = 900, -- Temple
+        ["Mazaluhad"] = 900, -- Temple
+
     },
 
 
@@ -218,9 +239,12 @@ end
 
 ---------------------------------------------------------------------------------------------------
 -- Check if a unit is a boss
+-- Returns: group name
 local function IsBossByUnitTag(unitTag)
     local bossName = GetUnitName(unitTag)
-    if (string.find(unitTag, "^boss")) then
+    if (SpawnTimer.BOSS_NAMES[bossName] or SpawnTimer.BOSS_GROUPS[bossName]) then
+        -- All hand hard-coded bosses
+    elseif (string.find(unitTag, "^boss")) then
         -- Should handle all world bosses, newer public dungeons, and world events
     elseif (unitTag == "reticleover") then
         -- Try all deadly and hard mobs?
@@ -347,15 +371,16 @@ function SpawnTimer.pollTimer()
         index = index + 1
         local elapsed = (bossVals.startTime > 0) and GetTimeStamp() - bossVals.startTime or 0
 
-        -- Remove timers that are > 15 mins
-        if (elapsed >= SpawnTimer.TIMER_EXPIRY) then
+        local respawnTime = 306 -- default of 5:06
+        if (type(SpawnTimer.BOSS_NAMES[bossName]) == "number") then
+            respawnTime = SpawnTimer.BOSS_NAMES[bossName]
+        end
+
+        -- Remove timers that are >= 2.5x length of respawn
+        if (elapsed >= respawnTime * 2.5) then
             KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = nil
-            KyzderpsDerps:dbg("Removed " .. bossName .. " from respawn timers")
+            KyzderpsDerps:dbg("Removed " .. bossName .. " from respawn timers at " .. elapsed / 60 .. " mins")
         else
-            local respawnTime = 306 -- default of 5:06
-            if (type(SpawnTimer.BOSS_NAMES[bossName]) == "number") then
-                respawnTime = SpawnTimer.BOSS_NAMES[bossName]
-            end
 
             local timerFormatted = string.format("%02d:%02d", zo_floor(elapsed / 60), elapsed % 60)
             local color = "00FF00" -- green
@@ -455,6 +480,17 @@ function SpawnTimer.printBoss(bossName)
     CHAT_SYSTEM:StartTextEntry(bossName .. string.format(" should respawn in %d mins %d secs", zo_floor(seconds / 60), seconds % 60))
 end
 
+---------------------------------------------------------------------------------------------------
+local function ManualBossKilled(bossName)
+    if (not bossName or bossName == "") then return end
+    KyzderpsDerps:msg("Manually adding timer for \"" .. bossName .. "\"")
+    -- Check the data
+    local groupName = SpawnTimer.BOSS_GROUPS[bossName] or bossName
+    if (groupName == "GetPlayerLocationName") then
+        groupName = GetPlayerLocationName()
+    end
+    SpawnTimer.BossKilled(groupName, bossName)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Entry
@@ -479,4 +515,6 @@ function SpawnTimer:Initialize()
     -- Hide panel while in menus
     HUD_SCENE:RegisterCallback("StateChange", fragmentChange)
     HUD_UI_SCENE:RegisterCallback("StateChange", fragmentChange)
+
+    SLASH_COMMANDS["/addtimer"] = ManualBossKilled
 end
