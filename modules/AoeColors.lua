@@ -7,7 +7,7 @@ local function SetRGB(red, green, blue)
         r = red
         g = green
         b = blue
-        KyzderpsDerps:dbg(string.format("|cAAAAAASetting AOE Color: %02x%02x%02x", red, green, blue))
+        KyzderpsDerps:dbg(string.format("|cAAAAAASetting AOE Color: |c%02x%02x%02x%02x%02x%02x|r", red, green, blue, red, green, blue))
         SetSetting(SETTING_TYPE_COMBAT, COMBAT_SETTING_MONSTER_TELLS_ENEMY_COLOR, string.format("%02x%02x%02x", red, green, blue))
     end
 end
@@ -17,7 +17,7 @@ local function OnBossesChanged()
     for i = 1, MAX_BOSSES do
         local name = GetUnitName("boss" .. tostring(i))
         if (name == "Lokkestiiz") then
-            SetRGB(255, 0, 0)
+            SetRGB(200, 0, 255)
             return
         end
     end

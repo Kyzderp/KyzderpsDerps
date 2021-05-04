@@ -28,7 +28,8 @@ end
 
 --  EVENT_UNIT_DEATH_STATE_CHANGED (number eventCode, string unitTag, boolean isDead)
 function DeathAlert.OnDeathStateChanged(_, unitTag, isDead)
-    if (isDead and KyzderpsDerps.savedOptions.deathAlert.enable and string.find(unitTag, "^group")) then
+    -- Companions show up as unitTag = "group5companion" for group members' and "companion" for self
+    if (isDead and KyzderpsDerps.savedOptions.deathAlert.enable and string.match(unitTag, "^group%d+$")) then
         local displayName = GetUnitDisplayName(unitTag)
         local deathText = getRoleString(GetGroupMemberSelectedRole(unitTag)) .. displayName .. " is dead!"
 
