@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.7.1"
+KyzderpsDerps.version = "1.7.2"
 
 -- Defaults
 local defaultOptions = {
