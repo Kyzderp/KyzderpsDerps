@@ -128,6 +128,11 @@ SpawnTimer = {
 
     -- Blackwood
         ["Bhrum / Koska"] = 331, -- WB
+        ["War Chief Zathmoz"] = 313, -- WB - I sat at one once that took over 20 minutes to spawn... weird. But after that was 5:03. He takes a while to become damageable though, so this is the damageable timer
+        ["Xeemhok the Trophy-Taker"] = 313, -- WB
+        ["Old Deathwart"] = 330, -- WB
+        ["Ghemvas the Harbinger"] = 302, -- WB
+        ["Sul-Xan Ritual Site"] = 302, -- WB
 
     -- Cyrodiil
         ["Bear Matriarch"] = 302, -- Delve: Temple to the Divines
@@ -214,6 +219,10 @@ SpawnTimer = {
     -- Blackwood
         ["Bhrum"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
         ["Koska"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
+        ["Yaxhat Deathmaker"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+        ["Veesha the Swamp Mystic"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+        ["Shuvh-Mok"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+        ["Nukhujeema"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
     },
 }
 

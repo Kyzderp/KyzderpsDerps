@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.7.2"
+KyzderpsDerps.version = "1.8.0"
 
 -- Defaults
 local defaultOptions = {
@@ -57,6 +57,10 @@ local defaultOptions = {
     },
     misc = {
         loginCollectible = 0, -- None
+    },
+    companion = {
+        resummon = true,
+        showRapport = true,
     },
 }
 
@@ -177,6 +181,7 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     KDD_QuickSlots:Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KDD_AntiSpud:Initialize()
+        KyzderpsDerps.InitializeCompanion()
     end
 
     if (KyzderpsDerps.savedOptions.misc.loginCollectible ~= 0) then
@@ -330,5 +335,3 @@ end
 SLASH_COMMANDS["/kdd"] = KyzderpsDerps.handleCommand
 SLASH_COMMANDS["/fixui"] = FixUI
 SLASH_COMMANDS["/ids"] = ToggleLuiIds
-SLASH_COMMANDS["/bastian"] = function() UseCollectible(9245) end
-SLASH_COMMANDS["/mirri"] = function() UseCollectible(9353) end
