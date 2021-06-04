@@ -132,7 +132,7 @@ SpawnTimer = {
         ["Xeemhok the Trophy-Taker"] = 313, -- WB
         ["Old Deathwart"] = 330, -- WB
         ["Ghemvas the Harbinger"] = 302, -- WB
-        ["Sul-Xan Ritual Site"] = 302, -- WB
+        ["Sul-Xan Ritual Site"] = 301, -- WB
 
     -- Cyrodiil
         ["Bear Matriarch"] = 302, -- Delve: Temple to the Divines
