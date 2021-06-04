@@ -15,6 +15,7 @@ modules/PlayedChart.lua
 modules/QuickSlotKeybind.lua
 modules/AoeColors.lua
 modules/KHouse.lua
+modules/FocusedFire.lua
 
 modules/antispud/main.lua
 modules/antispud/mundus.lua

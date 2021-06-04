@@ -125,6 +125,7 @@ function KyzderpsDerps:Initialize()
 
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KDD_Aoe:Initialize()
+        KyzderpsDerps.InitializeFocusedFire()
     end
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
@@ -329,3 +330,5 @@ end
 SLASH_COMMANDS["/kdd"] = KyzderpsDerps.handleCommand
 SLASH_COMMANDS["/fixui"] = FixUI
 SLASH_COMMANDS["/ids"] = ToggleLuiIds
+SLASH_COMMANDS["/bastian"] = function() UseCollectible(9245) end
+SLASH_COMMANDS["/mirri"] = function() UseCollectible(9353) end

@@ -77,6 +77,9 @@ SpawnTimer = {
         ["Curnard the Generous"] = true, -- Delve: Viridian Watch
         ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
 
+    -- Coldharbor
+        ["Aez the Collector"] = 305, -- PD: Village of the Lost
+
     -- Glenumbra
         ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
 
@@ -93,8 +96,13 @@ SpawnTimer = {
     -- Reaper's March
         ["Sergeant Atilus"] = 300, -- PD: Vile Manse
 
+    -- Shadowfen
+        ["Drel"] = 305, -- PD: Sanguine's Demense
+        ["The Bloody Judge"] = 305, -- PD: Sanguine's Demense
+
     -- Stonefalls
         ["The Moonlit Maiden"] = 305, -- PD: Crow's Wood - Wispmother next to skyshard
+        ["Buron"] = 305, -- PD: Crow's Wood - Ghost in cave
 
     -- Summerset
         ["Direnni Abyssal Geyser"] = 645, -- Abyssal Geyser
@@ -103,6 +111,7 @@ SpawnTimer = {
         ["Corgrad Abyssal Geyser"] = 645, -- Abyssal Geyser
         ["Welenkin Abyssal Geyser"] = 645, -- Abyssal Geyser
         ["Sunhold Abyssal Geyser"] = 645, -- Abyssal Geyser
+        ["Welkadra"] = 305, -- PD: Sunhold - Echatere closest to entrance
 
     -- Northern Elsweyr
         ["Dragon"] = 620, -- It spawns on the map at around 10:20 (or at least, once), but landed at 11:00
@@ -116,6 +125,9 @@ SpawnTimer = {
     -- Western Skyrim
         ["Shademother"] = 606, -- WB
         ["Tulnir"] = 301, -- PD: Labyrinthian - Exterior altar
+
+    -- Blackwood
+        ["Bhrum / Koska"] = 331, -- WB
 
     -- Cyrodiil
         ["Bear Matriarch"] = 302, -- Delve: Temple to the Divines
@@ -198,6 +210,10 @@ SpawnTimer = {
         ["Eejoba the Radiant"] = "GetPlayerLocationName", -- Abyssal Geyser - Wispmother
         ["Tidewrack"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Lurcher
         ["Vsskalvor"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Viper
+
+    -- Blackwood
+        ["Bhrum"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
+        ["Koska"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
     },
 }
 
@@ -246,6 +262,7 @@ local function IsBossByUnitTag(unitTag)
         -- All hand hard-coded bosses
     elseif (string.find(unitTag, "^boss")) then
         -- Should handle all world bosses, newer public dungeons, and world events
+        KyzderpsDerps:dbg("|cFF8888Unhandled: " .. bossName .. "|r")
     elseif (unitTag == "reticleover") then
         -- Try all deadly and hard mobs?
         local diff = GetUnitDifficulty(unitTag)
@@ -267,6 +284,7 @@ local function IsBossByUnitTag(unitTag)
             end
             return false
         end
+        KyzderpsDerps:dbg("|cFF8888Unhandled: " .. bossName .. "|r")
     else
         return false
     end
