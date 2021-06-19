@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.8.0"
+KyzderpsDerps.version = "1.8.1"
 
 -- Defaults
 local defaultOptions = {
@@ -179,9 +179,9 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     KyzderpsDerps.messages = {}
 
     KDD_QuickSlots:Initialize()
+    KyzderpsDerps.InitializeCompanion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KDD_AntiSpud:Initialize()
-        KyzderpsDerps.InitializeCompanion()
     end
 
     if (KyzderpsDerps.savedOptions.misc.loginCollectible ~= 0) then
