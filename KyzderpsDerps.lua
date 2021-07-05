@@ -128,6 +128,7 @@ function KyzderpsDerps:Initialize()
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
 
     if (KyzderpsDerps.savedOptions.general.experimental) then
+        ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
         KDD_Aoe:Initialize()
         KyzderpsDerps.InitializeFocusedFire()
     end
@@ -182,6 +183,7 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     KyzderpsDerps.InitializeCompanion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KDD_AntiSpud:Initialize()
+        KyzderpsDerps.InitializeWaypoint()
     end
 
     if (KyzderpsDerps.savedOptions.misc.loginCollectible ~= 0) then
