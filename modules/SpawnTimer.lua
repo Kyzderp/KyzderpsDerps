@@ -48,6 +48,8 @@ SpawnTimer = {
         ["1201"] = true,  -- Castle Thorn
         ["1228"] = true,  -- Black Drake Villa
         ["1229"] = true,  -- The Cauldron
+        ["1267"] = true,  -- Red Petal Bastion
+        ["1268"] = true,  -- The Dread Cellar
     },
 
     -- Trial zoneIds
@@ -215,6 +217,10 @@ SpawnTimer = {
         ["Eejoba the Radiant"] = "GetPlayerLocationName", -- Abyssal Geyser - Wispmother
         ["Tidewrack"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Lurcher
         ["Vsskalvor"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Viper
+
+    -- Northern Elsweyr
+        ["Zav'i"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run
+        ["Akumjhargo"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run
 
     -- Blackwood
         ["Bhrum"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
