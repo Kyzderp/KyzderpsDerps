@@ -75,12 +75,21 @@ SpawnTimer = {
     BOSS_NAMES = {
     -- Dolmens - TODO: 5:18? stonefalls 6:14?
 
+    -- Blackwood
+        ["Havocrel Duke of Storms"] = 311, -- Oblivion Portal
+
     -- Bangkorai
         ["Curnard the Generous"] = true, -- Delve: Viridian Watch
         ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
 
     -- Coldharbor
         ["Aez the Collector"] = 305, -- PD: Village of the Lost
+
+    -- Craglorn
+        ["Secluded Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
+        ["Defunct Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
+        ["Overrun Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
+        ["Pillaged Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
 
     -- Glenumbra
         ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
@@ -205,6 +214,9 @@ SpawnTimer = {
         ["Methats"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
         ["Vonshala"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
         ["Sumeer"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
+
+    -- Craglorn
+        ["Troll Colossus"] = "GetPlayerLocationName", -- Nirncrux Mine
 
     -- Summerset
         ["Ruella Many-Claws"] = "GetPlayerLocationName", -- Abyssal Geyser

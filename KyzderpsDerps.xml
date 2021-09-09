@@ -11,6 +11,10 @@
                     <Dimensions x="950" y="50"/>
                     <Anchor point="CENTER" offsetX="0" offsetY="0"/>
                 </Label>
+                <Label name="$(parent)Visual" font="$(BOLD_FONT)|16|soft-shadow-thick" color="888888" text="" verticalAlignment="TOP" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                    <Dimensions x="800" y="200"/>
+                    <Anchor point="TOP" relativeTo="$(parent)Label" relativePoint="BOTTOM"/>
+                </Label>
             </Controls>
         </TopLevelControl>
 
