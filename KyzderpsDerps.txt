@@ -16,7 +16,6 @@ modules/PlayedChart.lua
 modules/QuickSlotKeybind.lua
 modules/AoeColors.lua
 modules/KHouse.lua
-modules/FocusedFire.lua
 modules/Companion.lua
 modules/InWorldWaypoint.lua
 

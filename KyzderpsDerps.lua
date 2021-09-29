@@ -130,7 +130,6 @@ function KyzderpsDerps:Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
         KDD_Aoe:Initialize()
-        KyzderpsDerps.InitializeFocusedFire()
     end
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
