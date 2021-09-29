@@ -144,6 +144,7 @@ function Spud:Initialize()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
     OnPlayerActivated()
     Spud.CheckMundus()
+    Spud.InitializeEquipped()
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
 end

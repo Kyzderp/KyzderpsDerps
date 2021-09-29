@@ -1,0 +1,19 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="AntiSpudEquipped" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
+            <Dimensions x="200" y="80"/>
+            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="-120"/>
+            <Controls>
+                <Label name="$(parent)Label" font="$(BOLD_FONT)|30|soft-shadow-thick" color="FF0000" text="REEE" horizontalAlignment="CENTER" verticalAlignment="CENTER">
+                    <AnchorFill/>
+                </Label>
+                <Button name="$(parent)Close" alpha="1" topmost="true">
+                    <Textures normal="/esoui/art/hud/radialicon_cancel_up.dds" mouseOver="/esoui/art/hud/radialicon_cancel_over.dds" />
+                    <Anchor point="TOP" relativeTo="$(parent)" relativePoint="BOTTOM" offsetY="-10" />
+                    <Dimensions x="48" y="48"/>
+                    <OnClicked>AntiSpudEquipped:SetHidden(true)</OnClicked>
+                </Button>
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>

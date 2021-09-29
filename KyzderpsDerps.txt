@@ -22,6 +22,8 @@ modules/InWorldWaypoint.lua
 
 modules/antispud/main.lua
 modules/antispud/mundus.lua
+modules/antispud/equipped.lua
+modules/antispud/antispud.xml
 
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua

@@ -172,22 +172,22 @@ function CustomTargetName.OnReticleTargetChanged()
 
         -- Display attribute visualizer
         local line = ""
-        if (KyzderpsDerps.savedOptions.general.experimental) then
-            local effectInfos = {GetAllUnitAttributeVisualizerEffectInfo("reticleover")}
-            for i = 1, 12 do
-                local j = (i - 1) * 6 + 1
-                if (effectInfos[j]) then
-                    local unitAttributeVisual = effectInfos[j]
-                    local statType = effectInfos[j + 1]
-                    local attributeType = effectInfos[j + 2]
-                    local powerType = effectInfos[j + 3]
-                    local value = effectInfos[j + 4]
-                    local maxValue = effectInfos[j + 5]
-                    line = line .. string.format("%s %s %s %s %d %d\n",
-                        attributeVisuals[unitAttributeVisual], derivedStats[statType], attributes[attributeType], mechanicTypes[powerType], value, maxValue)
-                end
-            end
-        end
+        -- if (KyzderpsDerps.savedOptions.general.experimental) then
+        --     local effectInfos = {GetAllUnitAttributeVisualizerEffectInfo("reticleover")}
+        --     for i = 1, 12 do
+        --         local j = (i - 1) * 6 + 1
+        --         if (effectInfos[j]) then
+        --             local unitAttributeVisual = effectInfos[j]
+        --             local statType = effectInfos[j + 1]
+        --             local attributeType = effectInfos[j + 2]
+        --             local powerType = effectInfos[j + 3]
+        --             local value = effectInfos[j + 4]
+        --             local maxValue = effectInfos[j + 5]
+        --             line = line .. string.format("%s %s %s %s %d %d\n",
+        --                 attributeVisuals[unitAttributeVisual], derivedStats[statType], attributes[attributeType], mechanicTypes[powerType], value, maxValue)
+        --         end
+        --     end
+        -- end
         CustomTargetCustomNameVisual:SetText(line)
 
     elseif (KyzderpsDerps.savedOptions.customTargetFrame.move == false) then
