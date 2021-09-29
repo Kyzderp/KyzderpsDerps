@@ -694,6 +694,76 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Anti-Spud",
+            controls = {
+                {
+                    type = "description",
+                    title = nil,
+                    text = "Don't be a spud! This module notifies you about possible oopsies in your setup.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check equipped items",
+                    tooltip = "Checks your equipped items and notifies you if you are missing pieces, or maybe wearing too many or too few pieces",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.enable end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.equipped.enable = value
+                        if (value) then
+                            KDD_AntiSpud.InitializeEquipped()
+                        else
+                            KDD_AntiSpud.UninitializeEquipped()
+                        end
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Print equipped sets",
+                    tooltip = "Print equipped sets along with how many pieces you are wearing to your chatbox when equipment changes",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.printToChat end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.equipped.printToChat = value
+                    end,
+                    width = "full",
+                    disabled = function()
+                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                    end,
+                },
+                {
+                    type = "editbox",
+                    name = "4-piece exceptions",
+                    tooltip = "Normally, if you are wearing 4 pieces of a 5-piece set, AntiSpud will mark it as an error. You can add exact item set names below to exclude them from this rule, for example New Moon Acolyte you only wear 4 pieces of for stat bonuses. Separate item set names with a % sign.",
+                    default = "",
+                    getFunc = function()
+                        local names = {}
+                        for name, _ in pairs(KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions) do
+                            table.insert(names, name)
+                        end
+                        return table.concat(names, "%")
+                    end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions = {}
+                        for str in string.gmatch(value, "([^%%]+)") do
+                            str = string.gsub(str, "^%s+", "")
+                            str = string.gsub(str, "%s+$", "")
+                            KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[str] = true
+                        end
+                    end,
+                    isExtraWide = true,
+                    isMultiline = true,
+                    width = "full",
+                    disabled = function()
+                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                    end,
+                },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Miscellaneous",
             controls = {
                 {
@@ -719,4 +789,6 @@ function KyzderpsDerps:CreateSettingsMenu()
     CALLBACK_MANAGER:RegisterCallback("LAM-PanelClosed", DeathAlert.hideAll)
 end
 
-
+function KyzderpsDerps.OpenSettingsMenu()
+    LibAddonMenu2:OpenToPanel(KyzderpsDerps.addonPanel)
+end

@@ -62,6 +62,13 @@ local defaultOptions = {
         resummon = true,
         showRapport = true,
     },
+    antispud = {
+        equipped = {
+            enable = false,
+            printToChat = false,
+            fourPieceExceptions = {},
+        },
+    },
 }
 
 local defaultValues = {
@@ -180,8 +187,8 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
 
     KDD_QuickSlots:Initialize()
     KyzderpsDerps.InitializeCompanion()
+    KDD_AntiSpud:Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
-        KDD_AntiSpud:Initialize()
         KyzderpsDerps.InitializeWaypoint()
     end
 

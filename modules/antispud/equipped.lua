@@ -1,6 +1,10 @@
 KDD_AntiSpud = KDD_AntiSpud or {}
 local Spud = KDD_AntiSpud
 
+-- Throttle for chat spam
+local throttling = false
+local lastThrottle = 0
+
 -- Some stuff yoinked from LibEquipmentBonus in Cooldowns by g4rr3t
 
 -- Slots to monitor
@@ -59,10 +63,10 @@ local function GetNumSetBonuses(itemLink)
 end
 
 -------------------------------------------------------------------------------
-local function UpdateDisplay(error)
+local function UpdateDisplay(error, extraText)
     if (error) then
         AntiSpudEquipped:SetHidden(false)
-        AntiSpudEquippedLabel:SetText(error)
+        AntiSpudEquippedLabel:SetText((extraText ~= nil) and (error .. extraText) or error)
         AntiSpudEquipped:SetWidth(1000)
         AntiSpudEquipped:SetWidth(AntiSpudEquippedLabel:GetTextWidth())
         return true
@@ -106,7 +110,8 @@ local function CheckEmptySlots()
 end
 
 -------------------------------------------------------------------------------
-local function CheckSlotsSets(slots)
+local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
+    -- d(extraText .. tostring(hasError) .. tostring(skipThrottle))
     local equippedSets = {}
     for index, slot in pairs(slots) do
         local itemLink = GetItemLink(BAG_WORN, slot)
@@ -134,6 +139,9 @@ local function CheckSlotsSets(slots)
             -- Monster sets are ok
             -- TODO: wearing 1 pc of dual wield or snb would also be "ok"
             color = "FFFFFF"
+        elseif (data.maxEquipped == 3 and data.numEquipped == 2) then
+            -- 3pc sets like Willpower, Endurance, are probably ok with 2 pieces
+            color = "FFFF00"
         elseif (data.numEquipped <= 2) then
             -- If wearing 1 or 2 pieces of a 3 or 5 pc this is probably wrong
             color = "FF0000"
@@ -146,26 +154,59 @@ local function CheckSlotsSets(slots)
             -- 3 pieces is probably ok
             color = "FFFF00"
         elseif (data.numEquipped == 4) then
-            -- 4 pieces is probably not correct
-            color = "FF7700"
+            -- 4 pieces is probably not correct, but check the exception list
+            if (KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
+                color = "FF7700"
+            else
+                color = "FF0000"
+                error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
+            end
         end
-        table.insert(result, zo_strformat("|c<<1>><<2>>|cFFFFFF <<C:4>>", color, data.numEquipped, data.maxEquipped, setName))
+        table.insert(result, zo_strformat("|c<<1>><<2>>|cAAAAAA <<C:4>>", color, data.numEquipped, data.maxEquipped, setName))
     end
 
-    local resultString = table.concat(result, "|cAAAAAA / ") .. "|r"
-    d(resultString)
-    return UpdateDisplay(error)
+    local resultString = table.concat(result, "|c888888 / ") .. "|r"
+    if (KyzderpsDerps.savedOptions.antispud.equipped.printToChat) then
+        if (skipThrottle) then
+            KyzderpsDerps:msg("Wearing" .. extraText .. ": " .. resultString)
+            if (hasError) then return true end
+            return UpdateDisplay(error, extraText)
+        end
+
+        -- some throttling to not spam chat on every change
+        local currTime = GetGameTimeMilliseconds()
+        if (not throttling) then
+            throttling = true
+        elseif (currTime - lastThrottle > 150) then
+            lastThrottle = currTime
+        else
+            if (hasError) then return true end
+            return UpdateDisplay(error, extraText)
+        end
+
+        EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
+        EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText, 200, function()
+            throttling = false
+            EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
+
+            -- Gear has finished changing
+            CheckSlotsSets(slots, extraText, hasError, true)
+        end)
+    end
+    if (hasError) then return true end
+    return UpdateDisplay(error, extraText)
 end
 
 function CheckAllSlots()
     -- Already has error
+    local hasError = false
     if (CheckEmptySlots()) then
-        return
+        hasError = true
     end
-    if (CheckSlotsSets(ITEM_SLOTS_FRONTBAR)) then
-        return
+    if (CheckSlotsSets(ITEM_SLOTS_FRONTBAR, " on frontbar", hasError, false)) then
+        hasError = true
     end
-    CheckSlotsSets(ITEM_SLOTS_BACKBAR)
+    CheckSlotsSets(ITEM_SLOTS_BACKBAR, " on backbar", hasError, false)
 end
 
 -- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
@@ -185,5 +226,10 @@ function Spud.InitializeEquipped()
         REGISTER_FILTER_BAG_ID, BAG_WORN,
         REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DEFAULT)
 
-    zo_callLater(CheckAllSlots, 2000)
+    zo_callLater(CheckAllSlots, 1000)
+end
+
+function Spud.UninitializeEquipped()
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "SpudEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE)
+    AntiSpudEquipped:SetHidden(true)
 end
