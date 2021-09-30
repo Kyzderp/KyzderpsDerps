@@ -96,14 +96,16 @@ local function CheckEmptySlots()
         table.insert(missing, "a frontbar weapon")
     end
 
-    if (backMainLink == "" or (backOffLink == "" and GetNumSetBonuses(backMainLink) == 1)) then
-        table.insert(missing, "a backbar weapon")
+    if (GetUnitLevel("player") >= GetWeaponSwapUnlockedLevel()) then
+        if (backMainLink == "" or (backOffLink == "" and GetNumSetBonuses(backMainLink) == 1)) then
+            table.insert(missing, "a backbar weapon")
+        end
     end
 
     if (#missing > 3) then
         return UpdateDisplay("You are nekkid")
     elseif (#missing > 0) then
-        return UpdateDisplay("You are not wearing\n" .. table.concat(missing, ", "))
+        return UpdateDisplay("You have not slotted\n" .. table.concat(missing, ", "))
     else
         return UpdateDisplay()
     end
@@ -132,43 +134,47 @@ local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
     local result = {}
     local error
     for setName, data in pairs(equippedSets) do
-        local color = "0000FF"
+        local color = "|c0000FF"
         if (data.numEquipped == data.maxEquipped) then
-            color = "FFFFFF"
+            color = ""
         elseif (data.maxEquipped == 2) then
             -- Monster sets are ok
             -- TODO: wearing 1 pc of dual wield or snb would also be "ok"
-            color = "FFFFFF"
+            color = ""
         elseif (data.maxEquipped == 3 and data.numEquipped == 2) then
             -- 3pc sets like Willpower, Endurance, are probably ok with 2 pieces
-            color = "FFFF00"
-        elseif (data.numEquipped <= 2) then
-            -- If wearing 1 or 2 pieces of a 3 or 5 pc this is probably wrong
-            color = "FF0000"
+            color = "|cFFFF00"
+        elseif (data.numEquipped == 1) then
+            -- If wearing 1 piece of a 3 or 5 pc this is probably wrong
+            color = "|cFF0000"
+            error = zo_strformat("You are wearing <<1>> piece of\n<<2>>", data.numEquipped, setName)
+        elseif (data.numEquipped == 2) then
+            -- If wearing 2 pieces of a 5 pc this is probably wrong
+            color = "|cFF0000"
             error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
         elseif (data.numEquipped > data.maxEquipped) then
             -- Too many pieces
-            color = "FF0000"
+            color = "|cFF0000"
             error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
         elseif (data.numEquipped == 3) then
             -- 3 pieces is probably ok
-            color = "FFFF00"
+            color = "|cFFFF00"
         elseif (data.numEquipped == 4) then
             -- 4 pieces is probably not correct, but check the exception list
             if (KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
-                color = "FF7700"
+                color = "|cFF7700"
             else
-                color = "FF0000"
+                color = "|cFF0000"
                 error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
             end
         end
-        table.insert(result, zo_strformat("|c<<1>><<2>>|cAAAAAA <<C:4>>", color, data.numEquipped, data.maxEquipped, setName))
+        table.insert(result, zo_strformat("<<1>><<2>><<3>> <<C:4>>", color, data.numEquipped, (color == "") and "" or "|cAAAAAA", setName))
     end
 
-    local resultString = table.concat(result, "|c888888 / ") .. "|r"
+    local resultString = table.concat(result, " / ")
     if (KyzderpsDerps.savedOptions.antispud.equipped.printToChat) then
         if (skipThrottle) then
-            KyzderpsDerps:msg("Wearing" .. extraText .. ": " .. resultString)
+            KyzderpsDerps:msg("Equipped" .. extraText .. ": " .. resultString)
             if (hasError) then return true end
             return UpdateDisplay(error, extraText)
         end
@@ -206,7 +212,9 @@ function CheckAllSlots()
     if (CheckSlotsSets(ITEM_SLOTS_FRONTBAR, " on frontbar", hasError, false)) then
         hasError = true
     end
-    CheckSlotsSets(ITEM_SLOTS_BACKBAR, " on backbar", hasError, false)
+    if (GetUnitLevel("player") >= GetWeaponSwapUnlockedLevel()) then
+        CheckSlotsSets(ITEM_SLOTS_BACKBAR, " on backbar", hasError, false)
+    end
 end
 
 -- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
@@ -214,7 +222,6 @@ function OnSlotUpdated(_, bagId, slotId)
     -- Ignore costume updates
     if slotId == EQUIP_SLOT_COSTUME then return end
 
-    -- TODO: throttle it
     CheckAllSlots()
 end
 
