@@ -24,6 +24,9 @@ modules/antispud/mundus.lua
 modules/antispud/equipped.lua
 modules/antispud/antispud.xml
 
+modules/debug/spamWindow.lua
+modules/debug/spamWindow.xml
+
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua
 KyzderpsDerps.xml
