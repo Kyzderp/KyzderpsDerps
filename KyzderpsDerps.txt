@@ -24,6 +24,8 @@ modules/antispud/mundus.lua
 modules/antispud/equipped.lua
 modules/antispud/antispud.xml
 
+modules/integrations/buffTheGroup.lua
+
 modules/debug/spamWindow.lua
 modules/debug/spamWindow.xml
 

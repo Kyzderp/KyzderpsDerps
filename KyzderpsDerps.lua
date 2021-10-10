@@ -67,6 +67,14 @@ local defaultOptions = {
             enable = false,
             printToChat = false,
             fourPieceExceptions = {},
+            buffTheGroup = {
+                pa = true,
+                majorSlayer = true,
+                majorCourage = true,
+                minorBerserk = true,
+                majorResolve = false,
+                empower = true,
+            },
         },
     },
 }

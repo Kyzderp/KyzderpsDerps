@@ -120,6 +120,8 @@ local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
 
         if (itemLink ~= "") then
             local hasSet, setName, _, _, maxEquipped = GetItemLinkSetInfo(itemLink, true)
+            setName = string.gsub(setName, "^Perfected ", "")
+            setName = string.gsub(setName, "^Perfect ", "")
             if (hasSet) then
                 if (not equippedSets[setName]) then
                     equippedSets[setName] = {}
@@ -172,33 +174,34 @@ local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
     end
 
     local resultString = table.concat(result, " / ")
-    if (KyzderpsDerps.savedOptions.antispud.equipped.printToChat) then
-        if (skipThrottle) then
+    if (skipThrottle) then
+        if (KyzderpsDerps.savedOptions.antispud.equipped.printToChat) then
             KyzderpsDerps:msg("Equipped" .. extraText .. ": " .. resultString)
-            if (hasError) then return true end
-            return UpdateDisplay(error, extraText)
         end
-
-        -- some throttling to not spam chat on every change
-        local currTime = GetGameTimeMilliseconds()
-        if (not throttling) then
-            throttling = true
-        elseif (currTime - lastThrottle > 150) then
-            lastThrottle = currTime
-        else
-            if (hasError) then return true end
-            return UpdateDisplay(error, extraText)
-        end
-
-        EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
-        EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText, 200, function()
-            throttling = false
-            EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
-
-            -- Gear has finished changing
-            CheckSlotsSets(slots, extraText, hasError, true)
-        end)
+        Spud.UpdateBuffTheGroup(equippedSets)
+        if (hasError) then return true end
+        return UpdateDisplay(error, extraText)
     end
+
+    -- some throttling to not spam chat on every change
+    local currTime = GetGameTimeMilliseconds()
+    if (not throttling) then
+        throttling = true
+    elseif (currTime - lastThrottle > 150) then
+        lastThrottle = currTime
+    else
+        if (hasError) then return true end
+        return UpdateDisplay(error, extraText)
+    end
+
+    EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
+    EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText, 200, function()
+        throttling = false
+        EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
+
+        -- Gear has finished changing
+        CheckSlotsSets(slots, extraText, hasError, true)
+    end)
     if (hasError) then return true end
     return UpdateDisplay(error, extraText)
 end
