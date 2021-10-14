@@ -1,10 +1,10 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.9.0
+## Version: 1.10.0
 ## APIVersion: 101031
 ## DependsOn: LibAddonMenu-2.0>=31
-## OptionalDependsOn: OdySupportIcons Lib3D
+## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup
 
 ## SavedVariables: KyzderpsDerpsSavedVariables
 
@@ -25,6 +25,7 @@ modules/antispud/equipped.lua
 modules/antispud/antispud.xml
 
 modules/integrations/buffTheGroup.lua
+modules/integrations/hodorReflexes.lua
 
 modules/debug/spamWindow.lua
 modules/debug/spamWindow.xml

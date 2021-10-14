@@ -222,8 +222,8 @@ end
 
 -- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
 function OnSlotUpdated(_, bagId, slotId)
-    -- Ignore costume updates
-    if slotId == EQUIP_SLOT_COSTUME then return end
+    -- Ignore costume updates, poison updates
+    if (slotId == EQUIP_SLOT_COSTUME or slotId == EQUIP_SLOT_POISON or slotId == EQUIP_SLOT_BACKUP_POISON) then return end
 
     CheckAllSlots()
 end

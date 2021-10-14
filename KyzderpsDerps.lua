@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.9.0"
+KyzderpsDerps.version = "1.10.0"
 
 -- Defaults
 local defaultOptions = {
@@ -68,14 +68,18 @@ local defaultOptions = {
             printToChat = false,
             fourPieceExceptions = {},
             buffTheGroup = {
-                pa = true,
-                majorSlayer = true,
-                majorCourage = true,
-                minorBerserk = true,
+                pa = false,
+                majorSlayer = false,
+                majorCourage = false,
+                minorBerserk = false,
                 majorResolve = false,
-                empower = true,
+                empower = false,
             },
         },
+    },
+    hodor = {
+        horn = false,
+        hornLabel = false,
     },
 }
 
@@ -197,6 +201,7 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     KDD_QuickSlots:Initialize()
     KyzderpsDerps.InitializeCompanion()
     KDD_AntiSpud:Initialize()
+    KyzderpsDerps.InitializeHodor()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
     end

@@ -759,17 +759,50 @@ function KyzderpsDerps:CreateSettingsMenu()
                         return not KyzderpsDerps.savedOptions.antispud.equipped.enable
                     end,
                 },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
+            name = "Miscellaneous",
+            controls = {
+                {
+                    type = "dropdown",
+                    name = "Use collectible on login",
+                    tooltip = "Specify a collectible to use when you first load into a character",
+                    choices = collectibleNames,
+                    choicesValues = collectibleIds,
+                    getFunc = function() return KyzderpsDerps.savedOptions.misc.loginCollectible end,
+                    setFunc = function(id)
+                            KyzderpsDerps:dbg("selected " .. tostring(id))
+                            KyzderpsDerps.savedOptions.misc.loginCollectible = id
+                        end,
+                    width = "full",
+                },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "header",
+            name = "Other Addon Integrations",
+            width = "full",
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
+            name = "Buff The Group",
+            controls = {
                 {
                     type = "description",
                     title = "Buff The Group Integration",
-                    text = "The following settings enable or disable Buff The Group addon's frames based on your equipped sets and skills. If turned OFF, the frame for that buff will not be changed, so it retains your own settings. Check equipped items above must be enabled for this to work.",
+                    text = "The following settings enable or disable Buff The Group addon's frames based on your equipped sets and skills. If turned OFF, the frame for that buff will not be changed, so it retains your own settings. \"Anti-Spud > Check equipped items\" above must be enabled for this to work.",
                     width = "full",
                 },
                 {
                     type = "checkbox",
                     name = "Auto toggle Powerful Assault",
                     tooltip = "Enable or disable Powerful Assault frame if you are wearing Powerful Assault",
-                    default = true,
+                    default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pa end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pa = value
@@ -783,7 +816,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     type = "checkbox",
                     name = "Auto toggle Major Slayer",
                     tooltip = "Enable or disable Major Slayer frame if you are wearing Roaring Opportunist, Master Architect, or War Machine",
-                    default = true,
+                    default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorSlayer end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorSlayer = value
@@ -797,7 +830,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     type = "checkbox",
                     name = "Auto toggle Major Courage",
                     tooltip = "Enable or disable Major Courage frame if you are wearing Olorime or Spell Power Cure",
-                    default = true,
+                    default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorCourage end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorCourage = value
@@ -811,7 +844,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     type = "checkbox",
                     name = "Auto toggle Minor Berserk",
                     tooltip = "Enable or disable Minor Berserk frame if you have slotted Combat Prayer",
-                    default = true,
+                    default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk = value
@@ -839,7 +872,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     type = "checkbox",
                     name = "Auto toggle Empower",
                     tooltip = "Enable or disable Empower frame if you have slotted Empowering Grasp or are wearing Galenwe",
-                    default = true,
+                    default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower = value
@@ -854,20 +887,34 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
-            name = "Miscellaneous",
+            name = "Hodor Reflexes",
             controls = {
                 {
-                    type = "dropdown",
-                    name = "Use collectible on login",
-                    tooltip = "Specify a collectible to use when you first load into a character",
-                    choices = collectibleNames,
-                    choicesValues = collectibleIds,
-                    getFunc = function() return KyzderpsDerps.savedOptions.misc.loginCollectible end,
-                    setFunc = function(id)
-                            KyzderpsDerps:dbg("selected " .. tostring(id))
-                            KyzderpsDerps.savedOptions.misc.loginCollectible = id
-                        end,
+                    type = "checkbox",
+                    name = "Enable horn distance icon",
+                    tooltip = "When enabled, a colored icon will show next to the horn list if the player almost has horn ready and is within support range. The icon shows green, yellow, or orange depending on distance to yourself. Useful for raid leads especially in vCR with tank gone in portal",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.hodor.horn end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.hodor.horn = value
+
+                        KyzderpsDerps.InitializeHodor()
+                    end,
                     width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Enable horn distance label",
+                    tooltip = "Additionally shows the horn player's distance in meters to yourself",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.hodor.hornLabel end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.hodor.hornLabel = value
+                    end,
+                    width = "full",
+                    disabled = function()
+                        return not KyzderpsDerps.savedOptions.hodor.horn
+                    end,
                 },
             }
         },
