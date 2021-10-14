@@ -1,20 +1,16 @@
 <GuiXml>
     <Controls>
 <!-- ======================================================================================================================= -->
-        <TopLevelControl name="KDDSpam" clampedToScreen="false" mouseEnabled="false" movable="true" hidden="false">
+        <TopLevelControl name="KDDSpam" clampedToScreen="false" mouseEnabled="false" movable="true" hidden="true">
             <Dimensions x="520" y="700"/>
             <Anchor point="LEFT" relativeTo="GuiRoot" relativePoint="RIGHT" offsetX="0" offsetY="-70"/>
-            <OnInitialized>
-                HUD_SCENE:AddFragment(ZO_SimpleSceneFragment:New(self))
-                HUD_UI_SCENE:AddFragment(ZO_SimpleSceneFragment:New(self))
-            </OnInitialized>
             <Controls>
                 <Control name="$(parent)Sidebar" mouseEnabled="true">
                     <Dimensions x="30"/>
                     <Anchor point="TOPRIGHT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
                     <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT"/>
                     <Controls>
-                        <Backdrop name="$(parent)Backdrop" centerColor="99000000" edgeColor="00000000" hidden="false">
+                        <Backdrop name="$(parent)Backdrop" centerColor="99000000" edgeColor="00000000">
                             <AnchorFill/>
                             <Edge edgeSize="1"/>
                         </Backdrop>
@@ -34,7 +30,7 @@
                     <Anchor point="TOPRIGHT" relativeTo="$(parent)" relativePoint="TOPRIGHT"/>
                     <Anchor point="BOTTOMLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" offsetX="10"/>
                 </TextBuffer>
-                <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="00000000" hidden="false">
+                <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="00000000">
                     <AnchorFill/>
                     <Edge edgeSize="1"/>
                 </Backdrop>

@@ -1,7 +1,7 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.10.0
+## Version: 1.10.1
 ## APIVersion: 101031
 ## DependsOn: LibAddonMenu-2.0>=31
 ## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup

@@ -455,6 +455,10 @@ end
 
 ----------------------------------------------------------------------
 function KyzderpsDerps.InitializeSpamWindow()
+    HUD_SCENE:AddFragment(ZO_SimpleSceneFragment:New(KDDSpam))
+    HUD_UI_SCENE:AddFragment(ZO_SimpleSceneFragment:New(KDDSpam))
+    KDDSpam:SetHidden(false)
+
     KDDSpamBuffer:AddMessage("yeet", 0.6, 0.6, 0.6)
 
     KDDSpam.slideAnimation = GetAnimationManager():CreateTimelineFromVirtual("ZO_LootSlideInAnimation", KDDSpam)
