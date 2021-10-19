@@ -48,6 +48,7 @@ local function UpdateInRange()
                 label:SetAnchor(RIGHT, texture, LEFT, -4)
             end
             texture:SetParent(data.ultRow)
+            texture:SetAnchor(RIGHT, data.ultRow, LEFT, -4)
 
             if (data.ult >= 90) then
                 if (IsUnitInGroupSupportRange(data.tag)) then
