@@ -181,7 +181,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                             width = "full",
                             func = function()
                                 local editbox = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#NpcFilterBox").editbox
-                                editbox:SetText(CustomTargetName.recentNpc)
+                                editbox:SetText(KyzderpsDerps.recentNpc)
                                 editbox:TakeFocus()
                             end
                         },
@@ -312,7 +312,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                             width = "full",
                             func = function()
                                 local editbox = WINDOW_MANAGER:GetControlByName("KyzderpsDerps#PlayerFilterBox").editbox
-                                editbox:SetText(CustomTargetName.recentPlayer)
+                                editbox:SetText(KyzderpsDerps.recentPlayer)
                                 editbox:TakeFocus()
                             end
                         },
@@ -625,7 +625,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.size end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.deathAlert.size = value
-                        DeathAlert.changeFontSize()
+                        KyzderpsDerps.ChangeDeathAlertFontSize()
                     end,
                     disabled = function() return not KyzderpsDerps.savedOptions.deathAlert.enable end,
                 },
@@ -711,9 +711,9 @@ function KyzderpsDerps:CreateSettingsMenu()
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.equipped.enable = value
                         if (value) then
-                            KDD_AntiSpud.InitializeEquipped()
+                            KyzderpsDerps.AntiSpud.InitializeEquipped()
                         else
-                            KDD_AntiSpud.UninitializeEquipped()
+                            KyzderpsDerps.AntiSpud.UninitializeEquipped()
                         end
                     end,
                     width = "full",
@@ -923,7 +923,7 @@ function KyzderpsDerps:CreateSettingsMenu()
     KyzderpsDerps.addonPanel = LAM:RegisterAddonPanel("KyzderpsDerpsOptions", panelData)
     LAM:RegisterOptionControls("KyzderpsDerpsOptions", optionsData)
 
-    CALLBACK_MANAGER:RegisterCallback("LAM-PanelClosed", DeathAlert.hideAll)
+    CALLBACK_MANAGER:RegisterCallback("LAM-PanelClosed", KyzderpsDerps.HideAllDeathAlert)
 end
 
 function KyzderpsDerps.OpenSettingsMenu()

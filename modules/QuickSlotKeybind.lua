@@ -1,4 +1,4 @@
-KDD_QuickSlots = {}
+KyzderpsDerps = KyzderpsDerps or {}
 
 local indexToSlotIndex = {
     [1] = 12,
@@ -35,12 +35,6 @@ local function SetBackground(index, highlighted)
     -- end
 end
 
-function KDD_QuickSlots:SelectSlot(index)
-    SetCurrentQuickslot(indexToSlotIndex[index])
-    PlaySound(SOUNDS.QUICKSLOT_SET)
-    -- d(GetUnitWorldPosition("reticleover"))
-end
-
 local function OnSlotChanged(_, actionSlotIndex)
     SetBackground(1, false)
     SetBackground(2, false)
@@ -52,7 +46,13 @@ local function OnSlotChanged(_, actionSlotIndex)
     end
 end
 
-function KDD_QuickSlots:Initialize()
+function KyzderpsDerps.SelectQuickSlot(index)
+    SetCurrentQuickslot(indexToSlotIndex[index])
+    PlaySound(SOUNDS.QUICKSLOT_SET)
+    -- d(GetUnitWorldPosition("reticleover"))
+end
+
+function KyzderpsDerps.InitializeQuickSlots()
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_1", "Select Quickslot 1")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_2", "Select Quickslot 2")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_3", "Select Quickslot 3")

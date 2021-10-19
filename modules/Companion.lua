@@ -39,11 +39,11 @@ local collectibleBlockReasons = {
 }
 
 ---------------------------------------------------------------------
-function HasActiveAssistant()
+local function HasActiveAssistant()
     return GetActiveCollectibleByType(COLLECTIBLE_CATEGORY_TYPE_ASSISTANT) > 0
 end
 
-function SaveCurrentCompanion()
+local function SaveCurrentCompanion()
     assistantActive = false
     if (HasPendingCompanion()) then
         previousCompanion = GetCompanionCollectibleId(GetPendingCompanionDefId())
@@ -57,12 +57,12 @@ end
 ---------------------------------------------------------------------
 -- It seems assistants fire these events, companions do not? Combat pets also count though.
 -- The unit tags end up being playerpet1 and playerpet2. They're reused so only 1 and 2
-function OnUnitCreated(_, unitTag)
+local function OnUnitCreated(_, unitTag)
     assistantActive = HasActiveAssistant()
 end
 
 -- This fires about a second after starting to put assistant away
-function OnUnitDestroyed(_, unitTag)
+local function OnUnitDestroyed(_, unitTag)
     -- Check that we're putting away an assistant
     if (not assistantActive) then return end
 
@@ -97,18 +97,18 @@ function OnUnitDestroyed(_, unitTag)
 end
 
 ---------------------------------------------------------------------
-function OnCompanionActivated(_, companionId)
+local function OnCompanionActivated(_, companionId)
     previousCompanion = GetCompanionCollectibleId(companionId)
 end
 
-function OnCompanionDeactivated()
+local function OnCompanionDeactivated()
     if (not HasActiveAssistant()) then
         previousCompanion = nil
     end
 end
 
 ---------------------------------------------------------------------
-function OnSummonResult(_, summonResult, companionId)
+local function OnSummonResult(_, summonResult, companionId)
     local summonResults = {
         [COMPANION_SUMMON_RESULT_ADDED_FOR_GROUP_PLAYER] = "ADDED_FOR_GROUP_PLAYER",
         [COMPANION_SUMMON_RESULT_BLOCKED_BY_FOLLOWER] = "BLOCKED_BY_FOLLOWER",
@@ -137,7 +137,7 @@ function OnSummonResult(_, summonResult, companionId)
 end
 
 ---------------------------------------------------------------------
-function OnCompanionRapportUpdated(_, companionId, previousRapport, currentRapport)
+local function OnCompanionRapportUpdated(_, companionId, previousRapport, currentRapport)
     if (not KyzderpsDerps.savedOptions.companion.showRapport) then return end
 
     local arrow = ""

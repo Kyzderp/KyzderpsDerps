@@ -1,5 +1,6 @@
-KDD_AntiSpud = KDD_AntiSpud or {}
-local Spud = KDD_AntiSpud
+KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.AntiSpud = KyzderpsDerps.AntiSpud or {}
+local Spud = KyzderpsDerps.AntiSpud
 
 local enabledBTG = {}
 local disabledBTG = {}

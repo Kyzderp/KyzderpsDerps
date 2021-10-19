@@ -2,7 +2,7 @@ KyzderpsDerps = KyzderpsDerps or {}
 
 local worldIcon
 
-function UpdateWaypoint()
+local function UpdateWaypoint()
     if (not Lib3D:GetCurrentZoneMeasurement()) then
         KyzderpsDerps:dbg("NO ZONE MEASUREMENT")
         return

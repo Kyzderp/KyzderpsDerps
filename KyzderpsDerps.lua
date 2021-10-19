@@ -128,6 +128,18 @@ local defaultValues = {
 }
 
 ---------------------------------------------------------------------
+function KyzderpsDerps.SavePosition()
+    KyzderpsDerps.savedValues.customTargetFrame.x = CustomTargetCustomName:GetLeft()
+    KyzderpsDerps.savedValues.customTargetFrame.y = CustomTargetCustomName:GetTop()
+
+    KyzderpsDerps.savedValues.deathAlert.x = DeathAlertContainer:GetLeft()
+    KyzderpsDerps.savedValues.deathAlert.y = DeathAlertContainer:GetTop()
+
+    KyzderpsDerps.savedValues.spawnTimer.x = SpawnTimerContainer:GetLeft()
+    KyzderpsDerps.savedValues.spawnTimer.y = SpawnTimerContainer:GetTop()
+end
+
+---------------------------------------------------------------------
 -- Initialize 
 function KyzderpsDerps:Initialize()
     -- Settings and saved variables
@@ -137,18 +149,18 @@ function KyzderpsDerps:Initialize()
     KyzderpsDerps:dbg("Initializing Kyzderp's Derps...")
 
     -- Initialize modules
-    CustomTargetName:Initialize()
-    Grievous:Initialize()
-    SpawnTimer:Initialize()
-    DeathAlert:Initialize()
-    PlayedChart:Initialize()
+    KyzderpsDerps.InitializeCustomTargetName()
+    KyzderpsDerps.InitializeGrievous()
+    KyzderpsDerps.InitializeSpawnTimer()
+    KyzderpsDerps.InitializeDeathAlert()
+    KyzderpsDerps.InitializePlayedChart()
     KyzderpsDerps.InitializeKHouse() -- I think I want to use this format from now on. Gotta refactor.
 
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
 
     if (KyzderpsDerps.savedOptions.general.experimental) then
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
-        KDD_Aoe:Initialize()
+        KyzderpsDerps.InitializeAOE()
         KyzderpsDerps.InitializeSpamWindow()
     end
 
@@ -198,9 +210,9 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     end
     KyzderpsDerps.messages = {}
 
-    KDD_QuickSlots:Initialize()
+    KyzderpsDerps.InitializeQuickSlots()
     KyzderpsDerps.InitializeCompanion()
-    KDD_AntiSpud:Initialize()
+    KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.InitializeHodor()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
@@ -292,11 +304,11 @@ function KyzderpsDerps.handleCommand(argString)
 
     -- played
     elseif (args[1] == "played") then
-        CHAT_SYSTEM:AddMessage(PlayedChart.buildPlayed())
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildPlayed())
 
     -- points
     elseif (args[1] == "points") then
-        CHAT_SYSTEM:AddMessage(PlayedChart.buildPoints())
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildPoints())
 
     -- junk style pages
     elseif (args[1] == "junkstyle" or args[1] == "junkstyles") then

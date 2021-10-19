@@ -1,38 +1,20 @@
-PlayedChart = {
-    currentChar = GetUnitName("player")
-}
+KyzderpsDerps = KyzderpsDerps or {}
 
-local function updateSkillPoints()
-    KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar].availPoints = GetAvailableSkillPoints()
-end
-
-local function updatePlayedTime()
-    KyzderpsDerps.savedValues.playedChart.characters[PlayedChart.currentChar] = GetSecondsPlayed()
-    KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar].playedTime = GetSecondsPlayed() -- Start migrating
-end
-
-local function updateAll()
-    updatePlayedTime()
-    updateSkillPoints()
-end
+local currentChar = GetUnitName("player")
 
 ---------------------------------------------------------------------
--- Hooks
-function PlayedChart:Initialize()
-    KyzderpsDerps:dbg("    Initializing PlayedChart module...")
+local function UpdateSkillPoints()
+    KyzderpsDerps.savedValues.charInfo.characters[currentChar].availPoints = GetAvailableSkillPoints()
+end
 
-    if (not KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar]) then
-        KyzderpsDerps.savedValues.charInfo.characters[PlayedChart.currentChar] = {}
-    end
+local function UpdatePlayedTime()
+    KyzderpsDerps.savedValues.playedChart.characters[currentChar] = GetSecondsPlayed()
+    KyzderpsDerps.savedValues.charInfo.characters[currentChar].playedTime = GetSecondsPlayed() -- Start migrating
+end
 
-    updateAll()
-
-    ZO_PreHook("ReloadUI", updateAll)
-    ZO_PreHook("Logout", updateAll)
-    ZO_PreHook("SetCVar", updateAll)
-    ZO_PreHook("Quit", updateAll)
-
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SkillPoint", EVENT_SKILL_POINTS_CHANGED, updateSkillPoints)
+local function UpdateAll()
+    UpdatePlayedTime()
+    UpdateSkillPoints()
 end
 
 ---------------------------------------------------------------------
@@ -40,12 +22,12 @@ end
 local function spairs(t, order)
     -- collect the keys
     local keys = {}
-    for k in pairs(t) do keys[#keys+1] = k end
+    for k in pairs(t) do keys[#keys + 1] = k end
 
     -- if order function given, sort by it by passing the table and keys a, b,
     -- otherwise just sort the keys 
     if order then
-        table.sort(keys, function(a,b) return order(t, a, b) end)
+        table.sort(keys, function(a, b) return order(t, a, b) end)
     else
         table.sort(keys)
     end
@@ -62,8 +44,8 @@ end
 
 ---------------------------------------------------------------------
 -- Build the entire string for all played
-function PlayedChart.buildPlayed()
-    updatePlayedTime()
+function KyzderpsDerps.BuildPlayed()
+    UpdatePlayedTime()
 
     local result = "=== Time Played ==="
     local totalTime = 0
@@ -85,8 +67,8 @@ function PlayedChart.buildPlayed()
 end
 
 -- Build the entire string for available skill points
-function PlayedChart.buildPoints()
-    updateSkillPoints()
+function KyzderpsDerps.BuildPoints()
+    UpdateSkillPoints()
 
     local result = "=== Unspent Skill Points ==="
 
@@ -97,4 +79,23 @@ function PlayedChart.buildPoints()
     end
 
     return result
+end
+
+---------------------------------------------------------------------
+-- Hooks
+function KyzderpsDerps.InitializePlayedChart()
+    KyzderpsDerps:dbg("    Initializing PlayedChart module...")
+
+    if (not KyzderpsDerps.savedValues.charInfo.characters[currentChar]) then
+        KyzderpsDerps.savedValues.charInfo.characters[currentChar] = {}
+    end
+
+    UpdateAll()
+
+    ZO_PreHook("ReloadUI", UpdateAll)
+    ZO_PreHook("Logout", UpdateAll)
+    ZO_PreHook("SetCVar", UpdateAll)
+    ZO_PreHook("Quit", UpdateAll)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SkillPoint", EVENT_SKILL_POINTS_CHANGED, UpdateSkillPoints)
 end

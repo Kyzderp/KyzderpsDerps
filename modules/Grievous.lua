@@ -1,25 +1,7 @@
-Grievous = {}
+KyzderpsDerps = KyzderpsDerps or {}
 
-function Grievous:Initialize()
-    KyzderpsDerps:dbg("    Initializing Grievous module...")
-
-    -- Register
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "Grievous", EVENT_COMBAT_EVENT, self.OnCombatIn)
-    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "Grievous", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_DAMAGE)
-
-    -- Position
-    GrievousRetaliation:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
-        KyzderpsDerps.savedValues.grievous.x, KyzderpsDerps.savedValues.grievous.y)
-end
-
-function Grievous.SavePosition()
-    KyzderpsDerps.savedValues.grievous.x = GrievousRetaliation:GetLeft()
-    KyzderpsDerps.savedValues.grievous.y = GrievousRetaliation:GetTop()
-end
-
--- Grievous Retaliation 104646
 -- EVENT_COMBAT_EVENT (number eventCode, number ActionResult result, boolean isError, string abilityName, number abilityGraphic, number ActionSlotType abilityActionSlotType, string sourceName, number CombatUnitType sourceType, string targetName, number CombatUnitType targetType, number hitValue, number CombatMechanicType powerType, number DamageType damageType, boolean log, number sourceUnitId, number targetUnitId, number abilityId, number overflow)
-function Grievous.OnCombatIn(_, result, isError, aName, aGraphic, aActionSlotType, sName, sType, tName, tType, hitValue, pType, dType, log, sUnitId, tUnitId, abilityId)
+local function OnCombatIn(_, result, isError, aName, aGraphic, aActionSlotType, sName, sType, tName, tType, hitValue, pType, dType, log, sUnitId, tUnitId, abilityId)
     if (abilityId == 104646 and KyzderpsDerps.savedOptions.grievous.enable == true) then
         if (tType ~= COMBAT_UNIT_TYPE_PLAYER and KyzderpsDerps.savedOptions.grievous.selfOnly) then
             return
@@ -30,4 +12,12 @@ function Grievous.OnCombatIn(_, result, isError, aName, aGraphic, aActionSlotTyp
             EVENT_MANAGER:UnregisterForUpdate("KDD_HideGrievous")
         end)
     end
+end
+
+function KyzderpsDerps.InitializeGrievous()
+    KyzderpsDerps:dbg("    Initializing Grievous module...")
+
+    -- Register
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "Grievous", EVENT_COMBAT_EVENT, OnCombatIn)
+    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "Grievous", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_DAMAGE)
 end

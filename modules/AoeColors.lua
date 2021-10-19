@@ -1,4 +1,4 @@
-KDD_Aoe = {}
+KyzderpsDerps = KyzderpsDerps or {}
 
 local r, g, b = 0 -- avoid setting the color when not needed
 
@@ -24,6 +24,6 @@ local function OnBossesChanged()
     SetRGB(0, 255, 255)
 end
 
-function KDD_Aoe:Initialize()
+function KyzderpsDerps.InitializeAOE()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AoeColors", EVENT_BOSSES_CHANGED, OnBossesChanged)
 end

@@ -4,7 +4,7 @@
             <Dimensions x="100" y="50"/>
             <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
             <OnMoveStop>
-                CustomTargetName.SavePosition()
+                KyzderpsDerps.SavePosition()
             </OnMoveStop>
             <Controls>
                 <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|$(KB_48)|soft-shadow-thick" color="ffffff" text="Name" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
@@ -19,12 +19,9 @@
         </TopLevelControl>
 
 <!-- ======================================================================================================================= -->
-        <TopLevelControl name="GrievousRetaliation" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
+        <TopLevelControl name="GrievousRetaliation" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="true">
             <Dimensions x="0" y="50"/>
             <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
-            <OnMoveStop>
-                Grievous.SavePosition()
-            </OnMoveStop>
             <Controls>
                 <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
                     <Dimensions x="1000" y="50"/>
@@ -89,7 +86,7 @@
             <Dimensions x="304" y="124"/>
             <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
             <OnMoveStop>
-                SpawnTimer.SavePosition()
+                KyzderpsDerps.SavePosition()
             </OnMoveStop>
             <Controls>
                 <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="88000000" hidden="false">
@@ -112,7 +109,7 @@
                     <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="-2" offsetY="-2" />
                     <Dimensions x="32" y="32" />
                     <OnClicked>
-                        SpawnTimer.removeBoss(self:GetParent():GetNamedChild("BossText"):GetText())
+                        KyzderpsDerps.RemoveBoss(self:GetParent():GetNamedChild("BossText"):GetText())
                     </OnClicked>
                     <OnMouseEnter>
                         ZO_Tooltips_ShowTextTooltip(self, LEFT, "Remove " .. self:GetParent():GetNamedChild("BossText"):GetText() .. " from watched bosses")
@@ -126,7 +123,7 @@
                     <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="18" offsetY="-2" />
                     <Dimensions x="32" y="32" />
                     <OnClicked>
-                        SpawnTimer.printBoss(self:GetParent():GetNamedChild("BossText"):GetText())
+                        KyzderpsDerps.PrintBoss(self:GetParent():GetNamedChild("BossText"):GetText())
                     </OnClicked>
                     <OnMouseEnter>
                         ZO_Tooltips_ShowTextTooltip(self, LEFT, "Post the time remaining until spawn to chat")
@@ -153,7 +150,7 @@
             <Dimensions x="40" y="40"/>
             <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
             <OnMoveStop>
-                DeathAlert.SavePosition()
+                KyzderpsDerps.SavePosition()
             </OnMoveStop>
             <Controls>
                 <Backdrop name="$(parent)Backdrop" centerColor="75000000" edgeColor="88000000" hidden="true">

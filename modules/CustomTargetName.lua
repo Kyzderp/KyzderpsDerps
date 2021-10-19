@@ -1,22 +1,4 @@
-CustomTargetName = {}
-
-function CustomTargetName:Initialize()
-    KyzderpsDerps:dbg("    Initializing CustomTargetName module...")
-
-    -- Register
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_RETICLE_TARGET_CHANGED, self.OnReticleTargetChanged)
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "CustomTargetPlayerActivated", EVENT_PLAYER_ACTIVATED, self.OnReticleTargetChanged)
-
-    -- Position
-    CustomTargetCustomName:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
-        KyzderpsDerps.savedValues.customTargetFrame.x,
-        KyzderpsDerps.savedValues.customTargetFrame.y)
-end
-
-function CustomTargetName.SavePosition()
-    KyzderpsDerps.savedValues.customTargetFrame.x = CustomTargetCustomName:GetLeft()
-    KyzderpsDerps.savedValues.customTargetFrame.y = CustomTargetCustomName:GetTop()
-end
+KyzderpsDerps = KyzderpsDerps or {}
 
 local attributeVisuals = {
     [ATTRIBUTE_VISUAL_AUTOMATIC] = "AUTOMATIC",
@@ -100,7 +82,7 @@ local mechanicTypes = {
 }
 
 -- EVENT_RETICLE_TARGET_CHANGED(number eventCode)
-function CustomTargetName.OnReticleTargetChanged()
+local function OnReticleTargetChanged()
     local targetName = GetUnitName("reticleover")
 
     if (targetName == "") then
@@ -135,12 +117,12 @@ function CustomTargetName.OnReticleTargetChanged()
         end
 
         if (customName ~= "") then
-            CustomTargetName.recentPlayer = targetName
+            KyzderpsDerps.recentPlayer = targetName
         end
 
     ------------------------------------------------------------
     else -- NPCs
-        CustomTargetName.recentNpc = targetName
+        KyzderpsDerps.recentNpc = targetName
         if (not KyzderpsDerps.savedOptions.customTargetFrame.npc.enable) then
             if (KyzderpsDerps.savedOptions.customTargetFrame.move == false) then
                 CustomTargetCustomName:SetHidden(true)
@@ -159,7 +141,7 @@ function CustomTargetName.OnReticleTargetChanged()
         end
 
         if (customName ~= "") then
-            CustomTargetName.recentNpc = targetName
+            KyzderpsDerps.recentNpc = targetName
         end
     end
 
@@ -193,4 +175,18 @@ function CustomTargetName.OnReticleTargetChanged()
     elseif (KyzderpsDerps.savedOptions.customTargetFrame.move == false) then
         CustomTargetCustomName:SetHidden(true)
     end
+end
+
+---------------------------------------------------------------------
+function KyzderpsDerps.InitializeCustomTargetName()
+    KyzderpsDerps:dbg("    Initializing CustomTargetName module...")
+
+    -- Register
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_RETICLE_TARGET_CHANGED, OnReticleTargetChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "CustomTargetPlayerActivated", EVENT_PLAYER_ACTIVATED, OnReticleTargetChanged)
+
+    -- Position
+    CustomTargetCustomName:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
+        KyzderpsDerps.savedValues.customTargetFrame.x,
+        KyzderpsDerps.savedValues.customTargetFrame.y)
 end

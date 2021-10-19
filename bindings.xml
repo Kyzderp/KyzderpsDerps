@@ -2,13 +2,13 @@
     <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
         <Category name="Kyzderp's Derps">
             <Action name="KDD_QUICKSLOT_1">
-                <Down>KDD_QuickSlots:SelectSlot(1)</Down>
+                <Down>KyzderpsDerps.SelectQuickSlot(1)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_2">
-                <Down>KDD_QuickSlots:SelectSlot(2)</Down>
+                <Down>KyzderpsDerps.SelectQuickSlot(2)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_3">
-                <Down>KDD_QuickSlots:SelectSlot(3)</Down>
+                <Down>KyzderpsDerps.SelectQuickSlot(3)</Down>
             </Action>
             <Action name="KDD_PRINTPOS">
                 <Down>KyzderpsDerps.PrintCurrentPosition()</Down>

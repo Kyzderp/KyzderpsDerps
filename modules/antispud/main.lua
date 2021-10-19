@@ -1,5 +1,7 @@
-KDD_AntiSpud = KDD_AntiSpud or {}
-local Spud = KDD_AntiSpud
+KyzderpsDerps = KyzderpsDerps or {}
+
+KyzderpsDerps.AntiSpud = KyzderpsDerps.AntiSpud or {}
+local Spud = KyzderpsDerps.AntiSpud
 
 --[[
 summon pets after dying
@@ -35,7 +37,7 @@ function Spud.IsDoingGroupPVE()
     -- d(string.format("|cAAAAAAIsActiveWorldGroupOwnable: " .. tostring(IsActiveWorldGroupOwnable()) .. "|r"))
 
     if (IsUnitInDungeon("player")) then
-        return SpawnTimer.DUNGEON_ZONEIDS[tostring(zoneId)] ~= nil or SpawnTimer.TRIAL_ZONEIDS[tostring(zoneId)] ~= nil
+        return KyzderpsDerps.DUNGEON_ZONEIDS[tostring(zoneId)] ~= nil or KyzderpsDerps.TRIAL_ZONEIDS[tostring(zoneId)] ~= nil
     end
 
     -- TODO: check LFG queue
@@ -139,7 +141,7 @@ end
 
 ---------------------------------------------------------------------
 -- Entry
-function Spud:Initialize()
+function Spud.Initialize()
     KyzderpsDerps:dbg("    Initializing AntiSpud module...")
 
     if (KyzderpsDerps.savedOptions.antispud.equipped.enable) then
