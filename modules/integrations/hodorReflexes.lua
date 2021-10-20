@@ -7,7 +7,7 @@ local initialized = false
 -- /script HodorReflexes.modules.share.UpdatePlayerData("group3", 0, 1, 0, 0, 0)
 local function Unhorn(atName)
     if (not atName or atName == "") then
-        d("Usage: /unhorn <@name>")
+        KyzderpsDerps:msg("Usage: /unhorn <@name>")
         return
     end
 
@@ -15,9 +15,12 @@ local function Unhorn(atName)
         local unitTag = "group" .. tostring(i)
         if (GetUnitDisplayName(unitTag) == atName) then
             HodorReflexes.modules.share.UpdatePlayerData(unitTag, 0, 1, 0, 0, 0)
+            KyzderpsDerps:msg("Updating player data for " .. unitTag .. " to maybe reset horn")
             return
         end
     end
+
+    KyzderpsDerps:msg("Couldn't find player " .. atName .. " in group!")
 end
 
 ---------------------------------------------------------------------
@@ -85,13 +88,14 @@ end
 ---------------------------------------------------------------------
 function KyzderpsDerps.InitializeHodor()
     if (not HodorReflexes) then return end
+    SLASH_COMMANDS["/unhorn"] = Unhorn
+
     if (not KyzderpsDerps.savedOptions.hodor.horn) then return end
 
     KyzderpsDerps:dbg("    Initializing Hodor integration...")
 
     if (initialized) then return end
 
-    SLASH_COMMANDS["/unhorn"] = Unhorn
 
     initialized = true
     local origFunction = HodorReflexes.modules.share.RefreshControls
