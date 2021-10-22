@@ -53,10 +53,6 @@ function KyzderpsDerps.SelectQuickSlot(index)
 end
 
 function KyzderpsDerps.InitializeQuickSlots()
-    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_1", "Select Quickslot 1")
-    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_2", "Select Quickslot 2")
-    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_3", "Select Quickslot 3")
-
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "QuickSlot", EVENT_ACTIVE_QUICKSLOT_CHANGED, OnSlotChanged)
 
     QUICKSLOT_FRAGMENT:RegisterCallback("StateChange", function(oldState, newState)

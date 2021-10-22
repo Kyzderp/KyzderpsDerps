@@ -1,5 +1,5 @@
 <Bindings>
-    <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+    <Layer name="SI_KEYBINDINGS_CATEGORY_GENERAL">
         <Category name="Kyzderp's Derps">
             <Action name="KDD_QUICKSLOT_1">
                 <Down>KyzderpsDerps.SelectQuickSlot(1)</Down>

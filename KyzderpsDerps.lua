@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.10.1"
+KyzderpsDerps.version = "1.10.2"
 
 -- Defaults
 local defaultOptions = {
@@ -81,6 +81,8 @@ local defaultOptions = {
         horn = false,
         hornLabel = false,
     },
+    muhVitality = {
+    },
 }
 
 local defaultValues = {
@@ -124,7 +126,11 @@ local defaultValues = {
     },
     charInfo = {
         characters = {},
-    }
+    },
+    muhVitality = {
+        x = GuiRoot:GetWidth(),
+        y = 0,
+    },
 }
 
 ---------------------------------------------------------------------
@@ -137,6 +143,9 @@ function KyzderpsDerps.SavePosition()
 
     KyzderpsDerps.savedValues.spawnTimer.x = SpawnTimerContainer:GetLeft()
     KyzderpsDerps.savedValues.spawnTimer.y = SpawnTimerContainer:GetTop()
+
+    KyzderpsDerps.savedValues.muhVitality.x = MuhVitality:GetLeft()
+    KyzderpsDerps.savedValues.muhVitality.y = MuhVitality:GetTop()
 end
 
 ---------------------------------------------------------------------
@@ -154,14 +163,18 @@ function KyzderpsDerps:Initialize()
     KyzderpsDerps.InitializeSpawnTimer()
     KyzderpsDerps.InitializeDeathAlert()
     KyzderpsDerps.InitializePlayedChart()
-    KyzderpsDerps.InitializeKHouse() -- I think I want to use this format from now on. Gotta refactor.
+    KyzderpsDerps.InitializeKHouse()
 
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_1", "Select Quickslot 1")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_2", "Select Quickslot 2")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_3", "Select Quickslot 3")
 
     if (KyzderpsDerps.savedOptions.general.experimental) then
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
         KyzderpsDerps.InitializeAOE()
         KyzderpsDerps.InitializeSpamWindow()
+        KyzderpsDerps.InitializeMuhVitality() -- TODO: move out of experimental
     end
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still

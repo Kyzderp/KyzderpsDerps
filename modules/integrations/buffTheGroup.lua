@@ -78,8 +78,8 @@ local function UpdateBuffTheGroup(equippedSets)
         SetBTG(2, true)
     end
 
-    KyzderpsDerps:dbg("Enabled in BuffTheGroup: " .. table.concat(enabledBTG, ", "))
-    KyzderpsDerps:dbg("Disabled in BuffTheGroup: " .. table.concat(disabledBTG, ", "))
+    -- KyzderpsDerps:dbg("Enabled in BuffTheGroup: " .. table.concat(enabledBTG, ", "))
+    -- KyzderpsDerps:dbg("Disabled in BuffTheGroup: " .. table.concat(disabledBTG, ", "))
 
     btg.CheckActivation()
 end

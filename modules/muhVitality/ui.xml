@@ -1,0 +1,22 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="MuhVitalityContainer" mouseEnabled="false" movable="false">
+            <Controls>
+<!-- ======================================================================================================================= -->
+                <Control name="MuhVitality" clampedToScreen="true" mouseEnabled="true" movable="true" hidden="true">
+                    <Dimensions x="4" y="4"/>
+                    <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+                    <OnMoveStop>
+                        KyzderpsDerps.SavePosition()
+                    </OnMoveStop>
+                    <Controls>
+                        <Backdrop name="$(parent)Backdrop" centerColor="75000000" hidden="false">
+                            <AnchorFill/>
+                        </Backdrop>
+                    </Controls>
+                </Control>
+<!-- ======================================================================================================================= -->
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>
