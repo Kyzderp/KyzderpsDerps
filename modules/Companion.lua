@@ -192,8 +192,4 @@ function KyzderpsDerps.InitializeCompanion()
         }
         KyzderpsDerps:dbg(zo_strformat("companion state: <<1>> -> <<2>>", companionState[oldState], companionState[newState]))
     end)
-
-    -- Shortcut commands
-    SLASH_COMMANDS["/bastian"] = function() UseCollectible(9245) end
-    SLASH_COMMANDS["/mirri"] = function() UseCollectible(9353) end
 end

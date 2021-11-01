@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.10.2"
+KyzderpsDerps.version = "1.10.3"
 
 -- Defaults
 local defaultOptions = {
@@ -147,70 +147,10 @@ function KyzderpsDerps.SavePosition()
     KyzderpsDerps.savedValues.muhVitality.x = MuhVitality:GetLeft()
     KyzderpsDerps.savedValues.muhVitality.y = MuhVitality:GetTop()
 end
-
----------------------------------------------------------------------
--- Initialize 
-function KyzderpsDerps:Initialize()
-    -- Settings and saved variables
-    self.savedOptions = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Options", defaultOptions)
-    self.savedValues = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Values", defaultValues)
-
-    KyzderpsDerps:dbg("Initializing Kyzderp's Derps...")
-
-    -- Initialize modules
-    KyzderpsDerps.InitializeCustomTargetName()
-    KyzderpsDerps.InitializeGrievous()
-    KyzderpsDerps.InitializeSpawnTimer()
-    KyzderpsDerps.InitializeDeathAlert()
-    KyzderpsDerps.InitializePlayedChart()
-    KyzderpsDerps.InitializeKHouse()
-
-    ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
-    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_1", "Select Quickslot 1")
-    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_2", "Select Quickslot 2")
-    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_3", "Select Quickslot 3")
-
-    if (KyzderpsDerps.savedOptions.general.experimental) then
-        ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
-        KyzderpsDerps.InitializeAOE()
-        KyzderpsDerps.InitializeSpamWindow()
-        KyzderpsDerps.InitializeMuhVitality() -- TODO: move out of experimental
-    end
-
-    -- Initialize some tables: this is a workaround in order to populate tables with default values but still
-    -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
-    if (self.savedOptions.spawnTimer.ignoreListFirstTime) then
-        self.savedOptions.spawnTimer.ignoreListFirstTime = false
-        self.savedOptions.spawnTimer.ignoreList = {
-            ["Bone Colossus"] = true,
-            ["Dremora Kynreeve"] = true,
-            ["Seducer Predator"] = true,
-            ["Watcher"] = true,
-        }
-        KyzderpsDerps:dbg("Populated boss timer ignore list defaults")
-    end
-
-    -- This needs to go after the options changes obviously... dumb programmer
-    KyzderpsDerps:CreateSettingsMenu()
-
-    KyzderpsDerps:dbg("Kyzderp's Derps initialized!")
-end
  
----------------------------------------------------------------------
--- On Load
-function KyzderpsDerps.OnAddOnLoaded(_, addonName)
-    if addonName == KyzderpsDerps.name then
-        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name, EVENT_ADD_ON_LOADED)
-        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_PLAYER_ACTIVATED, KyzderpsDerps.OnPlayerActivated)
-        KyzderpsDerps:Initialize()
-    end
-end
- 
-EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_ADD_ON_LOADED, KyzderpsDerps.OnAddOnLoaded)
-
 ---------------------------------------------------------------------
 -- Post Load (player loaded) one-time only
-function KyzderpsDerps.OnPlayerActivated(_, initial)
+local function OnPlayerActivated(_, initial)
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name, EVENT_PLAYER_ACTIVATED)
 
     -- Soft dependency on pChat because its chat restore will overwrite
@@ -268,118 +208,64 @@ function KyzderpsDerps:msg(msg)
 end
 
 ---------------------------------------------------------------------
--- Commands
-function KyzderpsDerps.handleCommand(argString)
-    local args = {}
-    local length = 0
-    for word in argString:gmatch("%S+") do
-        table.insert(args, word)
-        length = length + 1
+-- Initialize 
+local function Initialize()
+    -- Settings and saved variables
+    KyzderpsDerps.savedOptions = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Options", defaultOptions)
+    KyzderpsDerps.savedValues = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Values", defaultValues)
+
+    KyzderpsDerps:dbg("Initializing Kyzderp's Derps...")
+
+    KyzderpsDerps.InitializeCommands()
+
+    -- Initialize modules
+    KyzderpsDerps.InitializeCustomTargetName()
+    KyzderpsDerps.InitializeGrievous()
+    KyzderpsDerps.InitializeSpawnTimer()
+    KyzderpsDerps.InitializeDeathAlert()
+    KyzderpsDerps.InitializePlayedChart()
+    KyzderpsDerps.InitializeKHouse()
+
+
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_1", "Select Quickslot 1")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_2", "Select Quickslot 2")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_3", "Select Quickslot 3")
+
+    if (KyzderpsDerps.savedOptions.general.experimental) then
+        ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
+        KyzderpsDerps.InitializeAOE()
+        KyzderpsDerps.InitializeSpamWindow()
+        KyzderpsDerps.InitializeMuhVitality() -- TODO: move out of experimental
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || junkstyle>"
-
-    if (length == 0) then
-        CHAT_SYSTEM:AddMessage(usage)
-        return
+    -- Initialize some tables: this is a workaround in order to populate tables with default values but still
+    -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
+    if (KyzderpsDerps.savedOptions.spawnTimer.ignoreListFirstTime) then
+        KyzderpsDerps.savedOptions.spawnTimer.ignoreListFirstTime = false
+        KyzderpsDerps.savedOptions.spawnTimer.ignoreList = {
+            ["Bone Colossus"] = true,
+            ["Dremora Kynreeve"] = true,
+            ["Seducer Predator"] = true,
+            ["Watcher"] = true,
+        }
+        KyzderpsDerps:dbg("Populated boss timer ignore list defaults")
     end
 
-    KyzderpsDerps:dbg(args)
+    -- This needs to go after the options changes obviously... dumb programmer
+    KyzderpsDerps:CreateSettingsMenu()
 
-    -- Toggle grievous retaliation overlay
-    if (args[1] == "grievous") then
-        GrievousRetaliation:SetHidden(not GrievousRetaliation:IsHidden())
-
-    -- List bosses for debug
-    elseif (args[1] == "listbosses") then
-        for i = 1, MAX_BOSSES do
-            if (DoesUnitExist("boss"..i)) then
-                CHAT_SYSTEM:AddMessage("boss"..i.." is "..GetUnitName("boss"..i))
-            else
-                CHAT_SYSTEM:AddMessage("boss"..i.." does not exist")
-            end
-        end
-
-    -- toggle bosstimer
-    elseif (args[1] == "bosstimer") then
-        KyzderpsDerps.savedOptions.spawnTimer.enable = not KyzderpsDerps.savedOptions.spawnTimer.enable
-        SpawnTimerContainer:SetHidden(not SpawnTimerContainer:IsHidden())
-        if (WINDOW_MANAGER:GetControlByName("KyzderpsDerps#SpawnTimerEnable")) then
-            WINDOW_MANAGER:GetControlByName("KyzderpsDerps#SpawnTimerEnable"):UpdateValue()
-        end
-
-    -- test death
-    elseif (args[1] == "death") then
-        if (length > 1) then
-            DeathAlert.OnDeathStateChanged(1, args[2], true)
-        else
-            DeathAlert.OnDeathStateChanged(1, "group1", true)
-        end
-
-    -- played
-    elseif (args[1] == "played") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildPlayed())
-
-    -- points
-    elseif (args[1] == "points") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildPoints())
-
-    -- junk style pages
-    elseif (args[1] == "junkstyle" or args[1] == "junkstyles") then
-        local junkedItems = {}
-        local bagCache = SHARED_INVENTORY:GetOrCreateBagCache(BAG_BACKPACK)
-        for _, item in pairs(bagCache) do
-            -- Skip items that are already junk, obviously
-            if (not IsItemJunk(item.bagId, item.slotIndex)) then
-                local itemLink = GetItemLink(item.bagId, item.slotIndex, LINK_STYLE_BRACKETS)
-                local itemType, specializedType = GetItemLinkItemType(itemLink)
-                if (itemType == ITEMTYPE_CONTAINER and specializedType == SPECIALIZED_ITEMTYPE_CONTAINER_STYLE_PAGE) then
-                    SetItemIsJunk(item.bagId, item.slotIndex, true)
-                    if (not junkedItems[itemLink]) then
-                        junkedItems[itemLink] = 0
-                    end
-                    junkedItems[itemLink] = junkedItems[itemLink] + 1
-                end
-            end
-        end
-
-        local displayMessage = "Marked the following items as junk:"
-        for itemLink, num in pairs(junkedItems) do
-            displayMessage = string.format("%s\n|cDDDDDD%s x%d", displayMessage, itemLink, num)
-        end
-        KyzderpsDerps:msg(displayMessage)
-
-    -- Unknown
-    else
-        CHAT_SYSTEM:AddMessage(usage)
-    end
+    KyzderpsDerps:dbg("Kyzderp's Derps initialized!")
 end
 
-local function FixUI()
-    if (MajorCourageTracker) then
-        MajorCourageTracker.Reset()
-    end
-    if (PurgeTracker) then
-        PurgeTracker.Reset()
-    end
-    if (HealerBFF) then
-        HealerBFF.Reset()
-    end
-    if (JoGroup) then
-        JoGroup.ReAnchor()
+---------------------------------------------------------------------
+-- On Load
+local function OnAddOnLoaded(_, addonName)
+    if addonName == KyzderpsDerps.name then
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name, EVENT_ADD_ON_LOADED)
+        Initialize()
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
     end
 end
-
-local function ToggleLuiIds()
-    if (not LUIE or not LUIE.SpellCastBuffs) then
-        KyzderpsDerps:msg("LUI SpellCastBuffs is not enabled")
-        return
-    end
-    LUIE.SpellCastBuffs.SV.ShowDebugAbilityId = not LUIE.SpellCastBuffs.SV.ShowDebugAbilityId
-    LUIE.SpellCastBuffs.Reset()
-    KyzderpsDerps:msg("Toggled showing IDs on LUI buffs/debuffs")
-end
-
-SLASH_COMMANDS["/kdd"] = KyzderpsDerps.handleCommand
-SLASH_COMMANDS["/fixui"] = FixUI
-SLASH_COMMANDS["/ids"] = ToggleLuiIds
+ 
+EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
