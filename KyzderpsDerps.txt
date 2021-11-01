@@ -18,6 +18,7 @@ modules/AoeColors.lua
 modules/KHouse.lua
 modules/Companion.lua
 modules/InWorldWaypoint.lua
+modules/Hooks.lua
 
 modules/antispud/main.lua
 modules/antispud/mundus.lua
@@ -31,6 +32,7 @@ modules/muhVitality/main.lua
 modules/muhVitality/ui.xml
 
 modules/debug/spamWindow.lua
+modules/debug/debugUtils.lua
 modules/debug/spamWindow.xml
 
 KyzderpsDerps.lua

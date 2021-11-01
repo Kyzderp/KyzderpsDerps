@@ -94,6 +94,7 @@ local BOSS_NAMES = {
 
 -- Glenumbra
     ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
+    ["Valenwe"] = true, -- Delve: Cryptwatch Fort
 
 -- Grahtwood
     ["Great Thorn"] = 300, -- PD: Rood Sunder Ruins
@@ -102,11 +103,15 @@ local BOSS_NAMES = {
     ["Thick-Bark"] = 300, -- PD: Rood Sunder Ruins
     ["Silent Claw"] = 300, -- PD: Rood Sunder Ruins
 
+-- Greenshade
+    ["Maormer Camp"] = true, -- WB: Maormer Camp
+
 -- Malabal Tor
     ["Arrai"] = true, -- Delve: Shael Ruins
 
 -- Reaper's March
     ["Sergeant Atilus"] = 300, -- PD: Vile Manse
+    ["Limbrender"] = true, -- Delve: Kuna's Delve
 
 -- Shadowfen
     ["Drel"] = 305, -- PD: Sanguine's Demense
@@ -214,8 +219,29 @@ local BOSS_GROUPS = {
     ["Vonshala"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
     ["Sumeer"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
 
+-- Blackwood
+    ["Bhrum"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
+    ["Koska"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
+    ["Yaxhat Deathmaker"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+    ["Veesha the Swamp Mystic"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+    ["Shuvh-Mok"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+    ["Nukhujeema"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+
 -- Craglorn
     ["Troll Colossus"] = "GetPlayerLocationName", -- Nirncrux Mine
+
+-- Greenshade
+    ["Neiral"] = "Maormer Camp", -- WB: Maormer Camp
+    ["Jahlasri"] = "Maormer Camp", -- WB: Maormer Camp
+    ["Hetsha"] = "Maormer Camp", -- WB: Maormer Camp
+
+-- Northern Elsweyr
+    ["Zav'i"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run
+    ["Akumjhargo"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run
+
+-- Reaper's March
+    ["Varien"] = "Reaper's Henge", -- WB: Reaper's Henge
+    ["Gravecaller Niramo"] = "Reaper's Henge", -- WB: Reaper's Henge
 
 -- Summerset
     ["Ruella Many-Claws"] = "GetPlayerLocationName", -- Abyssal Geyser
@@ -228,18 +254,6 @@ local BOSS_GROUPS = {
     ["Eejoba the Radiant"] = "GetPlayerLocationName", -- Abyssal Geyser - Wispmother
     ["Tidewrack"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Lurcher
     ["Vsskalvor"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Viper
-
--- Northern Elsweyr
-    ["Zav'i"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run
-    ["Akumjhargo"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run
-
--- Blackwood
-    ["Bhrum"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
-    ["Koska"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
-    ["Yaxhat Deathmaker"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
-    ["Veesha the Swamp Mystic"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
-    ["Shuvh-Mok"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
-    ["Nukhujeema"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
 }
 
 ---------------------------------------------------------------------------------------------------

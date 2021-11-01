@@ -227,6 +227,7 @@ function KyzderpsDerps.OnPlayerActivated(_, initial)
     KyzderpsDerps.InitializeCompanion()
     KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.InitializeHodor()
+    KyzderpsDerps.InitializeHooks()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
     end
