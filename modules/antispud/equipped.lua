@@ -237,6 +237,8 @@ function Spud.InitializeEquipped()
         REGISTER_FILTER_BAG_ID, BAG_WORN,
         REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DEFAULT)
 
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ArmoryEquipped", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, CheckAllSlots)
+
     zo_callLater(CheckAllSlots, 1000)
 end
 

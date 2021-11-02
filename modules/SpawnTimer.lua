@@ -94,6 +94,10 @@ local BOSS_NAMES = {
 
 -- Glenumbra
     ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
+    ["Skitterflame"] = 300, -- PD: Bad Man's Hallows - Incineration BEEEEEEEETLE
+    ["Bloatgut"] = 300, -- PD: Bad Man's Hallows - Hoarvor
+    ["Bloodcraw"] = 300, -- PD: Bad Man's Hallows - Hoarvor
+    ["Gaetane"] = 305, -- Delve: Ilessan Tower
     ["Valenwe"] = true, -- Delve: Cryptwatch Fort
 
 -- Grahtwood
