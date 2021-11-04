@@ -83,6 +83,9 @@ local function FixUI()
     if (JoGroup) then
         JoGroup.ReAnchor()
     end
+    if (btg) then
+        btg.CheckActivation()
+    end
 end
 
 local function ToggleLuiIds()

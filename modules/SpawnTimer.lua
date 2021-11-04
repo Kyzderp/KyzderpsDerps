@@ -78,6 +78,12 @@ local BOSS_NAMES = {
 
 -- Blackwood
     ["Havocrel Duke of Storms"] = 311, -- Oblivion Portal
+    ["Bhrum / Koska"] = 331, -- WB
+    ["War Chief Zathmoz"] = 313, -- WB - I sat at one once that took over 20 minutes to spawn... weird. But after that was 5:03. He takes a while to become damageable though, so this is the damageable timer
+    ["Xeemhok the Trophy-Taker"] = 313, -- WB
+    ["Old Deathwart"] = 330, -- WB
+    ["Ghemvas the Harbinger"] = 302, -- WB
+    ["Sul-Xan Ritual Site"] = 301, -- WB
 
 -- Bangkorai
     ["Curnard the Generous"] = true, -- Delve: Viridian Watch
@@ -91,6 +97,10 @@ local BOSS_NAMES = {
     ["Defunct Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
     ["Overrun Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
     ["Pillaged Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
+
+-- Deadlands
+    ["The Unmaker"] = 315, -- WB: The Unmaker - doesn't become damageable until 5:15
+    ["Taupezu Azzida"] = 312, -- WB: The Abomination Cradle - doesn't become damageable until 5:12 ish?
 
 -- Glenumbra
     ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
@@ -113,6 +123,11 @@ local BOSS_NAMES = {
 -- Malabal Tor
     ["Arrai"] = true, -- Delve: Shael Ruins
 
+-- Northern Elsweyr
+    ["Dragon"] = 620, -- It spawns on the map at around 10:20 (or at least, once), but landed at 11:00
+    ["Lieutenant Kurzatha"] = 300, -- PD: Rimmen Necropolis
+    ["Lieutenant Fazumir"] = 300, -- PD: Rimmen Necropolis
+
 -- Reaper's March
     ["Sergeant Atilus"] = 300, -- PD: Vile Manse
     ["Limbrender"] = true, -- Delve: Kuna's Delve
@@ -124,6 +139,7 @@ local BOSS_NAMES = {
 -- Stonefalls
     ["The Moonlit Maiden"] = 305, -- PD: Crow's Wood - Wispmother next to skyshard
     ["Buron"] = 305, -- PD: Crow's Wood - Ghost in cave
+    ["Aurig Mireh"] = 307, -- WB
 
 -- Summerset
     ["Direnni Abyssal Geyser"] = 645, -- Abyssal Geyser
@@ -134,11 +150,6 @@ local BOSS_NAMES = {
     ["Sunhold Abyssal Geyser"] = 645, -- Abyssal Geyser
     ["Welkadra"] = 305, -- PD: Sunhold - Echatere closest to entrance
 
--- Northern Elsweyr
-    ["Dragon"] = 620, -- It spawns on the map at around 10:20 (or at least, once), but landed at 11:00
-    ["Lieutenant Kurzatha"] = 300, -- PD: Rimmen Necropolis
-    ["Lieutenant Fazumir"] = 300, -- PD: Rimmen Necropolis
-
 -- Southern Elsweyr
     ["Ri'Atahrashi"] = 600, -- WB
     ["Iratan the Lightbringer"] = 600, -- WB
@@ -146,14 +157,6 @@ local BOSS_NAMES = {
 -- Western Skyrim
     ["Shademother"] = 606, -- WB
     ["Tulnir"] = 301, -- PD: Labyrinthian - Exterior altar
-
--- Blackwood
-    ["Bhrum / Koska"] = 331, -- WB
-    ["War Chief Zathmoz"] = 313, -- WB - I sat at one once that took over 20 minutes to spawn... weird. But after that was 5:03. He takes a while to become damageable though, so this is the damageable timer
-    ["Xeemhok the Trophy-Taker"] = 313, -- WB
-    ["Old Deathwart"] = 330, -- WB
-    ["Ghemvas the Harbinger"] = 302, -- WB
-    ["Sul-Xan Ritual Site"] = 301, -- WB
 
 -- Cyrodiil
     ["Bear Matriarch"] = 302, -- Delve: Temple to the Divines

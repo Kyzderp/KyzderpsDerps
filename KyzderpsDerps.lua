@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.10.4"
+KyzderpsDerps.version = "1.10.5"
 
 -- Defaults
 local defaultOptions = {
@@ -170,6 +170,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.InitializeHooks()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
+        if (btg) then btg.debug = true end
     end
 
     if (KyzderpsDerps.savedOptions.misc.loginCollectible ~= 0) then
