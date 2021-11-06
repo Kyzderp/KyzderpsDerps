@@ -4,6 +4,11 @@ local indexToSlotIndex = {
     [1] = 12,
     [2] = 11,
     [3] = 10,
+    [4] =  9,
+    [5] = 16,
+    [6] = 15,
+    [7] = 14,
+    [8] = 13,
 }
 
 local slotIndexToIndex = {

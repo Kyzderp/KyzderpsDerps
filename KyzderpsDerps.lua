@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.10.5"
+KyzderpsDerps.version = "1.11.0"
 
 -- Defaults
 local defaultOptions = {
@@ -74,6 +74,7 @@ local defaultOptions = {
                 minorBerserk = false,
                 majorResolve = false,
                 empower = false,
+                spaulder = false,
             },
         },
     },
@@ -232,6 +233,11 @@ local function Initialize()
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_1", "Select Quickslot 1")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_2", "Select Quickslot 2")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_3", "Select Quickslot 3")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_4", "Select Quickslot 4")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_5", "Select Quickslot 5")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_6", "Select Quickslot 6")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_7", "Select Quickslot 7")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_8", "Select Quickslot 8")
 
     if (KyzderpsDerps.savedOptions.general.experimental) then
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")

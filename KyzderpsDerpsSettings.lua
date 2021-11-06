@@ -57,6 +57,120 @@ local collectibleNames = {
     "- None -", -- None
 }
 
+local function CreateBTGSettings()
+    local controls = {
+            {
+                type = "description",
+                title = "Buff The Group Integration",
+                text = "The following settings enable or disable Buff The Group addon's frames based on your equipped sets and skills. If turned OFF, the frame for that buff will not be changed, so it retains your own settings. \"Anti-Spud > Check equipped items\" above must be enabled for this to work.",
+                width = "full",
+            },
+            {
+                type = "checkbox",
+                name = "Auto toggle Powerful Assault",
+                tooltip = "Enable or disable Powerful Assault frame if you are wearing Powerful Assault",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pa end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pa = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            },
+            {
+                type = "checkbox",
+                name = "Auto toggle Major Slayer",
+                tooltip = "Enable or disable Major Slayer frame if you are wearing Roaring Opportunist, Master Architect, or War Machine",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorSlayer end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorSlayer = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            },
+            {
+                type = "checkbox",
+                name = "Auto toggle Major Courage",
+                tooltip = "Enable or disable Major Courage frame if you are wearing Olorime or Spell Power Cure",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorCourage end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorCourage = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            },
+            {
+                type = "checkbox",
+                name = "Auto toggle Minor Berserk",
+                tooltip = "Enable or disable Minor Berserk frame if you have slotted Combat Prayer",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            },
+            {
+                type = "checkbox",
+                name = "Auto toggle Major Resolve",
+                tooltip = "Enable or disable Major Resolve frame if you have slotted Expansive Frost Cloak",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorResolve end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorResolve = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            },
+            {
+                type = "checkbox",
+                name = "Auto toggle Empower",
+                tooltip = "Enable or disable Empower frame if you have slotted Empowering Grasp or are wearing Galenwe",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            },
+        }
+
+    if (btg and btgData and btgData.buffs[19] == zo_strformat(SI_ABILITY_NAME, GetAbilityName(163401))) then
+        table.insert(controls, {
+                type = "checkbox",
+                name = "Auto toggle Aura of Pride",
+                tooltip = "Enable or disable Aura of Pride frame if you are wearing Spaulder of Ruin",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.spaulder end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.spaulder = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            })
+    end
+
+    return controls
+end
+
 function KyzderpsDerps:CreateSettingsMenu()
     local LAM = LibAddonMenu2
     -- Register the Options panel with LAM
@@ -791,98 +905,7 @@ function KyzderpsDerps:CreateSettingsMenu()
         {
             type = "submenu",
             name = "Buff The Group",
-            controls = {
-                {
-                    type = "description",
-                    title = "Buff The Group Integration",
-                    text = "The following settings enable or disable Buff The Group addon's frames based on your equipped sets and skills. If turned OFF, the frame for that buff will not be changed, so it retains your own settings. \"Anti-Spud > Check equipped items\" above must be enabled for this to work.",
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Auto toggle Powerful Assault",
-                    tooltip = "Enable or disable Powerful Assault frame if you are wearing Powerful Assault",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pa end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pa = value
-                    end,
-                    width = "full",
-                    disabled = function()
-                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
-                    end,
-                },
-                {
-                    type = "checkbox",
-                    name = "Auto toggle Major Slayer",
-                    tooltip = "Enable or disable Major Slayer frame if you are wearing Roaring Opportunist, Master Architect, or War Machine",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorSlayer end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorSlayer = value
-                    end,
-                    width = "full",
-                    disabled = function()
-                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
-                    end,
-                },
-                {
-                    type = "checkbox",
-                    name = "Auto toggle Major Courage",
-                    tooltip = "Enable or disable Major Courage frame if you are wearing Olorime or Spell Power Cure",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorCourage end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorCourage = value
-                    end,
-                    width = "full",
-                    disabled = function()
-                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
-                    end,
-                },
-                {
-                    type = "checkbox",
-                    name = "Auto toggle Minor Berserk",
-                    tooltip = "Enable or disable Minor Berserk frame if you have slotted Combat Prayer",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk = value
-                    end,
-                    width = "full",
-                    disabled = function()
-                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
-                    end,
-                },
-                {
-                    type = "checkbox",
-                    name = "Auto toggle Major Resolve",
-                    tooltip = "Enable or disable Major Resolve frame if you have slotted Expansive Frost Cloak",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorResolve end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorResolve = value
-                    end,
-                    width = "full",
-                    disabled = function()
-                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
-                    end,
-                },
-                {
-                    type = "checkbox",
-                    name = "Auto toggle Empower",
-                    tooltip = "Enable or disable Empower frame if you have slotted Empowering Grasp or are wearing Galenwe",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower = value
-                    end,
-                    width = "full",
-                    disabled = function()
-                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
-                    end,
-                },
-            }
+            controls = CreateBTGSettings(),
         },
         -------------------------------------------------------------------------------
         {

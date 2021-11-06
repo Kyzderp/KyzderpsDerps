@@ -43,6 +43,7 @@ local function AreSkillsSlotted()
 
     return combatPrayer, empoweringGrasp, expansiveFrostCloak
 end
+Spud.AreSkillsSlotted = AreSkillsSlotted
 
 local function UpdateBuffTheGroup(equippedSets)
     if (btg == nil) then return end
@@ -52,7 +53,8 @@ local function UpdateBuffTheGroup(equippedSets)
     disabledBTG = {}
 
     if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pa) then
-        hasEnabled = hasEnabled or SetBTG(1, equippedSets["Powerful Assault"] ~= nil)
+        local enabled = SetBTG(1, equippedSets["Powerful Assault"] ~= nil)
+        hasEnabled = hasEnabled or enabled
     end
     if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorSlayer) then
         SetBTG(2, equippedSets["Roaring Opportunist"] ~= nil or equippedSets["Master Architect"] ~= nil or equippedSets["War Machine"] ~= nil)
@@ -60,17 +62,23 @@ local function UpdateBuffTheGroup(equippedSets)
     if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorCourage) then
         SetBTG(3, equippedSets["Vestment of Olorime"] ~= nil or equippedSets["Spell Power Cure"] ~= nil)
     end
+    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.spaulder and btgData.buffs[19] == zo_strformat(SI_ABILITY_NAME, GetAbilityName(163401))) then
+        SetBTG(19, equippedSets["Spaulder of Ruin"] ~= nil)
+    end
 
     local combatPrayer, empoweringGrasp, expansiveFrostCloak = AreSkillsSlotted()
 
     if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk) then
-        hasEnabled = hasEnabled or SetBTG(6, combatPrayer)
+        local enabled = SetBTG(6, combatPrayer)
+        hasEnabled = hasEnabled or enabled
     end
     if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorResolve) then
-        hasEnabled = hasEnabled or SetBTG(12, expansiveFrostCloak)
+        local enabled = SetBTG(12, expansiveFrostCloak)
+        hasEnabled = hasEnabled or enabled
     end
     if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower) then
-        hasEnabled = hasEnabled or SetBTG(15, empoweringGrasp)
+        local enabled = SetBTG(15, empoweringGrasp)
+        hasEnabled = hasEnabled or enabled
     end
 
     -- If nothing but slayer and courage are enabled, I (personally) want to see major slayer
