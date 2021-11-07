@@ -12,7 +12,7 @@ modules/CustomTargetName.lua
 modules/Grievous.lua
 modules/SpawnTimer.lua
 modules/DeathAlert.lua
-modules/PlayedChart.lua
+modules/Altoholic.lua
 modules/QuickSlotKeybind.lua
 modules/AoeColors.lua
 modules/KHouse.lua

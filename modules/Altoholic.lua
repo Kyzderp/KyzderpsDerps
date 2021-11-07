@@ -3,6 +3,22 @@ KyzderpsDerps = KyzderpsDerps or {}
 local currentChar = GetUnitName("player")
 
 ---------------------------------------------------------------------
+--[[
+characters = {
+    Kyrozan = {
+        availPoints = 13,
+        playedTime = 123987219841,
+        armoryBuilds = {
+            {
+                name = Stam,
+            },
+            {
+                name = Tank,
+            }
+        }
+    }
+}
+]]
 local function UpdateSkillPoints()
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].availPoints = GetAvailableSkillPoints()
 end
@@ -12,9 +28,24 @@ local function UpdatePlayedTime()
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].playedTime = GetSecondsPlayed() -- Start migrating
 end
 
+local function UpdateArmoryBuilds()
+    local builds = {}
+    for i = 1, GetNumUnlockedArmoryBuilds() do
+        local build = {}
+        local name = GetArmoryBuildName(i)
+        if (not name or name == "") then
+            name = "[Empty]"
+        end
+        build.name = name
+        table.insert(builds, {name = name, iconIndex = GetArmoryBuildIconIndex(i)})
+    end
+    KyzderpsDerps.savedValues.charInfo.characters[currentChar].armoryBuilds = builds
+end
+
 local function UpdateAll()
     UpdatePlayedTime()
     UpdateSkillPoints()
+    UpdateArmoryBuilds()
 end
 
 ---------------------------------------------------------------------
@@ -66,6 +97,7 @@ function KyzderpsDerps.BuildPlayed()
     return result
 end
 
+---------------------------------------------------------------------
 -- Build the entire string for available skill points
 function KyzderpsDerps.BuildPoints()
     UpdateSkillPoints()
@@ -82,9 +114,35 @@ function KyzderpsDerps.BuildPoints()
 end
 
 ---------------------------------------------------------------------
+-- Build the entire string for armory builds
+function KyzderpsDerps.BuildArmory()
+    UpdateArmoryBuilds()
+
+    local result = "=== Armory Builds ==="
+
+    -- Sort by character index
+    for index = 1, GetNumCharacters() do
+        local name = zo_strformat("<<1>>", GetCharacterInfo(index))
+        local info = KyzderpsDerps.savedValues.charInfo.characters[name]
+        if (info and info.armoryBuilds) then
+            local buildNames = {}
+            for _, build in ipairs(info.armoryBuilds) do
+                local buildString = string.format("|t24:24:/esoui/art/armory/buildicons/buildicon_%d.dds|t%s", build.iconIndex, build.name)
+                table.insert(buildNames, buildString)
+            end
+
+            result = result .. string.format("\n%s (%d) - ", name, #buildNames)
+            result = result .. table.concat(buildNames, " || ")
+        end
+    end
+
+    return result
+end
+
+---------------------------------------------------------------------
 -- Hooks
-function KyzderpsDerps.InitializePlayedChart()
-    KyzderpsDerps:dbg("    Initializing PlayedChart module...")
+function KyzderpsDerps.InitializeAltoholic()
+    KyzderpsDerps:dbg("    Initializing Altoholic module...")
 
     if (not KyzderpsDerps.savedValues.charInfo.characters[currentChar]) then
         KyzderpsDerps.savedValues.charInfo.characters[currentChar] = {}

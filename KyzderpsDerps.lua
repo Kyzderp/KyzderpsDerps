@@ -225,7 +225,7 @@ local function Initialize()
     KyzderpsDerps.InitializeGrievous()
     KyzderpsDerps.InitializeSpawnTimer()
     KyzderpsDerps.InitializeDeathAlert()
-    KyzderpsDerps.InitializePlayedChart()
+    KyzderpsDerps.InitializeAltoholic()
     KyzderpsDerps.InitializeKHouse()
 
 

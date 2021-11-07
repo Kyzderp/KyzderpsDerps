@@ -10,7 +10,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || junkstyle>"
+    local usage = "Usage: /kdd <grievous || bosstimer || played || points || armory || junkstyle>"
 
     if (length == 0) then
         CHAT_SYSTEM:AddMessage(usage)
@@ -38,6 +38,10 @@ local function HandleKDDCommand(argString)
     -- points
     elseif (args[1] == "points") then
         CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildPoints())
+
+    -- armory
+    elseif (args[1] == "armory") then
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildArmory())
 
     -- junk style pages
     elseif (args[1] == "junkstyle" or args[1] == "junkstyles") then
