@@ -84,10 +84,12 @@ local BOSS_NAMES = {
     ["Old Deathwart"] = 330, -- WB
     ["Ghemvas the Harbinger"] = 302, -- WB
     ["Sul-Xan Ritual Site"] = 301, -- WB
+    ["Grapnur / Burthar"] = 301, -- PD: Zenithar's Abbey
 
 -- Bangkorai
     ["Curnard the Generous"] = true, -- Delve: Viridian Watch
     ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
+    ["Archivist Sanctius"] = 300, -- PD: Razak's Wheel
 
 -- Coldharbor
     ["Aez the Collector"] = 305, -- PD: Village of the Lost
@@ -110,6 +112,9 @@ local BOSS_NAMES = {
     ["Gaetane"] = 305, -- Delve: Ilessan Tower
     ["Valenwe"] = true, -- Delve: Cryptwatch Fort
 
+-- Gold Coast
+    ["Ironfang"] = true, -- Delve: Garlas Agea
+
 -- Grahtwood
     ["Great Thorn"] = 300, -- PD: Rood Sunder Ruins
     ["The Devil Wrathmaw"] = 300, -- PD: Rood Sunder Ruins
@@ -119,9 +124,13 @@ local BOSS_NAMES = {
 
 -- Greenshade
     ["Maormer Camp"] = true, -- WB: Maormer Camp
+    ["Domina Ssaranth"] = true, -- Delve: The Underroot
 
 -- Malabal Tor
     ["Arrai"] = true, -- Delve: Shael Ruins
+
+-- Murkmire
+    ["Walks-Like-Thunder"] = true, -- WB: Lurcher
 
 -- Northern Elsweyr
     ["Dragon"] = 620, -- It spawns on the map at around 10:20 (or at least, once), but landed at 11:00
@@ -130,16 +139,23 @@ local BOSS_NAMES = {
 
 -- Reaper's March
     ["Sergeant Atilus"] = 300, -- PD: Vile Manse
+    ["Pelona the Marksman"] = 300, -- PD: Vile Manse
     ["Limbrender"] = true, -- Delve: Kuna's Delve
 
 -- Shadowfen
     ["Drel"] = 305, -- PD: Sanguine's Demense
     ["The Bloody Judge"] = 305, -- PD: Sanguine's Demense
+    ["Kwama Overseer"] = 304, -- Delve: Onkobra Kwama Mine
 
 -- Stonefalls
     ["The Moonlit Maiden"] = 305, -- PD: Crow's Wood - Wispmother next to skyshard
     ["Buron"] = 305, -- PD: Crow's Wood - Ghost in cave
     ["Aurig Mireh"] = 307, -- WB
+
+-- Stormhaven
+    ["Lughar"] = 300, -- PD: Bonesnap Ruins - first ogre
+    ["Bloodmaw"] = 300, -- PD: Bonesnap Ruins - durzog
+    ["Rork Bonehammer"] = 300, -- PD: Bonesnap Ruins - goblin
 
 -- Summerset
     ["Direnni Abyssal Geyser"] = 645, -- Abyssal Geyser
@@ -153,6 +169,9 @@ local BOSS_NAMES = {
 -- Southern Elsweyr
     ["Ri'Atahrashi"] = 600, -- WB
     ["Iratan the Lightbringer"] = 600, -- WB
+
+-- Vvardenfell
+    ["Mud-Tusk"] = 310, -- PD: Nchuleftingth
 
 -- Western Skyrim
     ["Shademother"] = 606, -- WB
@@ -233,6 +252,8 @@ local BOSS_GROUPS = {
     ["Veesha the Swamp Mystic"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
     ["Shuvh-Mok"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
     ["Nukhujeema"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
+    ["Grapnur the Crusher"] = "Grapnur / Burthar", -- PD: Zenithar's Abbey - ogres
+    ["Burthar Meatwise"] = "Grapnur / Burthar", -- PD: Zenithar's Abbey - ogres
 
 -- Craglorn
     ["Troll Colossus"] = "GetPlayerLocationName", -- Nirncrux Mine

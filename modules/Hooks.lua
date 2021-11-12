@@ -16,10 +16,23 @@ local csaCategories = {
 local function HookCenterScreenAnnounce()
     local origQueueMessage = CENTER_SCREEN_ANNOUNCE.QueueMessage
     CENTER_SCREEN_ANNOUNCE.QueueMessage = function(s, messageParams)
-        KyzderpsDerps.PrintSpam("|c3bdb5e" .. tostring(messageParams:GetMainText()) .. "|r")
-        KyzderpsDerps.PrintSpam("|c3bdb5e" .. tostring(messageParams:GetSecondaryText()) .. "|r")
-        KyzderpsDerps.PrintSpam("|c207532" .. csaCategories[messageParams:GetCategory()] .. "|r")
-        KyzderpsDerps.PrintSpam(messageParams)
+        local mainText = messageParams:GetMainText()
+        local secondaryText = messageParams:GetSecondaryText()
+
+        if (mainText ~= nil or secondaryText ~= nil) then
+            KyzderpsDerps.PrintSpam("|c3bdb5e" .. tostring(mainText) .. "|r")
+            KyzderpsDerps.PrintSpam("|c3bdb5e" .. tostring(secondaryText) .. "|r")
+            KyzderpsDerps.PrintSpam("|c207532" .. csaCategories[messageParams:GetCategory()] .. "|r")
+            KyzderpsDerps.PrintSpam(messageParams)
+
+            if (LibFilteredChatPanel) then
+                LibFilteredChatPanel:GetSystemFilter():AddMessage(string.format("%s - %s / %s",
+                    csaCategories[messageParams:GetCategory()],
+                    tostring(mainText),
+                    tostring(secondaryText)))
+            end
+        end
+
         return origQueueMessage(s, messageParams)
     end
 end

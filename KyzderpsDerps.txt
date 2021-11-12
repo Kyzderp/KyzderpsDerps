@@ -4,7 +4,7 @@
 ## Version: 1.11.0
 ## APIVersion: 101032
 ## DependsOn: LibAddonMenu-2.0>=31
-## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended
+## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel
 
 ## SavedVariables: KyzderpsDerpsSavedVariables
 

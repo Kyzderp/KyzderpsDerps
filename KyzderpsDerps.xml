@@ -21,7 +21,7 @@
 <!-- ======================================================================================================================= -->
         <TopLevelControl name="GrievousRetaliation" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="true">
             <Dimensions x="0" y="50"/>
-            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="0" offsetY="0"/>
             <Controls>
                 <Label name="$(parent)Label" fontName="ZoFontWinH1" font="$(BOLD_FONT)|80|soft-shadow-thick" color="9f33f7" text="STOP REZZING" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
                     <Dimensions x="1000" y="50"/>
