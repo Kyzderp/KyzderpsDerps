@@ -144,6 +144,8 @@ end
 function Spud.Initialize()
     KyzderpsDerps:dbg("    Initializing AntiSpud module...")
 
+    Spud.InitializeSpaulder()
+
     if (KyzderpsDerps.savedOptions.antispud.equipped.enable) then
         Spud.InitializeEquipped()
     end

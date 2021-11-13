@@ -64,18 +64,26 @@ local function GetNumSetBonuses(itemLink)
 end
 
 -------------------------------------------------------------------------------
-local function UpdateDisplay(error, extraText)
+local isDisplayingMainEquipped = false
+
+local function UpdateDisplay(error, extraText, isMainEquipped)
+    -- d(error, isDisplayingMainEquipped, isMainEquipped)
+    if (isDisplayingMainEquipped and not isMainEquipped) then return end
+
     if (error) then
+        isDisplayingMainEquipped = isMainEquipped
         AntiSpudEquipped:SetHidden(false)
         AntiSpudEquippedLabel:SetText((extraText ~= nil) and (error .. extraText) or error)
         AntiSpudEquipped:SetWidth(1000)
         AntiSpudEquipped:SetWidth(AntiSpudEquippedLabel:GetTextWidth())
         return true
     else
+        isDisplayingMainEquipped = false
         AntiSpudEquipped:SetHidden(true)
         return false
     end
 end
+Spud.UpdateDisplay = UpdateDisplay
 
 -------------------------------------------------------------------------------
 local function CheckEmptySlots()
@@ -104,11 +112,11 @@ local function CheckEmptySlots()
     end
 
     if (#missing > 3) then
-        return UpdateDisplay("You are nekkid")
+        return UpdateDisplay("You are nekkid", nil, true)
     elseif (#missing > 0) then
-        return UpdateDisplay("You have not slotted\n" .. table.concat(missing, ", "))
+        return UpdateDisplay("You have not slotted\n" .. table.concat(missing, ", "), nil, true)
     else
-        return UpdateDisplay()
+        return UpdateDisplay(nil, nil, true)
     end
 end
 
@@ -181,7 +189,11 @@ local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
         end
         Spud.UpdateBuffTheGroup(equippedSets)
         if (hasError) then return true end
-        return UpdateDisplay(error, extraText)
+        UpdateDisplay(error, extraText, true)
+
+        -- Also check spaulder at this point
+        Spud.UpdateSpaulderDisplay()
+        return
     end
 
     -- some throttling to not spam chat on every change
@@ -192,7 +204,7 @@ local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
         lastThrottle = currTime
     else
         if (hasError) then return true end
-        return UpdateDisplay(error, extraText)
+        return UpdateDisplay(error, extraText, true)
     end
 
     EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
@@ -204,10 +216,10 @@ local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
         CheckSlotsSets(slots, extraText, hasError, true)
     end)
     if (hasError) then return true end
-    return UpdateDisplay(error, extraText)
+    return UpdateDisplay(error, extraText, true)
 end
 
-function CheckAllSlots()
+local function CheckAllSlots()
     -- Already has error
     local hasError = false
     if (CheckEmptySlots()) then
@@ -217,12 +229,14 @@ function CheckAllSlots()
         hasError = true
     end
     if (GetUnitLevel("player") >= GetWeaponSwapUnlockedLevel()) then
-        CheckSlotsSets(ITEM_SLOTS_BACKBAR, " on backbar", hasError, false)
+        if (CheckSlotsSets(ITEM_SLOTS_BACKBAR, " on backbar", hasError, false)) then
+            hasError = true
+        end
     end
 end
 
 -- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
-function OnSlotUpdated(_, bagId, slotId)
+local function OnSlotUpdated(_, bagId, slotId)
     -- Ignore costume updates, poison updates
     if (slotId == EQUIP_SLOT_COSTUME or slotId == EQUIP_SLOT_POISON or slotId == EQUIP_SLOT_BACKUP_POISON) then return end
 

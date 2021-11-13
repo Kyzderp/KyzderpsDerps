@@ -1,7 +1,5 @@
 KyzderpsDerps = KyzderpsDerps or {}
 
-local currentChar = GetUnitName("player")
-
 ---------------------------------------------------------------------
 --[[
 characters = {
@@ -20,10 +18,12 @@ characters = {
 }
 ]]
 local function UpdateSkillPoints()
+    local currentChar = GetUnitName("player")
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].availPoints = GetAvailableSkillPoints()
 end
 
 local function UpdatePlayedTime()
+    local currentChar = GetUnitName("player")
     KyzderpsDerps.savedValues.playedChart.characters[currentChar] = GetSecondsPlayed()
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].playedTime = GetSecondsPlayed() -- Start migrating
 end
@@ -39,6 +39,8 @@ local function UpdateArmoryBuilds()
         build.name = name
         table.insert(builds, {name = name, iconIndex = GetArmoryBuildIconIndex(i)})
     end
+
+    local currentChar = GetUnitName("player")
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].armoryBuilds = builds
 end
 
@@ -132,7 +134,12 @@ function KyzderpsDerps.BuildArmory()
             end
 
             result = result .. string.format("\n%s (%d) - ", name, #buildNames)
-            result = result .. table.concat(buildNames, " || ")
+            result = result .. table.concat(buildNames, " || ", 1, math.min(5, #buildNames))
+            if (#buildNames > 5) then
+                -- Apparently, with too many builds, or probably just too long of a message
+                -- due to my color coding, it won't show for the same line
+                result = result .. "\n    ... " .. table.concat(buildNames, " || ", 6)
+            end
         end
     end
 
@@ -144,9 +151,14 @@ end
 function KyzderpsDerps.InitializeAltoholic()
     KyzderpsDerps:dbg("    Initializing Altoholic module...")
 
+    local currentChar = GetUnitName("player")
     if (not KyzderpsDerps.savedValues.charInfo.characters[currentChar]) then
         KyzderpsDerps.savedValues.charInfo.characters[currentChar] = {}
     end
+
+    -- Get rid of this weird bug that happened at some point, maybe not initialized?
+    KyzderpsDerps.savedValues.charInfo.characters["LocalPlayer"] = nil
+    KyzderpsDerps.savedValues.playedChart.characters["LocalPlayer"] = nil
 
     UpdateAll()
 

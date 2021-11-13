@@ -23,6 +23,7 @@ modules/Hooks.lua
 modules/antispud/main.lua
 modules/antispud/mundus.lua
 modules/antispud/equipped.lua
+modules/antispud/spaulder.lua
 modules/antispud/antispud.xml
 
 modules/integrations/buffTheGroup.lua

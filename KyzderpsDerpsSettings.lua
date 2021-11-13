@@ -873,6 +873,18 @@ function KyzderpsDerps:CreateSettingsMenu()
                         return not KyzderpsDerps.savedOptions.antispud.equipped.enable
                     end,
                 },
+                {
+                    type = "checkbox",
+                    name = "Check Spaulder of Ruin",
+                    tooltip = "Notifies you if you are wearing Spaulder of Ruin but have not toggled it on",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.spaulder end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.equipped.spaulder = value
+                        KyzderpsDerps.AntiSpud.UpdateSpaulderDisplay()
+                    end,
+                    width = "full",
+                },
             }
         },
         -------------------------------------------------------------------------------

@@ -76,6 +76,7 @@ local defaultOptions = {
                 empower = false,
                 spaulder = false,
             },
+            spaulder = false,
         },
     },
     hodor = {
