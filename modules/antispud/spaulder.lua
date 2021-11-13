@@ -19,7 +19,7 @@ local function UpdateSpaulderDisplay()
     if (setName ~= "Spaulder of Ruin") then return end
 
     if (not spaulderActive) then
-        Spud.UpdateDisplay("Spaulder is OFF", nil, false)
+        Spud.UpdateDisplay("Spudler is OFF", nil, false)
     else
         Spud.UpdateDisplay(nil, nil, false)
     end

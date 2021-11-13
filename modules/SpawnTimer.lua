@@ -114,6 +114,7 @@ local BOSS_NAMES = {
 
 -- Gold Coast
     ["Ironfang"] = true, -- Delve: Garlas Agea
+    ["Exulus"] = true, -- Delve: Hrota Cave
 
 -- Grahtwood
     ["Great Thorn"] = 300, -- PD: Rood Sunder Ruins
