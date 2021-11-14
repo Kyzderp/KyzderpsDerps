@@ -1,5 +1,6 @@
 KyzderpsDerps = KyzderpsDerps or {}
 
+local lfcpFilter
 local combatSpam = true
 
 ----------------------------------------------------------------------
@@ -320,7 +321,7 @@ local function OnCombatEvent(_, result, _, abilityName, _, _, sourceName, source
         targetName, targetUnitId, targetString,
         GetAbilityName(abilityId), abilityId, hitValue)
 
-    KDDSpamBuffer:AddMessage(line, 0.7, 0.7, 0.7)
+    lfcpFilter:AddMessage(line)
 end
 
 
@@ -373,7 +374,7 @@ local function OnAnyEvent(...)
         if(i < numArgs) then argString = argString..", " end
     end
     
-    KDDSpamBuffer:AddMessage(argString, 0.7, 0.7, 0.7)
+    lfcpFilter:AddMessage(argString)
 end
 
 ----------------------------------------------------------------------
@@ -384,18 +385,11 @@ local function StartDebugging()
     else
         EVENT_MANAGER:RegisterForAllEvents(KyzderpsDerps.name .. "SpamWindowAll", OnAnyEvent)
     end
-
-    -- EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpamWindowStatsUpdated", EVENT_STATS_UPDATED, function()
-    --         CrutchAlerts.DisplayNotification(999999, "SOMETHING", 500, 0, "someone", nil, ACTION_RESULT_BEGIN, false)
-    --         PlaySound(SOUNDS.DUEL_START)
-    --     end)
 end
 
 local function StopDebugging()
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "SpamWindow", EVENT_COMBAT_EVENT)
     EVENT_MANAGER:UnregisterForAllEvents(KyzderpsDerps.name .. "SpamWindowAll")
-
-    -- EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "SpamWindowStatsUpdated")
 end
 
 ----------------------------------------------------------------------
@@ -409,7 +403,7 @@ local function HandleCommand(argString)
         length = length + 1
     end
 
-    local usage = "/kddspam <start||stop||width||height||combat||all>"
+    local usage = "/kddspam <start || stop || combat || all>"
 
     if (length == 0) then
         d(usage)
@@ -420,10 +414,6 @@ local function HandleCommand(argString)
         StartDebugging()
     elseif (args[1] == "stop") then
         StopDebugging()
-    elseif (args[1] == "width") then
-        KDDSpam:SetWidth(tonumber(args[2]))
-    elseif (args[1] == "height") then
-        KDDSpam:SetHeight(tonumber(args[2]))
     elseif (args[1] == "combat") then
         combatSpam = true
         StopDebugging()
@@ -438,31 +428,13 @@ local function HandleCommand(argString)
 end
 
 ----------------------------------------------------------------------
-local expanded = false
-function KyzderpsDerps.OnSpamSidebarClicked()
-    if (expanded) then
-        -- Close it and turn it off
-        KDDSpam.slide:SetDeltaOffsetX(KDDSpamBuffer:GetWidth())
-        StopDebugging()
-    else
-        -- Expand it and turn it on
-        KDDSpam.slide:SetDeltaOffsetX(-1 * KDDSpamBuffer:GetWidth())
-        StartDebugging()
+function KyzderpsDerps.InitializeSpam()
+    if (not LibFilteredChatPanel) then
+        d("|cFF0000LibFilteredChatPanel must be enabled for Kyzderps spam|r")
+        return
     end
-    expanded = not expanded
-    KDDSpam.slideAnimation:PlayFromStart()
-end
 
-----------------------------------------------------------------------
-function KyzderpsDerps.InitializeSpamWindow()
-    HUD_SCENE:AddFragment(ZO_SimpleSceneFragment:New(KDDSpam))
-    HUD_UI_SCENE:AddFragment(ZO_SimpleSceneFragment:New(KDDSpam))
-    KDDSpam:SetHidden(false)
-
-    KDDSpamBuffer:AddMessage("yeet", 0.6, 0.6, 0.6)
-
-    KDDSpam.slideAnimation = GetAnimationManager():CreateTimelineFromVirtual("ZO_LootSlideInAnimation", KDDSpam)
-    KDDSpam.slide = KDDSpam.slideAnimation:GetFirstAnimation()
+    lfcpFilter = LibFilteredChatPanel:CreateFilter(KyzderpsDerps.name .. "Spam", "/esoui/art/treeicons/gamepad/achievement_categoryicon_events.dds", {0.7, 0.7, 0.7}, false)
 
     BuildEventList()
 end

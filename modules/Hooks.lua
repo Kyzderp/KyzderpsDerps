@@ -20,11 +20,6 @@ local function HookCenterScreenAnnounce()
         local secondaryText = messageParams:GetSecondaryText()
 
         if (mainText ~= nil or secondaryText ~= nil) then
-            KyzderpsDerps.PrintSpam("|c3bdb5e" .. tostring(mainText) .. "|r")
-            KyzderpsDerps.PrintSpam("|c3bdb5e" .. tostring(secondaryText) .. "|r")
-            KyzderpsDerps.PrintSpam("|c207532" .. csaCategories[messageParams:GetCategory()] .. "|r")
-            KyzderpsDerps.PrintSpam(messageParams)
-
             if (LibFilteredChatPanel) then
                 LibFilteredChatPanel:GetSystemFilter():AddMessage(string.format("%s - %s / %s",
                     csaCategories[messageParams:GetCategory()],

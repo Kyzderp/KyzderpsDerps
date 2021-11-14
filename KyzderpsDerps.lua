@@ -85,6 +85,11 @@ local defaultOptions = {
     },
     muhVitality = {
     },
+    fashion = {
+        equipSkinForVamp = false,
+        restoreAfterVamp = false,
+        vampSkinId = 0,
+    },
 }
 
 local defaultValues = {
@@ -244,7 +249,7 @@ local function Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
         KyzderpsDerps.InitializeAOE()
-        -- KyzderpsDerps.InitializeSpamWindow()
+        KyzderpsDerps.InitializeSpam()
         KyzderpsDerps.InitializeMuhVitality() -- TODO: move out of experimental
     end
 

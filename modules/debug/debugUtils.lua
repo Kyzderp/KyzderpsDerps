@@ -6,7 +6,7 @@ local function EmitMessage(text)
         text = "[Empty String]"
     end
 
-    KDDSpamBuffer:AddMessage(text, 0.7, 0.7, 0.7)
+    -- KDDSpamBuffer:AddMessage(text, 0.7, 0.7, 0.7)
 end
 
 local function EmitTable(t, indent, tableHistory)
