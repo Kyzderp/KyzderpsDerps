@@ -170,6 +170,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.InitializeHodor()
     KyzderpsDerps.InitializeHooks()
+    KyzderpsDerps.InitializeFashion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
         if (btg) then btg.debug = true end

@@ -19,6 +19,7 @@ modules/KHouse.lua
 modules/Companion.lua
 modules/InWorldWaypoint.lua
 modules/Hooks.lua
+modules/Fashion.lua
 
 modules/antispud/main.lua
 modules/antispud/mundus.lua

@@ -99,6 +99,7 @@ local BOSS_NAMES = {
     ["Defunct Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
     ["Overrun Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
     ["Pillaged Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
+    ["Packleader Sigmund"] = 305, -- Delve: Hircine's Haunt
 
 -- Deadlands
     ["The Unmaker"] = 315, -- WB: The Unmaker - doesn't become damageable until 5:15
