@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.12.0"
+KyzderpsDerps.version = "1.13.0"
 
 -- Defaults
 local defaultOptions = {
@@ -89,6 +89,7 @@ local defaultOptions = {
         equipSkinForVamp = false,
         restoreAfterVamp = false,
         vampSkinId = 0,
+        autoTabard = false,
     },
 }
 

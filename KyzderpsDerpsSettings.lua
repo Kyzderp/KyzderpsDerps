@@ -945,6 +945,17 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                     disabled = function() return not KyzderpsDerps.savedOptions.fashion.equipSkinForVamp end
                 },
+                {
+                    type = "checkbox",
+                    name = "Costume tabard / outfit none",
+                    tooltip = "Equip guild tabard when you equip a costume, and unequip guild tabard when you have no costume. WTB invisible tabards",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.fashion.autoTabard end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.fashion.autoTabard = value
+                    end,
+                    width = "full",
+                },
             }
         },
         -------------------------------------------------------------------------------
