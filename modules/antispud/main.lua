@@ -117,25 +117,25 @@ end
 local function OnPlayerActivated(_, initial)
     if (Spud.IsDoingGroupPVE()) then
         if (currentState ~= "PVE") then
-            KyzderpsDerps:dbg(string.format("|cAAAAAAState: %s → PVE", currentState))
+            KyzderpsDerps:dbg(string.format("State: %s → PVE", currentState))
             currentState = "PVE"
             Spud.CheckMundus()
         else
-            KyzderpsDerps:dbg(string.format("|cAAAAAAState: %s", currentState))
+            KyzderpsDerps:dbg(string.format("State: %s", currentState))
         end
     elseif (Spud.IsDoingPVP()) then
         if (currentState ~= "PVP") then
-            KyzderpsDerps:dbg(string.format("|cAAAAAAState: %s → PVP", currentState))
+            KyzderpsDerps:dbg(string.format("State: %s → PVP", currentState))
             currentState = "PVP"
             Spud.CheckMundus()
         else
-            KyzderpsDerps:dbg(string.format("|cAAAAAAState: %s", currentState))
+            KyzderpsDerps:dbg(string.format("State: %s", currentState))
         end
     elseif (currentState ~= "NONE") then
-        KyzderpsDerps:dbg(string.format("|cAAAAAAState: %s → NONE", currentState))
+        KyzderpsDerps:dbg(string.format("State: %s → NONE", currentState))
         currentState = "NONE"
     else
-        KyzderpsDerps:dbg(string.format("|cAAAAAAState: %s", currentState))
+        KyzderpsDerps:dbg(string.format("State: %s", currentState))
     end
 end
 

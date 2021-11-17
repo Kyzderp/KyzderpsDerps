@@ -142,6 +142,9 @@ local defaultValues = {
 }
 
 ---------------------------------------------------------------------
+local debugFilter
+
+---------------------------------------------------------------------
 function KyzderpsDerps.SavePosition()
     KyzderpsDerps.savedValues.customTargetFrame.x = CustomTargetCustomName:GetLeft()
     KyzderpsDerps.savedValues.customTargetFrame.y = CustomTargetCustomName:GetTop()
@@ -196,12 +199,14 @@ end
 KyzderpsDerps.dbgMessages = {}
 function KyzderpsDerps:dbg(msg)
     if (not msg) then return end
-    msg = "|c3bdb5e[KD] |r" .. tostring(msg)
+    msg = tostring(msg)
     if (not KyzderpsDerps.savedOptions.general.debug) then return end
-    if (CHAT_SYSTEM.primaryContainer) then
-        d(msg)
+    if (debugFilter) then
+        debugFilter:AddMessage(msg)
+    elseif (CHAT_SYSTEM.primaryContainer) then
+        d("|c3bdb5e[KD] |r" .. msg)
     else
-        KyzderpsDerps.dbgMessages[#KyzderpsDerps.dbgMessages + 1] = msg
+        KyzderpsDerps.dbgMessages[#KyzderpsDerps.dbgMessages + 1] = "|c3bdb5e[KDDelay] |r" .. msg
     end
 end
 
@@ -223,6 +228,11 @@ local function Initialize()
     -- Settings and saved variables
     KyzderpsDerps.savedOptions = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Options", defaultOptions)
     KyzderpsDerps.savedValues = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Values", defaultValues)
+
+    local filterIcon = "/esoui/art/mappins/dragon_fly.dds"
+    if (LibFilteredChatPanel) then
+        debugFilter = LibFilteredChatPanel:CreateFilter(KyzderpsDerps.name .. "Debug", filterIcon, {0.5, 0.7, 0.5}, false)
+    end
 
     KyzderpsDerps:dbg("Initializing Kyzderp's Derps...")
 

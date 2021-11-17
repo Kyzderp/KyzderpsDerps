@@ -93,6 +93,7 @@ local BOSS_NAMES = {
 
 -- Coldharbor
     ["Aez the Collector"] = 305, -- PD: Village of the Lost
+    ["Cirterisse"] = 305, -- Delve: Aba-Loria
 
 -- Craglorn
     ["Secluded Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
@@ -171,6 +172,9 @@ local BOSS_NAMES = {
 -- Southern Elsweyr
     ["Ri'Atahrashi"] = 600, -- WB
     ["Iratan the Lightbringer"] = 600, -- WB
+
+-- The Deadlands
+    ["Wandering Havocrel"] = 360, -- Wandering WBs seem to be 6 mins ish and random spawn point
 
 -- Vvardenfell
     ["Mud-Tusk"] = 310, -- PD: Nchuleftingth
@@ -284,6 +288,11 @@ local BOSS_GROUPS = {
     ["Eejoba the Radiant"] = "GetPlayerLocationName", -- Abyssal Geyser - Wispmother
     ["Tidewrack"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Lurcher
     ["Vsskalvor"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Viper
+
+-- The Deadlands
+    ["Vorsholazh the Anvil"] = "Wandering Havocrel", -- Wandering WB
+    ["Irncifel the Despoiler"] = "Wandering Havocrel", -- Wandering WB
+    ["Kothan the Razorsworn"] = "Wandering Havocrel", -- Wandering WB
 }
 
 ---------------------------------------------------------------------------------------------------
