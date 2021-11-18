@@ -18,7 +18,6 @@ modules/AoeColors.lua
 modules/KHouse.lua
 modules/Companion.lua
 modules/InWorldWaypoint.lua
-modules/Hooks.lua
 modules/Fashion.lua
 
 modules/antispud/main.lua
@@ -30,8 +29,11 @@ modules/antispud/antispud.xml
 modules/integrations/buffTheGroup.lua
 modules/integrations/hodorReflexes.lua
 
-modules/muhVitality/main.lua
-modules/muhVitality/ui.xml
+modules/muhvitality/main.lua
+modules/muhvitality/ui.xml
+
+modules/uihooks/main.lua
+modules/uihooks/csa.lua
 
 modules/debug/spamWindow.lua
 modules/debug/debugUtils.lua

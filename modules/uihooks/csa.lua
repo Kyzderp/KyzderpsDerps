@@ -33,6 +33,6 @@ local function HookCenterScreenAnnounce()
 end
 
 ---------------------------------------------------------------------
-function KyzderpsDerps.InitializeHooks()
+function KyzderpsDerps.InitializeCSAHook()
     HookCenterScreenAnnounce()
 end
