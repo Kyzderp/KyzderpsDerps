@@ -18,7 +18,7 @@ local MUNDUS_BUFFS = {
     [13985] = "The Tower",
 }
 
-function Spud.CheckMundus()
+local function GetMundus()
     local currentMundus = "NONE"
     for i = 1, GetNumBuffs("player") do
         -- string buffName, number timeStarted, number timeEnding, number buffSlot, number stackCount, textureName iconFilename, string buffType, number BuffEffectType effectType, number AbilityType abilityType, number StatusEffectType statusEffectType, number abilityId, boolean canClickOff, boolean castByPlayer
@@ -30,4 +30,8 @@ function Spud.CheckMundus()
         end
     end
     return currentMundus
+end
+
+function Spud.CheckMundus()
+    return GetMundus()
 end

@@ -78,6 +78,11 @@ local defaultOptions = {
             },
             spaulder = false,
         },
+        mundus = {
+            overland = {},
+            pve = {},
+            pvp = {},
+        },
     },
     hodor = {
         horn = false,

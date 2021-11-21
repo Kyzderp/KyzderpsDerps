@@ -4,7 +4,7 @@
 ## Version: 1.13.0
 ## APIVersion: 101032
 ## DependsOn: LibAddonMenu-2.0>=31
-## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel
+## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary
 
 ## SavedVariables: KyzderpsDerpsSavedVariables
 
@@ -34,6 +34,7 @@ modules/muhvitality/ui.xml
 
 modules/uihooks/main.lua
 modules/uihooks/csa.lua
+modules/uihooks/lootHistory.lua
 
 modules/debug/spamWindow.lua
 modules/debug/debugUtils.lua
