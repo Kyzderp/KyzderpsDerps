@@ -29,12 +29,11 @@ function Spud.DisplayWarning(message)
                         "|c2E2B5FN" ..
                         "|c8B00FFG" ..
                         "|r: " .. message
-    CHAT_SYSTEM:AddMessage(chatWarning)
+    KyzderpsDerps:dbg(chatWarning)
 end
 
 function Spud.IsDoingGroupPVE()
     local zoneId = GetZoneId(GetUnitZoneIndex("player"))
-    -- d(string.format("|cAAAAAAIsActiveWorldGroupOwnable: " .. tostring(IsActiveWorldGroupOwnable()) .. "|r"))
 
     if (IsUnitInDungeon("player")) then
         return KyzderpsDerps.DUNGEON_ZONEIDS[tostring(zoneId)] ~= nil or KyzderpsDerps.TRIAL_ZONEIDS[tostring(zoneId)] ~= nil

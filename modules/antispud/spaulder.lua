@@ -8,8 +8,9 @@ local spaulderActive = false
 ---------------------------------------------------------------------
 -- If wearing Spaulder of Ruin, show message if it's not toggled on
 local function UpdateSpaulderDisplay()
+    Spud.Display(nil, Spud.SPAULDER)
+
     if (not KyzderpsDerps.savedOptions.antispud.equipped.spaulder) then
-        Spud.UpdateDisplay(nil, nil, false)
         return
     end
 
@@ -19,9 +20,9 @@ local function UpdateSpaulderDisplay()
     if (setName ~= "Spaulder of Ruin") then return end
 
     if (not spaulderActive) then
-        Spud.UpdateDisplay("Spudler is OFF", nil, false)
+        Spud.Display("Spudler is OFF", Spud.SPAULDER)
     else
-        Spud.UpdateDisplay(nil, nil, false)
+        Spud.Display(nil, Spud.SPAULDER)
     end
 end
 Spud.UpdateSpaulderDisplay = UpdateSpaulderDisplay

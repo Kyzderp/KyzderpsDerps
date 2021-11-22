@@ -2,10 +2,6 @@ KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.AntiSpud = KyzderpsDerps.AntiSpud or {}
 local Spud = KyzderpsDerps.AntiSpud
 
--- Throttle for chat spam
-local throttling = false
-local lastThrottle = 0
-
 -- Some stuff yoinked from LibEquipmentBonus in Cooldowns by g4rr3t
 
 -- Slots to monitor
@@ -64,28 +60,6 @@ local function GetNumSetBonuses(itemLink)
 end
 
 -------------------------------------------------------------------------------
-local isDisplayingMainEquipped = false
-
-local function UpdateDisplay(error, extraText, isMainEquipped)
-    -- d(error, isDisplayingMainEquipped, isMainEquipped)
-    if (isDisplayingMainEquipped and not isMainEquipped) then return end
-
-    if (error) then
-        isDisplayingMainEquipped = isMainEquipped
-        AntiSpudEquipped:SetHidden(false)
-        AntiSpudEquippedLabel:SetText((extraText ~= nil) and (error .. extraText) or error)
-        AntiSpudEquipped:SetWidth(1000)
-        AntiSpudEquipped:SetWidth(AntiSpudEquippedLabel:GetTextWidth())
-        return true
-    else
-        isDisplayingMainEquipped = false
-        AntiSpudEquipped:SetHidden(true)
-        return false
-    end
-end
-Spud.UpdateDisplay = UpdateDisplay
-
--------------------------------------------------------------------------------
 local function CheckEmptySlots()
     local missing = {}
     for slot, name in pairs(ITEM_SLOTS_MAIN) do
@@ -112,17 +86,23 @@ local function CheckEmptySlots()
     end
 
     if (#missing > 3) then
-        return UpdateDisplay("You are nekkid", nil, true)
+        return Spud.Display("You are nekkid", Spud.MISSING)
     elseif (#missing > 0) then
-        return UpdateDisplay("You have not slotted\n" .. table.concat(missing, ", "), nil, true)
+        return Spud.Display("You have not slotted\n" .. table.concat(missing, ", "), Spud.MISSING)
     else
-        return UpdateDisplay(nil, nil, true)
+        return Spud.Display(nil, Spud.MISSING)
     end
 end
 
 -------------------------------------------------------------------------------
-local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
-    -- d(extraText .. tostring(hasError) .. tostring(skipThrottle))
+local function CheckSlotsSets(isFrontbar)
+    local slots = ITEM_SLOTS_FRONTBAR
+    local extraText = " on frontbar"
+    if (not isFrontbar) then
+        slots = ITEM_SLOTS_BACKBAR
+        extraText = " on backbar"
+    end
+
     local equippedSets = {}
     for index, slot in pairs(slots) do
         local itemLink = GetItemLink(BAG_WORN, slot)
@@ -183,55 +163,20 @@ local function CheckSlotsSets(slots, extraText, hasError, skipThrottle)
     end
 
     local resultString = table.concat(result, " / ")
-    if (skipThrottle) then
-        if (KyzderpsDerps.savedOptions.antispud.equipped.printToChat) then
-            KyzderpsDerps:msg("Equipped" .. extraText .. ": " .. resultString)
-        end
-        Spud.UpdateBuffTheGroup(equippedSets)
-        if (hasError) then return true end
-        UpdateDisplay(error, extraText, true)
-
-        -- Also check spaulder at this point
-        Spud.UpdateSpaulderDisplay()
-        return
+    if (KyzderpsDerps.savedOptions.antispud.equipped.printToChat) then
+        KyzderpsDerps:msg("Equipped" .. extraText .. ": " .. resultString)
     end
-
-    -- some throttling to not spam chat on every change
-    local currTime = GetGameTimeMilliseconds()
-    if (not throttling) then
-        throttling = true
-    elseif (currTime - lastThrottle > 150) then
-        lastThrottle = currTime
-    else
-        if (hasError) then return true end
-        return UpdateDisplay(error, extraText, true)
-    end
-
-    EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
-    EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText, 200, function()
-        throttling = false
-        EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "EquippedThrottle" .. extraText)
-
-        -- Gear has finished changing
-        CheckSlotsSets(slots, extraText, hasError, true)
-    end)
-    if (hasError) then return true end
-    return UpdateDisplay(error, extraText, true)
+    Spud.UpdateBuffTheGroup(equippedSets)
+    Spud.Display(error and (error .. extraText) or nil, isFrontbar and Spud.FRONTBAR or Spud.BACKBAR)
 end
 
 local function CheckAllSlots()
-    -- Already has error
-    local hasError = false
-    if (CheckEmptySlots()) then
-        hasError = true
-    end
-    if (CheckSlotsSets(ITEM_SLOTS_FRONTBAR, " on frontbar", hasError, false)) then
-        hasError = true
-    end
+    EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "SpudEquippedTimeout")
+
+    CheckEmptySlots()
+    CheckSlotsSets(true)
     if (GetUnitLevel("player") >= GetWeaponSwapUnlockedLevel()) then
-        if (CheckSlotsSets(ITEM_SLOTS_BACKBAR, " on backbar", hasError, false)) then
-            hasError = true
-        end
+        CheckSlotsSets(false)
     end
 end
 
@@ -240,7 +185,7 @@ local function OnSlotUpdated(_, bagId, slotId)
     -- Ignore costume updates, poison updates
     if (slotId == EQUIP_SLOT_COSTUME or slotId == EQUIP_SLOT_POISON or slotId == EQUIP_SLOT_BACKUP_POISON) then return end
 
-    CheckAllSlots()
+    EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpudEquippedTimeout", 500, CheckAllSlots)
 end
 
 function Spud.InitializeEquipped()
