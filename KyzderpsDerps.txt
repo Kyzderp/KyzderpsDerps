@@ -21,6 +21,7 @@ modules/InWorldWaypoint.lua
 modules/Fashion.lua
 
 modules/antispud/main.lua
+modules/antispud/state.lua
 modules/antispud/display.lua
 modules/antispud/mundus.lua
 modules/antispud/equipped.lua

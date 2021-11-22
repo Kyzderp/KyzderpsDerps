@@ -2,6 +2,7 @@ KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.AntiSpud = KyzderpsDerps.AntiSpud or {}
 local Spud = KyzderpsDerps.AntiSpud
 
+---------------------------------------------------------------------
 local MUNDUS_BUFFS = {
     [13940] = "The Warrior",
     [13943] = "The Mage",
@@ -23,15 +24,24 @@ local function GetMundus()
     for i = 1, GetNumBuffs("player") do
         -- string buffName, number timeStarted, number timeEnding, number buffSlot, number stackCount, textureName iconFilename, string buffType, number BuffEffectType effectType, number AbilityType abilityType, number StatusEffectType statusEffectType, number abilityId, boolean canClickOff, boolean castByPlayer
         local buffName, _, _, _, _, iconFilename, _, _, _, _, abilityId, _, _ = GetUnitBuffInfo("player", i)
-        -- KyzderpsDerps:dbg(string.format("%s %s %s(%d)", buffName, iconFilename, GetAbilityName(abilityId), abilityId))
         if (MUNDUS_BUFFS[abilityId]) then
-            Spud.DisplayWarning("You are using |cFFFFFF" .. buffName .. "|r")
-            currentMundus = MUNDUS_BUFFS[abilityId]
+            -- Yes, this wouldn't get the second mundus for Twice-Born Star, but I cba dealing with that
+            return MUNDUS_BUFFS[abilityId]
         end
     end
-    return currentMundus
 end
 
-function Spud.CheckMundus()
-    return GetMundus()
+---------------------------------------------------------------------
+-- State change
+---------------------------------------------------------------------
+local function OnSpudStateChanged(oldState, newState)
+    local currentMundus = GetMundus()
+    Spud.DisplayWarning("You are using |cFFFFFF" .. currentMundus .. "|r")
+end
+
+---------------------------------------------------------------------
+-- Init
+---------------------------------------------------------------------
+function Spud.InitializeMundus()
+    Spud.RegisterStateListener("Mundus", OnSpudStateChanged)
 end
