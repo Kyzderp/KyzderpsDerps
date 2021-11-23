@@ -37,11 +37,13 @@ end
 function Spud.Initialize()
     KyzderpsDerps:dbg("    Initializing AntiSpud module...")
 
-    Spud.InitializeState()
     Spud.InitializeSpaulder()
     Spud.InitializeMundus()
 
     if (KyzderpsDerps.savedOptions.antispud.equipped.enable) then
         Spud.InitializeEquipped()
     end
+
+    -- Needs to go last in case others register listeners
+    Spud.InitializeState()
 end

@@ -72,8 +72,55 @@ local function BuildAvailableSkins()
     end
 end
 
+local MUNDUS_BUFFS = {
+    [13940] = "The Warrior",
+    [13943] = "The Mage",
+    [13974] = "The Serpent",
+    [13975] = "The Thief",
+    [13976] = "The Lady",
+    [13977] = "The Steed",
+    [13978] = "The Lord",
+    [13979] = "The Apprentice",
+    [13980] = "The Ritual",
+    [13981] = "The Lover",
+    [13982] = "The Atronach",
+    [13984] = "The Shadow",
+    [13985] = "The Tower",
+}
+
+local mundusPveIds, invertedPveIds, mundusPvpIds, invertedPvpIds
+local selectedPveAllowed, selectedPveAvailable, selectedPvpAllowed, selectedPvpAvailable
+local function RefreshMundusList()
+    mundusPveIds = {}
+    invertedPveIds = {}
+    mundusPvpIds = {}
+    invertedPvpIds = {}
+    for id, _ in pairs(MUNDUS_BUFFS) do
+        if (KyzderpsDerps.savedOptions.antispud.mundus.pve[id]) then
+            table.insert(mundusPveIds, id)
+        else
+            table.insert(invertedPveIds, id)
+        end
+
+        if (KyzderpsDerps.savedOptions.antispud.mundus.pvp[id]) then
+            table.insert(mundusPvpIds, id)
+        else
+            table.insert(invertedPvpIds, id)
+        end
+    end
+end
+
+local function GetMundusNames(origList)
+    local names = {}
+    for _, id in ipairs(origList) do
+        table.insert(names, MUNDUS_BUFFS[id])
+    end
+    return names
+end
+
 local function CreateBTGSettings()
     BuildAvailableSkins()
+    RefreshMundusList()
 
     local controls = {
             {
@@ -901,6 +948,168 @@ function KyzderpsDerps:CreateSettingsMenu()
                         KyzderpsDerps.AntiSpud.UpdateSpaulderDisplay()
                     end,
                     width = "full",
+                },
+                {
+                    type = "description",
+                    title = "Mundus Stone",
+                    text = "Notifies you if you are in or queued for (if \"Include activity finder\" is enabled) a PvE or PvP activity but do not have the specified Mundus Stone buffs.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Include activity finder",
+                    tooltip = "Includes Activity Finder in the PvE/PvP checks. For example, if you queue for a dungeon, AntiSpud will check your mundus as if you were in a PvE activity already",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.mundus.state.includeActivityFinder = value
+                        KyzderpsDerps.AntiSpud.CheckMundus()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check Mundus Stone in PvE",
+                    tooltip = "Enables the check for PvE: dungeons, trials, and arenas",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.mundus.checkPve end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.mundus.checkPve = value
+                        KyzderpsDerps.AntiSpud.CheckMundus()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "dropdown",
+                    name = "Allowed PvE Mundus Stones",
+                    tooltip = "Mundus Stones that are allowed when you are in a PvE activity",
+                    choices = {},
+                    choicesValues = {},
+                    getFunc = function()
+                        RefreshMundusList()
+                        KyzderpsDerps_AntiSpud_MundusPvEAllowed:UpdateChoices(GetMundusNames(mundusPveIds), mundusPveIds)
+                    end,
+                    setFunc = function(value)
+                        selectedPveAllowed = value
+                    end,
+                    width = "half",
+                    reference = "KyzderpsDerps_AntiSpud_MundusPvEAllowed",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPve end,
+                },
+                {
+                    type = "button",
+                    name = "Remove",
+                    tooltip = "Remove the selected Mundus Stone from the allowed PvE list",
+                    func = function()
+                        if (selectedPveAllowed) then
+                            KyzderpsDerps.savedOptions.antispud.mundus.pve[selectedPveAllowed] = nil
+                            KyzderpsDerps.AntiSpud.CheckMundus()
+                        end
+                    end,
+                    width = "half",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPve end,
+                },
+                {
+                    type = "dropdown",
+                    name = "Available PvE Mundus Stones",
+                    tooltip = "Mundus Stones that can be added to the allowed PvE list",
+                    choices = {},
+                    choicesValues = {},
+                    getFunc = function()
+                        RefreshMundusList()
+                        KyzderpsDerps_AntiSpud_MundusPvEAvailable:UpdateChoices(GetMundusNames(invertedPveIds), invertedPveIds)
+                    end,
+                    setFunc = function(value)
+                        selectedPveAvailable = value
+                    end,
+                    width = "half",
+                    reference = "KyzderpsDerps_AntiSpud_MundusPvEAvailable",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPve end,
+                },
+                {
+                    type = "button",
+                    name = "Add",
+                    tooltip = "Add the selected Mundus Stone to the allowed PvE list",
+                    func = function()
+                        if (selectedPveAvailable) then
+                            KyzderpsDerps.savedOptions.antispud.mundus.pve[selectedPveAvailable] = true
+                            KyzderpsDerps.AntiSpud.CheckMundus()
+                        end
+                    end,
+                    width = "half",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPve end,
+                },
+                {
+                    type = "checkbox",
+                    name = "Check Mundus Stone in PvP",
+                    tooltip = "Enables the check for PvP: Cyrodiil, Imperial City, and battlegrounds",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.mundus.checkPvp end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.mundus.checkPvp = value
+                        KyzderpsDerps.AntiSpud.CheckMundus()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "dropdown",
+                    name = "Allowed PvP Mundus Stones",
+                    tooltip = "Mundus Stones that are allowed when you are in a PvP activity",
+                    choices = {},
+                    choicesValues = {},
+                    getFunc = function()
+                        RefreshMundusList()
+                        KyzderpsDerps_AntiSpud_MundusPvPAllowed:UpdateChoices(GetMundusNames(mundusPvpIds), mundusPvpIds)
+                    end,
+                    setFunc = function(value)
+                        selectedPvpAllowed = value
+                    end,
+                    width = "half",
+                    reference = "KyzderpsDerps_AntiSpud_MundusPvPAllowed",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPvp end,
+                },
+                {
+                    type = "button",
+                    name = "Remove",
+                    tooltip = "Remove the selected Mundus Stone from the allowed PvP list",
+                    func = function()
+                        if (selectedPvpAllowed) then
+                            KyzderpsDerps.savedOptions.antispud.mundus.pvp[selectedPvpAllowed] = nil
+                            KyzderpsDerps.AntiSpud.CheckMundus()
+                        end
+                    end,
+                    width = "half",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPvp end,
+                },
+                {
+                    type = "dropdown",
+                    name = "Available PvP Mundus Stones",
+                    tooltip = "Mundus Stones that can be added to the allowed PvP list",
+                    choices = {},
+                    choicesValues = {},
+                    getFunc = function()
+                        RefreshMundusList()
+                        KyzderpsDerps_AntiSpud_MundusPvPAvailable:UpdateChoices(GetMundusNames(invertedPvpIds), invertedPvpIds)
+                    end,
+                    setFunc = function(value)
+                        selectedPvpAvailable = value
+                    end,
+                    width = "half",
+                    reference = "KyzderpsDerps_AntiSpud_MundusPvPAvailable",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPvp end,
+                },
+                {
+                    type = "button",
+                    name = "Add",
+                    tooltip = "Add the selected Mundus Stone to the allowed PvP list",
+                    func = function()
+                        if (selectedPvpAvailable) then
+                            KyzderpsDerps.savedOptions.antispud.mundus.pvp[selectedPvpAvailable] = true
+                            KyzderpsDerps.AntiSpud.CheckMundus()
+                        end
+                    end,
+                    width = "half",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPvp end,
                 },
             }
         },

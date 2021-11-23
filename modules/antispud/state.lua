@@ -7,8 +7,16 @@ Spud.PVE = "PVE"
 Spud.PVP = "PVP"
 Spud.NONE = "NONE"
 
+local currentState = Spud.NONE
+
+function Spud.GetCurrentState()
+    return currentState
+end
+
 ---------------------------------------------------------------------
-local currentState = "NONE"
+-- State Listeners
+-- Other modules should register a listener for state changes
+---------------------------------------------------------------------
 local listeners = {}
 
 -- Callback with params:
@@ -23,28 +31,27 @@ function Spud.RegisterStateListener(name, callback)
     listeners[name] = callback
 end
 
-local function FireStateListeners(newState)
+local function FireStateListeners(newState, reason)
     if (newState == currentState) then
         KyzderpsDerps:dbg("|cFF0000Spud state is already " .. newState .. "|r")
         return
     end
-    KyzderpsDerps:dbg(string.format("State: %s → %s", currentState, newState))
-    for _, callback in pairs(listeners) do
-        callback(currentState, newState)
-    end
+    KyzderpsDerps:dbg(string.format("State: %s → %s Reason: %s", currentState, newState, tostring(reason)))
+
+    local prevState = currentState
     currentState = newState
+    for _, callback in pairs(listeners) do
+        callback(prevState, newState)
+    end
 end
 
 ---------------------------------------------------------------------
-
-local function IsDoingGroupPVE()
-    local zoneId = GetZoneId(GetUnitZoneIndex("player"))
-
+-- Zone Check
+---------------------------------------------------------------------
+local function IsDoingGroupPVE(zoneId)
     if (IsUnitInDungeon("player")) then
         return KyzderpsDerps.DUNGEON_ZONEIDS[tostring(zoneId)] ~= nil or KyzderpsDerps.TRIAL_ZONEIDS[tostring(zoneId)] ~= nil
     end
-
-    -- TODO: check LFG queue
 end
 
 local function IsDoingPVP()
@@ -63,21 +70,11 @@ local function IsDoingPVP()
     if (GetUnitBattlegroundAlliance("player") ~= nil and GetUnitBattlegroundAlliance("player") ~= 0) then
         return true
     end
-
-
-    -- TODO: check LFG queue
 end
 
 ---------------------------------------------------------------------
 -- Dungeon / Battlegrounds Finder
-local HEADER_MAPPING = {
-    [LFG_ACTIVITY_DUNGEON] = GetString(SI_ACTIVITY_FINDER_CATEGORY_DUNGEON_FINDER),
-    [LFG_ACTIVITY_MASTER_DUNGEON] = GetString(SI_ACTIVITY_FINDER_CATEGORY_DUNGEON_FINDER),
-    [LFG_ACTIVITY_BATTLE_GROUND_CHAMPION] = GetString(SI_ACTIVITY_FINDER_CATEGORY_BATTLEGROUNDS),
-    [LFG_ACTIVITY_BATTLE_GROUND_NON_CHAMPION] = GetString(SI_ACTIVITY_FINDER_CATEGORY_BATTLEGROUNDS),
-    [LFG_ACTIVITY_BATTLE_GROUND_LOW_LEVEL] = GetString(SI_ACTIVITY_FINDER_CATEGORY_BATTLEGROUNDS),
-}
-
+---------------------------------------------------------------------
 -- Code from esoui/ingame/lfg/activitytracker.lua
 local function GetCurrentFinderType()
     local activityId = 0
@@ -89,56 +86,69 @@ local function GetCurrentFinderType()
     end
 
     if (activityId <= 0) then
-        return "NONE"
+        return Spud.NONE
     end
 
     local activityType = GetActivityType(activityId)
-    KyzderpsDerps:dbg(string.format("|cAAAAAAActivity Finder: %s", HEADER_MAPPING[activityType]))
 
     if (activityType == LFG_ACTIVITY_DUNGEON or activityType == LFG_ACTIVITY_MASTER_DUNGEON) then
-        return "PVE"
+        return Spud.PVE
     elseif (activityType == LFG_ACTIVITY_BATTLE_GROUND_CHAMPION or activityType == LFG_ACTIVITY_BATTLE_GROUND_NON_CHAMPION or activityType == LFG_ACTIVITY_BATTLE_GROUND_LOW_LEVEL) then
-        return "PVP"
+        return Spud.PVP
     else
         KyzderpsDerps:dbg(string.format("|cFF0000THIS SHOULDN'T BE POSSIBLE? %d", activityType))
-        return "NONE"
+        return Spud.NONE
     end
 end
 
--- EVENT_ACTIVITY_FINDER_STATUS_UPDATE (number eventCode, ActivityFinderStatus result)
-local function OnFinderStatusUpdate(_, result)
+---------------------------------------------------------------------
+-- Check current state and fire listeners if applicable
+---------------------------------------------------------------------
+local function CheckState(reason)
     local finderType = GetCurrentFinderType()
+    local checkedState = Spud.NONE
 
-    if (finderType == "PVE" and currentState ~= "PVE") then
-        FireStateListeners(Spud.PVE)
-    elseif (finderType == "PVP" and currentState ~= "PVP") then
-        FireStateListeners(Spud.PVP)
-    elseif (finderType == "NONE" and currentState ~= "NONE") then
-        FireStateListeners(Spud.NONE)
-    end
-end
-
----------------------------------------------------------------------
-local function OnPlayerActivated(_, initial)
-    if (Spud.IsDoingGroupPVE()) then
-        if (currentState ~= Spud.PVE) then
-            FireStateListeners(Spud.PVE)
-        end
-    elseif (Spud.IsDoingPVP()) then
-        if (currentState ~= Spud.PVP) then
-            FireStateListeners(Spud.PVP)
-        end
-    elseif (currentState ~= Spud.NONE) then
-        FireStateListeners(Spud.NONE)
+    if (finderType == Spud.PVE or finderType == Spud.PVP) then
+        -- Activity finder should take priority
+        checkedState = finderType
     else
-        -- Same state as before
+        -- If we're not queued, just use the zone as the check
+        local zoneId = GetZoneId(GetUnitZoneIndex("player"))
+        if (IsDoingGroupPVE(zoneId)) then
+            -- TODO: what about solo PVE?
+            checkedState = Spud.PVE
+        elseif (IsDoingPVP()) then
+            checkedState = Spud.PVP
+        else
+            checkedState = Spud.NONE
+        end
+    end
+
+    if (checkedState ~= currentState) then
+        FireStateListeners(checkedState, reason)
     end
 end
 
 ---------------------------------------------------------------------
--- Entry
+-- Events to trigger state check
+---------------------------------------------------------------------
+local function OnFinderStatusUpdate(_, result)
+    CheckState("finder")
+end
+
+local function OnPlayerActivated()
+    local zoneId = GetZoneId(GetUnitZoneIndex("player"))
+    KyzderpsDerps:dbg(string.format("|c00FF00Entered zone %s (%d)|r", GetPlayerActiveZoneName(), zoneId))
+
+    CheckState("activation")
+end
+
+---------------------------------------------------------------------
+-- Init
+---------------------------------------------------------------------
 function Spud.InitializeState()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
+    OnPlayerActivated()
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
 end

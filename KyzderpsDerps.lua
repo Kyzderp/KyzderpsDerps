@@ -78,9 +78,13 @@ local defaultOptions = {
             },
             spaulder = false,
         },
+        state = {
+            includeActivityFinder = true,
+        },
         mundus = {
-            overland = {},
+            checkPve = false,
             pve = {},
+            checkPvp = false,
             pvp = {},
         },
     },

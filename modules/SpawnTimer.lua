@@ -53,7 +53,7 @@ local DUNGEON_ZONEIDS = {
 }
 KyzderpsDerps.DUNGEON_ZONEIDS = DUNGEON_ZONEIDS
 
--- Trial zoneIds
+-- Trial/Arena zoneIds
 local TRIAL_ZONEIDS = {
     ["635" ] = true,  -- Dragonstar Arena
     ["636" ] = true,  -- Hel Ra Citadel
@@ -201,18 +201,12 @@ local BOSS_NAMES = {
     ["Secundinus the Despoiler"] = 600, -- Alessian Tombs (EP)
 
 -- Imperial City (non-event 15 mins)
-    ["Lady Malygda"] = 900, -- Arboretum
-    ["Ysenda Resplendent"] = 900, -- Arboretum
-    ["Glorgoloch the Destroyer"] = 900, -- Arena
-    ["King Khrogo"] = 900, -- Arena
-    ["The Screeching Matron"] = 900, -- Elven Gardens
-    ["Zoal the Ever-Wakeful"] = 900, -- Elven Gardens
-    ["Nunatak"] = 900, -- Memorial
-    ["Volghass"] = 900, -- Memorial
-    ["Amoncrul"] = 900, -- Nobles
-    ["Baron Thirsk"] = 900, -- Nobles
-    ["Immolator Charr"] = 900, -- Temple
-    ["Mazaluhad"] = 900, -- Temple
+    ["Arboretum"] = 900,
+    ["Arena District"] = 900,
+    ["Elven Gardens District"] = 900,
+    ["Memorial District"] = 900,
+    ["Nobles District"] = 900,
+    ["Temple District"] = 900,
 }
 
 -- Boss actual names to name of the group. GetPlayerLocationName = should use output of that method
@@ -293,6 +287,20 @@ local BOSS_GROUPS = {
     ["Vorsholazh the Anvil"] = "Wandering Havocrel", -- Wandering WB
     ["Irncifel the Despoiler"] = "Wandering Havocrel", -- Wandering WB
     ["Kothan the Razorsworn"] = "Wandering Havocrel", -- Wandering WB
+
+-- Imperial City
+    ["Lady Malygda"] = "Arboretum",
+    ["Ysenda Resplendent"] = "Arboretum",
+    ["Glorgoloch the Destroyer"] = "Arena District",
+    ["King Khrogo"] = "Arena District",
+    ["The Screeching Matron"] = "Elven Gardens District",
+    ["Zoal the Ever-Wakeful"] = "Elven Gardens District",
+    ["Nunatak"] = "Memorial District",
+    ["Volghass"] = "Memorial District",
+    ["Amoncrul"] = "Nobles District",
+    ["Baron Thirsk"] = "Nobles District",
+    ["Immolator Charr"] = "Temple District",
+    ["Mazaluhad"] = "Temple District",
 }
 
 ---------------------------------------------------------------------------------------------------
