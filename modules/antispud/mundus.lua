@@ -56,7 +56,8 @@ local function OnSpudStateChanged(oldState, newState)
     CheckMundus()
 end
 
-local function OnMundusBuffChanged()
+local function OnMundusBuffChanged(_, result)
+    if (result ~= EFFECT_RESULT_GAINED) then return end
     KyzderpsDerps:dbg("Mundus changed")
     CheckMundus()
 end

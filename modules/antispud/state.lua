@@ -46,6 +46,16 @@ local function FireStateListeners(newState, reason)
 end
 
 ---------------------------------------------------------------------
+-- Cyrodiil or Imperial City Queue Check
+---------------------------------------------------------------------
+local function GetCyroType()
+    if (GetNumCampaignQueueEntries() > 0) then
+        return Spud.PVP
+    end
+    return Spud.NONE
+end
+
+---------------------------------------------------------------------
 -- Zone Check
 ---------------------------------------------------------------------
 local function IsDoingGroupPVE(zoneId)
@@ -105,9 +115,16 @@ end
 -- Check current state and fire listeners if applicable
 ---------------------------------------------------------------------
 local function CheckState(reason)
-    local finderType = GetCurrentFinderType()
-    local checkedState = Spud.NONE
+    local finderType = Spud.NONE
+    if (KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder) then
+        finderType = GetCurrentFinderType()
+        if (finderType == Spud.NONE) then
+            -- Also check Cyro / IC queue
+            finderType = GetCyroType()
+        end
+    end
 
+    local checkedState = Spud.NONE
     if (finderType == Spud.PVE or finderType == Spud.PVP) then
         -- Activity finder should take priority
         checkedState = finderType
@@ -115,7 +132,6 @@ local function CheckState(reason)
         -- If we're not queued, just use the zone as the check
         local zoneId = GetZoneId(GetUnitZoneIndex("player"))
         if (IsDoingGroupPVE(zoneId)) then
-            -- TODO: what about solo PVE?
             checkedState = Spud.PVE
         elseif (IsDoingPVP()) then
             checkedState = Spud.PVP
@@ -132,8 +148,12 @@ end
 ---------------------------------------------------------------------
 -- Events to trigger state check
 ---------------------------------------------------------------------
-local function OnFinderStatusUpdate(_, result)
+local function OnFinderStatusUpdate()
     CheckState("finder")
+end
+
+local function OnCampaignQueueChanged()
+    CheckState("campaign")
 end
 
 local function OnPlayerActivated()
@@ -151,4 +171,7 @@ function Spud.InitializeState()
     OnPlayerActivated()
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignJoined",  EVENT_CAMPAIGN_QUEUE_JOINED, OnCampaignQueueChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignLeft",  EVENT_CAMPAIGN_QUEUE_LEFT, OnCampaignQueueChanged)
 end

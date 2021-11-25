@@ -957,12 +957,12 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "checkbox",
-                    name = "Include activity finder",
-                    tooltip = "Includes Activity Finder in the PvE/PvP checks. For example, if you queue for a dungeon, AntiSpud will check your mundus as if you were in a PvE activity already",
+                    name = "Include queued activity",
+                    tooltip = "Includes Activity Finder and Cyrodiil/Imperial City campaigns in the PvE/PvP checks. For example, if you queue for a dungeon, AntiSpud will check your mundus as if you were in a PvE activity already. If you queue for a Cyrodiil campaign, AntiSpud will check your mundus as if you were in PvP already",
                     default = true,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder end,
                     setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.mundus.state.includeActivityFinder = value
+                        KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder = value
                         KyzderpsDerps.AntiSpud.CheckMundus()
                     end,
                     width = "full",

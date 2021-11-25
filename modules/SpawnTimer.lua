@@ -91,9 +91,13 @@ local BOSS_NAMES = {
     ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
     ["Archivist Sanctius"] = 300, -- PD: Razak's Wheel
 
+-- Clockwork City
+    ["The Imperfect"] = 310, -- WB
+
 -- Coldharbor
     ["Aez the Collector"] = 305, -- PD: Village of the Lost
     ["Cirterisse"] = 305, -- Delve: Aba-Loria
+    ["Nerazakan"] = 304, -- Delve: The Grotto of Depravity
 
 -- Craglorn
     ["Secluded Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
@@ -115,6 +119,7 @@ local BOSS_NAMES = {
     ["Valenwe"] = true, -- Delve: Cryptwatch Fort
 
 -- Gold Coast
+    ["Limenauruus"] = true, -- WB: Minotaur
     ["Ironfang"] = true, -- Delve: Garlas Agea
     ["Exulus"] = true, -- Delve: Hrota Cave
 

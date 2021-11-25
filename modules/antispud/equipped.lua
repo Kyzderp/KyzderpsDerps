@@ -185,6 +185,7 @@ local function OnSlotUpdated(_, bagId, slotId)
     -- Ignore costume updates, poison updates
     if (slotId == EQUIP_SLOT_COSTUME or slotId == EQUIP_SLOT_POISON or slotId == EQUIP_SLOT_BACKUP_POISON) then return end
 
+    -- 1000ms would cover the double firing due to barswap swap gear or whatever it is, but it feels too sluggish
     EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "SpudEquippedTimeout", 500, CheckAllSlots)
 end
 
