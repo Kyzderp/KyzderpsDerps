@@ -187,7 +187,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.InitializeCompanion()
     KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.InitializeHodor()
-    KyzderpsDerps.InitializeHooks()
+    KyzderpsDerps.InitializeChatSpam()
     KyzderpsDerps.InitializeFashion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()

@@ -1,7 +1,7 @@
 KyzderpsDerps = KyzderpsDerps or {}
 
 ---------------------------------------------------------------------
-function KyzderpsDerps.InitializeHooks()
+function KyzderpsDerps.InitializeChatSpam()
     KyzderpsDerps.InitializeCSAHook()
     KyzderpsDerps.InitializeLootHistoryHook()
 end

@@ -13,26 +13,22 @@ local csaCategories = {
 }
 
 ---------------------------------------------------------------------
-local function HookCenterScreenAnnounce()
-    local origQueueMessage = CENTER_SCREEN_ANNOUNCE.QueueMessage
-    CENTER_SCREEN_ANNOUNCE.QueueMessage = function(s, messageParams)
-        local mainText = messageParams:GetMainText()
-        local secondaryText = messageParams:GetSecondaryText()
+local function HookCenterScreenAnnounce(s, messageParams)
+    local mainText = messageParams:GetMainText()
+    local secondaryText = messageParams:GetSecondaryText()
 
-        if (mainText ~= nil or secondaryText ~= nil) then
-            if (LibFilteredChatPanel) then
-                LibFilteredChatPanel:GetSystemFilter():AddMessage(string.format("%s - %s / %s",
-                    csaCategories[messageParams:GetCategory()],
-                    tostring(mainText),
-                    tostring(secondaryText)))
-            end
+    if (mainText ~= nil or secondaryText ~= nil) then
+        if (LibFilteredChatPanel) then
+            LibFilteredChatPanel:GetSystemFilter():AddMessage(string.format("%s - %s / %s",
+                csaCategories[messageParams:GetCategory()],
+                tostring(mainText),
+                tostring(secondaryText)))
         end
-
-        return origQueueMessage(s, messageParams)
     end
+    return false
 end
 
 ---------------------------------------------------------------------
 function KyzderpsDerps.InitializeCSAHook()
-    HookCenterScreenAnnounce()
+    ZO_PreHook(CENTER_SCREEN_ANNOUNCE, "QueueMessage", HookCenterScreenAnnounce)
 end

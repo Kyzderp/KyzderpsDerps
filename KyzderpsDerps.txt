@@ -34,9 +34,9 @@ modules/integrations/hodorReflexes.lua
 modules/muhvitality/main.lua
 modules/muhvitality/ui.xml
 
-modules/uihooks/main.lua
-modules/uihooks/csa.lua
-modules/uihooks/lootHistory.lua
+modules/chatspam/main.lua
+modules/chatspam/csa.lua
+modules/chatspam/lootHistory.lua
 
 modules/debug/spamWindow.lua
 modules/debug/debugUtils.lua
