@@ -20,7 +20,9 @@ end
 -- Init
 ---------------------------------------------------------------------
 function Spam.Initialize()
-    spamFilter = LibFilteredChatPanel:CreateFilter(Spam.name, "/esoui/art/journal/journal_tabicon_cadwell_down.dds", {0.7, 0.7, 0.7}, false)
+    if (LibFilteredChatPanel) then
+        spamFilter = LibFilteredChatPanel:CreateFilter(Spam.name, "/esoui/art/journal/journal_tabicon_cadwell_down.dds", {0.7, 0.7, 0.7}, false)
+    end
 
     Spam.InitializeCSAHook()
     Spam.InitializeLootHistory()
