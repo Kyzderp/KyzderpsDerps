@@ -1,4 +1,6 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.ChatSpam = KyzderpsDerps.ChatSpam or {}
+local Spam = KyzderpsDerps.ChatSpam
 
 local csaCategories = {
     [CSA_CATEGORY_COUNTDOWN_TEXT] = "COUNTDOWN_TEXT",
@@ -29,6 +31,6 @@ local function HookCenterScreenAnnounce(s, messageParams)
 end
 
 ---------------------------------------------------------------------
-function KyzderpsDerps.InitializeCSAHook()
+function Spam.InitializeCSAHook()
     ZO_PreHook(CENTER_SCREEN_ANNOUNCE, "QueueMessage", HookCenterScreenAnnounce)
 end

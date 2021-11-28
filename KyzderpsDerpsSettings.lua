@@ -1170,6 +1170,41 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Chat Spam",
+            controls = {
+                {
+                    type = "checkbox",
+                    name = "Use LibFilteredChatPanel",
+                    tooltip = "Send the output of the chat spam to the filtered chat panel instead of regular chat. Requires LibFilteredChatPanel",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.chatSpam.useLFCP end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.chatSpam.useLFCP = value
+                    end,
+                    width = "full",
+                    disabled = function() return LibFilteredChatPanel == nil end,
+                },
+                {
+                    type = "checkbox",
+                    name = "Display score gains",
+                    tooltip = "Display spammy chat whenever you gain score in veteran scored activities such as trials and arenas",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.chatSpam.printScore end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.chatSpam.printScore = value
+                        if (value) then
+                            KyzderpsDerps.ChatSpam.RegisterScore()
+                        else
+                            KyzderpsDerps.ChatSpam.UnregisterScore()
+                        end
+                    end,
+                    width = "full",
+                },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Miscellaneous",
             controls = {
                 {

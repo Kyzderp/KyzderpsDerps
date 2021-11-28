@@ -8,6 +8,12 @@
 
 ## SavedVariables: KyzderpsDerpsSavedVariables
 
+KyzderpsDerps.lua
+KyzderpsDerpsSettings.lua
+KyzderpsDerps.xml
+commands.lua
+bindings.xml
+
 modules/CustomTargetName.lua
 modules/Grievous.lua
 modules/SpawnTimer.lua
@@ -37,14 +43,8 @@ modules/muhvitality/ui.xml
 modules/chatspam/main.lua
 modules/chatspam/csa.lua
 modules/chatspam/lootHistory.lua
+modules/chatspam/score.lua
 
 modules/debug/spamWindow.lua
 modules/debug/debugUtils.lua
 modules/debug/spamWindow.xml
-
-KyzderpsDerps.lua
-KyzderpsDerpsSettings.lua
-KyzderpsDerps.xml
-commands.lua
-
-bindings.xml

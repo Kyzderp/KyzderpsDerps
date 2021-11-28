@@ -100,6 +100,10 @@ local defaultOptions = {
         vampSkinId = 0,
         autoTabard = false,
     },
+    chatSpam = {
+        useLFCP = true,
+        printScore = false,
+    },
 }
 
 local defaultValues = {
@@ -187,7 +191,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.InitializeCompanion()
     KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.InitializeHodor()
-    KyzderpsDerps.InitializeChatSpam()
+    KyzderpsDerps.ChatSpam.Initialize()
     KyzderpsDerps.InitializeFashion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()

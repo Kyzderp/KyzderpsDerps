@@ -1,4 +1,6 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.ChatSpam = KyzderpsDerps.ChatSpam or {}
+local Spam = KyzderpsDerps.ChatSpam
 
 ---------------------------------------------------------------------
 local lootFilter
@@ -47,9 +49,9 @@ function lootChat:Print(message)
 end
 
 ---------------------------------------------------------------------
-function KyzderpsDerps.InitializeLootHistoryHook()
+function Spam.InitializeLootHistory()
     if (LibFilteredChatPanel and LibLootSummary) then
-        lootFilter = LibFilteredChatPanel:CreateFilter(KyzderpsDerps.name .. "Loot", "/esoui/art/leveluprewards/levelup_bag_upgrade_64.dds", {0, 0.6, 0.2}, false)
+        lootFilter = LibFilteredChatPanel:CreateFilter(Spam.name .. "Loot", "/esoui/art/leveluprewards/levelup_bag_upgrade_64.dds", {0, 0.6, 0.2}, false)
 
         lls = LibLootSummary({chat = lootChat:New()})
         lls:SetCombineDuplicates(true)
@@ -68,7 +70,7 @@ function KyzderpsDerps.InitializeLootHistoryHook()
         lls:SetSuffix("")
         lls:SetEnabled(true)
 
-        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "LootHistory", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnInventorySlotUpdate)
+        EVENT_MANAGER:RegisterForEvent(Spam.name .. "LootHistory", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnInventorySlotUpdate)
     else
         KyzderpsDerps:dbg("Not hooking loot history because no LibFilteredChatPanel enabled.")
     end
