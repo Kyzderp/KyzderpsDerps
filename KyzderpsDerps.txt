@@ -45,6 +45,7 @@ modules/debug/spamWindow.xml
 
 modules/integrations/buffTheGroup.lua
 modules/integrations/hodorReflexes.lua
+modules/integrations/enabledAddons.lua
 
 modules/muhvitality/main.lua
 modules/muhvitality/ui.xml

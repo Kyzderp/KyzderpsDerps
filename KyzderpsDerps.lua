@@ -106,6 +106,11 @@ local defaultOptions = {
         useLFCP = true,
         printScore = false,
     },
+    integrations = {
+        checkBRHelper = false,
+        checkAsylumTracker = false,
+        checkAsylumStatusPanel = false,
+    },
 }
 
 local defaultValues = {
@@ -261,6 +266,7 @@ local function Initialize()
     KyzderpsDerps.InitializeDeathAlert()
     KyzderpsDerps.InitializeAltoholic()
     KyzderpsDerps.InitializeKHouse()
+    KyzderpsDerps.Integrations.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")

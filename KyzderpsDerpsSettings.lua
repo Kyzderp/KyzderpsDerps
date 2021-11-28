@@ -1290,6 +1290,46 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
             }
         },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
+            name = "Enable Check",
+            controls = {
+                {
+                    type = "checkbox",
+                    name = "Check BRHelper by andy.s",
+                    tooltip = "When entering Blackrose Prison, display a warning if BRHelper is not enabled",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.integrations.checkBRHelper end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.integrations.checkBRHelper = value
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check Asylum Tracker by init3",
+                    tooltip = "When entering Asylum Sanctorium, display a warning if Asylum Tracker is not enabled",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.integrations.checkAsylumTracker end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.integrations.checkAsylumTracker = value
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check Asylum Status Panel by code65536",
+                    tooltip = "When entering Asylum Sanctorium, display a warning if Asylum Status Panel is not enabled",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.integrations.checkAsylumStatusPanel end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.integrations.checkAsylumStatusPanel = value
+                    end,
+                    width = "full",
+                },
+            }
+        },
     }
 
     KyzderpsDerps.addonPanel = LAM:RegisterAddonPanel("KyzderpsDerpsOptions", panelData)
