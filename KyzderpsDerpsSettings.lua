@@ -1220,6 +1220,17 @@ function KyzderpsDerps:CreateSettingsMenu()
                         end,
                     width = "full",
                 },
+                {
+                    type = "checkbox",
+                    name = "Block \"Item not ready yet\"",
+                    tooltip = "Prevent the \"Item not ready yet\" text from showing up in alerts",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.misc.blockItemNotReady end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.misc.blockItemNotReady = value
+                    end,
+                    width = "full",
+                },
             }
         },
         -------------------------------------------------------------------------------

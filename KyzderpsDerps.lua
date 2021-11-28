@@ -57,6 +57,7 @@ local defaultOptions = {
     },
     misc = {
         loginCollectible = 0, -- None
+        blockItemNotReady = false,
     },
     companion = {
         resummon = true,
@@ -259,7 +260,7 @@ local function Initialize()
     KyzderpsDerps.InitializeAltoholic()
     KyzderpsDerps.InitializeKHouse()
 
-
+    -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_1", "Select Quickslot 1")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_2", "Select Quickslot 2")
@@ -270,12 +271,17 @@ local function Initialize()
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_7", "Select Quickslot 7")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_8", "Select Quickslot 8")
 
+    -- BEHOLD! My stuff.
     if (KyzderpsDerps.savedOptions.general.experimental) then
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
         KyzderpsDerps.InitializeAOE()
         KyzderpsDerps.InitializeSpam()
         KyzderpsDerps.InitializeMuhVitality() -- TODO: move out of experimental
     end
+
+    ZO_PreHook(ZO_AlertText_GetHandlers(), EVENT_ITEM_ON_COOLDOWN, function()
+        return KyzderpsDerps.savedOptions.misc.blockItemNotReady
+    end)
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
