@@ -34,12 +34,6 @@ modules/antispud/equipped.lua
 modules/antispud/spaulder.lua
 modules/antispud/antispud.xml
 
-modules/integrations/buffTheGroup.lua
-modules/integrations/hodorReflexes.lua
-
-modules/muhvitality/main.lua
-modules/muhvitality/ui.xml
-
 modules/chatspam/main.lua
 modules/chatspam/csa.lua
 modules/chatspam/lootHistory.lua
@@ -48,3 +42,11 @@ modules/chatspam/score.lua
 modules/debug/spamWindow.lua
 modules/debug/debugUtils.lua
 modules/debug/spamWindow.xml
+
+modules/integrations/buffTheGroup.lua
+modules/integrations/hodorReflexes.lua
+
+modules/muhvitality/main.lua
+modules/muhvitality/ui.xml
+
+modules/reticle/main.lua

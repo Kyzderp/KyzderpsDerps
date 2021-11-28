@@ -58,6 +58,7 @@ local defaultOptions = {
     misc = {
         loginCollectible = 0, -- None
         blockItemNotReady = false,
+        combatReticle = false,
     },
     companion = {
         resummon = true,
@@ -190,9 +191,10 @@ local function OnPlayerActivated(_, initial)
 
     KyzderpsDerps.InitializeQuickSlots()
     KyzderpsDerps.InitializeCompanion()
-    KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.InitializeHodor()
+    KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.ChatSpam.Initialize()
+    KyzderpsDerps.Reticle.Initialize()
     KyzderpsDerps.InitializeFashion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
