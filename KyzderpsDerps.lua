@@ -278,6 +278,7 @@ local function Initialize()
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_6", "Select Quickslot 6")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_7", "Select Quickslot 7")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_8", "Select Quickslot 8")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_ANTISPUD_DISMISS", "Dismiss AntiSpud Notification")
 
     -- BEHOLD! My stuff.
     if (KyzderpsDerps.savedOptions.general.experimental) then
