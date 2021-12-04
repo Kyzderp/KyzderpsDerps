@@ -156,9 +156,14 @@ local function OnCampaignQueueChanged()
     CheckState("campaign")
 end
 
+local prevZoneId
 local function OnPlayerActivated()
     local zoneId = GetZoneId(GetUnitZoneIndex("player"))
+    if (prevZoneId) then
+        KyzderpsDerps:dbg(string.format("|c00FF00Left zone %s (%d)|r", GetZoneNameById(prevZoneId), prevZoneId))
+    end
     KyzderpsDerps:dbg(string.format("|c00FF00Entered zone %s (%d)|r", GetPlayerActiveZoneName(), zoneId))
+    prevZoneId = zoneId
 
     CheckState("activation")
 end
