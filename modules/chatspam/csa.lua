@@ -31,6 +31,8 @@ local function HookCenterScreenAnnounce(s, messageParams)
 end
 
 ---------------------------------------------------------------------
+
+---------------------------------------------------------------------
 function Spam.InitializeCSAHook()
     ZO_PreHook(CENTER_SCREEN_ANNOUNCE, "QueueMessage", HookCenterScreenAnnounce)
 end

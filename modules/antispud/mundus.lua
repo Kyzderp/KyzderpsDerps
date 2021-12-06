@@ -33,6 +33,10 @@ end
 
 local function CheckMundus()
     local currentMundus, abilityId = GetMundus("player")
+    if (not currentMundus) then
+        Spud.Display("You have no Mundus Stone", Spud.MUNDUS)
+        return
+    end
     Spud.DisplayWarning("You are using |cFFFFFF" .. currentMundus .. "|r")
 
     local currentState = Spud.GetCurrentState()

@@ -144,9 +144,14 @@ local function CheckSlotsSets(isFrontbar)
             color = "|cFF0000"
             error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
         elseif (data.numEquipped > data.maxEquipped) then
-            -- Too many pieces
-            color = "|cFF0000"
-            error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
+            -- 6 pieces is probably not correct, but check the exception list
+            if (data.numEquipped == 6 and KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
+                color = "|cFF7700"
+            else
+                -- Too many pieces
+                color = "|cFF0000"
+                error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
+            end
         elseif (data.numEquipped == 3) then
             -- 3 pieces is probably ok
             color = "|cFFFF00"
@@ -204,5 +209,8 @@ end
 
 function Spud.UninitializeEquipped()
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "SpudEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE)
+    Spud.Display(nil, Spud.MISSING)
+    Spud.Display(nil, Spud.FRONTBAR)
+    Spud.Display(nil, Spud.BACKBAR)
     AntiSpudEquipped:SetHidden(true)
 end
