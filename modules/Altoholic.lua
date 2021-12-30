@@ -20,6 +20,13 @@ characters = {
 local function UpdateSkillPoints()
     local currentChar = GetUnitName("player")
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].availPoints = GetAvailableSkillPoints()
+
+    -- Total points using skill respec cost heuristic
+    local possibleTotalPoints = GetSkillRespecCost(SKILL_POINT_ALLOCATION_MODE_FULL) / 50
+    if (possibleTotalPoints ~= 0 and -- If it's 0 then it's probably a free spec event. Could also be no points allocated but ehh
+        possibleTotalPoints == math.floor(possibleTotalPoints)) then -- Must be integer, or it's probably a cheap respec event
+        KyzderpsDerps.savedValues.charInfo.characters[currentChar].totalPoints = possibleTotalPoints + GetAvailableSkillPoints()
+    end
 end
 
 local function UpdatePlayedTime()
@@ -104,12 +111,34 @@ end
 function KyzderpsDerps.BuildPoints()
     UpdateSkillPoints()
 
-    local result = "=== Unspent Skill Points ==="
+    local result = "=== Unspent / Approx.Total Skill Points ==="
 
     -- sort by descending unspent skill points
     for name, info in spairs(KyzderpsDerps.savedValues.charInfo.characters, function(t, a, b) return t[b].availPoints < t[a].availPoints end) do
         result = result .. "\n|cFFFFFF" .. name .. " -|r "
         result = result .. tostring(info.availPoints)
+        if (info.totalPoints) then
+            result = result .. " |cAAAAAA/ " .. tostring(info.totalPoints) .. "|r"
+        end
+    end
+
+    return result
+end
+
+---------------------------------------------------------------------
+-- Build the entire string for total skill points
+function KyzderpsDerps.BuildTotalPoints()
+    UpdateSkillPoints()
+
+    local result = "=== Unspent / Approx.Total Skill Points ==="
+
+    -- sort by descending total skill points
+    for name, info in spairs(KyzderpsDerps.savedValues.charInfo.characters, function(t, a, b) return (t[b].totalPoints or 0) < (t[a].totalPoints or 0) end) do
+        result = result .. "\n|cFFFFFF" .. name .. " - |cAAAAAA"
+        result = result .. tostring(info.availPoints) .. "|r"
+        if (info.totalPoints) then
+            result = result .. " / " .. tostring(info.totalPoints)
+        end
     end
 
     return result

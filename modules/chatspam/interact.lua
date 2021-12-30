@@ -72,7 +72,7 @@ function Spam.InitializeInteract()
 
     EVENT_MANAGER:RegisterForEvent(Spam.name .. "FinderComplete", EVENT_ACTIVITY_FINDER_ACTIVITY_COMPLETE, function()
         d("finder complete")
-        ResetCounter()
+        -- ResetCounter()
     end)
 
     EVENT_MANAGER:RegisterForEvent(Spam.name .. "LFGJoined", EVENT_GROUPING_TOOLS_LFG_JOINED, function(_, locationName)
