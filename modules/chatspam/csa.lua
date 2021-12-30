@@ -14,6 +14,11 @@ local csaCategories = {
     [CSA_CATEGORY_SMALL_TEXT] = "SMALL_TEXT",
 }
 
+local alertCategories = {
+    [UI_ALERT_CATEGORY_ERROR] = "ERROR",
+    [UI_ALERT_CATEGORY_ALERT] = "ALERT",
+}
+
 ---------------------------------------------------------------------
 local function HookCenterScreenAnnounce(s, messageParams)
     local mainText = messageParams:GetMainText()
@@ -31,8 +36,18 @@ local function HookCenterScreenAnnounce(s, messageParams)
 end
 
 ---------------------------------------------------------------------
+local function HookAlert(category, soundId, message)
+    if (LibFilteredChatPanel and category and message) then
+        LibFilteredChatPanel:GetSystemFilter():AddMessage(string.format("|cede795%s - %s",
+                alertCategories[category],
+                tostring(message)))
+    end
+    return false
+end
+
 
 ---------------------------------------------------------------------
 function Spam.InitializeCSAHook()
     ZO_PreHook(CENTER_SCREEN_ANNOUNCE, "QueueMessage", HookCenterScreenAnnounce)
+    ZO_PreHook("ZO_Alert", HookAlert)
 end
