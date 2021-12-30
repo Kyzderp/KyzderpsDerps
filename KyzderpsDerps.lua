@@ -105,6 +105,7 @@ local defaultOptions = {
     chatSpam = {
         useLFCP = true,
         printScore = false,
+        recordChest = false,
     },
     integrations = {
         checkBRHelper = false,
@@ -159,6 +160,10 @@ local defaultValues = {
         x = GuiRoot:GetWidth(),
         y = 0,
     },
+    chestsLooted = {
+        x = GuiRoot:GetWidth() - 300,
+        y = 0,
+    },
 }
 
 ---------------------------------------------------------------------
@@ -177,6 +182,9 @@ function KyzderpsDerps.SavePosition()
 
     KyzderpsDerps.savedValues.muhVitality.x = MuhVitality:GetLeft()
     KyzderpsDerps.savedValues.muhVitality.y = MuhVitality:GetTop()
+
+    KyzderpsDerps.savedValues.chestsLooted.x = KDDInfoPanel:GetLeft()
+    KyzderpsDerps.savedValues.chestsLooted.y = KDDInfoPanel:GetTop()
 end
  
 ---------------------------------------------------------------------

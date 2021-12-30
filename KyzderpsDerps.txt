@@ -38,6 +38,9 @@ modules/chatspam/main.lua
 modules/chatspam/csa.lua
 modules/chatspam/lootHistory.lua
 modules/chatspam/score.lua
+modules/chatspam/interact.lua
+
+modules/chatspam/infoPanel.xml
 
 modules/debug/spamWindow.lua
 modules/debug/debugUtils.lua

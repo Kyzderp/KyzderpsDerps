@@ -68,6 +68,10 @@ local function HandleKDDCommand(argString)
         end
         KyzderpsDerps:msg(displayMessage)
 
+    -- resetchests
+    elseif (args[1] == "resetchests") then
+        KyzderpsDerps.ChatSpam.ResetCounter()
+
     -- List furnishings in a home with a filter, undocumented because could be... controversial
     elseif (args[1] == "furn") then
         if (length ~= 2) then
