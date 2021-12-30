@@ -68,6 +68,26 @@ local function HandleKDDCommand(argString)
         end
         KyzderpsDerps:msg(displayMessage)
 
+    -- List furnishings in a home with a filter, undocumented because could be... controversial
+    elseif (args[1] == "furn") then
+        if (length ~= 2) then
+            CHAT_SYSTEM:AddMessage("Usage: /kdd furn <itemnamefilter>")
+            return
+        end
+
+        KyzderpsDerps:msg("Furnishings in this house matching \"" .. args[2] .. "\":")
+        local furnitureId = nil
+        local itemId = nil
+        repeat
+            furnitureId = GetNextPlacedHousingFurnitureId(furnitureId)
+            if furnitureId ~= nil then
+                local link = GetPlacedFurnitureLink(furnitureId, LINK_STYLE_BRACKETS)
+                if (string.find(string.lower(GetItemLinkName(link)), string.lower(args[2]))) then
+                    CHAT_SYSTEM:AddMessage(link)
+                end
+            end
+        until furnitureId == nil
+
     -- Unknown
     else
         CHAT_SYSTEM:AddMessage(usage)
