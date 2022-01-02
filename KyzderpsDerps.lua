@@ -105,7 +105,13 @@ local defaultOptions = {
     chatSpam = {
         useLFCP = true,
         printScore = false,
-        recordChest = false,
+        printChest = false,
+        printChestSummary = false,
+    },
+    infoPanel = {
+        enabled = false,
+        chestsLooted = true,
+        chestsLootedDungeonsOnly = true,
     },
     integrations = {
         checkBRHelper = false,

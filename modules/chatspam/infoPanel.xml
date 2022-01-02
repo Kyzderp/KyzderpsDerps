@@ -10,12 +10,12 @@
                         KyzderpsDerps.SavePosition()
                     </OnMoveStop>
                     <Controls>
-                        <Label name="$(parent)ChestsLabel" font="$(BOLD_FONT)|13|soft-shadow-thick" color="FFFFFF" text="0 chests looted" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
-                            <AnchorFill/>
-                        </Label>
                         <Backdrop name="$(parent)Backdrop" centerColor="22000000" edgeColor="00000000" hidden="false">
                             <AnchorFill/>
                         </Backdrop>
+                        <Label name="$(parent)ChestsLabel" font="$(BOLD_FONT)|13|soft-shadow-thick" color="FFFFFF" text="0 chests looted" verticalAlignment="CENTER" horizontalAlignment="CENTER" alpha="1" hidden="false">
+                            <AnchorFill/>
+                        </Label>
                     </Controls>
                 </Control>
 <!-- ======================================================================================================================= -->
