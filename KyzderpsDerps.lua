@@ -109,8 +109,7 @@ local defaultOptions = {
         printChestSummary = false,
     },
     infoPanel = {
-        enabled = false,
-        chestsLooted = true,
+        chestsLooted = false,
         chestsLootedDungeonsOnly = true,
     },
     integrations = {

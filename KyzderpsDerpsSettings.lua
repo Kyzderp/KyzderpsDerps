@@ -1170,6 +1170,72 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Chest Forgerrer",
+            controls = {
+                {
+                    type = "description",
+                    title = nil,
+                    text = "Are you a scatterbrain who can't remember how many chests you've found in this dungeon? Well look no further than the |c99FF99Chest Forgerrer|r! This handy module keeps track of how many chests you've looted in a zone, so it doesn't matter if you |c99FF99FORGOR|r!\nDisclaimer: some chests that are not actually unlockable chests, such as drops from certain bosses, will also be included in the tally. If you loot the same chest twice, it will also be counted twice.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Print chest interaction",
+                    tooltip = "Sends a message in chat when you interact with a chest",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.chatSpam.printChest end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.chatSpam.printChest = value
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Print chest summary",
+                    tooltip = "If you have looted chests in a zone, print a summary of how many chests you looted when leaving the zone",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.chatSpam.printChestSummary end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.chatSpam.printChestSummary = value
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "description",
+                    title = nil,
+                    text = "A counter can be shown on the HUD for you even more |c99FF99forgerful|r types.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Show chest counter",
+                    tooltip = "Shows a counter on the HUD for how many chests you have looted in the current zone",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.infoPanel.chestsLooted end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.infoPanel.chestsLooted = value
+                        KyzderpsDerps.ChatSpam.UpdateChestDisplay()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Show only in dungeons",
+                    tooltip = "Shows the chest counter only in group dungeons",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.infoPanel.chestsLootedDungeonsOnly end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.infoPanel.chestsLootedDungeonsOnly = value
+                        KyzderpsDerps.ChatSpam.UpdateChestDisplay()
+                    end,
+                    width = "full",
+                    disabled = function() return not KyzderpsDerps.savedOptions.infoPanel.chestsLooted end,
+                },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Chat Spam",
             controls = {
                 {

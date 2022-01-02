@@ -8,7 +8,7 @@ local Spam = KyzderpsDerps.ChatSpam
 local chestsLooted = 0
 
 local function UpdateDisplay()
-    if (not KyzderpsDerps.savedOptions.infoPanel.enabled or not KyzderpsDerps.savedOptions.infoPanel.chestsLooted) then
+    if (not KyzderpsDerps.savedOptions.infoPanel.chestsLooted) then
         -- Never display
         KDDInfoPanel:SetHidden(true)
         return
@@ -30,6 +30,7 @@ local function UpdateDisplay()
 
     KDDInfoPanel:SetWidth(KDDInfoPanelChestsLabel:GetTextWidth() + 8)
 end
+Spam.UpdateChestDisplay = UpdateDisplay
 
 local function ResetCounter(prevZoneName)
     if (chestsLooted > 0 and KyzderpsDerps.savedOptions.chatSpam.printChestSummary) then
@@ -103,6 +104,5 @@ function Spam.InitializeInteract()
         KyzderpsDerps.savedValues.chestsLooted.x, KyzderpsDerps.savedValues.chestsLooted.y)
     HUD_SCENE:AddFragment(ZO_SimpleSceneFragment:New(KDDHUDContainer))
     HUD_UI_SCENE:AddFragment(ZO_SimpleSceneFragment:New(KDDHUDContainer))
-    KDDInfoPanel:SetHidden(not KyzderpsDerps.savedOptions.infoPanel.enabled)
     UpdateDisplay()
 end
