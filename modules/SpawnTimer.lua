@@ -183,6 +183,7 @@ local BOSS_NAMES = {
 
 -- Vvardenfell
     ["Mud-Tusk"] = 310, -- PD: Nchuleftingth
+    ["Th'krak the Tunnel-King"] = 304, -- Delve: Matus-Akin Egg Mine
 
 -- Western Skyrim
     ["Shademother"] = 606, -- WB
