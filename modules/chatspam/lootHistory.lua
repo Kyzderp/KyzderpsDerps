@@ -71,6 +71,11 @@ function Spam.InitializeLootHistory()
         lls:SetEnabled(true)
 
         EVENT_MANAGER:RegisterForEvent(Spam.name .. "LootHistory", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnInventorySlotUpdate)
+
+        if (KyzderpsDerps.savedOptions.general.experimental) then
+            -- Prevent items from showing up in loot history
+            EVENT_MANAGER:UnregisterForEvent(ZO_LOOT_HISTORY_NAME, EVENT_INVENTORY_SINGLE_SLOT_UPDATE)
+        end
     else
         KyzderpsDerps:dbg("Not hooking loot history because no LibFilteredChatPanel enabled.")
     end

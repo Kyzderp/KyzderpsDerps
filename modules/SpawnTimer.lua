@@ -76,6 +76,11 @@ KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
 local BOSS_NAMES = {
 -- Dolmens - TODO: 5:18? stonefalls 6:14?
 
+-- Bangkorai
+    ["Curnard the Generous"] = true, -- Delve: Viridian Watch
+    ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
+    ["Archivist Sanctius"] = 300, -- PD: Razak's Wheel
+
 -- Blackwood
     ["Havocrel Duke of Storms"] = 311, -- Oblivion Portal
     ["Bhrum / Koska"] = 331, -- WB
@@ -84,12 +89,10 @@ local BOSS_NAMES = {
     ["Old Deathwart"] = 330, -- WB
     ["Ghemvas the Harbinger"] = 302, -- WB
     ["Sul-Xan Ritual Site"] = 301, -- WB
-    ["Grapnur / Burthar"] = 301, -- PD: Zenithar's Abbey
+    ["Grapnur / Burthar"] = 305, -- PD: Zenithar's Abbey
 
--- Bangkorai
-    ["Curnard the Generous"] = true, -- Delve: Viridian Watch
-    ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
-    ["Archivist Sanctius"] = 300, -- PD: Razak's Wheel
+-- The Reach / Arkthzand Caverns
+    ["Dwarven Dynastor Supreme"] = 335, -- WB
 
 -- Clockwork City
     ["The Imperfect"] = 310, -- WB
@@ -98,6 +101,7 @@ local BOSS_NAMES = {
     ["Aez the Collector"] = 305, -- PD: Village of the Lost
     ["Cirterisse"] = 305, -- Delve: Aba-Loria
     ["Nerazakan"] = 304, -- Delve: The Grotto of Depravity
+    ["Mal Sorra"] = 304, -- Delve: Mal Sorra's Tomb
 
 -- Craglorn
     ["Secluded Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
@@ -184,6 +188,10 @@ local BOSS_NAMES = {
 -- Vvardenfell
     ["Mud-Tusk"] = 310, -- PD: Nchuleftingth
     ["Th'krak the Tunnel-King"] = 304, -- Delve: Matus-Akin Egg Mine
+    ["Nchuthand Far-Hurler"] = 304, -- Delve: Nchuleft
+    ["Zvvius the Hive Lord"] = 304, -- Delve: Zainsipilu
+    ["Old Rust-Eye"] = 304, -- Delve: Khartag Point
+    ["Salothan's Council"] = true, -- WB: Salothan's Council
 
 -- Western Skyrim
     ["Shademother"] = 606, -- WB
@@ -293,6 +301,12 @@ local BOSS_GROUPS = {
     ["Vorsholazh the Anvil"] = "Wandering Havocrel", -- Wandering WB
     ["Irncifel the Despoiler"] = "Wandering Havocrel", -- Wandering WB
     ["Kothan the Razorsworn"] = "Wandering Havocrel", -- Wandering WB
+
+-- Vvardenfell
+    ["Councilor Reynis"] = "Salothan's Council", -- WB: ghosts
+    ["Orator Salothan"] = "Salothan's Council", -- WB: ghosts
+    ["General Tanasa"] = "Salothan's Council", -- WB: ghosts
+    ["Regent Beleth"] = "Salothan's Council", -- WB: ghosts
 
 -- Imperial City
     ["Lady Malygda"] = "Arboretum",
