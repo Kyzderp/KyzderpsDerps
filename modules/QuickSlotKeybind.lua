@@ -60,6 +60,7 @@ end
 function KyzderpsDerps.InitializeQuickSlots()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "QuickSlot", EVENT_ACTIVE_QUICKSLOT_CHANGED, OnSlotChanged)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ArmoryEquippedQuickSlot", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, UpdateSlots)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ActionSlotUpdated", EVENT_ACTION_SLOT_UPDATED, UpdateSlots)
 
     QUICKSLOT_FRAGMENT:RegisterCallback("StateChange", UpdateSlots)
 
