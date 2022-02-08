@@ -1308,6 +1308,18 @@ function KyzderpsDerps:CreateSettingsMenu()
                     end,
                     width = "full",
                 },
+                {
+                    type = "checkbox",
+                    name = "Automatic repair kit",
+                    tooltip = "Automatically use a repair kit to repair gear that drops to 1% durability",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.misc.repair end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.misc.repair = value
+                        KyzderpsDerps.InitializeAutoRepair()
+                    end,
+                    width = "full",
+                },
             }
         },
         -------------------------------------------------------------------------------

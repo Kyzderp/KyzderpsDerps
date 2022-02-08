@@ -59,6 +59,7 @@ local defaultOptions = {
         loginCollectible = 0, -- None
         blockItemNotReady = false,
         combatReticle = false,
+        repair = true,
     },
     companion = {
         resummon = true,

@@ -41,7 +41,7 @@ local function OnDurabilityUpdate(_, bagId, slotId, _, _, inventoryUpdateReason,
     end
 
     RepairItemWithRepairKit(bagId, slotId, repairBagId, repairSlotId)
-    KyzderpsDerps:msg(string.format("Repaired %s with %s for %d%% durability.", GetItemLink(bagId, slotId), GetItemLink(repairBagId, repairSlotId), repairAmount))
+    KyzderpsDerps:msg(string.format("Repairing %s with %s for %d%% durability.", GetItemLink(bagId, slotId), GetItemLink(repairBagId, repairSlotId), repairAmount))
 end
 
 ---------------------------------------------------------------------
@@ -50,6 +50,10 @@ end
 function KyzderpsDerps.InitializeAutoRepair()
     KyzderpsDerps:dbg("    Initializing AutoRepair module...")
 
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "DurabilityUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnDurabilityUpdate)
-    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "DurabilityUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DURABILITY_CHANGE)
+    if (KyzderpsDerps.savedOptions.misc.repair) then
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "DurabilityUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnDurabilityUpdate)
+        EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "DurabilityUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DURABILITY_CHANGE)
+    else
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "DurabilityUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE)
+    end
 end
