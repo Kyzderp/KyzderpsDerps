@@ -1320,6 +1320,17 @@ function KyzderpsDerps:CreateSettingsMenu()
                     end,
                     width = "full",
                 },
+                {
+                    type = "checkbox",
+                    name = "Hide before logout",
+                    tooltip = "Automatically set your status to OFFLINE before you log out or quit the game. For you lurkers out there",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.misc.hideOnLogout end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.misc.hideOnLogout = value
+                    end,
+                    width = "full",
+                },
             }
         },
         -------------------------------------------------------------------------------

@@ -60,6 +60,7 @@ local defaultOptions = {
         blockItemNotReady = false,
         combatReticle = false,
         repair = true,
+        hideOnLogout = false,
     },
     companion = {
         resummon = true,
@@ -303,9 +304,19 @@ local function Initialize()
         KyzderpsDerps.InitializeMuhVitality() -- TODO: move out of experimental
     end
 
+    -- Block "Item not ready" spam
     ZO_PreHook(ZO_AlertText_GetHandlers(), EVENT_ITEM_ON_COOLDOWN, function()
         return KyzderpsDerps.savedOptions.misc.blockItemNotReady
     end)
+
+    -- Set to offline before logging out
+    local function HideOnLogout()
+        if (KyzderpsDerps.savedOptions.misc.hideOnLogout) then
+            SelectPlayerStatus(PLAYER_STATUS_OFFLINE)
+        end
+    end
+    ZO_PreHook("Logout", HideOnLogout)
+    ZO_PreHook("Quit", HideOnLogout)
 
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee

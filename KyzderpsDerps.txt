@@ -2,7 +2,7 @@
 ## A collection of random utilities
 ## Author: Kyzeragon
 ## Version: 1.16.0
-## APIVersion: 101032
+## APIVersion: 101033 101032
 ## DependsOn: LibAddonMenu-2.0>=31
 ## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary
 

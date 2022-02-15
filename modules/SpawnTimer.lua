@@ -50,6 +50,8 @@ local DUNGEON_ZONEIDS = {
     ["1229"] = true,  -- The Cauldron
     ["1267"] = true,  -- Red Petal Bastion
     ["1268"] = true,  -- The Dread Cellar
+    ["1301"] = true,  -- Coral Aerie
+    ["1302"] = true,  -- Shipwright's Regret
 }
 KyzderpsDerps.DUNGEON_ZONEIDS = DUNGEON_ZONEIDS
 
