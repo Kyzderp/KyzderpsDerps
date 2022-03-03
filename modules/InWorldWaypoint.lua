@@ -32,7 +32,6 @@ function KyzderpsDerps.PrintCurrentPosition()
     if (OSI and OSI.CreatePositionIcon) then
         -- KyzderpsDerps:msg("Creating an icon at that position for 10 seconds...")
         local tempIcon = OSI.CreatePositionIcon(worldX, worldY, worldZ, "odysupporticons/icons/emoji-poop.dds", 100)
-        -- local tempIcon = OSI.CreatePositionIcon(worldX, worldY, worldZ, "esoui/art/antiquities/bullet_active.dds", 100, {1, 1, 0})
         zo_callLater(function() OSI.DiscardPositionIcon(tempIcon) end, 10000)
     else
         KyzderpsDerps:msg("You don't have OdySupportIcons enabled or don't have the latest version, so no icon will be drawn at that position")

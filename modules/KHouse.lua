@@ -1,7 +1,7 @@
 KyzderpsDerps = KyzderpsDerps or {}
 
 local function PortToKyzersHouse()
-    local KYZ_HOUSE = 75
+    local KYZ_HOUSE = 46
     KyzderpsDerps:msg(string.format("Porting to @Kyzeragon's %s...", GetCollectibleName(GetCollectibleIdForHouse(KYZ_HOUSE))))
     if (GetUnitDisplayName("player") == "@Kyzeragon") then
         RequestJumpToHouse(KYZ_HOUSE)

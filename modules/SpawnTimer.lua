@@ -215,6 +215,7 @@ local BOSS_NAMES = {
     ["Ebral the Betrayer"] = 600, -- Antediluvian Vaults (EP)
     ["General Nazenaechar"] = 600, -- Antediluvian Vaults (EP)
     ["Secundinus the Despoiler"] = 600, -- Alessian Tombs (EP)
+    ["Simulacrum of Molag Bal"] = 311, -- Center
 
 -- Imperial City (non-event 15 mins)
     ["Arboretum"] = 900,

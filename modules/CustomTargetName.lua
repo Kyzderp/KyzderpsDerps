@@ -189,4 +189,5 @@ function KyzderpsDerps.InitializeCustomTargetName()
     CustomTargetCustomName:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT,
         KyzderpsDerps.savedValues.customTargetFrame.x,
         KyzderpsDerps.savedValues.customTargetFrame.y)
+    CustomTargetCustomNameLabel:SetFont(string.format("$(BOLD_FONT)|%d|soft-shadow-thick", KyzderpsDerps.savedOptions.customTargetFrame.size))
 end
