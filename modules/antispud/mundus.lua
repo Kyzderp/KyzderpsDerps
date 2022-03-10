@@ -48,7 +48,15 @@ local function CheckMundus()
         and not KyzderpsDerps.savedOptions.antispud.mundus.pvp[abilityId]) then
         Spud.Display(string.format("You are using %s in PvP", currentMundus), Spud.MUNDUS)
     else
-        Spud.Display(nil, Spud.MUNDUS)
+        if (KyzderpsDerps.savedOptions.general.experimental
+            and currentState == Spud.PVE
+            and GetSelectedLFGRole() ~= LFG_ROLE_TANK
+            and abilityId == 13982) then
+            -- Kyzer does not want Atro on non-tank
+            Spud.Display("Yo you have the Atro on non-tank", Spud.MUNDUS)
+        else
+            Spud.Display(nil, Spud.MUNDUS)
+        end
     end
 end
 Spud.CheckMundus = CheckMundus
