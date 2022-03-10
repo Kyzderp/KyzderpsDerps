@@ -104,6 +104,7 @@ local BOSS_NAMES = {
     ["Cirterisse"] = 305, -- Delve: Aba-Loria
     ["Nerazakan"] = 304, -- Delve: The Grotto of Depravity
     ["Mal Sorra"] = 304, -- Delve: Mal Sorra's Tomb
+    ["Daedroth Larder"] = true, -- WB
 
 -- Craglorn
     ["Secluded Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
@@ -271,6 +272,11 @@ local BOSS_GROUPS = {
     ["Nukhujeema"] = "Sul-Xan Ritual Site", -- WB: Sul-Xan Ritual Site
     ["Grapnur the Crusher"] = "Grapnur / Burthar", -- PD: Zenithar's Abbey - ogres
     ["Burthar Meatwise"] = "Grapnur / Burthar", -- PD: Zenithar's Abbey - ogres
+
+-- Coldharbor
+    ["Rsolignah"] = "Daedroth Larder", -- WB
+    ["Keggahiha"] = "Daedroth Larder", -- WB
+    ["Nolagha"] = "Daedroth Larder", -- WB
 
 -- Craglorn
     ["Troll Colossus"] = "GetPlayerLocationName", -- Nirncrux Mine

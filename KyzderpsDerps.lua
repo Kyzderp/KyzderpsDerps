@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.17.1"
+KyzderpsDerps.version = "1.18.0"
 
 -- Defaults
 local defaultOptions = {
@@ -118,6 +118,12 @@ local defaultOptions = {
         checkBRHelper = false,
         checkAsylumTracker = false,
         checkAsylumStatusPanel = false,
+    },
+    opener = {
+        delay = 0,
+        openMirriBag = false,
+        openGunnySack = false,
+        openToxinSatchel = false,
     },
 }
 
@@ -282,6 +288,7 @@ local function Initialize()
     KyzderpsDerps.InitializeAltoholic()
     KyzderpsDerps.InitializeKHouse()
     KyzderpsDerps.InitializeAutoRepair()
+    KyzderpsDerps.InitializeOpener()
     KyzderpsDerps.Integrations.Initialize()
 
     -- Key bindings

@@ -1271,6 +1271,63 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Container Opener",
+            controls = {
+                {
+                    type = "slider",
+                    name = "Delay before opening",
+                    tooltip = "Number of milliseconds to wait after obtaining a lootable container, before attempting to open it",
+                    min = 0,
+                    max = 2000,
+                    step = 100,
+                    default = 0,
+                    width = full,
+                    getFunc = function() return KyzderpsDerps.savedOptions.opener.delay end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.opener.delay = value
+                    end,
+                },
+                {
+                    type = "checkbox",
+                    name = "Auto open Hidden Treasure Bag",
+                    tooltip = "When you loot a Hidden Treasure Bag from Mirri's bonus, automatically open and loot it",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.opener.openMirriBag end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.opener.openMirriBag = value
+                        KyzderpsDerps.InitializeOpener()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Auto open Wet Gunny Sack",
+                    tooltip = "When you loot a Wet Gunny Sack from fishing, automatically open and loot it",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.opener.openGunnySack end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.opener.openGunnySack = value
+                        KyzderpsDerps.InitializeOpener()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Auto open Toxin Satchel",
+                    tooltip = "When you loot a Toxin Satchel, automatically open and loot it",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.opener.openToxinSatchel end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.opener.openToxinSatchel = value
+                        KyzderpsDerps.InitializeOpener()
+                    end,
+                    width = "full",
+                },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Miscellaneous",
             controls = {
                 {
