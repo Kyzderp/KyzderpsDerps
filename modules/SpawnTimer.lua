@@ -190,6 +190,7 @@ local BOSS_NAMES = {
 
 -- Vvardenfell
     ["Mud-Tusk"] = 310, -- PD: Nchuleftingth
+    ["Mynar Igna / Llaals"] = true, -- PD: Forgotten Wastes
     ["Th'krak the Tunnel-King"] = 304, -- Delve: Matus-Akin Egg Mine
     ["Nchuthand Far-Hurler"] = 304, -- Delve: Nchuleft
     ["Zvvius the Hive Lord"] = 304, -- Delve: Zainsipilu
@@ -316,6 +317,8 @@ local BOSS_GROUPS = {
     ["Orator Salothan"] = "Salothan's Council", -- WB: ghosts
     ["General Tanasa"] = "Salothan's Council", -- WB: ghosts
     ["Regent Beleth"] = "Salothan's Council", -- WB: ghosts
+    ["Mynar Igna"] = "Mynar Igna / Llaals", -- PD: Forgotten Wastes
+    ["Conflagrator Llaals"] = "Mynar Igna / Llaals", -- PD: Forgotten Wastes
 
 -- Imperial City
     ["Lady Malygda"] = "Arboretum",

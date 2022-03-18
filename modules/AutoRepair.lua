@@ -18,18 +18,13 @@ local function FindRepairKitFor(equipBagId, equipSlotId)
 end
 
 ---------------------------------------------------------------------
--- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
 ---------------------------------------------------------------------
-local function OnDurabilityUpdate(_, bagId, slotId, _, _, inventoryUpdateReason, _)
-    if (GetItemCondition(bagId, slotId) > 1) then
-        return
-    end
-
+local function AttemptRepair(bagId, slotId)
     -- Can't repair while dead or reincarnating, so delay and keep checking it
     if (IsUnitDeadOrReincarnating("player")) then
         KyzderpsDerps:dbg("delaying repair because dead or reincarnating")
         zo_callLater(function()
-                OnDurabilityUpdate(_, bagId, slotId, _, _, inventoryUpdateReason, _)
+                AttemptRepair(bagId, slotId)
             end, 1000)
         return
     end
@@ -42,6 +37,22 @@ local function OnDurabilityUpdate(_, bagId, slotId, _, _, inventoryUpdateReason,
 
     RepairItemWithRepairKit(bagId, slotId, repairBagId, repairSlotId)
     KyzderpsDerps:msg(string.format("Repairing %s with %s for %d%% durability.", GetItemLink(bagId, slotId), GetItemLink(repairBagId, repairSlotId), repairAmount))
+end
+
+---------------------------------------------------------------------
+-- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
+---------------------------------------------------------------------
+local function OnDurabilityUpdate(_, bagId, slotId, _, _, _, _)
+    if (GetItemCondition(bagId, slotId) > 1) then
+        return
+    end
+
+    -- Delay it by a second because sometimes it seems to try to repair immediately
+    -- upon death, and it passes the dead/reincarnating check. I got kicked to login
+    -- in a dungeon twice and this might be related...
+    zo_callLater(function()
+            AttemptRepair(bagId, slotId)
+        end, 1000)
 end
 
 ---------------------------------------------------------------------
