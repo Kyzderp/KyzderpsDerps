@@ -224,6 +224,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.InitializeFashion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
+        KyzderpsDerps.UIElements.Reposition()
         if (btg) then btg.debug = true end
     end
 

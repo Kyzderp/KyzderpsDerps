@@ -56,3 +56,5 @@ modules/muhvitality/main.lua
 modules/muhvitality/ui.xml
 
 modules/reticle/main.lua
+
+modules/uielements/reposition.lua
