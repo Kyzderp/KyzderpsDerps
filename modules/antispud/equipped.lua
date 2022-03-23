@@ -130,9 +130,10 @@ local function CheckSlotsSets(isFrontbar)
         if (data.numEquipped == data.maxEquipped) then
             -- Maximum number equipped, also covers mythics
             color = ""
-        elseif (data.maxEquipped == 2 and data.maxEquipped == data.numBonuses) then
-            -- Monster sets are ok. Imperfected arena weapons don't fall under this, because numBonuses = 1
-            -- ... but perfected arena weapons have 2 lines so numBonuses = 2. Oh well, fix it some other time
+        elseif (data.maxEquipped == 2) then
+            -- Monster sets are ok. This would also include arena weapons, but I can't reliably
+            -- detect whether only 1 piece is equipped without using something like LibSets maybe.
+            -- Or more complicated stuff so cba
             color = ""
         elseif (data.maxEquipped == 3 and data.maxEquipped == data.numBonuses) then
             -- This probably only applies to Armor of the Trainee, because monster sets and mythics already handled
