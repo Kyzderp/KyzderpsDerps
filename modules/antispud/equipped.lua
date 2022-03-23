@@ -108,13 +108,14 @@ local function CheckSlotsSets(isFrontbar)
         local itemLink = GetItemLink(BAG_WORN, slot)
 
         if (itemLink ~= "") then
-            local hasSet, setName, _, _, maxEquipped = GetItemLinkSetInfo(itemLink, true)
+            local hasSet, setName, numBonuses, _, maxEquipped = GetItemLinkSetInfo(itemLink, true)
             setName = string.gsub(setName, "^Perfected ", "")
             setName = string.gsub(setName, "^Perfect ", "")
             if (hasSet) then
                 if (not equippedSets[setName]) then
                     equippedSets[setName] = {}
                     equippedSets[setName].numEquipped = 0
+                    equippedSets[setName].numBonuses = numBonuses
                     equippedSets[setName].maxEquipped = maxEquipped
                 end
                 equippedSets[setName].numEquipped = equippedSets[setName].numEquipped + GetNumSetBonuses(itemLink)
@@ -127,11 +128,15 @@ local function CheckSlotsSets(isFrontbar)
     for setName, data in pairs(equippedSets) do
         local color = "|c0000FF"
         if (data.numEquipped == data.maxEquipped) then
+            -- Maximum number equipped, also covers mythics
             color = ""
-        elseif (data.maxEquipped == 2) then
-            -- Monster sets are ok
-            -- TODO: wearing 1 pc of dual wield or snb would also be "ok"
+        elseif (data.maxEquipped == 2 and data.maxEquipped == data.numBonuses) then
+            -- Monster sets are ok. Imperfected arena weapons don't fall under this, because numBonuses = 1
+            -- ... but perfected arena weapons have 2 lines so numBonuses = 2. Oh well, fix it some other time
             color = ""
+        elseif (data.maxEquipped == 3 and data.maxEquipped == data.numBonuses) then
+            -- This probably only applies to Armor of the Trainee, because monster sets and mythics already handled
+            color = "|cFFFF00"
         elseif (data.maxEquipped == 3 and data.numEquipped == 2) then
             -- 3pc sets like Willpower, Endurance, are probably ok with 2 pieces
             color = "|cFFFF00"
