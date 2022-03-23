@@ -286,7 +286,7 @@ local function OnCombatEvent(_, result, _, abilityName, _, _, sourceName, source
     local targetString = typeStrings[targetType]
 
     if (not sourceName or sourceName == "") then
-        sourceName = CrutchAlerts and CrutchAlerts.groupMembers[sourceUnitId]
+        sourceName = CrutchAlerts and CrutchAlerts.groupIdToTag and CrutchAlerts.groupIdToTag[sourceUnitId] and GetUnitDisplayName(CrutchAlerts.groupIdToTag[sourceUnitId])
         if (sourceName) then
             sourceName = "|cFCEB4C" .. sourceName .. "|r"
         else
@@ -295,7 +295,7 @@ local function OnCombatEvent(_, result, _, abilityName, _, _, sourceName, source
     end
 
     if (not targetName or targetName == "") then
-        targetName = CrutchAlerts and CrutchAlerts.groupMembers[targetUnitId]
+        targetName = CrutchAlerts and CrutchAlerts.groupIdToTag and CrutchAlerts.groupIdToTag[targetUnitId] and GetUnitDisplayName(CrutchAlerts.groupIdToTag[targetUnitId])
         if (targetName) then
             targetName = "|cFCEB4C" .. targetName .. "|r"
         else
