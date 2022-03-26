@@ -34,6 +34,7 @@ modules/antispud/display.lua
 modules/antispud/mundus.lua
 modules/antispud/equipped.lua
 modules/antispud/spaulder.lua
+modules/antispud/food.lua
 modules/antispud/antispud.xml
 
 modules/chatspam/main.lua

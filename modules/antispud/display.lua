@@ -7,9 +7,10 @@ Spud.MUNDUS = 1
 Spud.MISSING = 2
 Spud.FRONTBAR = 3
 Spud.BACKBAR = 4
-Spud.SPAULDER = 5
+Spud.FOOD = 5
+Spud.SPAULDER = 6
 
-local priorities = {Spud.MUNDUS, Spud.MISSING, Spud.FRONTBAR, Spud.BACKBAR, Spud.SPAULDER}
+local priorities = {Spud.MUNDUS, Spud.MISSING, Spud.FRONTBAR, Spud.BACKBAR, Spud.FOOD, Spud.SPAULDER}
 
 --[[
 displaying = {
@@ -17,6 +18,7 @@ displaying = {
     [MISSING] = "You are nekkid",
     [FRONTBAR] = "You are wearing 6 pieces of Bahsei's Mania on frontbar",
     [BACKBAR] = "You are wearing 2 pieces of Advancing Yokeda on backbar",
+    [FOOD] = "You have no buff food",
     [SPAULDER] = "Spudler is OFF",
 }
 ]]
