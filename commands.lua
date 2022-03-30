@@ -148,4 +148,7 @@ function KyzderpsDerps.InitializeCommands()
 
     SLASH_COMMANDS["/armory"] = function() UseCollectible(9745) end
     SLASH_COMMANDS["/ghrasharog"] = function() UseCollectible(9745) end
+
+    SLASH_COMMANDS["/decon"] = function() UseCollectible(10184) end
+    SLASH_COMMANDS["/giladil"] = function() UseCollectible(10184) end
 end
