@@ -91,6 +91,11 @@ local defaultOptions = {
             checkPvp = false,
             pvp = {},
         },
+        food = {
+            pve = false,
+            pvp = false,
+            boss = false,
+        },
     },
     hodor = {
         horn = false,

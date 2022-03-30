@@ -88,12 +88,16 @@ end
 ---------------------------------------------------------------------
 local function IsInNeedFoodArea()
     local currentState = Spud.GetCurrentState()
-    if (currentState == Spud.PVE or currentState == Spud.PVP) then
+    if (currentState == Spud.PVE and KyzderpsDerps.savedOptions.antispud.food.pve) then
+        return true
+    end
+
+    if (currentState == Spud.PVP and KyzderpsDerps.savedOptions.antispud.food.pvp) then
         return true
     end
 
     -- Overland bosses etc.
-    if (DoesUnitExist("boss1")) then
+    if (DoesUnitExist("boss1") and KyzderpsDerps.savedOptions.antispud.food.boss) then
         return true
     end
 
@@ -159,10 +163,20 @@ end
 function Spud.InitializeFood()
     KyzderpsDerps:dbg("    Initializing AntiSpud Food...")
 
+    Spud.Display(nil, Spud.FOOD)
+
     Spud.RegisterStateListener("Food", OnSpudStateChanged)
 
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED, OnEffectChanged)
-    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG_PREFIX, "player")
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED)
+    if (KyzderpsDerps.savedOptions.antispud.food.pve or KyzderpsDerps.savedOptions.antispud.food.pvp or KyzderpsDerps.savedOptions.antispud.food.boss) then
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED, OnEffectChanged)
+        EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG_PREFIX, "player")
 
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodBossChanged", EVENT_BOSSES_CHANGED, OnBossesChanged)
+        CheckAllFood()
+    end
+
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodBossChanged", EVENT_BOSSES_CHANGED)
+    if (KyzderpsDerps.savedOptions.antispud.food.boss) then
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodBossChanged", EVENT_BOSSES_CHANGED, OnBossesChanged)
+    end
 end

@@ -951,6 +951,48 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "description",
+                    title = "Food / Drink Buff",
+                    text = "Notifies you if you do not have an active food or drink buff in PvE/PvP or are at a boss.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check food in PvE areas",
+                    tooltip = "Notifies you if you don't have a food buff in PvE areas",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.food.pve end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.food.pve = value
+                        KyzderpsDerps.AntiSpud.InitializeFood()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check food in PvP areas",
+                    tooltip = "Notifies you if you don't have a food buff in PvP areas",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.food.pvp end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.food.pvp = value
+                        KyzderpsDerps.AntiSpud.InitializeFood()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check food at bosses",
+                    tooltip = "Notifies you if you don't have a food buff in boss areas",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.food.boss end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.food.boss = value
+                        KyzderpsDerps.AntiSpud.InitializeFood()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "description",
                     title = "Mundus Stone",
                     text = "Notifies you if you are in or queued for (if \"Include activity finder\" is enabled) a PvE or PvP activity but do not have the specified Mundus Stone buffs.",
                     width = "full",
