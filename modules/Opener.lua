@@ -9,7 +9,7 @@ local toLootNames = {} -- Will be populated when a container is opened, to verif
 -- Loot All items once the container is opened
 ---------------------------------------------------------------------
 local function OnOpenLootWindow()
-    KyzderpsDerps:dbg("update loot window")
+    -- KyzderpsDerps:dbg("update loot window")
     local title = GetLootTargetInfo()
     if (toLootNames[title]) then
         LootAll()

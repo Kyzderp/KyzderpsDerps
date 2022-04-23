@@ -17,10 +17,51 @@ local slotIndexToIndex = {
     [10] = 3,
 }
 
+local indexToSlotIndex_highIsle = {
+    [1] = 4,
+    [2] = 3,
+    [3] = 2,
+}
+
+local slotIndexToIndex_highIsle = {
+    [4] = 1,
+    [3] = 2,
+    [2] = 3,
+}
+
+---------------------------------------------------------------------
+-- High Isle PTS compatibility
+---------------------------------------------------------------------
+local function GetIndexToSlotIndex()
+    if (GetAPIVersion() >= 101034) then
+        return indexToSlotIndex_highIsle
+    else
+        return indexToSlotIndex
+    end
+end
+
+local function GetSlotIndexToIndex()
+    if (GetAPIVersion() >= 101034) then
+        return slotIndexToIndex_highIsle
+    else
+        return slotIndexToIndex
+    end
+end
+
+local function GetIndexTexture(index)
+    if (GetAPIVersion() >= 101034) then
+        -- Quickslot revamp
+        return GetSlotTexture(GetIndexToSlotIndex()[index], HOTBAR_CATEGORY_QUICKSLOT_WHEEL)
+    else
+        return GetSlotTexture(GetIndexToSlotIndex()[index])
+    end
+end
+
+---------------------------------------------------------------------
 local function UpdateSlots()
     for index = 1, 3 do
         local control = KDDQuickSlot:GetNamedChild("Slot" .. tostring(index)):GetNamedChild("Texture")
-        local texture = GetSlotTexture(indexToSlotIndex[index])
+        local texture = GetIndexTexture(index)
         if (texture ~= "") then
             control:SetTexture(texture)
             control:SetHidden(false)
@@ -45,14 +86,14 @@ local function OnSlotChanged(_, actionSlotIndex)
     SetBackground(2, false)
     SetBackground(3, false)
 
-    local index = slotIndexToIndex[actionSlotIndex]
+    local index = GetSlotIndexToIndex()[actionSlotIndex]
     if (index) then
         SetBackground(index, true)
     end
 end
 
 function KyzderpsDerps.SelectQuickSlot(index)
-    SetCurrentQuickslot(indexToSlotIndex[index])
+    SetCurrentQuickslot(GetIndexToSlotIndex()[index])
     PlaySound(SOUNDS.QUICKSLOT_SET)
     -- d(GetUnitWorldPosition("reticleover"))
 end
@@ -62,7 +103,12 @@ function KyzderpsDerps.InitializeQuickSlots()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ArmoryEquippedQuickSlot", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, UpdateSlots)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ActionSlotUpdated", EVENT_ACTION_SLOT_UPDATED, UpdateSlots)
 
-    QUICKSLOT_FRAGMENT:RegisterCallback("StateChange", UpdateSlots)
+    if (GetAPIVersion() >= 101034) then
+        KDDQuickSlot:SetParent(QuickslotButton)
+        KDDQuickSlot:SetAnchor(BOTTOMLEFT, QuickslotButton, TOPLEFT, -2, -2)
+    else
+        KDDQuickSlot:SetParent(ZO_ActionBar1)
+    end
 
     UpdateSlots()
     OnSlotChanged(0, GetCurrentQuickslot())

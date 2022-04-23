@@ -176,10 +176,9 @@
             </Controls>
         </Control>
 <!-- ======================================================================================================================= -->
-        <TopLevelControl name="KDDQuickSlot" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="false">
+        <Control name="KDDQuickSlot" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="false">
             <Dimensions x="54" y="22"/>
             <Anchor point="BOTTOMLEFT" relativeTo="ActionButton9" relativePoint="TOPLEFT" offsetX="-2" offsetY="-2"/>
-            <OnInitialized>self:SetParent(ZO_ActionBar1)</OnInitialized>
             <Controls>
                 <Backdrop name="$(parent)Backdrop" centerColor="80000000" edgeColor="CC000000" hidden="false" tier="LOW">
                     <AnchorFill/>
@@ -225,6 +224,6 @@
                     </Controls>
                 </Control>
             </Controls>
-        </TopLevelControl>
+        </Control>
     </Controls>
 </GuiXml>

@@ -71,6 +71,7 @@ local TRIAL_ZONEIDS = {
     ["1196"] = true,  -- Kyne's Aegis
     ["1227"] = true,  -- Vateshran Hollows
     ["1263"] = true,  -- Rockgrove
+    ["1344"] = true,  -- Dreadsail Reef
 }
 KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
 
