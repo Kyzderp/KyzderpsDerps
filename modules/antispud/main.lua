@@ -40,6 +40,7 @@ function Spud.Initialize()
     Spud.InitializeSpaulder()
     Spud.InitializeMundus()
     Spud.InitializeFood()
+    Spud.InitializeLog()
 
     if (KyzderpsDerps.savedOptions.antispud.equipped.enable) then
         Spud.InitializeEquipped()

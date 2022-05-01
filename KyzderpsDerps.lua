@@ -96,6 +96,7 @@ local defaultOptions = {
             pvp = false,
             boss = false,
         },
+        log = false,
     },
     hodor = {
         horn = false,
@@ -204,7 +205,7 @@ function KyzderpsDerps.SavePosition()
     KyzderpsDerps.savedValues.chestsLooted.x = KDDInfoPanel:GetLeft()
     KyzderpsDerps.savedValues.chestsLooted.y = KDDInfoPanel:GetTop()
 end
- 
+
 ---------------------------------------------------------------------
 -- Post Load (player loaded) one-time only
 local function OnPlayerActivated(_, initial)
@@ -271,7 +272,7 @@ function KyzderpsDerps:msg(msg)
 end
 
 ---------------------------------------------------------------------
--- Initialize 
+-- Initialize
 local function Initialize()
     -- Settings and saved variables
     KyzderpsDerps.savedOptions = ZO_SavedVars:NewAccountWide("KyzderpsDerpsSavedVariables", 3, "Options", defaultOptions)
@@ -359,5 +360,5 @@ local function OnAddOnLoaded(_, addonName)
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
     end
 end
- 
+
 EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)

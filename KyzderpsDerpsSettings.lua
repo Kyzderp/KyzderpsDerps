@@ -240,7 +240,7 @@ end
 function KyzderpsDerps:CreateSettingsMenu()
     local LAM = LibAddonMenu2
     -- Register the Options panel with LAM
-    local panelData = 
+    local panelData =
     {
         type = "panel",
         name = "Kyzderp's Derps",
@@ -990,6 +990,24 @@ function KyzderpsDerps:CreateSettingsMenu()
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.food.boss = value
                         KyzderpsDerps.AntiSpud.InitializeFood()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "description",
+                    title = "Encounter Log",
+                    text = "Notifies you if you are not logging while in a PvE area.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Check encounter log",
+                    tooltip = "Notifies you if you are not logging while in a PvE area",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.log end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.log = value
+                        KyzderpsDerps.AntiSpud.CheckLog()
                     end,
                     width = "full",
                 },
