@@ -35,6 +35,7 @@ modules/antispud/mundus.lua
 modules/antispud/equipped.lua
 modules/antispud/spaulder.lua
 modules/antispud/food.lua
+modules/antispud/torte.lua
 modules/antispud/log.lua
 modules/antispud/antispud.xml
 

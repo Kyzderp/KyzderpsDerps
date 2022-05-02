@@ -9,9 +9,10 @@ Spud.FRONTBAR = 3
 Spud.BACKBAR = 4
 Spud.FOOD = 5
 Spud.SPAULDER = 6
-Spud.LOG = 7
+Spud.TORTE = 7
+Spud.LOG = 8
 
-local priorities = {Spud.MUNDUS, Spud.MISSING, Spud.FRONTBAR, Spud.BACKBAR, Spud.FOOD, Spud.SPAULDER, Spud.LOG}
+local priorities = {Spud.MUNDUS, Spud.MISSING, Spud.FRONTBAR, Spud.BACKBAR, Spud.FOOD, Spud.SPAULDER, Spud.TORTE, Spud.LOG}
 
 --[[
 displaying = {
@@ -21,6 +22,7 @@ displaying = {
     [BACKBAR] = "You are wearing 2 pieces of Advancing Yokeda on backbar",
     [FOOD] = "You have no buff food",
     [SPAULDER] = "Spudler is OFF",
+    [TORTE] = "You don't have torte buff on",
     [LOG] = "You are not logging",
 }
 ]]

@@ -97,6 +97,7 @@ local defaultOptions = {
             boss = false,
         },
         log = false,
+        torte = false,
     },
     hodor = {
         horn = false,

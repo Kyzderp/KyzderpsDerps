@@ -994,6 +994,18 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
                 {
+                    type = "checkbox",
+                    name = "Check torte in PvP areas",
+                    tooltip = "Notifies you if you don't have a torte (Colovian, Molten, White-Gold) buff in PvP areas",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.torte end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.torte = value
+                        KyzderpsDerps.AntiSpud.InitializeTorte()
+                    end,
+                    width = "full",
+                },
+                {
                     type = "description",
                     title = "Encounter Log",
                     text = "Notifies you if you are not logging while in a PvE area.",

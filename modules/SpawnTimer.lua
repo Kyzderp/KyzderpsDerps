@@ -196,6 +196,7 @@ local BOSS_NAMES = {
     ["Nchuthand Far-Hurler"] = 304, -- Delve: Nchuleft
     ["Zvvius the Hive Lord"] = 304, -- Delve: Zainsipilu
     ["Old Rust-Eye"] = 304, -- Delve: Khartag Point
+    ["Phobbiicus"] = 304, -- Delve: Ashalmawia
     ["Salothan's Council"] = true, -- WB: Salothan's Council
 
 -- Western Skyrim
@@ -402,7 +403,7 @@ local function PollTimer()
             elseif (elapsed >= respawnTime - 10) then color = "FF9100" -- orange
             elseif (elapsed >= respawnTime - 30) then color = "FFFF00" -- yellow
             end
-            
+
 
             -- Get or create the control
             local bossControl = SpawnTimerContainer:GetNamedChild("Boss" .. index)
