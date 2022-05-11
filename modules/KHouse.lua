@@ -70,10 +70,11 @@ local function PortToHouse(argString)
         end
     end
 
-    KyzderpsDerps:msg(string.format("Attempting to port %s %s %s...",
+    KyzderpsDerps:msg(string.format("Attempting to port %s %s %s%s...",
         (outside) and "outside" or "to",
         (name == nil) and "your" or (name .. "'s"),
-        (houseId == -1) and "primary residence" or GetCollectibleName(GetCollectibleIdForHouse(houseId))
+        (houseId == -1) and "primary residence" or GetCollectibleName(GetCollectibleIdForHouse(houseId)),
+        (houseId == -1) and "" or string.format(" (ID %d)", houseId)
     ))
 
     if (name == nil) then

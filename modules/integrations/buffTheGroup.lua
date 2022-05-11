@@ -45,6 +45,27 @@ local function AreSkillsSlotted()
 end
 Spud.AreSkillsSlotted = AreSkillsSlotted
 
+local function UpdateBTGSkills(hasEnabled)
+    if (btg == nil) then return end
+    local combatPrayer, empoweringGrasp, expansiveFrostCloak = AreSkillsSlotted()
+
+    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk) then
+        local enabled = SetBTG(6, combatPrayer)
+        hasEnabled = hasEnabled or enabled
+    end
+    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorResolve) then
+        local enabled = SetBTG(12, expansiveFrostCloak)
+        hasEnabled = hasEnabled or enabled
+    end
+    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower) then
+        local enabled = SetBTG(15, empoweringGrasp)
+        hasEnabled = hasEnabled or enabled
+    end
+
+    return hasEnabled
+end
+Spud.UpdateBTGSkills = UpdateBTGSkills
+
 local function UpdateBuffTheGroup(equippedSets)
     if (btg == nil) then return end
 
@@ -66,20 +87,7 @@ local function UpdateBuffTheGroup(equippedSets)
         SetBTG(19, equippedSets["Spaulder of Ruin"] ~= nil)
     end
 
-    local combatPrayer, empoweringGrasp, expansiveFrostCloak = AreSkillsSlotted()
-
-    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.minorBerserk) then
-        local enabled = SetBTG(6, combatPrayer)
-        hasEnabled = hasEnabled or enabled
-    end
-    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.majorResolve) then
-        local enabled = SetBTG(12, expansiveFrostCloak)
-        hasEnabled = hasEnabled or enabled
-    end
-    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.empower) then
-        local enabled = SetBTG(15, empoweringGrasp)
-        hasEnabled = hasEnabled or enabled
-    end
+    hasEnabled = UpdateBTGSkills(hasEnabled)
 
     -- If nothing but slayer and courage are enabled, I (personally) want to see major slayer
     if (not hasEnabled and KyzderpsDerps.savedOptions.general.experimental) then
@@ -92,3 +100,11 @@ local function UpdateBuffTheGroup(equippedSets)
     btg.CheckActivation()
 end
 Spud.UpdateBuffTheGroup = UpdateBuffTheGroup
+
+function Spud.InitializeBTG()
+    if (btg == nil) then return end
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "BTGSkills", EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, function()
+        UpdateBTGSkills(false)
+        btg.CheckActivation()
+    end)
+end

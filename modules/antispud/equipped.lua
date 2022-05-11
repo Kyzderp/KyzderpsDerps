@@ -210,6 +210,8 @@ function Spud.InitializeEquipped()
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ArmoryEquipped", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, CheckAllSlots)
 
+    Spud.InitializeBTG()
+
     zo_callLater(CheckAllSlots, 1000)
 end
 
