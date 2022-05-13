@@ -28,6 +28,12 @@ end
 -- Chat parsing: "KDD |H1:collectible:10235|h|h" "KDD 10235"
 ---------------------------------------------------------------------
 
+local function AttemptCollectible(id)
+    if (not IsCollectibleUsable(id)) then return end
+    if (IsUnitInCombat("player") and KyzderpsDerps.savedOptions.sync.mementos.ignoreInCombat) then KyzderpsDerps:dbg("ignoring sync because in combat") return end
+    UseCollectible(id)
+end
+
 -- EVENT_CHAT_MESSAGE_CHANNEL (*[ChannelType|#ChannelType]* _channelType_, *string* _fromName_, *string* _text_, *bool* _isCustomerService_, *string* _fromDisplayName_)
 local function OnChatMessage(_, channelType, fromName, text)
     if (channelType ~= CHAT_CHANNEL_PARTY) then return end
@@ -35,12 +41,10 @@ local function OnChatMessage(_, channelType, fromName, text)
     -- |H1:collectible:10235|h|h
     local id
     for collectibleId in string.gmatch(text, "^KDD |H1:collectible:(%d+)|h|h$") do
-        KyzderpsDerps:dbg(collectibleId)
         id = tonumber(collectibleId)
     end
     if (not id) then
         for collectibleId in string.gmatch(text, "^KDD (%d+)$") do
-            KyzderpsDerps:dbg(collectibleId)
             id = tonumber(collectibleId)
         end
     end
@@ -55,12 +59,10 @@ local function OnChatMessage(_, channelType, fromName, text)
     end
 
     if (delay == 0) then
-        if (not IsCollectibleUsable(id)) then return end
-        UseCollectible(id)
+        AttemptCollectible(id)
     else
         zo_callLater(function()
-            if (not IsCollectibleUsable(id)) then return end
-            UseCollectible(id)
+            AttemptCollectible(id)
         end, delay)
     end
 end

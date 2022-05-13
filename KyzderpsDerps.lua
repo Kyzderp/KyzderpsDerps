@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.20.0"
+KyzderpsDerps.version = "1.20.1"
 
 -- Defaults
 local defaultOptions = {
@@ -103,8 +103,6 @@ local defaultOptions = {
         horn = false,
         hornLabel = false,
     },
-    muhVitality = {
-    },
     fashion = {
         equipSkinForVamp = false,
         restoreAfterVamp = false,
@@ -134,9 +132,10 @@ local defaultOptions = {
     },
     sync = {
         mementos = {
-            party = true,
+            party = false,
             delay = 0,
             random = false,
+            ignoreInCombat = true,
         },
     },
 }
@@ -183,10 +182,6 @@ local defaultValues = {
     charInfo = {
         characters = {},
     },
-    muhVitality = {
-        x = GuiRoot:GetWidth(),
-        y = 0,
-    },
     chestsLooted = {
         x = GuiRoot:GetWidth() - 300,
         y = 0,
@@ -206,9 +201,6 @@ function KyzderpsDerps.SavePosition()
 
     KyzderpsDerps.savedValues.spawnTimer.x = SpawnTimerContainer:GetLeft()
     KyzderpsDerps.savedValues.spawnTimer.y = SpawnTimerContainer:GetTop()
-
-    KyzderpsDerps.savedValues.muhVitality.x = MuhVitality:GetLeft()
-    KyzderpsDerps.savedValues.muhVitality.y = MuhVitality:GetTop()
 
     KyzderpsDerps.savedValues.chestsLooted.x = KDDInfoPanel:GetLeft()
     KyzderpsDerps.savedValues.chestsLooted.y = KDDInfoPanel:GetTop()
@@ -324,7 +316,6 @@ local function Initialize()
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
         KyzderpsDerps.InitializeAOE()
         KyzderpsDerps.InitializeSpam()
-        KyzderpsDerps.InitializeMuhVitality() -- TODO: move out of experimental
     end
 
     -- Block "Item not ready" spam

@@ -1412,9 +1412,20 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "checkbox",
+                    name = "Ignore while in combat",
+                    tooltip = "Do not use mementos while in combat",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.sync.mementos.ignoreInCombat end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.sync.mementos.ignoreInCombat = value
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
                     name = "Sync mementos from group chat",
                     tooltip = "When you receive a group chat message with a specific format (see /kddsync), automatically use the specified memento. This facilitates synchronized mementos",
-                    default = true,
+                    default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.sync.mementos.party end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.sync.mementos.party = value

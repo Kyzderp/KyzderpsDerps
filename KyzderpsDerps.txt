@@ -1,7 +1,7 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.20.0
+## Version: 1.20.1
 ## APIVersion: 101034 101033
 ## DependsOn: LibAddonMenu-2.0>=31
 ## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary
@@ -56,9 +56,6 @@ modules/integrations/hodorReflexes.lua
 modules/integrations/enabledAddons.lua
 
 modules/sync/Sync.lua
-
-modules/muhvitality/main.lua
-modules/muhvitality/ui.xml
 
 modules/reticle/main.lua
 
