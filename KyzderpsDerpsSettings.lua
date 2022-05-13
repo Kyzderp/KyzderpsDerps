@@ -1402,6 +1402,56 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Synchronized Memes",
+            controls = {
+                {
+                    type = "description",
+                    title = nil,
+                    text = "This module allows you and your group members to all use mementos at the same time, or even staggered. It listens for a message of format \"KDD <memento>\" and will then use the memento for you. Use /kddsync command to easily search for mementos.",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Sync mementos from group chat",
+                    tooltip = "When you receive a group chat message with a specific format (see /kddsync), automatically use the specified memento. This facilitates synchronized mementos",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.sync.mementos.party end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.sync.mementos.party = value
+                        KyzderpsDerps.Sync.Initialize()
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "slider",
+                    name = "Delay before memento",
+                    tooltip = "Number of milliseconds to wait after receiving the chat message, before attempting to use the memento",
+                    min = 0,
+                    max = 5000,
+                    step = 10,
+                    default = 0,
+                    width = full,
+                    getFunc = function() return KyzderpsDerps.savedOptions.sync.mementos.delay end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.sync.mementos.delay = value
+                    end,
+                },
+                {
+                    type = "checkbox",
+                    name = "Randomize up to delay",
+                    tooltip = "Instead of always waiting the above \"Delay before memento\" milliseconds, randomly wait from 0ms up to \"Delay before memento\"",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.sync.mementos.random end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.sync.mementos.random = value
+                    end,
+                    width = "full",
+                },
+            }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Miscellaneous",
             controls = {
                 {

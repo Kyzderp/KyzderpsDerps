@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.19.2"
+KyzderpsDerps.version = "1.20.0"
 
 -- Defaults
 local defaultOptions = {
@@ -132,6 +132,13 @@ local defaultOptions = {
         openGunnySack = false,
         openToxinSatchel = false,
     },
+    sync = {
+        mementos = {
+            party = true,
+            delay = 0,
+            random = false,
+        },
+    },
 }
 
 local defaultValues = {
@@ -228,6 +235,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.ChatSpam.Initialize()
     KyzderpsDerps.Reticle.Initialize()
+    KyzderpsDerps.Sync.Initialize()
     KyzderpsDerps.InitializeFashion()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
