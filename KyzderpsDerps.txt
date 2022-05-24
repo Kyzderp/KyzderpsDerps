@@ -11,8 +11,8 @@
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua
 KyzderpsDerps.xml
-commands.lua
-bindings.xml
+Commands.lua
+Bindings.xml
 
 modules/CustomTargetName.lua
 modules/Grievous.lua
@@ -28,35 +28,35 @@ modules/Fashion.lua
 modules/AutoRepair.lua
 modules/Opener.lua
 
-modules/antispud/main.lua
-modules/antispud/state.lua
-modules/antispud/display.lua
-modules/antispud/mundus.lua
-modules/antispud/equipped.lua
-modules/antispud/spaulder.lua
-modules/antispud/food.lua
-modules/antispud/torte.lua
-modules/antispud/log.lua
-modules/antispud/antispud.xml
+modules/antispud/AntiSpud.lua
+modules/antispud/State.lua
+modules/antispud/Display.lua
+modules/antispud/Mundus.lua
+modules/antispud/Equipped.lua
+modules/antispud/Spaulder.lua
+modules/antispud/Food.lua
+modules/antispud/Torte.lua
+modules/antispud/Log.lua
+modules/antispud/AntiSpud.xml
 
-modules/chatspam/main.lua
-modules/chatspam/csa.lua
-modules/chatspam/lootHistory.lua
-modules/chatspam/score.lua
-modules/chatspam/interact.lua
+modules/chatspam/ChatSpam.lua
+modules/chatspam/CSA.lua
+modules/chatspam/LootHistory.lua
+modules/chatspam/Score.lua
+modules/chatspam/Interact.lua
 
-modules/chatspam/infoPanel.xml
+modules/chatspam/InfoPanel.xml
 
-modules/debug/spamWindow.lua
-modules/debug/debugUtils.lua
-modules/debug/spamWindow.xml
+modules/debug/SpamWindow.lua
+modules/debug/DebugUtils.lua
+modules/debug/SpamWindow.xml
 
-modules/integrations/buffTheGroup.lua
-modules/integrations/hodorReflexes.lua
-modules/integrations/enabledAddons.lua
+modules/integrations/BuffTheGroup.lua
+modules/integrations/HodorReflexes.lua
+modules/integrations/EnabledAddons.lua
 
 modules/sync/Sync.lua
 
-modules/reticle/main.lua
+modules/reticle/Reticle.lua
 
-modules/uielements/reposition.lua
+modules/uielements/Reposition.lua

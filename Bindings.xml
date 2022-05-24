@@ -1,0 +1,50 @@
+<Bindings>
+    <Layer name="SI_KEYBINDINGS_CATEGORY_GENERAL">
+        <Category name="Kyzderp's Derps">
+            <Action name="KDD_QUICKSLOT_1">
+                <Down>KyzderpsDerps.SelectQuickSlot(1)</Down>
+            </Action>
+            <Action name="KDD_QUICKSLOT_2">
+                <Down>KyzderpsDerps.SelectQuickSlot(2)</Down>
+            </Action>
+            <Action name="KDD_QUICKSLOT_3">
+                <Down>KyzderpsDerps.SelectQuickSlot(3)</Down>
+            </Action>
+            <Action name="KDD_QUICKSLOT_4">
+                <Down>KyzderpsDerps.SelectQuickSlot(4)</Down>
+            </Action>
+            <Action name="KDD_QUICKSLOT_5">
+                <Down>KyzderpsDerps.SelectQuickSlot(5)</Down>
+            </Action>
+            <Action name="KDD_QUICKSLOT_6">
+                <Down>KyzderpsDerps.SelectQuickSlot(6)</Down>
+            </Action>
+            <Action name="KDD_QUICKSLOT_7">
+                <Down>KyzderpsDerps.SelectQuickSlot(7)</Down>
+            </Action>
+            <Action name="KDD_QUICKSLOT_8">
+                <Down>KyzderpsDerps.SelectQuickSlot(8)</Down>
+            </Action>
+            <Action name="KDD_PRINTPOS">
+                <Down>KyzderpsDerps.PrintCurrentPosition()</Down>
+            </Action>
+            <Action name="KDD_ANTISPUD_DISMISS">
+                <Down>AntiSpudEquipped:SetHidden(true)</Down>
+            </Action>
+        </Category>
+    </Layer>
+    <Layer name="SI_KEYBINDINGS_LAYER_USER_INTERFACE_SHORTCUTS">
+        <Category name="Kyzderp's Derps">
+            <Action name="KDD_CLEARSEARCH">
+                <Down>
+                    KyzderpsDerps:dbg("Clearing all search boxes")
+                    ZO_PlayerInventorySearchBox:SetText("")
+                    ZO_PlayerBankSearchBox:SetText("")
+                    ZO_HouseBankSearchBox:SetText("")
+                    ZO_GuildBankSearchBox:SetText("")
+                    ZO_CraftBagSearchBox:SetText("")
+                </Down>
+            </Action>
+        </Category>
+    </Layer>
+</Bindings>
