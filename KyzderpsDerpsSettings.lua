@@ -1541,35 +1541,7 @@ function KyzderpsDerps:CreateSettingsMenu()
         {
             type = "submenu",
             name = "Hodor Reflexes",
-            controls = {
-                {
-                    type = "checkbox",
-                    name = "Enable horn distance icon",
-                    tooltip = "When enabled, a colored icon will show next to the horn list if the player almost has horn ready and is within support range. The icon shows green, yellow, or orange depending on distance to yourself. Useful for raid leads especially in vCR with tank gone in portal",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.hodor.horn end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.hodor.horn = value
-
-                        KyzderpsDerps.InitializeHodor()
-                    end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Enable horn distance label",
-                    tooltip = "Additionally shows the horn player's distance in meters to yourself",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.hodor.hornLabel end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.hodor.hornLabel = value
-                    end,
-                    width = "full",
-                    disabled = function()
-                        return not KyzderpsDerps.savedOptions.hodor.horn
-                    end,
-                },
-            }
+            controls = KyzderpsDerps.Hodor.GetSettings()
         },
         -------------------------------------------------------------------------------
         {

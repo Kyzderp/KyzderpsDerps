@@ -1,10 +1,13 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.Hodor = KyzderpsDerps.Hodor or {}
+local Hodor = KyzderpsDerps.Hodor
 
 local initialized = false
 
+
 ---------------------------------------------------------------------
--- /script for i=1, GetGroupSize() do d(tostring(i) .. GetUnitDisplayName("group" .. tostring(i))) end
--- /script HodorReflexes.modules.share.UpdatePlayerData("group3", 0, 1, 0, 0, 0)
+-- Update player data to get them off the horn list
+---------------------------------------------------------------------
 local function Unhorn(atName)
     if (not atName or atName == "") then
         KyzderpsDerps:msg("Usage: /unhorn <@name>")
@@ -23,8 +26,10 @@ local function Unhorn(atName)
     KyzderpsDerps:msg("Couldn't find player " .. atName .. " in group!")
 end
 
+
 ---------------------------------------------------------------------
 -- When horn updates, also add/update icon for horn in range
+---------------------------------------------------------------------
 local function UpdateInRange()
     for atName, data in pairs(HodorReflexes.modules.share.playersData) do
         if (data.ultRow) then
@@ -85,8 +90,11 @@ local function UpdateInRange()
     end
 end
 
+
 ---------------------------------------------------------------------
-function KyzderpsDerps.InitializeHodor()
+-- Initialize
+---------------------------------------------------------------------
+function Hodor.Initialize()
     if (not HodorReflexes) then return end
     SLASH_COMMANDS["/unhorn"] = Unhorn
 
@@ -106,4 +114,40 @@ function KyzderpsDerps.InitializeHodor()
 
     -- If it's aligned to the right of the screen it gets pushed to the left, annoying
     HodorReflexes_Share_Ultimates:SetClampedToScreen(false)
+end
+
+
+---------------------------------------------------------------------
+-- Settings
+---------------------------------------------------------------------
+function Hodor.GetSettings()
+    return {
+        {
+            type = "checkbox",
+            name = "Enable horn distance icon",
+            tooltip = "When enabled, a colored icon will show next to the horn list if the player almost has horn ready and is within support range. The icon shows green, yellow, or orange depending on distance to yourself. Useful for raid leads especially in vCR with tank gone in portal",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.hodor.horn end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.hodor.horn = value
+
+                Hodor.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Enable horn distance label",
+            tooltip = "Additionally shows the horn player's distance in meters to yourself",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.hodor.hornLabel end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.hodor.hornLabel = value
+            end,
+            width = "full",
+            disabled = function()
+                return not KyzderpsDerps.savedOptions.hodor.horn
+            end,
+        },
+    }
 end
