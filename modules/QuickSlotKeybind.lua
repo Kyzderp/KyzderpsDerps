@@ -1,4 +1,6 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.QuickSlots = KyzderpsDerps.QuickSlots or {}
+local QuickSlots = KyzderpsDerps.QuickSlots
 
 local indexToSlotIndex = {
     [1] = 12,
@@ -21,6 +23,7 @@ local indexToSlotIndex_highIsle = {
     [1] = 4,
     [2] = 3,
     [3] = 2,
+    -- TODO: fix this!! Need more indices
 }
 
 local slotIndexToIndex_highIsle = {
@@ -28,6 +31,7 @@ local slotIndexToIndex_highIsle = {
     [3] = 2,
     [2] = 3,
 }
+
 
 ---------------------------------------------------------------------
 -- High Isle PTS compatibility
@@ -57,6 +61,9 @@ local function GetIndexTexture(index)
     end
 end
 
+
+---------------------------------------------------------------------
+-- Update the visual mini slots
 ---------------------------------------------------------------------
 local function UpdateSlots()
     for index = 1, 3 do
@@ -74,11 +81,6 @@ end
 local function SetBackground(index, highlighted)
     local control = KDDQuickSlot:GetNamedChild("Slot" .. tostring(index)):GetNamedChild("Backdrop")
     control:SetHidden(not highlighted)
-    -- if (highlighted) then
-    --     control:SetCenterColor(0, 1, 0, 0.5)
-    -- else
-    --     control:SetCenterColor(0, 0, 0, 0.5)
-    -- end
 end
 
 local function OnSlotChanged(_, actionSlotIndex)
@@ -92,13 +94,20 @@ local function OnSlotChanged(_, actionSlotIndex)
     end
 end
 
-function KyzderpsDerps.SelectQuickSlot(index)
+
+---------------------------------------------------------------------
+-- Called from keybinds
+---------------------------------------------------------------------
+function QuickSlots.SelectQuickSlot(index)
     SetCurrentQuickslot(GetIndexToSlotIndex()[index])
     PlaySound(SOUNDS.QUICKSLOT_SET)
-    -- d(GetUnitWorldPosition("reticleover"))
 end
 
-function KyzderpsDerps.InitializeQuickSlots()
+
+---------------------------------------------------------------------
+-- Initialize
+---------------------------------------------------------------------
+function QuickSlots.Initialize()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "QuickSlot", EVENT_ACTIVE_QUICKSLOT_CHANGED, OnSlotChanged)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ArmoryEquippedQuickSlot", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, UpdateSlots)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ActionSlotUpdated", EVENT_ACTION_SLOT_UPDATED, UpdateSlots)
@@ -113,4 +122,31 @@ function KyzderpsDerps.InitializeQuickSlots()
     UpdateSlots()
     OnSlotChanged(0, GetCurrentQuickslot())
     KDDQuickSlot:SetHidden(not KyzderpsDerps.savedOptions.quickSlots.enable)
+end
+
+
+---------------------------------------------------------------------
+-- Settings
+---------------------------------------------------------------------
+function QuickSlots.GetSettings()
+    return {
+        {
+            type = "description",
+            title = nil,
+            text = "You can set keybinds in your controls settings to select a quickslot with one key - though you still need to press your Quickslot Item key to use the item!",
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Enable Indicator",
+            tooltip = "Show 3 small icons above the default quickslot to indicate which one is selected",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.quickSlots.enable end,
+            setFunc = function(value)
+                    KyzderpsDerps.savedOptions.quickSlots.enable = value
+                    KDDQuickSlot:SetHidden(not value)
+                end,
+            width = "full",
+        },
+    }
 end

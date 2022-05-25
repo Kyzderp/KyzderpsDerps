@@ -2,28 +2,28 @@
     <Layer name="SI_KEYBINDINGS_CATEGORY_GENERAL">
         <Category name="Kyzderp's Derps">
             <Action name="KDD_QUICKSLOT_1">
-                <Down>KyzderpsDerps.SelectQuickSlot(1)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(1)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_2">
-                <Down>KyzderpsDerps.SelectQuickSlot(2)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(2)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_3">
-                <Down>KyzderpsDerps.SelectQuickSlot(3)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(3)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_4">
-                <Down>KyzderpsDerps.SelectQuickSlot(4)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(4)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_5">
-                <Down>KyzderpsDerps.SelectQuickSlot(5)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(5)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_6">
-                <Down>KyzderpsDerps.SelectQuickSlot(6)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(6)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_7">
-                <Down>KyzderpsDerps.SelectQuickSlot(7)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(7)</Down>
             </Action>
             <Action name="KDD_QUICKSLOT_8">
-                <Down>KyzderpsDerps.SelectQuickSlot(8)</Down>
+                <Down>KyzderpsDerps.QuickSlots.SelectQuickSlot(8)</Down>
             </Action>
             <Action name="KDD_PRINTPOS">
                 <Down>KyzderpsDerps.PrintCurrentPosition()</Down>
