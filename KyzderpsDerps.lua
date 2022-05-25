@@ -222,7 +222,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.messages = {}
 
     KyzderpsDerps.InitializeQuickSlots()
-    KyzderpsDerps.InitializeCompanion()
+    KyzderpsDerps.Companion.Initialize()
     KyzderpsDerps.Hodor.Initialize()
     KyzderpsDerps.AntiSpud.Initialize()
     KyzderpsDerps.ChatSpam.Initialize()

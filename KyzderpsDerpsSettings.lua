@@ -840,36 +840,7 @@ function KyzderpsDerps:CreateSettingsMenu()
         {
             type = "submenu",
             name = "Companion",
-            controls = {
-                {
-                    type = "description",
-                    title = nil,
-                    text = "You can toggle Bastian and Mirri with the |c99FF99/bastian|r and |c99FF99/mirri|r commands respectively.",
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Re-summon companion",
-                    tooltip = "Re-summons your previously active companion after you put away your assistant",
-                    default = true,
-                    getFunc = function() return KyzderpsDerps.savedOptions.companion.resummon end,
-                    setFunc = function(value)
-                            KyzderpsDerps.savedOptions.companion.resummon = value
-                        end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Display rapport changes",
-                    tooltip = "Shows a message in chat when your companion's rapport changes",
-                    default = true,
-                    getFunc = function() return KyzderpsDerps.savedOptions.companion.showRapport end,
-                    setFunc = function(value)
-                            KyzderpsDerps.savedOptions.companion.showRapport = value
-                        end,
-                    width = "full",
-                },
-            }
+            controls = KyzderpsDerps.Companion.GetSettings()
         },
         -------------------------------------------------------------------------------
         {

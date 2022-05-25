@@ -1,4 +1,6 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.Companion = KyzderpsDerps.Companion or {}
+local Companion = KyzderpsDerps.Companion
 
 local previousCompanion = nil
 local assistantActive = false
@@ -108,6 +110,8 @@ local function OnCompanionDeactivated()
 end
 
 ---------------------------------------------------------------------
+-- Summon result
+---------------------------------------------------------------------
 local function OnSummonResult(_, summonResult, companionId)
     local summonResults = {
         [COMPANION_SUMMON_RESULT_ADDED_FOR_GROUP_PLAYER] = "ADDED_FOR_GROUP_PLAYER",
@@ -137,6 +141,8 @@ local function OnSummonResult(_, summonResult, companionId)
 end
 
 ---------------------------------------------------------------------
+-- Rapport
+---------------------------------------------------------------------
 local function OnCompanionRapportUpdated(_, companionId, previousRapport, currentRapport)
     if (not KyzderpsDerps.savedOptions.companion.showRapport) then return end
 
@@ -149,9 +155,11 @@ local function OnCompanionRapportUpdated(_, companionId, previousRapport, curren
     KyzderpsDerps:msg(zo_strformat("Rapport changed for <<1>>: <<2>> → <<3>> <<4>>", GetCompanionName(companionId), previousRapport, currentRapport, arrow))
 end
 
+
 ---------------------------------------------------------------------
 -- Called on initial player activated
-function KyzderpsDerps.InitializeCompanion()
+---------------------------------------------------------------------
+function Companion.Initialize()
     KyzderpsDerps:dbg("    Initializing Companion module...")
 
     -- Check the active companion on first login
@@ -164,21 +172,7 @@ function KyzderpsDerps.InitializeCompanion()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "CompanionSummonResult", EVENT_COMPANION_SUMMON_RESULT, OnSummonResult)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "CompanionRapport", EVENT_COMPANION_RAPPORT_UPDATE, OnCompanionRapportUpdated)
 
---[[
-* EVENT_ACTIVE_COMPANION_STATE_CHANGED (*[CompanionState|#CompanionState]* _newState_, *[CompanionState|#CompanionState]* _oldState_)
-* EVENT_COMPANION_ACTIVATED (*integer* _companionId_)
-* EVENT_COMPANION_DEACTIVATED
-* EVENT_COMPANION_EXPERIENCE_GAIN (*integer* _companionId_, *integer* _level_, *integer* _previousExperience_, *integer* _currentExperience_)
-* EVENT_COMPANION_RAPPORT_UPDATE (*integer* _companionId_, *integer* _previousRapport_, *integer* _currentRapport_)
-* EVENT_COMPANION_SKILLS_FULL_UPDATE (*bool* _isInit_)
-* EVENT_COMPANION_SKILL_LINE_ADDED (*integer* _skillLineId_)
-* EVENT_COMPANION_SKILL_RANK_UPDATE (*integer* _skillLineId_, *luaindex* _rank_)
-* EVENT_COMPANION_SKILL_XP_UPDATE (*integer* _skillLineId_, *integer* _reason_, *luaindex* _rank_, *integer* _previousXP_, *integer* _currentXP_)
-* EVENT_COMPANION_SUMMON_RESULT (*[CompanionSummonResult|#CompanionSummonResult]* _summonResult_, *integer* _companionId_)
-* EVENT_COMPANION_ULTIMATE_FAILURE (*[CompanionUltimateFailureReason|#CompanionUltimateFailureReason]* _reason_, *string* _companionName_)
-* EVENT_OPEN_COMPANION_MENU
-* EVENT_RETICLE_TARGET_COMPANION_CHANGED
-]]
+    -- Only for debug for now
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "CompanionStateChanged", EVENT_ACTIVE_COMPANION_STATE_CHANGED, function(_, newState, oldState)
         local companionState = {
             [COMPANION_STATE_ACTIVE] = "ACTIVE",
@@ -192,4 +186,37 @@ function KyzderpsDerps.InitializeCompanion()
         }
         KyzderpsDerps:dbg(zo_strformat("companion state: <<1>> -> <<2>>", companionState[oldState], companionState[newState]))
     end)
+end
+
+function Companion.GetSettings()
+    return {
+        {
+            type = "description",
+            title = nil,
+            text = "You can toggle Bastian and Mirri with the |c99FF99/bastian|r and |c99FF99/mirri|r commands respectively.",
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Re-summon companion",
+            tooltip = "Re-summons your previously active companion after you put away your assistant",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.companion.resummon end,
+            setFunc = function(value)
+                    KyzderpsDerps.savedOptions.companion.resummon = value
+                end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Display rapport changes",
+            tooltip = "Shows a message in chat when your companion's rapport changes",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.companion.showRapport end,
+            setFunc = function(value)
+                    KyzderpsDerps.savedOptions.companion.showRapport = value
+                end,
+            width = "full",
+        },
+    }
 end
