@@ -228,7 +228,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.ChatSpam.Initialize()
     KyzderpsDerps.Reticle.Initialize()
     KyzderpsDerps.Sync.Initialize()
-    KyzderpsDerps.InitializeFashion()
+    KyzderpsDerps.Fashion.Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
         KyzderpsDerps.UIElements.Reposition()

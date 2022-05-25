@@ -59,21 +59,6 @@ local collectibleNames = {
     "- None -", -- None
 }
 
-local skinIds = {}
-local skinNames = {}
-local function BuildAvailableSkins()
-    table.insert(skinIds, 0)
-    table.insert(skinNames, "No Skin")
-
-    for index = 1, GetTotalCollectiblesByCategoryType(COLLECTIBLE_CATEGORY_TYPE_SKIN) do
-        local collectibleId = GetCollectibleIdFromType(COLLECTIBLE_CATEGORY_TYPE_SKIN, index)
-        if (IsCollectibleUnlocked(collectibleId)) then
-            table.insert(skinIds, collectibleId)
-            table.insert(skinNames, GetCollectibleName(collectibleId))
-        end
-    end
-end
-
 local MUNDUS_BUFFS = {
     [13940] = "The Warrior",
     [13943] = "The Mage",
@@ -121,7 +106,6 @@ local function GetMundusNames(origList)
 end
 
 local function CreateBTGSettings()
-    BuildAvailableSkins()
     RefreshMundusList()
 
     local controls = {
@@ -1143,55 +1127,7 @@ function KyzderpsDerps:CreateSettingsMenu()
         {
             type = "submenu",
             name = "Fashion",
-            controls = {
-                {
-                    type = "checkbox",
-                    name = "Equip skin for vampire",
-                    tooltip = "Equip a specific skin when you become a vampire through armory loadout, but only if you did not have a skin previously equipped",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.fashion.equipSkinForVamp end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.fashion.equipSkinForVamp = value
-                    end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Restore no skin after vampire",
-                    tooltip = "Remove skin after you are cured of vampirism through an armory loadout",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.fashion.restoreAfterVamp end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.fashion.restoreAfterVamp = value
-                    end,
-                    width = "full",
-                },
-                {
-                    type = "dropdown",
-                    name = "Equip skin for vampire",
-                    tooltip = "Specify which skin to equip",
-                    choices = skinNames,
-                    choicesValues = skinIds,
-                    getFunc = function() return KyzderpsDerps.savedOptions.fashion.vampSkinId end,
-                    setFunc = function(id)
-                        KyzderpsDerps:dbg("selected " .. tostring(id))
-                        KyzderpsDerps.savedOptions.fashion.vampSkinId = id
-                    end,
-                    width = "full",
-                    disabled = function() return not KyzderpsDerps.savedOptions.fashion.equipSkinForVamp end
-                },
-                {
-                    type = "checkbox",
-                    name = "Costume tabard / outfit none",
-                    tooltip = "Equip guild tabard when you equip a costume, and unequip guild tabard when you have no costume. WTB invisible tabards",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.fashion.autoTabard end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.fashion.autoTabard = value
-                    end,
-                    width = "full",
-                },
-            }
+            controls = KyzderpsDerps.Fashion.GetSettings()
         },
         -------------------------------------------------------------------------------
         {
