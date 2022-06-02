@@ -296,7 +296,7 @@ local function Initialize()
     KyzderpsDerps.InitializeAltoholic()
     KyzderpsDerps.InitializeKHouse()
     KyzderpsDerps.InitializeAutoRepair()
-    KyzderpsDerps.InitializeOpener()
+    KyzderpsDerps.Opener.Initialize()
     KyzderpsDerps.Integrations.Initialize()
 
     -- Key bindings
