@@ -1,5 +1,11 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.KHouse = KyzderpsDerps.KHouse or {}
+local KHouse = KyzderpsDerps.KHouse
 
+
+-------------------------------------------------------------------------------
+-- For my alt account
+-------------------------------------------------------------------------------
 local function PortToKyzersHouse()
     local KYZ_HOUSE = 46
     KyzderpsDerps:msg(string.format("Porting to @Kyzeragon's %s...", GetCollectibleName(GetCollectibleIdForHouse(KYZ_HOUSE))))
@@ -10,6 +16,10 @@ local function PortToKyzersHouse()
     end
 end
 
+
+-------------------------------------------------------------------------------
+-- Finds a house by matching with the collectible name
+-------------------------------------------------------------------------------
 local function FindHouseByName(word)
     word = string.lower(word)
     for houseId = 1, 200 do
@@ -24,6 +34,10 @@ local function FindHouseByName(word)
     return nil
 end
 
+
+-------------------------------------------------------------------------------
+-- Handles command
+-------------------------------------------------------------------------------
 local function PortToHouse(argString)
     local args = {}
     local length = 0
@@ -86,18 +100,10 @@ local function PortToHouse(argString)
     end
 end
 
---[[
-/khouse
-/khouse stillwaters
-/khouse @CrimsonFate
-/khouse @oceanbluee coven
-/khouse nonexistent
-/khouse @ooki42 nonexistent
-/khouse noat hall
-]]
-
 
 -------------------------------------------------------------------------------
-function KyzderpsDerps.InitializeKHouse()
+-- Initialize
+-------------------------------------------------------------------------------
+function KHouse.Initialize()
     SLASH_COMMANDS["/khouse"] = PortToHouse
 end
