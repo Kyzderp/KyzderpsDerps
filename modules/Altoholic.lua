@@ -1,5 +1,10 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.Altoholic = KyzderpsDerps.Altoholic or {}
+local Altoholic = KyzderpsDerps.Altoholic
 
+
+---------------------------------------------------------------------
+-- Current saved values structure
 ---------------------------------------------------------------------
 --[[
 characters = {
@@ -17,6 +22,11 @@ characters = {
     }
 }
 ]]
+
+
+---------------------------------------------------------------------
+-- Update the character's data
+---------------------------------------------------------------------
 local function UpdateSkillPoints()
     local currentChar = GetUnitName("player")
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].availPoints = GetAvailableSkillPoints()
@@ -57,6 +67,9 @@ local function UpdateAll()
     UpdateArmoryBuilds()
 end
 
+
+---------------------------------------------------------------------
+-- Sort a table using a particular order
 ---------------------------------------------------------------------
 -- lazy, copied from https://stackoverflow.com/questions/15706270/sort-a-table-in-lua
 local function spairs(t, order)
@@ -82,8 +95,10 @@ local function spairs(t, order)
     end
 end
 
+
 ---------------------------------------------------------------------
 -- Build the entire string for all played
+---------------------------------------------------------------------
 function KyzderpsDerps.BuildPlayed()
     UpdatePlayedTime()
 
@@ -106,9 +121,11 @@ function KyzderpsDerps.BuildPlayed()
     return result
 end
 
+
 ---------------------------------------------------------------------
 -- Build the entire string for available skill points
-function KyzderpsDerps.BuildPoints()
+---------------------------------------------------------------------
+function Altoholic.BuildPoints()
     UpdateSkillPoints()
 
     local result = "=== Unspent / Approx.Total Skill Points ==="
@@ -125,9 +142,11 @@ function KyzderpsDerps.BuildPoints()
     return result
 end
 
+
 ---------------------------------------------------------------------
 -- Build the entire string for total skill points
-function KyzderpsDerps.BuildTotalPoints()
+---------------------------------------------------------------------
+function Altoholic.BuildTotalPoints()
     UpdateSkillPoints()
 
     local result = "=== Unspent / Approx.Total Skill Points ==="
@@ -144,9 +163,11 @@ function KyzderpsDerps.BuildTotalPoints()
     return result
 end
 
+
 ---------------------------------------------------------------------
 -- Build the entire string for armory builds
-function KyzderpsDerps.BuildArmory()
+---------------------------------------------------------------------
+function Altoholic.BuildArmory()
     UpdateArmoryBuilds()
 
     local result = "=== Armory Builds ==="
@@ -175,9 +196,11 @@ function KyzderpsDerps.BuildArmory()
     return result
 end
 
+
 ---------------------------------------------------------------------
 -- Hooks
-function KyzderpsDerps.InitializeAltoholic()
+---------------------------------------------------------------------
+function Altoholic.Initialize()
     KyzderpsDerps:dbg("    Initializing Altoholic module...")
 
     local currentChar = GetUnitName("player")
@@ -188,6 +211,8 @@ function KyzderpsDerps.InitializeAltoholic()
     -- Get rid of this weird bug that happened at some point, maybe not initialized?
     KyzderpsDerps.savedValues.charInfo.characters["LocalPlayer"] = nil
     KyzderpsDerps.savedValues.playedChart.characters["LocalPlayer"] = nil
+
+    -- TODO: prune the data to get rid of old or renamed characters that no longer exist
 
     UpdateAll()
 

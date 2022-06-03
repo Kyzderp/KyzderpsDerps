@@ -33,19 +33,19 @@ local function HandleKDDCommand(argString)
 
     -- played
     elseif (args[1] == "played") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildPlayed())
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildPlayed())
 
     -- points
     elseif (args[1] == "points") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildPoints())
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildPoints())
 
     -- totalpoints
     elseif (args[1] == "totalpoints") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildTotalPoints())
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildTotalPoints())
 
     -- armory
     elseif (args[1] == "armory") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.BuildArmory())
+        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildArmory())
 
     -- junk style pages
     elseif (args[1] == "junkstyle" or args[1] == "junkstyles") then
