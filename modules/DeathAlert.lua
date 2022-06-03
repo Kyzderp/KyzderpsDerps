@@ -1,9 +1,16 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.DeathAlert = KyzderpsDerps.DeathAlert or {}
+local DeathAlert = KyzderpsDerps.DeathAlert
 
+
+---------------------------------------------------------------------
+-- Shared pool for controls because... reasons
+---------------------------------------------------------------------
 -- Number of milliseconds after which deaths will disappear
 local TIMER_EXPIRY = 3000
 
 -- Currently unused controls for deaths: {[1] = "@Kyzeragon"}
+-- Really should be called a pool I guess
 local freeControls = {}
 
 -- Create a new control for death alerts, for when multiple are displayed at the same time. Returns the index
@@ -60,6 +67,10 @@ local function GetRoleString(LFGRole)
     end
 end
 
+
+---------------------------------------------------------------------
+-- Display an alert when a group member dies
+---------------------------------------------------------------------
 --  EVENT_UNIT_DEATH_STATE_CHANGED (number eventCode, string unitTag, boolean isDead)
 local function OnDeathStateChanged(_, unitTag, isDead)
     -- Companions show up as unitTag = "group5companion" for group members' and "companion" for self
@@ -85,8 +96,11 @@ local function OnDeathStateChanged(_, unitTag, isDead)
     end
 end
 
+
 ---------------------------------------------------------------------
-function KyzderpsDerps.ChangeDeathAlertFontSize()
+-- Updates the alerts' font size, to be called from settings
+---------------------------------------------------------------------
+local function UpdateDeathAlertFontSize()
     -- If there aren't any controls yet, we need to create them so they're actually visible
     if (#freeControls == 0) then
         CreateNewControl()
@@ -118,7 +132,11 @@ function KyzderpsDerps.ChangeDeathAlertFontSize()
     end
 end
 
-function KyzderpsDerps.HideAllDeathAlert(currentpanel)
+
+---------------------------------------------------------------------
+-- Hides all the alerts, called via LAM when the panel is closed
+---------------------------------------------------------------------
+function DeathAlert.HideAllDeathAlert(currentpanel)
     if (currentpanel ~= KyzderpsDerps.addonPanel) then return end
     -- Hide all death controls
     for i, name in pairs(freeControls) do
@@ -127,8 +145,11 @@ function KyzderpsDerps.HideAllDeathAlert(currentpanel)
     end
 end
 
+
 ---------------------------------------------------------------------
-function KyzderpsDerps.InitializeDeathAlert()
+-- Initialize
+---------------------------------------------------------------------
+function DeathAlert.Initialize()
     KyzderpsDerps:dbg("    Initializing DeathAlert module...")
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "DeathAlertDeath", EVENT_UNIT_DEATH_STATE_CHANGED, OnDeathStateChanged)
@@ -140,4 +161,53 @@ function KyzderpsDerps.InitializeDeathAlert()
     DeathAlertContainer:SetMouseEnabled(KyzderpsDerps.savedOptions.deathAlert.unlock)
     DeathAlertContainerBackdrop:SetHidden(not KyzderpsDerps.savedOptions.deathAlert.unlock)
     DeathAlertContainerSkull:SetHidden(not KyzderpsDerps.savedOptions.deathAlert.unlock)
+end
+
+
+---------------------------------------------------------------------
+-- Settings
+---------------------------------------------------------------------
+function DeathAlert.GetSettings()
+    return {
+        {
+            type = "checkbox",
+            name = "Enable",
+            tooltip = "Show a notification when a group member dies",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.enable end,
+            setFunc = function(value) KyzderpsDerps.savedOptions.deathAlert.enable = value end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Unlock",
+            tooltip = "Show the frame for repositioning",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.unlock end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.deathAlert.unlock = value
+                DeathAlertContainer:SetMouseEnabled(value)
+                DeathAlertContainerBackdrop:SetHidden(not value)
+                DeathAlertContainerSkull:SetHidden(not value)
+            end,
+            width = "full",
+            disabled = function() return not KyzderpsDerps.savedOptions.deathAlert.enable end,
+        },
+        {
+            type = "slider",
+            name = "Text Size",
+            tooltip = "Size of the death alert text",
+            min = 10,
+            max = 64,
+            step = 2,
+            default = 30,
+            width = full,
+            getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.size end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.deathAlert.size = value
+                UpdateDeathAlertFontSize()
+            end,
+            disabled = function() return not KyzderpsDerps.savedOptions.deathAlert.enable end,
+        },
+    }
 end

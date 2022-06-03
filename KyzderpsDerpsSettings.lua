@@ -752,48 +752,7 @@ function KyzderpsDerps:CreateSettingsMenu()
         {
             type = "submenu",
             name = "Death Alert",
-            controls = {
-                {
-                    type = "checkbox",
-                    name = "Enable",
-                    tooltip = "Show a notification when a group member dies",
-                    default = true,
-                    getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.enable end,
-                    setFunc = function(value) KyzderpsDerps.savedOptions.deathAlert.enable = value end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Unlock",
-                    tooltip = "Show the frame for repositioning",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.unlock end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.deathAlert.unlock = value
-                        DeathAlertContainer:SetMouseEnabled(value)
-                        DeathAlertContainerBackdrop:SetHidden(not value)
-                        DeathAlertContainerSkull:SetHidden(not value)
-                    end,
-                    width = "full",
-                    disabled = function() return not KyzderpsDerps.savedOptions.deathAlert.enable end,
-                },
-                {
-                    type = "slider",
-                    name = "Text Size",
-                    tooltip = "Size of the death alert text",
-                    min = 10,
-                    max = 64,
-                    step = 2,
-                    default = 30,
-                    width = full,
-                    getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.size end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.deathAlert.size = value
-                        KyzderpsDerps.ChangeDeathAlertFontSize()
-                    end,
-                    disabled = function() return not KyzderpsDerps.savedOptions.deathAlert.enable end,
-                },
-            }
+            controls = KyzderpsDerps.DeathAlert.GetSettings()
         },
         -------------------------------------------------------------------------------
         {
@@ -1425,7 +1384,7 @@ function KyzderpsDerps:CreateSettingsMenu()
     KyzderpsDerps.addonPanel = LAM:RegisterAddonPanel("KyzderpsDerpsOptions", panelData)
     LAM:RegisterOptionControls("KyzderpsDerpsOptions", optionsData)
 
-    CALLBACK_MANAGER:RegisterCallback("LAM-PanelClosed", KyzderpsDerps.HideAllDeathAlert)
+    CALLBACK_MANAGER:RegisterCallback("LAM-PanelClosed", KyzderpsDerps.DeathAlert.HideAllDeathAlert)
 end
 
 function KyzderpsDerps.OpenSettingsMenu()
