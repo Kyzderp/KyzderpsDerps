@@ -1,4 +1,6 @@
 KyzderpsDerps = KyzderpsDerps or {}
+KyzderpsDerps.AutoRepair = KyzderpsDerps.AutoRepair or {}
+local AutoRepair = KyzderpsDerps.AutoRepair
 
 ---------------------------------------------------------------------
 -- Find repair kit
@@ -58,7 +60,7 @@ end
 ---------------------------------------------------------------------
 -- Init
 ---------------------------------------------------------------------
-function KyzderpsDerps.InitializeAutoRepair()
+function AutoRepair.Initialize()
     KyzderpsDerps:dbg("    Initializing AutoRepair module...")
 
     if (KyzderpsDerps.savedOptions.misc.repair) then

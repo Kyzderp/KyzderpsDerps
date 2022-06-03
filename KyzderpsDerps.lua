@@ -295,7 +295,7 @@ local function Initialize()
     KyzderpsDerps.InitializeDeathAlert()
     KyzderpsDerps.InitializeAltoholic()
     KyzderpsDerps.InitializeKHouse()
-    KyzderpsDerps.InitializeAutoRepair()
+    KyzderpsDerps.AutoRepair.Initialize()
     KyzderpsDerps.Opener.Initialize()
     KyzderpsDerps.Integrations.Initialize()
 

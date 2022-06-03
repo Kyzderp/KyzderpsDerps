@@ -1345,7 +1345,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     getFunc = function() return KyzderpsDerps.savedOptions.misc.repair end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.misc.repair = value
-                        KyzderpsDerps.InitializeAutoRepair()
+                        KyzderpsDerps.AutoRepair.Initialize()
                     end,
                     width = "full",
                 },
