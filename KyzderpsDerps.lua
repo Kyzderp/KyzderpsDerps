@@ -291,7 +291,7 @@ local function Initialize()
     -- Initialize modules
     KyzderpsDerps.InitializeCustomTargetName()
     KyzderpsDerps.InitializeGrievous()
-    KyzderpsDerps.InitializeSpawnTimer()
+    KyzderpsDerps.SpawnTimer.Initialize()
     KyzderpsDerps.DeathAlert.Initialize()
     KyzderpsDerps.Altoholic.Initialize()
     KyzderpsDerps.KHouse.Initialize()
