@@ -23,7 +23,11 @@ local indexToSlotIndex_highIsle = {
     [1] = 4,
     [2] = 3,
     [3] = 2,
-    -- TODO: fix this!! Need more indices
+    [4] = 1,
+    [5] = 8,
+    [6] = 7,
+    [7] = 6,
+    [8] = 5,
 }
 
 local slotIndexToIndex_highIsle = {
@@ -113,6 +117,7 @@ function QuickSlots.Initialize()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ActionSlotUpdated", EVENT_ACTION_SLOT_UPDATED, UpdateSlots)
 
     if (GetAPIVersion() >= 101034) then
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "HotbarSlotUpdated", EVENT_HOTBAR_SLOT_UPDATED, UpdateSlots)
         KDDQuickSlot:SetParent(QuickslotButton)
         KDDQuickSlot:SetAnchor(BOTTOMLEFT, QuickslotButton, TOPLEFT, -2, -2)
     else
