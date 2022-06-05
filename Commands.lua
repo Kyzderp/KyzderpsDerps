@@ -138,6 +138,8 @@ function KyzderpsDerps.InitializeCommands()
     -- Shortcut commands
     SLASH_COMMANDS["/bastian"] = function() UseCollectible(9245) end
     SLASH_COMMANDS["/mirri"] = function() UseCollectible(9353) end
+    SLASH_COMMANDS["/ember"] = function() UseCollectible(9911) end
+    SLASH_COMMANDS["/isobel"] = function() UseCollectible(9912) end
 
     SLASH_COMMANDS["/tythis"] = function() UseCollectible(267) end
     SLASH_COMMANDS["/nuzhimeh"] = function() UseCollectible(301) end
@@ -145,6 +147,8 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/fezez"] = function() UseCollectible(6378) end
     SLASH_COMMANDS["/jangleplume"] = function() UseCollectible(8994) end
     SLASH_COMMANDS["/peddler"] = function() UseCollectible(8995) end
+    SLASH_COMMANDS["/steward"] = function() UseCollectible(9743) end
+    SLASH_COMMANDS["/delegate"] = function() UseCollectible(9744) end
 
     SLASH_COMMANDS["/armory"] = function() UseCollectible(9745) end
     SLASH_COMMANDS["/ghrasharog"] = function() UseCollectible(9745) end
