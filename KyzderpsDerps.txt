@@ -18,7 +18,6 @@ modules/Grievous.lua
 modules/SpawnTimer.lua
 modules/DeathAlert.lua
 modules/Altoholic.lua
-modules/QuickSlotKeybind.lua
 modules/AoeColors.lua
 modules/KHouse.lua
 modules/Companion.lua
@@ -54,11 +53,15 @@ modules/integrations/BuffTheGroup.lua
 modules/integrations/HodorReflexes.lua
 modules/integrations/EnabledAddons.lua
 
-modules/sync/Sync.lua
+modules/quickslot/Keybind.lua
+modules/quickslot/SaveLoad.lua
+modules/quickslot/Indicator.xml
 
 modules/reticle/Reticle.lua
 
-modules/uielements/Reposition.lua
+modules/sync/Sync.lua
 
 modules/tribute/Tribute.lua
 modules/tribute/Tribute.xml
+
+modules/uielements/Reposition.lua
