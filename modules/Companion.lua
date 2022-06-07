@@ -113,6 +113,8 @@ end
 -- Summon result
 ---------------------------------------------------------------------
 local function OnSummonResult(_, summonResult, companionId)
+    if (not KyzderpsDerps.savedOptions.companion.showSummonResult) then return end
+
     local summonResults = {
         [COMPANION_SUMMON_RESULT_ADDED_FOR_GROUP_PLAYER] = "ADDED_FOR_GROUP_PLAYER",
         [COMPANION_SUMMON_RESULT_BLOCKED_BY_FOLLOWER] = "BLOCKED_BY_FOLLOWER",
@@ -193,7 +195,7 @@ function Companion.GetSettings()
         {
             type = "description",
             title = nil,
-            text = "You can toggle Bastian and Mirri with the |c99FF99/bastian|r and |c99FF99/mirri|r commands respectively.",
+            text = "You can toggle companions with the |c99FF99/bastian|r, |c99FF99/mirri|r, |c99FF99/ember|r, and |c99FF99/isobel|r commands.",
             width = "full",
         },
         {
@@ -215,6 +217,17 @@ function Companion.GetSettings()
             getFunc = function() return KyzderpsDerps.savedOptions.companion.showRapport end,
             setFunc = function(value)
                     KyzderpsDerps.savedOptions.companion.showRapport = value
+                end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Display unsummon results",
+            tooltip = "Shows a message in chat when your companion is unsummoned or cannot be summoned for error reasons",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.companion.showSummonResult end,
+            setFunc = function(value)
+                    KyzderpsDerps.savedOptions.companion.showSummonResult = value
                 end,
             width = "full",
         },

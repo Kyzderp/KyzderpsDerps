@@ -1,12 +1,11 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.20.2
+## Version: 1.20.3
 ## APIVersion: 101034
+## SavedVariables: KyzderpsDerpsSavedVariables
 ## DependsOn: LibAddonMenu-2.0>=31
 ## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary
-
-## SavedVariables: KyzderpsDerpsSavedVariables
 
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua

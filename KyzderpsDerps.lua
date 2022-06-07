@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.20.2"
+KyzderpsDerps.version = "1.20.3"
 
 -- Defaults
 local defaultOptions = {
@@ -65,6 +65,7 @@ local defaultOptions = {
     companion = {
         resummon = true,
         showRapport = true,
+        showSummonResult = true,
     },
     antispud = {
         equipped = {
