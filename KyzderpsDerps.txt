@@ -59,3 +59,6 @@ modules/sync/Sync.lua
 modules/reticle/Reticle.lua
 
 modules/uielements/Reposition.lua
+
+modules/tribute/Tribute.lua
+modules/tribute/Tribute.xml

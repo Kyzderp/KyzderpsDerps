@@ -29,23 +29,6 @@ local function getPlayerNames()
     return newArray
 end
 
-local collectibleIds = {
-    479, -- Witchmother's Whistle
-    1167, -- The Pie of Misrule
-    1168, -- Breda's Bottomless Mead Mug
-    9012, -- Jubilee Cake 2021
-    10287, -- Jubilee Cake 2022
-    0, -- None
-}
-local collectibleNames = {
-    GetCollectibleName(479), -- Witchmother's Whistle
-    GetCollectibleName(1167), -- The Pie of Misrule
-    GetCollectibleName(1168), -- Breda's Bottomless Mead Mug
-    GetCollectibleName(9012), -- Jubilee Cake 2021
-    GetCollectibleName(10287), -- Jubilee Cake 2022
-    "- None -", -- None
-}
-
 local MUNDUS_BUFFS = {
     [13940] = "The Warrior",
     [13943] = "The Mage",
@@ -93,8 +76,6 @@ local function GetMundusNames(origList)
 end
 
 local function CreateBTGSettings()
-    RefreshMundusList()
-
     local controls = {
             {
                 type = "description",
@@ -205,6 +186,92 @@ local function CreateBTGSettings()
             })
     end
 
+    return controls
+end
+
+---------------------------------------------------------------------
+-- Misc settings
+---------------------------------------------------------------------
+local collectibleIds = {
+    479, -- Witchmother's Whistle
+    1167, -- The Pie of Misrule
+    1168, -- Breda's Bottomless Mead Mug
+    9012, -- Jubilee Cake 2021
+    10287, -- Jubilee Cake 2022
+    0, -- None
+}
+local collectibleNames = {
+    GetCollectibleName(479), -- Witchmother's Whistle
+    GetCollectibleName(1167), -- The Pie of Misrule
+    GetCollectibleName(1168), -- Breda's Bottomless Mead Mug
+    GetCollectibleName(9012), -- Jubilee Cake 2021
+    GetCollectibleName(10287), -- Jubilee Cake 2022
+    "- None -", -- None
+}
+
+local function CreateMiscSettings()
+    local controls = {
+        {
+            type = "dropdown",
+            name = "Use collectible on login",
+            tooltip = "Specify a collectible to use when you first load into a character",
+            choices = collectibleNames,
+            choicesValues = collectibleIds,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.loginCollectible end,
+            setFunc = function(id)
+                    KyzderpsDerps:dbg("selected " .. tostring(id))
+                    KyzderpsDerps.savedOptions.misc.loginCollectible = id
+                end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Block \"Item not ready yet\"",
+            tooltip = "Prevent the \"Item not ready yet\" text from showing up in alerts",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.blockItemNotReady end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.misc.blockItemNotReady = value
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "In-combat reticle",
+            tooltip = "Turn the reticle red while you are in combat",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.combatReticle end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.misc.combatReticle = value
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Automatic repair kit",
+            tooltip = "Automatically use a repair kit to repair gear that drops to 1% durability",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.repair end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.misc.repair = value
+                KyzderpsDerps.AutoRepair.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Hide before logout",
+            tooltip = "Automatically set your status to OFFLINE before you log out or quit the game. For you lurkers out there",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.hideOnLogout end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.misc.hideOnLogout = value
+            end,
+            width = "full",
+        },
+    }
+
+    table.insert(controls, KyzderpsDerps.Tribute.GetSettings())
     return controls
 end
 
@@ -1097,66 +1164,7 @@ function KyzderpsDerps:CreateSettingsMenu()
         {
             type = "submenu",
             name = "Miscellaneous",
-            controls = {
-                {
-                    type = "dropdown",
-                    name = "Use collectible on login",
-                    tooltip = "Specify a collectible to use when you first load into a character",
-                    choices = collectibleNames,
-                    choicesValues = collectibleIds,
-                    getFunc = function() return KyzderpsDerps.savedOptions.misc.loginCollectible end,
-                    setFunc = function(id)
-                            KyzderpsDerps:dbg("selected " .. tostring(id))
-                            KyzderpsDerps.savedOptions.misc.loginCollectible = id
-                        end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Block \"Item not ready yet\"",
-                    tooltip = "Prevent the \"Item not ready yet\" text from showing up in alerts",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.misc.blockItemNotReady end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.misc.blockItemNotReady = value
-                    end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "In-combat reticle",
-                    tooltip = "Turn the reticle red while you are in combat",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.misc.combatReticle end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.misc.combatReticle = value
-                    end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Automatic repair kit",
-                    tooltip = "Automatically use a repair kit to repair gear that drops to 1% durability",
-                    default = true,
-                    getFunc = function() return KyzderpsDerps.savedOptions.misc.repair end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.misc.repair = value
-                        KyzderpsDerps.AutoRepair.Initialize()
-                    end,
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Hide before logout",
-                    tooltip = "Automatically set your status to OFFLINE before you log out or quit the game. For you lurkers out there",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.misc.hideOnLogout end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.misc.hideOnLogout = value
-                    end,
-                    width = "full",
-                },
-            }
+            controls = CreateMiscSettings(),
         },
         -------------------------------------------------------------------------------
         {

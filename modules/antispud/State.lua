@@ -105,6 +105,8 @@ local function GetCurrentFinderType()
         return Spud.PVE
     elseif (activityType == LFG_ACTIVITY_BATTLE_GROUND_CHAMPION or activityType == LFG_ACTIVITY_BATTLE_GROUND_NON_CHAMPION or activityType == LFG_ACTIVITY_BATTLE_GROUND_LOW_LEVEL) then
         return Spud.PVP
+    elseif (activityType == LFG_ACTIVITY_TRIBUTE_CASUAL or activityType == LFG_ACTIVITY_TRIBUTE_COMPETITIVE) then
+        return Spud.NONE
     else
         KyzderpsDerps:dbg(string.format("|cFF0000THIS SHOULDN'T BE POSSIBLE? %d", activityType))
         return Spud.NONE

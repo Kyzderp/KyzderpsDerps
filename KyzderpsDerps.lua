@@ -61,6 +61,7 @@ local defaultOptions = {
         combatReticle = false,
         repair = true,
         hideOnLogout = false,
+        tributeTimer = true,
     },
     companion = {
         resummon = true,
@@ -299,6 +300,7 @@ local function Initialize()
     KyzderpsDerps.AutoRepair.Initialize()
     KyzderpsDerps.Opener.Initialize()
     KyzderpsDerps.Integrations.Initialize()
+    KyzderpsDerps.Tribute.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
