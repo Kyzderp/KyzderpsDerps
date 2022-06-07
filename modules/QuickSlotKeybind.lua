@@ -2,23 +2,6 @@ KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.QuickSlots = KyzderpsDerps.QuickSlots or {}
 local QuickSlots = KyzderpsDerps.QuickSlots
 
-local indexToSlotIndex = {
-    [1] = 12,
-    [2] = 11,
-    [3] = 10,
-    [4] =  9,
-    [5] = 16,
-    [6] = 15,
-    [7] = 14,
-    [8] = 13,
-}
-
-local slotIndexToIndex = {
-    [12] = 1,
-    [11] = 2,
-    [10] = 3,
-}
-
 local indexToSlotIndex_highIsle = {
     [1] = 4,
     [2] = 3,
@@ -41,28 +24,15 @@ local slotIndexToIndex_highIsle = {
 -- High Isle PTS compatibility
 ---------------------------------------------------------------------
 local function GetIndexToSlotIndex()
-    if (GetAPIVersion() >= 101034) then
-        return indexToSlotIndex_highIsle
-    else
-        return indexToSlotIndex
-    end
+    return indexToSlotIndex_highIsle
 end
 
 local function GetSlotIndexToIndex()
-    if (GetAPIVersion() >= 101034) then
-        return slotIndexToIndex_highIsle
-    else
-        return slotIndexToIndex
-    end
+    return slotIndexToIndex_highIsle
 end
 
 local function GetIndexTexture(index)
-    if (GetAPIVersion() >= 101034) then
-        -- Quickslot revamp
-        return GetSlotTexture(GetIndexToSlotIndex()[index], HOTBAR_CATEGORY_QUICKSLOT_WHEEL)
-    else
-        return GetSlotTexture(GetIndexToSlotIndex()[index])
-    end
+    return GetSlotTexture(GetIndexToSlotIndex()[index], HOTBAR_CATEGORY_QUICKSLOT_WHEEL)
 end
 
 
@@ -116,13 +86,9 @@ function QuickSlots.Initialize()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ArmoryEquippedQuickSlot", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, UpdateSlots)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ActionSlotUpdated", EVENT_ACTION_SLOT_UPDATED, UpdateSlots)
 
-    if (GetAPIVersion() >= 101034) then
-        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "HotbarSlotUpdated", EVENT_HOTBAR_SLOT_UPDATED, UpdateSlots)
-        KDDQuickSlot:SetParent(QuickslotButton)
-        KDDQuickSlot:SetAnchor(BOTTOMLEFT, QuickslotButton, TOPLEFT, -2, -2)
-    else
-        KDDQuickSlot:SetParent(ZO_ActionBar1)
-    end
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "HotbarSlotUpdated", EVENT_HOTBAR_SLOT_UPDATED, UpdateSlots)
+    KDDQuickSlot:SetParent(QuickslotButton)
+    KDDQuickSlot:SetAnchor(BOTTOMLEFT, QuickslotButton, TOPLEFT, -2, -2)
 
     UpdateSlots()
     OnSlotChanged(0, GetCurrentQuickslot())
