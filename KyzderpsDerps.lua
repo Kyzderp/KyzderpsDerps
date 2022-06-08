@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.20.3"
+KyzderpsDerps.version = "1.21.0"
 
 -- Defaults
 local defaultOptions = {
@@ -54,6 +54,7 @@ local defaultOptions = {
     },
     quickSlots = {
         enable = true,
+        savedWheels = {},
     },
     misc = {
         loginCollectible = 0, -- None

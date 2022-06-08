@@ -100,7 +100,7 @@ end
 -- Settings
 ---------------------------------------------------------------------
 function QuickSlots.GetSettings()
-    return {
+    local controls = {
         {
             type = "description",
             title = nil,
@@ -120,4 +120,11 @@ function QuickSlots.GetSettings()
             width = "full",
         },
     }
+
+    local saveLoadSettings = QuickSlots.GetSaveLoadSettings()
+    for _, control in ipairs(saveLoadSettings) do
+        table.insert(controls, control)
+    end
+
+    return controls
 end
