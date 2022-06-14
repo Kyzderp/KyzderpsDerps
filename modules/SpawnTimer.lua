@@ -144,6 +144,10 @@ local BOSS_NAMES = {
     ["Maormer Camp"] = true, -- WB: Maormer Camp
     ["Domina Ssaranth"] = true, -- Delve: The Underroot
 
+-- High Isle
+    ["Mornard Falls"] = 301, -- WB: Mornard Falls (Hadolids)
+    ["Dark Stone Hollow"] = 301, -- WB: Dark Stone Hollow
+
 -- Malabal Tor
     ["Arrai"] = true, -- Delve: Shael Ruins
 
@@ -290,6 +294,12 @@ local BOSS_GROUPS = {
     ["Neiral"] = "Maormer Camp", -- WB: Maormer Camp
     ["Jahlasri"] = "Maormer Camp", -- WB: Maormer Camp
     ["Hetsha"] = "Maormer Camp", -- WB: Maormer Camp
+
+-- High Isle
+    ["Hadolid Matron"] = "Mornard Falls", -- WB: Mornard Falls
+    ["Hadolid Consort"] = "Mornard Falls", -- WB: Mornard Falls
+    ["The Ascendant Harrower"] = "Dark Stone Hollow", -- WB: Dark Stone Hollow
+    ["The Ascendant Executioner"] = "Dark Stone Hollow", -- WB: Dark Stone Hollow
 
 -- Northern Elsweyr
     ["Zav'i"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run

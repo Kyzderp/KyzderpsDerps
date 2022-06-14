@@ -156,20 +156,23 @@ local function GetSavedWheelsText()
     local savedWheels = KyzderpsDerps.savedOptions.quickSlots.savedWheels
     for hotbarCategory, name in pairs(hotbarCategories) do
         text = string.format("%s\n%s", text, name)
-        for actionSlotIndex = 1, 8 do
-            if (savedWheels[hotbarCategory][actionSlotIndex]) then
-                local actionType = savedWheels[hotbarCategory][actionSlotIndex].actionType
-                local actionId = savedWheels[hotbarCategory][actionSlotIndex].actionId
-                if (actionType ~= 0) then
-                    text = string.format("%s\n    [%d] = %s",
-                        text,
-                        actionSlotIndex,
-                        ResolveActionIdToReadable(actionId, actionType))
+        if (savedWheels[hotbarCategory]) then
+            for actionSlotIndex = 1, 8 do
+                if (savedWheels[hotbarCategory][actionSlotIndex]) then
+                    local actionType = savedWheels[hotbarCategory][actionSlotIndex].actionType
+                    local actionId = savedWheels[hotbarCategory][actionSlotIndex].actionId
+                    if (actionType ~= 0) then
+                        text = string.format("%s\n    [%d] = %s",
+                            text,
+                            actionSlotIndex,
+                            ResolveActionIdToReadable(actionId, actionType))
+                    end
                 end
             end
         end
     end
 
+    if (text == "") then return "None" end
     return text
 end
 
