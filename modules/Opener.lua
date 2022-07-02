@@ -85,6 +85,14 @@ function Opener.Initialize()
         toLoot[79675] = true
         shouldRegister = true
     end
+    if (KyzderpsDerps.savedOptions.opener.openPurpleZenithar) then
+        toLoot[187701] = true
+        shouldRegister = true
+    end
+    if (KyzderpsDerps.savedOptions.opener.openZenitharCurrency) then
+        toLoot[187700] = true
+        shouldRegister = true
+    end
 
     if (shouldRegister) then
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "OpenerSlotUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnInventorySlotUpdate)
@@ -151,6 +159,30 @@ function Opener.GetSettings()
             getFunc = function() return KyzderpsDerps.savedOptions.opener.openToxinSatchel end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.opener.openToxinSatchel = value
+                Opener.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Auto open Zenithar's Delightful Parcel",
+            tooltip = "When you loot a (purple) Zenithar's Delightful Parcel, automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openPurpleZenithar end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openPurpleZenithar = value
+                Opener.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Auto open Zenithar's Bounty",
+            tooltip = "When you loot a Zenithar's Bounty (the gold bag containing currency), automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openZenitharCurrency end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openZenitharCurrency = value
                 Opener.Initialize()
             end,
             width = "full",
