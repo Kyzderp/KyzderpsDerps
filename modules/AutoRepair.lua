@@ -22,6 +22,11 @@ end
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
 local function AttemptRepair(bagId, slotId)
+    if (GetItemCondition(bagId, slotId) > 1) then
+        KyzderpsDerps:dbg("|cFF0000skipping repair because item is already repaired")
+        return
+    end
+
     -- Can't repair while dead or reincarnating, so delay and keep checking it
     if (IsUnitDeadOrReincarnating("player")) then
         KyzderpsDerps:dbg("delaying repair because dead or reincarnating")
