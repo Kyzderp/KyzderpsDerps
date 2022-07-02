@@ -146,7 +146,8 @@ local BOSS_NAMES = {
 
 -- High Isle
     ["Mornard Falls"] = 301, -- WB: Mornard Falls (Hadolids)
-    ["Dark Stone Hollow"] = 301, -- WB: Dark Stone Hollow
+    ["Dark Stone Hollow"] = 301, -- WB: Dark Stone Hollow (Ascendant Order fanatics)
+    ["Amenos Basin"] = 301, -- WB: Amenos Basin (Eldertide Theurges)
 
 -- Malabal Tor
     ["Arrai"] = true, -- Delve: Shael Ruins
@@ -300,6 +301,8 @@ local BOSS_GROUPS = {
     ["Hadolid Consort"] = "Mornard Falls", -- WB: Mornard Falls
     ["The Ascendant Harrower"] = "Dark Stone Hollow", -- WB: Dark Stone Hollow
     ["The Ascendant Executioner"] = "Dark Stone Hollow", -- WB: Dark Stone Hollow
+    ["Rosara the Theurge"] = "Amenos Basin", -- WB: Amenos Basin (Eldertide Theurges)
+    ["Skerard the Theurge"] = "Amenos Basin", -- WB: Amenos Basin (Eldertide Theurges)
 
 -- Northern Elsweyr
     ["Zav'i"] = "Zav'i / Akumjhargo", -- WB: Red Hands Run
