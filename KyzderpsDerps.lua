@@ -134,6 +134,7 @@ local defaultOptions = {
         openToxinSatchel = false,
         openPurpleZenithar = false,
         openZenitharCurrency = false,
+        openEmberWallet = false,
     },
     sync = {
         mementos = {

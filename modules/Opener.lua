@@ -93,6 +93,10 @@ function Opener.Initialize()
         toLoot[187700] = true
         shouldRegister = true
     end
+    if (KyzderpsDerps.savedOptions.opener.openEmberWallet) then
+        toLoot[187747] = true
+        shouldRegister = true
+    end
 
     if (shouldRegister) then
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "OpenerSlotUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnInventorySlotUpdate)
@@ -135,6 +139,18 @@ function Opener.GetSettings()
             getFunc = function() return KyzderpsDerps.savedOptions.opener.openMirriBag end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.opener.openMirriBag = value
+                Opener.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Auto open Hidden Wallet",
+            tooltip = "When you loot a Hidden Wallet from Ember's bonus, automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openEmberWallet end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openEmberWallet = value
                 Opener.Initialize()
             end,
             width = "full",

@@ -99,7 +99,7 @@ end
 ---------------------------------------------------------------------
 -- Build the entire string for all played
 ---------------------------------------------------------------------
-function KyzderpsDerps.BuildPlayed()
+function Altoholic.BuildPlayed()
     UpdatePlayedTime()
 
     local result = "=== Time Played ==="
