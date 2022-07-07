@@ -54,7 +54,7 @@ end
 -- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
 local function OnInventorySlotUpdate(_, bagId, slotId, isNewItem, _, _, _)
     local itemId = GetItemId(bagId, slotId)
-    if (toLoot[itemId]) then
+    if (toLoot[itemId] and not IsItemStolen(bagId, slotId)) then
         toLootNames[GetItemName(bagId, slotId)] = true
         zo_callLater(function()
             OpenContainer(bagId, slotId)
@@ -93,10 +93,11 @@ function Opener.Initialize()
         toLoot[187700] = true
         shouldRegister = true
     end
-    if (KyzderpsDerps.savedOptions.opener.openEmberWallet) then
-        toLoot[187747] = true
-        shouldRegister = true
-    end
+    -- Probably don't do this, because it's stolen
+    -- if (KyzderpsDerps.savedOptions.opener.openEmberWallet) then
+    --     toLoot[187747] = true
+    --     shouldRegister = true
+    -- end
 
     if (shouldRegister) then
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "OpenerSlotUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnInventorySlotUpdate)
@@ -143,18 +144,18 @@ function Opener.GetSettings()
             end,
             width = "full",
         },
-        {
-            type = "checkbox",
-            name = "Auto open Hidden Wallet",
-            tooltip = "When you loot a Hidden Wallet from Ember's bonus, automatically open and loot it",
-            default = false,
-            getFunc = function() return KyzderpsDerps.savedOptions.opener.openEmberWallet end,
-            setFunc = function(value)
-                KyzderpsDerps.savedOptions.opener.openEmberWallet = value
-                Opener.Initialize()
-            end,
-            width = "full",
-        },
+        -- {
+        --     type = "checkbox",
+        --     name = "Auto open Hidden Wallet",
+        --     tooltip = "When you loot a Hidden Wallet from Ember's bonus, automatically open and loot it",
+        --     default = false,
+        --     getFunc = function() return KyzderpsDerps.savedOptions.opener.openEmberWallet end,
+        --     setFunc = function(value)
+        --         KyzderpsDerps.savedOptions.opener.openEmberWallet = value
+        --         Opener.Initialize()
+        --     end,
+        --     width = "full",
+        -- },
         {
             type = "checkbox",
             name = "Auto open Wet Gunny Sack",
@@ -182,7 +183,7 @@ function Opener.GetSettings()
         {
             type = "checkbox",
             name = "Auto open Zenithar's Delightful Parcel",
-            tooltip = "When you loot a (purple) Zenithar's Delightful Parcel, automatically open and loot it",
+            tooltip = "When you loot a (purple) Zenithar's Delightful Parcel, automatically open and loot it. Will NOT loot stolen ones!",
             default = false,
             getFunc = function() return KyzderpsDerps.savedOptions.opener.openPurpleZenithar end,
             setFunc = function(value)
