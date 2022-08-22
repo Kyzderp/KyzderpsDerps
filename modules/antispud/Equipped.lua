@@ -147,8 +147,12 @@ local function CheckSlotsSets(isFrontbar)
             error = zo_strformat("You are wearing <<1>> piece of\n<<2>>", data.numEquipped, setName)
         elseif (data.numEquipped == 2) then
             -- If wearing 2 pieces of a 5 pc this is probably wrong
-            color = "|cFF0000"
-            error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
+            if (KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
+                color = "|cFF7700"
+            else
+                color = "|cFF0000"
+                error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
+            end
         elseif (data.numEquipped > data.maxEquipped) then
             -- 6 pieces is probably not correct, but check the exception list
             if (data.numEquipped == 6 and KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then

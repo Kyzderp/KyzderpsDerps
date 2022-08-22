@@ -54,6 +54,8 @@ local DUNGEON_ZONEIDS = {
     ["1268"] = true,  -- The Dread Cellar
     ["1301"] = true,  -- Coral Aerie
     ["1302"] = true,  -- Shipwright's Regret
+    ["1360"] = true,  -- Earthen Root Enclave
+    ["1361"] = true,  -- Graven Deep
 }
 KyzderpsDerps.DUNGEON_ZONEIDS = DUNGEON_ZONEIDS
 
@@ -215,7 +217,7 @@ local BOSS_NAMES = {
 
 -- Imperial City Sewers (non-event 10 mins, event same I think?)
     ["Hzu-Hakan"] = 600, -- Irrigation Tunnels (AD)
-    ["Emperor Leovic"] = 600, -- Abyssal Depths (AD)
+    ["Emperor Leovic"] = 605, -- Abyssal Depths (AD)
     ["General Kryozote"] = 600, -- Abyssal Depths (AD)
     ["Lady of the Depths"] = 600, -- Weaver's Nest (AD)
     ["Gati the Storm Sister"] = 600, -- Lambent Passage (DC)

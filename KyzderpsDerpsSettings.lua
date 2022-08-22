@@ -713,8 +713,8 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "editbox",
-                    name = "4/6-piece exceptions",
-                    tooltip = "Normally, if you are wearing 4 or 6 pieces of a 5-piece set, AntiSpud will mark it as an error. You can add exact item set names below to exclude them from this rule, for example New Moon Acolyte if you only wear 4 pieces for stat bonuses. Separate item set names with a % sign.",
+                    name = "2/4/6-piece exceptions",
+                    tooltip = "Normally, if you are wearing 2 or 4 or 6 pieces of a 5-piece set, AntiSpud will mark it as an error. You can add exact item set names below to exclude them from this rule, for example New Moon Acolyte if you only wear 4 pieces for stat bonuses. Separate item set names with a % sign.",
                     default = "",
                     getFunc = function()
                         local names = {}

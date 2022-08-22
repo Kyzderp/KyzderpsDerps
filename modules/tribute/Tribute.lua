@@ -78,3 +78,30 @@ function Tribute.GetSettings()
         width = "full",
     }
 end
+
+--[[
+h5. TributePatronPerspectiveFavorState
+* TRIBUTE_PATRON_PERSPECTIVE_FAVOR_STATE_FAVORS_OPPONENT
+* TRIBUTE_PATRON_PERSPECTIVE_FAVOR_STATE_FAVORS_PLAYER
+* TRIBUTE_PATRON_PERSPECTIVE_FAVOR_STATE_NEUTRAL
+
+
+* GetNumPatronsFavoringPlayerPerspective(*[TributePlayerPerspective|#TributePlayerPerspective]* _playerPerspective_)
+** _Returns:_ *integer* _numPatronsFavored_
+
+* GetTributePlayerPerspectiveResource(*[TributePlayerPerspective|#TributePlayerPerspective]* _playerPerspective_, *[TributeResource|#TributeResource]* _resource_)
+** _Returns:_ *integer* _value_
+
+* GetTributePatronIdAtIndex(*luaindex* _index_)
+** _Returns:_ *integer* _patronId_
+
+* GetTributePatronName(*integer* _patronId_)
+** _Returns:_ *string* _patronName_
+
+* IsTributePatronNeutral(*integer* _patronId_)
+** _Returns:_ *bool* _isNeutral_
+
+* DoesTributePatronSkipNeutralFavorState(*integer* _patronId_)
+** _Returns:_ *bool* _doesSkipNeutral_
+]]
+
