@@ -33,6 +33,7 @@ local function OnGameFlowStateChange(_, flowState)
     }
 
     KyzderpsDerps:dbg(string.format("Tribute game flow state: %s", gameFlowStates[flowState]))
+    KyzderpsDerps:dbg(GetTributePlayerInfo(TRIBUTE_PLAYER_PERSPECTIVE_OPPONENT))
 
     if (flowState == TRIBUTE_GAME_FLOW_STATE_PLAYING) then
         EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "TributePoll", 500, UpdateTimer)
