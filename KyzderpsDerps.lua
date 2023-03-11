@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.22.3"
+KyzderpsDerps.version = "1.22.4"
 
 -- Defaults
 local defaultOptions = {
@@ -323,6 +323,7 @@ local function Initialize()
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
         KyzderpsDerps.InitializeAOE()
         KyzderpsDerps.InitializeSpam()
+        SLASH_COMMANDS["/wyrdsight"] = function() UseCollectible(10305) end
     end
 
     -- Block "Item not ready" spam
