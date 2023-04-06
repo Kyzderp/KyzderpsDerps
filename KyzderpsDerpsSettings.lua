@@ -198,6 +198,7 @@ local collectibleIds = {
     1168, -- Breda's Bottomless Mead Mug
     9012, -- Jubilee Cake 2021
     10287, -- Jubilee Cake 2022
+    11089, -- Jubilee Cake 2023
     0, -- None
 }
 local collectibleNames = {
@@ -206,6 +207,7 @@ local collectibleNames = {
     GetCollectibleName(1168), -- Breda's Bottomless Mead Mug
     GetCollectibleName(9012), -- Jubilee Cake 2021
     GetCollectibleName(10287), -- Jubilee Cake 2022
+    GetCollectibleName(11089), -- Jubilee Cake 2023
     "- None -", -- None
 }
 
