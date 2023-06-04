@@ -86,7 +86,7 @@ end
 -- Init
 ---------------------------------------------------------------------
 function Spam.InitializeInteract()
-    ZO_PreHook(FISHING_MANAGER, "StartInteraction", OnStartInteract)
+    ZO_PreHook(FISHING_MANAGER or INTERACTIVE_WHEEL_MANAGER, "StartInteraction", OnStartInteract)
 
     -- Must do this separately, or else every attempt to pick lock will be an interact
     EVENT_MANAGER:RegisterForEvent(Spam.name .. "LockSuccess", EVENT_LOCKPICK_SUCCESS, OnStartInteract)

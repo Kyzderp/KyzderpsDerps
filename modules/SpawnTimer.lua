@@ -78,6 +78,7 @@ local TRIAL_ZONEIDS = {
     ["1227"] = true,  -- Vateshran Hollows
     ["1263"] = true,  -- Rockgrove
     ["1344"] = true,  -- Dreadsail Reef
+    ["1427"] = true,  -- Sanity's Edge
 }
 KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
 
