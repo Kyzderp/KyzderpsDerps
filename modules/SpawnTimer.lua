@@ -86,6 +86,14 @@ KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
 local BOSS_NAMES = {
 -- Dolmens - TODO: 5:18? stonefalls 6:14?
 
+-- Apocrypha
+    ["Caz'iunes the Executioner"] = 302, -- PD: The Underweave
+    ["Creepclaw"] = 302, -- PD: The Underweave
+    ["Qacath the Silent"] = 302, -- PD: The Underweave
+    ["Kynreve Kev'ni"] = 302, -- PD: The Underweave
+    ["Loremaster Trigon"] = 302, -- PD: The Underweave
+    ["Staxuira"] = 311, -- PD: Gorne (has a long spawn animation)
+
 -- Bangkorai
     ["Curnard the Generous"] = true, -- Delve: Viridian Watch
     ["Razak's Behemoth"] = 300, -- PD: Razak's Wheel
@@ -124,6 +132,9 @@ local BOSS_NAMES = {
 -- Deadlands
     ["The Unmaker"] = 315, -- WB: The Unmaker - doesn't become damageable until 5:15
     ["Taupezu Azzida"] = 312, -- WB: The Abomination Cradle - doesn't become damageable until 5:12 ish?
+
+-- Galen
+    ["Traux / Druid Rerlas"] = true, -- Delve: Embervine
 
 -- Glenumbra
     ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
@@ -295,6 +306,10 @@ local BOSS_GROUPS = {
 
 -- Craglorn
     ["Troll Colossus"] = "GetPlayerLocationName", -- Nirncrux Mine
+
+-- Galen
+    ["Traux the Ancient"] = "Traux / Druid Rerlas", -- Delve: Embervine
+    ["Druid Rerlas"] = "Traux / Druid Rerlas", -- Delve: Embervine
 
 -- Greenshade
     ["Neiral"] = "Maormer Camp", -- WB: Maormer Camp

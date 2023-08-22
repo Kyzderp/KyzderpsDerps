@@ -13,7 +13,6 @@ local function SetRGB(red, green, blue)
 end
 
 local function OnBossesChanged()
-    local numBosses = 0
     for i = 1, MAX_BOSSES do
         local name = GetUnitName("boss" .. tostring(i))
         if (name == "Lokkestiiz") then
