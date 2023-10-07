@@ -1,6 +1,6 @@
 KyzderpsDerps = KyzderpsDerps or {}
-KyzderpsDerps.ChatSpam = KyzderpsDerps.ChatSpam or {}
-local Spam = KyzderpsDerps.ChatSpam
+KyzderpsDerps.ScoreFormat = KyzderpsDerps.ScoreFormat or {}
+local ScoreFormat = KyzderpsDerps.ScoreFormat
 
 ---------------------------------------------------------------------
 -- Upon completion of a leaderboard instance, outputs a string that
@@ -8,22 +8,23 @@ local Spam = KyzderpsDerps.ChatSpam
 ---------------------------------------------------------------------
 
 local TRIALS_DICTIONARY = {
-    ["Hel Ra Citadel"] = "HRC",
-    ["Aetherian Archive"] = "AA",
-    ["Sanctum Ophidia"] = "SO",
-    ["Dragonstar Arena"] = "DSA",
-    ["Maw of Lorkhaj"] = "MoL",
-    ["Maelstrom Arena"] = "MA",
-    ["Halls of Fabrication"] = "HoF",
-    ["Asylum Sanctorium"] = "AS",
-    ["Cloudrest"] = "CR",
-    ["Blackrose Prison"] = "BRP",
-    ["Sunspire"] = "SS",
-    ["Kyne's Aegis"] = "KA",
-    ["Vateshran Hollows"] = "VH",
-    ["Rockgrove"] = "RG",
-    ["Dreadsail Reef"] = "DSR",
-    ["Sanity's Edge"] = "SE",
+    ["Hel Ra Citadel"] = "vHRC",
+    ["Aetherian Archive"] = "vAA",
+    ["Sanctum Ophidia"] = "vSO",
+    ["Dragonstar Arena"] = "vDSA",
+    ["Maw of Lorkhaj"] = "vMoL",
+    ["Maelstrom Arena"] = "vMA",
+    ["Halls of Fabrication"] = "vHoF HM",
+    ["Asylum Sanctorium"] = "vAS",
+    ["Cloudrest"] = "vCR",
+    ["Blackrose Prison"] = "vBRP",
+    ["Sunspire"] = "vSS",
+    ["Kyne's Aegis"] = "vKA",
+    ["Vateshran Hollows"] = "vVH",
+    ["Rockgrove"] = "vRG",
+    ["Dreadsail Reef"] = "vDSR",
+    ["Sanity's Edge"] = "vSE",
+    ["Endless Archive"] = "EA",
 };
 
 local MONTHS_DICTIONARY = {
@@ -52,14 +53,12 @@ local vitality = 0
 local function OnTrialStarted()
     vitality = GetRaidReviveCountersRemaining()
     maxVitality = GetCurrentRaidStartingReviveCounters()
-    Spam.AddMessage(string.format("Trial started: %d/%d", vitality, maxVitality))
 end
 
 -- EVENT_RAID_REVIVE_COUNTER_UPDATE (number eventCode, number currentCounter, number countDelta)
 local function OnVitalityChanged(_, currentCounter, countDelta)
     vitality = currentCounter
     maxVitality = GetCurrentRaidStartingReviveCounters()
-    Spam.AddMessage(string.format("Vitality changed: %d/%d", vitality, maxVitality))
 end
 
 ---------------------------------------------------------------------
@@ -105,7 +104,7 @@ local function BuildGroupRoles()
 end
 
 local function BuildScoreFormat(trialName, score, totalSeconds, vitality, maxVitality)
-    local result = "__**v" .. TRIALS_DICTIONARY[string.gsub(trialName, " %(Veteran%)", "")] .. "**__\n"
+    local result = "__**" .. TRIALS_DICTIONARY[string.gsub(trialName, " %(Veteran%)", "")] .. "**__\n"
 
     -- score
     result = result .. "**" .. tostring(score) .. " - "
@@ -148,11 +147,11 @@ end
 ---------------------------------------------------------------------
 -- Init
 ---------------------------------------------------------------------
-function Spam.InitializeScoreFormat()
+function ScoreFormat.Initialize()
     -- TODO: add setting
-    EVENT_MANAGER:RegisterForEvent(Spam.name .. "TrialComplete", EVENT_RAID_TRIAL_COMPLETE, OnTrialComplete)
-    EVENT_MANAGER:RegisterForEvent(Spam.name .. "TrialStart", EVENT_RAID_TRIAL_STARTED, OnTrialStarted)
-    EVENT_MANAGER:RegisterForEvent(Spam.name .. "TrialVitalityChange", EVENT_RAID_REVIVE_COUNTER_UPDATE, OnVitalityChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialComplete", EVENT_RAID_TRIAL_COMPLETE, OnTrialComplete)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialStart", EVENT_RAID_TRIAL_STARTED, OnTrialStarted)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialVitalityChange", EVENT_RAID_REVIVE_COUNTER_UPDATE, OnVitalityChanged)
 
     local raidId = GetCurrentParticipatingRaidId()
     if (raidId ~= nil and raidId ~= 0) then

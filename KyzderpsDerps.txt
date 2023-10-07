@@ -25,6 +25,7 @@ modules/InWorldWaypoint.lua
 modules/Fashion.lua
 modules/AutoRepair.lua
 modules/Opener.lua
+modules/ScoreFormat.lua
 
 modules/antispud/AntiSpud.lua
 modules/antispud/State.lua
@@ -41,7 +42,6 @@ modules/chatspam/ChatSpam.lua
 modules/chatspam/CSA.lua
 modules/chatspam/LootHistory.lua
 modules/chatspam/Score.lua
-modules/chatspam/ScoreFormat.lua
 modules/chatspam/Interact.lua
 
 modules/chatspam/InfoPanel.xml

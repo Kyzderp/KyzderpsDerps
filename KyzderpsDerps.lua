@@ -144,6 +144,7 @@ local defaultOptions = {
             ignoreInCombat = true,
         },
     },
+    printScoreFormat = false,
 }
 
 local defaultValues = {
@@ -235,6 +236,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.Reticle.Initialize()
     KyzderpsDerps.Sync.Initialize()
     KyzderpsDerps.Fashion.Initialize()
+    KyzderpsDerps.ScoreFormat.Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
         KyzderpsDerps.UIElements.Reposition()
