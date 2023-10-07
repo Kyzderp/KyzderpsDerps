@@ -41,6 +41,7 @@ modules/chatspam/ChatSpam.lua
 modules/chatspam/CSA.lua
 modules/chatspam/LootHistory.lua
 modules/chatspam/Score.lua
+modules/chatspam/ScoreFormat.lua
 modules/chatspam/Interact.lua
 
 modules/chatspam/InfoPanel.xml

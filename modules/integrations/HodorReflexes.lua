@@ -47,7 +47,7 @@ local function UpdateInRange()
                 outline:SetTexture("esoui/art/unitattributevisualizer/attributebar_arrow.dds")
                 outline:SetColor(0, 0, 0)
                 outline:SetDimensions(18, 18)
-                outline:SetAnchor(TOPEFT, texture, TOPLEFT, 3, 3)
+                outline:SetAnchor(TOPLEFT, texture, TOPLEFT, 3, 3)
                 outline:SetDrawTier(1)
 
                 label = WINDOW_MANAGER:CreateControl("KDDHodor" .. name .. "Label", texture, CT_LABEL)

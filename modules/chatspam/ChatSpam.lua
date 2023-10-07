@@ -27,5 +27,6 @@ function Spam.Initialize()
     Spam.InitializeCSAHook()
     Spam.InitializeLootHistory()
     Spam.InitializeScore()
+    Spam.InitializeScoreFormat() -- TODO: add setting
     Spam.InitializeInteract()
 end

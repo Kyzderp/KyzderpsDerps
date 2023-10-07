@@ -92,7 +92,6 @@ local BOSS_NAMES = {
     ["Qacath the Silent"] = 302, -- PD: The Underweave
     ["Kynreve Kev'ni"] = 302, -- PD: The Underweave
     ["Loremaster Trigon"] = 302, -- PD: The Underweave
-    ["Staxuira"] = 311, -- PD: Gorne (has a long spawn animation)
 
 -- Bangkorai
     ["Curnard the Generous"] = true, -- Delve: Viridian Watch
@@ -208,6 +207,10 @@ local BOSS_NAMES = {
 -- Southern Elsweyr
     ["Ri'Atahrashi"] = 600, -- WB
     ["Iratan the Lightbringer"] = 600, -- WB
+
+-- Telvanni Peninsula
+    ["Staxuira"] = 311, -- PD: Gorne (has a long spawn animation)
+    ["Stupulag / Gujelag"] = 304, -- PD: Gorne
 
 -- The Deadlands
     ["Wandering Havocrel"] = 360, -- Wandering WBs seem to be 6 mins ish and random spawn point
@@ -343,6 +346,10 @@ local BOSS_GROUPS = {
     ["Eejoba the Radiant"] = "GetPlayerLocationName", -- Abyssal Geyser - Wispmother
     ["Tidewrack"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Lurcher
     ["Vsskalvor"] = "GetPlayerLocationName", -- Abyssal Geyser - Sea Viper
+
+-- Telvanni Peninsula
+    ["Stupulag"] = "Stupulag / Gujelag", -- PD: Gorne
+    ["Gujelag"] = "Stupulag / Gujelag", -- PD: Gorne
 
 -- The Deadlands
     ["Vorsholazh the Anvil"] = "Wandering Havocrel", -- Wandering WB

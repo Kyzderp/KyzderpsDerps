@@ -83,7 +83,7 @@ function Companion.GetSettings()
         {
             type = "description",
             title = nil,
-            text = "You can toggle companions with the |c99FF99/bastian|r, |c99FF99/mirri|r, |c99FF99/ember|r, and |c99FF99/isobel|r commands.",
+            text = "You can toggle companions with the |c99FF99/bastian|r, |c99FF99/mirri|r, |c99FF99/ember|r, |c99FF99/isobel|r, |c99FF99/sharp|r, and |c99FF99/azandar|r commands.",
             width = "full",
         },
         {
