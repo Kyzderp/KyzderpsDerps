@@ -79,6 +79,7 @@ local TRIAL_ZONEIDS = {
     ["1263"] = true,  -- Rockgrove
     ["1344"] = true,  -- Dreadsail Reef
     ["1427"] = true,  -- Sanity's Edge
+    ["1436"] = true,  -- Endless Archive
 }
 KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
 
@@ -91,7 +92,7 @@ local BOSS_NAMES = {
     ["Creepclaw"] = 302, -- PD: The Underweave
     ["Qacath the Silent"] = 302, -- PD: The Underweave
     ["Kynreve Kev'ni"] = 302, -- PD: The Underweave
-    ["Loremaster Trigon"] = 302, -- PD: The Underweave
+    ["Loremaster Trigon"] = 305, -- PD: The Underweave
 
 -- Bangkorai
     ["Curnard the Generous"] = true, -- Delve: Viridian Watch

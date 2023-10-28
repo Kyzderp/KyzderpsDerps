@@ -55,9 +55,12 @@ end
 local lastChestTime = 0
 local function OnStartInteract()
     local interactText, mainText, _, isOwned = GetGameCameraInteractableActionInfo()
+    if (interactText and interactText ~= "") then
+        Spam.AddMessage(zo_strformat("<<1>> <<2>> <<3>>", interactText, mainText, isOwned))
+    end
 
     -- Looting a chest
-    if ((mainText == "Chest" and interactText == "Use") and not isOwned) then
+    if (((mainText == "Chest" or mainText == "Hidden Chest") and interactText == "Use") and not isOwned) then
         local currentTimeStamp = GetTimeStamp()
         if (currentTimeStamp - lastChestTime > 3) then
             OnChestLooted()
@@ -86,7 +89,7 @@ end
 -- Init
 ---------------------------------------------------------------------
 function Spam.InitializeInteract()
-    ZO_PreHook(FISHING_MANAGER or INTERACTIVE_WHEEL_MANAGER, "StartInteraction", OnStartInteract)
+    ZO_PreHook(INTERACTIVE_WHEEL_MANAGER, "StartInteraction", OnStartInteract)
 
     -- Must do this separately, or else every attempt to pick lock will be an interact
     EVENT_MANAGER:RegisterForEvent(Spam.name .. "LockSuccess", EVENT_LOCKPICK_SUCCESS, OnStartInteract)

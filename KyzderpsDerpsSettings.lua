@@ -1002,7 +1002,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                 {
                     type = "description",
                     title = nil,
-                    text = "Are you a scatterbrain who can't remember how many chests you've found in this dungeon? Well look no further than the |c99FF99Chest Forgerrer|r! This handy module keeps track of how many chests you've looted in a zone, so it doesn't matter if you |c99FF99FORGOR|r!\nDisclaimer: some chests that are not actually unlockable chests, such as drops from certain bosses, will also be included in the tally. If you loot the same chest twice, it will also be counted twice.",
+                    text = "Are you a scatterbrain who can't remember how many chests you've found in this dungeon? Well look no further than the |c99FF99Chest Forgerrer|r! This handy module keeps track of how many chests you've looted in a zone, so it doesn't matter if you |c99FF99FORGOR|r!\nDisclaimer: some chests that are not actually unlockable chests, such as drops from certain bosses, may also be included in the tally. If you loot the same chest twice, it will also be counted twice. Works only for English client.",
                     width = "full",
                 },
                 {
