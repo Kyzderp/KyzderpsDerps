@@ -8,9 +8,9 @@ local disabledBTG = {}
 local function SetBTG(btgIndex, enable)
     btg.savedVars.trackedBuffs[btgIndex] = enable
     if (enable) then
-        table.insert(enabledBTG, btgData.buffs[btgIndex])
+        table.insert(enabledBTG, GetAbilityName(btgData.buffs[btgIndex]))
     else
-        table.insert(disabledBTG, btgData.buffs[btgIndex])
+        table.insert(disabledBTG, GetAbilityName(btgData.buffs[btgIndex]))
     end
     return enable
 end
@@ -85,6 +85,9 @@ local function UpdateBuffTheGroup(equippedSets)
     end
     if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.spaulder and btgData.buffs[19] == zo_strformat(SI_ABILITY_NAME, GetAbilityName(163401))) then
         SetBTG(19, equippedSets["Spaulder of Ruin"] ~= nil)
+    end
+    if (KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pp) then
+        SetBTG(1001, equippedSets["Pillager's Profit"] ~= nil)
     end
 
     hasEnabled = UpdateBTGSkills(hasEnabled)

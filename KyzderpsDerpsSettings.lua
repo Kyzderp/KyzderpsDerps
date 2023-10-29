@@ -167,6 +167,20 @@ local function CreateBTGSettings()
                     return not KyzderpsDerps.savedOptions.antispud.equipped.enable
                 end,
             },
+            {
+                type = "checkbox",
+                name = "Auto toggle Pillager's Profit",
+                tooltip = "Enable or disable Pillager's Profit cooldown frame if you are wearing the set",
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pp end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.antispud.equipped.buffTheGroup.pp = value
+                end,
+                width = "full",
+                disabled = function()
+                    return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                end,
+            },
         }
 
     if (btg and btgData and btgData.buffs[19] == zo_strformat(SI_ABILITY_NAME, GetAbilityName(163401))) then

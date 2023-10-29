@@ -82,6 +82,7 @@ local defaultOptions = {
                 majorResolve = false,
                 empower = false,
                 spaulder = false,
+                pp = false,
             },
             spaulder = false,
         },
