@@ -288,6 +288,7 @@ local function CreateMiscSettings()
     }
 
     table.insert(controls, KyzderpsDerps.Tribute.GetSettings())
+    table.insert(controls, KyzderpsDerps.ScoreFormat.GetSettings())
     return controls
 end
 

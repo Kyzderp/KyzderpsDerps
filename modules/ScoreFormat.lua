@@ -148,13 +148,37 @@ end
 -- Init
 ---------------------------------------------------------------------
 function ScoreFormat.Initialize()
-    -- TODO: add setting
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialComplete", EVENT_RAID_TRIAL_COMPLETE, OnTrialComplete)
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialStart", EVENT_RAID_TRIAL_STARTED, OnTrialStarted)
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialVitalityChange", EVENT_RAID_REVIVE_COUNTER_UPDATE, OnVitalityChanged)
+    if (KyzderpsDerps.savedOptions.misc.printScoreFormat) then
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialComplete", EVENT_RAID_TRIAL_COMPLETE, OnTrialComplete)
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialStart", EVENT_RAID_TRIAL_STARTED, OnTrialStarted)
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialVitalityChange", EVENT_RAID_REVIVE_COUNTER_UPDATE, OnVitalityChanged)
 
-    local raidId = GetCurrentParticipatingRaidId()
-    if (raidId ~= nil and raidId ~= 0) then
-        OnTrialStarted()
+        local raidId = GetCurrentParticipatingRaidId()
+        if (raidId ~= nil and raidId ~= 0) then
+            OnTrialStarted()
+        end
+    else
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialComplete", EVENT_RAID_TRIAL_COMPLETE)
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialStart", EVENT_RAID_TRIAL_STARTED)
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "ScoreFormatTrialVitalityChange", EVENT_RAID_REVIVE_COUNTER_UPDATE)
     end
+end
+
+
+---------------------------------------------------------------------
+-- Settings
+---------------------------------------------------------------------
+function ScoreFormat.GetSettings()
+    return {
+        type = "checkbox",
+        name = "Print formatted score",
+        tooltip = "Upon completion of leaderboard content such as a veteran trial, prints text that lists the name, score, time, vitality, date, and group members formatted for copy pasting to Discord (use in conjunction with an addon like pChat to copy). Also prints it again 15 seconds later in case it gets buried in other chat spam like loot spying",
+        default = true,
+        getFunc = function() return KyzderpsDerps.savedOptions.misc.printScoreFormat end,
+        setFunc = function(value)
+            KyzderpsDerps.savedOptions.misc.printScoreFormat = value
+            ScoreFormat.Initialize()
+        end,
+        width = "full",
+    }
 end
