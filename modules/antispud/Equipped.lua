@@ -135,6 +135,11 @@ local function CheckSlotsSets(isFrontbar)
             -- detect whether only 1 piece is equipped without using something like LibSets maybe.
             -- Or more complicated stuff so cba
             color = ""
+        elseif (KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
+            -- The var is called fourPiece but it now means general exception. This was before
+            -- Druid's Braid came out, and while I could only ignore Druid's Braid, I think it's
+            -- simpler for the user to just add a set as an exception entirely.
+            color = ""
         elseif (data.maxEquipped == 3 and data.maxEquipped == data.numBonuses) then
             -- This probably only applies to Armor of the Trainee, because monster sets and mythics already handled
             color = "|cFFFF00"
@@ -147,32 +152,19 @@ local function CheckSlotsSets(isFrontbar)
             error = zo_strformat("You are wearing <<1>> piece of\n<<2>>", data.numEquipped, setName)
         elseif (data.numEquipped == 2) then
             -- If wearing 2 pieces of a 5 pc this is probably wrong
-            if (KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
-                color = "|cFF7700"
-            else
-                color = "|cFF0000"
-                error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
-            end
+            color = "|cFF0000"
+            error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
         elseif (data.numEquipped > data.maxEquipped) then
-            -- 6 pieces is probably not correct, but check the exception list
-            if (data.numEquipped == 6 and KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
-                color = "|cFF7700"
-            else
-                -- Too many pieces
-                color = "|cFF0000"
-                error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
-            end
+            -- Too many pieces
+            color = "|cFF0000"
+            error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
         elseif (data.numEquipped == 3) then
             -- 3 pieces is probably ok
             color = "|cFFFF00"
         elseif (data.numEquipped == 4) then
-            -- 4 pieces is probably not correct, but check the exception list
-            if (KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions[setName]) then
-                color = "|cFF7700"
-            else
-                color = "|cFF0000"
-                error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
-            end
+            -- 4 pieces is probably not correct
+            color = "|cFF0000"
+            error = zo_strformat("You are wearing <<1>> pieces of\n<<2>>", data.numEquipped, setName)
         end
         table.insert(result, zo_strformat("<<1>><<2>><<3>> <<C:4>>", color, data.numEquipped, (color == "") and "" or "|cAAAAAA", setName))
     end

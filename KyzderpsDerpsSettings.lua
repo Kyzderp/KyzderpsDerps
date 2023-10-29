@@ -715,8 +715,8 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "editbox",
-                    name = "2/4/6-piece exceptions",
-                    tooltip = "Normally, if you are wearing 2 or 4 or 6 pieces of a 5-piece set, AntiSpud will mark it as an error. You can add exact item set names below to exclude them from this rule, for example New Moon Acolyte if you only wear 4 pieces for stat bonuses. Separate item set names with a % sign.",
+                    name = "Set exceptions",
+                    tooltip = "Normally, if you are wearing an irregular number of items of a set, AntiSpud will mark it as an error. You can add exact item set names below to exclude them from this rule, for example New Moon Acolyte if you only wear 4 pieces for stat bonuses. Separate item set names with a % sign.",
                     default = "",
                     getFunc = function()
                         local names = {}
@@ -726,6 +726,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                         return table.concat(names, "%")
                     end,
                     setFunc = function(value)
+                        -- Note: I didn't rename the var, but this means general exception now, not just 4-piece. See Equipped.lua
                         KyzderpsDerps.savedOptions.antispud.equipped.fourPieceExceptions = {}
                         for str in string.gmatch(value, "([^%%]+)") do
                             str = string.gsub(str, "^%s+", "")
