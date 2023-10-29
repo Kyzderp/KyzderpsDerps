@@ -56,7 +56,7 @@ local lastChestTime = 0
 local function OnStartInteract()
     local interactText, mainText, _, isOwned = GetGameCameraInteractableActionInfo()
     if (interactText and interactText ~= "") then
-        Spam.AddMessage(zo_strformat("<<1>> <<2>> <<3>>", interactText, mainText, isOwned))
+        -- Spam.AddMessage(zo_strformat("<<1>> <<2>> <<3>>", interactText, mainText, isOwned))
     end
 
     -- Looting a chest
