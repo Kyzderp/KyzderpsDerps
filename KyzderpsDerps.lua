@@ -64,6 +64,7 @@ local defaultOptions = {
         hideOnLogout = false,
         tributeTimer = true,
         printScoreFormat = false,
+        loadFewAddons = false,
     },
     companion = {
         resummon = true,
@@ -146,7 +147,6 @@ local defaultOptions = {
             ignoreInCombat = true,
         },
     },
-    printScoreFormat = false,
 }
 
 local defaultValues = {
@@ -309,6 +309,7 @@ local function Initialize()
     KyzderpsDerps.Opener.Initialize()
     KyzderpsDerps.Integrations.Initialize()
     KyzderpsDerps.Tribute.Initialize()
+    KyzderpsDerps.PreLogout.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
@@ -335,15 +336,6 @@ local function Initialize()
         return KyzderpsDerps.savedOptions.misc.blockItemNotReady
     end)
 
-    -- Set to offline before logging out
-    local function HideOnLogout()
-        if (KyzderpsDerps.savedOptions.misc.hideOnLogout) then
-            SelectPlayerStatus(PLAYER_STATUS_OFFLINE)
-        end
-    end
-    ZO_PreHook("Logout", HideOnLogout)
-    ZO_PreHook("Quit", HideOnLogout)
-
     -- Initialize some tables: this is a workaround in order to populate tables with default values but still
     -- have the keys be deletable, because the deleted keys get repopulated when loaded otherwise reeeeeee
     if (KyzderpsDerps.savedOptions.spawnTimer.ignoreListFirstTime) then
@@ -356,6 +348,10 @@ local function Initialize()
         }
         KyzderpsDerps:dbg("Populated boss timer ignore list defaults")
     end
+
+    -- TODO: remove this at some point
+    -- I accidentally left this in the top level in defaults, so this is for clearing people's SV
+    KyzderpsDerps.savedOptions.printScoreFormat = nil
 
     -- This needs to go after the options changes obviously... dumb programmer
     KyzderpsDerps:CreateSettingsMenu()

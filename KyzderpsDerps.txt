@@ -43,7 +43,6 @@ modules/chatspam/CSA.lua
 modules/chatspam/LootHistory.lua
 modules/chatspam/Score.lua
 modules/chatspam/Interact.lua
-
 modules/chatspam/InfoPanel.xml
 
 modules/debug/SpamWindow.lua
@@ -53,6 +52,8 @@ modules/debug/SpamWindow.xml
 modules/integrations/BuffTheGroup.lua
 modules/integrations/HodorReflexes.lua
 modules/integrations/EnabledAddons.lua
+
+modules/prelogout/PreLogout.lua
 
 modules/quickslot/Keybind.lua
 modules/quickslot/SaveLoad.lua
