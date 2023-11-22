@@ -21,20 +21,45 @@ end
 ---------------------------------------------------------------------
 -- Check specific zones
 ---------------------------------------------------------------------
+local zoneToAddons = {
+    [1082] = {
+        {name = "BRHelper", author = "andy.s", enabled = function() return BRHelper ~= nil end, option = "checkBRHelper"},
+    },
+    [1000] = {
+        {name = "Asylum Sanctorium Status Panel", author = "code65536", enabled = function() return AsylumNotifier ~= nil end, option = "checkAsylumStatusPanel"},
+        {name = "Asylum Tracker", author = "init3", enabled = function() return AsylumTracker ~= nil end, option = "checkAsylumTracker"},
+    },
+    [1263] = {
+        {name = "Qcell's Rockgrove Helper", author = "Qcell", enabled = function() return QRH ~= nil end, option = "checkQcellRockgroveHelper"},
+        {name = "ExoYs Rockgroover", author = "ExoY", enabled = function() return Rockgroover ~= nil end, option = "checkExoysRockgroover"},
+    },
+    [1344] = {
+        {name = "Qcell's Dreadsail Reef Helper", author = "Qcell", enabled = function() return QDRH ~= nil end, option = "checkQcellDreadsailReefHelper"},
+    },
+    [1427] = {
+        {name = "Sanity's Edge Helper", author = "Wondernuts", enabled = function() return SEH ~= nil end, option = "checkSanitysEdgeHelper"},
+    },
+    [1051] = {
+        {name = "HowToCloudrest", author = "Floliroy", enabled = function() return HowToCloudrest ~= nil end, option = "checkHowToCloudrest"},
+    },
+    [1121] = {
+        {name = "HowToSunspire", author = "Floliroy", enabled = function() return HowToSunspire ~= nil end, option = "checkHowToSunspire"},
+    },
+    [975] = {
+        {name = "Halls of Fabrication Status Panel", author = "code65536", enabled = function() return HoFNotifier ~= nil end, option = "checkHofStatusPanel"},
+    },
+}
+
 local function OnPlayerActivated()
     local zoneId = GetZoneId(GetUnitZoneIndex("player"))
 
-    -- Blackrose Prison (1082)
-    if (zoneId == 1082 and not BRHelper and KyzderpsDerps.savedOptions.integrations.checkBRHelper) then
-        DisplayWarning("BRHelper is not enabled!")
-    end
+    local requiredAddons = zoneToAddons[zoneId]
+    if (not requiredAddons) then return end
 
-    -- Asylum Sanctorium (1000)
-    if (zoneId == 1000 and not AsylumNotifier and KyzderpsDerps.savedOptions.integrations.checkAsylumStatusPanel) then
-        DisplayWarning("Asylum Sanctorium Status Panel is not enabled!")
-    end
-    if (zoneId == 1000 and not AsylumTracker and KyzderpsDerps.savedOptions.integrations.checkAsylumTracker) then
-        DisplayWarning("Asylum Tracker is not enabled!")
+    for _, addon in ipairs(requiredAddons) do
+        if (not addon.enabled and KyzderpsDerps.savedOptions.integrations[addon.option]) then
+            DisplayWarning(string.format("%s is not enabled!", addon.name))
+        end
     end
 end
 
@@ -42,5 +67,33 @@ end
 -- Init
 ---------------------------------------------------------------------
 function Integrations.Initialize()
+    KyzderpsDerps:dbg("    Initializing EnabledAddons module...")
+
     EVENT_MANAGER:RegisterForEvent(Integrations.name .. "Activated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
+end
+
+---------------------------------------------------------------------
+-- Settings /script d(KyzderpsDerps.Integrations.zoneToAddons)
+---------------------------------------------------------------------
+function Integrations.GetSettings()
+    local settings = {}
+
+    for zoneId, requiredAddons in pairs(zoneToAddons) do
+        local zoneName = GetZoneNameById(zoneId)
+        for _, addon in ipairs(requiredAddons) do
+            table.insert(settings, {
+                type = "checkbox",
+                name = string.format("Check %s by %s", addon.name, addon.author),
+                tooltip = string.format("When entering %s, display a warning if %s is not enabled", zoneName, addon.name),
+                default = false,
+                getFunc = function() return KyzderpsDerps.savedOptions.integrations[addon.option] end,
+                setFunc = function(value)
+                    KyzderpsDerps.savedOptions.integrations[addon.option] = value
+                end,
+                width = "full",
+            })
+        end
+    end
+
+    return settings
 end
