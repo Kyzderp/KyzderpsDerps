@@ -57,7 +57,7 @@ local function OnPlayerActivated()
     if (not requiredAddons) then return end
 
     for _, addon in ipairs(requiredAddons) do
-        if (not addon.enabled and KyzderpsDerps.savedOptions.integrations[addon.option]) then
+        if (not addon.enabled() and KyzderpsDerps.savedOptions.integrations[addon.option]) then
             DisplayWarning(string.format("%s is not enabled!", addon.name))
         end
     end
