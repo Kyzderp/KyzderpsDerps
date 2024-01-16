@@ -276,7 +276,6 @@ local function CreateMiscSettings()
         },
     }
 
-    table.insert(controls, KyzderpsDerps.PreLogout.GetSettings())
     table.insert(controls, KyzderpsDerps.Tribute.GetSettings())
     table.insert(controls, KyzderpsDerps.ScoreFormat.GetSettings())
     return controls
@@ -1167,6 +1166,12 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
             }
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
+            name = "Pre-Logout",
+            controls = KyzderpsDerps.PreLogout.GetSettings(),
         },
         -------------------------------------------------------------------------------
         {

@@ -10,7 +10,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle>"
+    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout>"
 
     if (length == 0) then
         CHAT_SYSTEM:AddMessage(usage)
@@ -95,6 +95,17 @@ local function HandleKDDCommand(argString)
                 end
             end
         until furnitureId == nil
+
+    -- toggles hiding on logout
+    elseif (args[1] == "hide") then
+        KyzderpsDerps.savedOptions.misc.hideOnLogout = not KyzderpsDerps.savedOptions.misc.hideOnLogout
+        KyzderpsDerps:msg(string.format("Hiding upon logout is now set to %s", tostring(KyzderpsDerps.savedOptions.misc.hideOnLogout)))
+
+    -- logs out without loading few addons
+    elseif (args[1] == "normlogout") then
+        KyzderpsDerps.PreLogout.doNotLoadOverride = true
+        KyzderpsDerps:msg("Logging out without loading few addons...")
+        Logout()
 
     -- Unknown
     else

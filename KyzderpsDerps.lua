@@ -64,7 +64,12 @@ local defaultOptions = {
         hideOnLogout = false,
         tributeTimer = true,
         printScoreFormat = false,
+    },
+    preLogout = {
         loadFewAddons = false,
+        -- Some defaults will be added on first initialization
+        addonsToLoadFirstTime = true,
+        addonsToLoad = {},
     },
     companion = {
         resummon = true,
@@ -347,6 +352,29 @@ local function Initialize()
             ["Watcher"] = true,
         }
         KyzderpsDerps:dbg("Populated boss timer ignore list defaults")
+    end
+    if (KyzderpsDerps.savedOptions.preLogout.addonsToLoadFirstTime) then
+        KyzderpsDerps.savedOptions.preLogout.addonsToLoadFirstTime = false
+        KyzderpsDerps.savedOptions.preLogout.addonsToLoad = {
+            ["AddonSelector"] = true,
+            ["AlphaGear"] = true,
+            ["CarosSkillPointSaver"] = true,
+            ["DolgubonsLazyWritCreator"] = true,
+            ["IIfA"] = true,
+            ["KyzderpsDerps"] = true,
+            ["LibVotansAddonList"] = true,
+            ["RulebasedInventory"] = true,
+            ["VotansKeybinder"] = true,
+
+            ["libAddonKeybinds"] = true,
+            ["LibAddonMenu-2.0"] = true,
+            ["LibAsync"] = true,
+            ["LibCustomMenu"] = true,
+            ["LibDialog"] = true,
+            ["LibLazyCrafting"] = true,
+            ["LibScrollableMenu"] = true,
+        }
+        KyzderpsDerps:dbg("Populated addonsToLoad list defaults")
     end
 
     -- TODO: remove this at some point
