@@ -15,7 +15,8 @@ end
 local function OnBossesChanged()
     for i = 1, MAX_BOSSES do
         local name = GetUnitName("boss" .. tostring(i))
-        if (name == "Lokkestiiz") then
+        if (name == "Lokkestiiz" or name == "洛克提兹" or name == "ロクケスティーズ"
+            or name == "Pinnacle Factotum" or name == "巅峰机械人" or name == "ピナクル・ファクトタム" or name == "Perfektioniertes Faktotum") then
             SetRGB(200, 0, 255)
             return
         end
@@ -24,5 +25,11 @@ local function OnBossesChanged()
 end
 
 function KyzderpsDerps.InitializeAOE()
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AoeColors", EVENT_BOSSES_CHANGED, OnBossesChanged)
+    if (KyzderpsDerps.savedOptions.ui.aoeColors) then
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AoeColors", EVENT_BOSSES_CHANGED, OnBossesChanged)
+    else
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AoeColors", EVENT_BOSSES_CHANGED)
+    end
 end
+
+-- Settings in Reposition.lua

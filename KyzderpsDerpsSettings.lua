@@ -1176,6 +1176,12 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "User Interface",
+            controls = KyzderpsDerps.UIElements.GetSettings(),
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Miscellaneous",
             controls = CreateMiscSettings(),
         },

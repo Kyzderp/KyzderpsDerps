@@ -13,6 +13,11 @@ local defaultOptions = {
         debug = false,
         experimental = false,
     },
+    ui = {
+        reposition = false,
+        hideQuestInTrial = false,
+        aoeColors = false,
+    },
     customTargetFrame = {
         move = false,
         size = 48,
@@ -244,9 +249,9 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.Sync.Initialize()
     KyzderpsDerps.Fashion.Initialize()
     KyzderpsDerps.ScoreFormat.Initialize()
+    KyzderpsDerps.UIElements.Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
-        KyzderpsDerps.UIElements.Initialize()
         if (btg) then btg.debug = true end
     end
 
@@ -315,6 +320,7 @@ local function Initialize()
     KyzderpsDerps.Integrations.Initialize()
     KyzderpsDerps.Tribute.Initialize()
     KyzderpsDerps.PreLogout.Initialize()
+    KyzderpsDerps.InitializeAOE()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
@@ -331,7 +337,6 @@ local function Initialize()
     -- BEHOLD! My stuff.
     if (KyzderpsDerps.savedOptions.general.experimental) then
         ZO_CreateStringId("SI_BINDING_NAME_KDD_PRINTPOS", "Print Position & Draw Icon")
-        KyzderpsDerps.InitializeAOE()
         KyzderpsDerps.InitializeSpam()
         SLASH_COMMANDS["/wyrdsight"] = function() UseCollectible(10305) end
     end

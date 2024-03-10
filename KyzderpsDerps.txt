@@ -18,7 +18,6 @@ modules/Grievous.lua
 modules/SpawnTimer.lua
 modules/DeathAlert.lua
 modules/Altoholic.lua
-modules/AoeColors.lua
 modules/KHouse.lua
 modules/Companion.lua
 modules/InWorldWaypoint.lua
@@ -66,4 +65,5 @@ modules/sync/Sync.lua
 modules/tribute/Tribute.lua
 modules/tribute/Tribute.xml
 
+modules/uielements/AoeColors.lua
 modules/uielements/Reposition.lua
