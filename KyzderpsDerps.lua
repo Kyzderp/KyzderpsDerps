@@ -246,7 +246,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.ScoreFormat.Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         KyzderpsDerps.InitializeWaypoint()
-        KyzderpsDerps.UIElements.Reposition()
+        KyzderpsDerps.UIElements.Initialize()
         if (btg) then btg.debug = true end
     end
 

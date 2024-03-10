@@ -9,7 +9,7 @@ bg:SetAnchorFill(ZO_LootHistoryControl_Keyboard)
 bg:SetCenterColor(0, 0, 0, 0.5)
 bg:SetEdgeColor(0,0,0,1)
 ]]
-function UIE.Reposition()
+local function Reposition()
 
     -- Attributes: move health up a bit to put stam and mag in pyramid
     ZO_PlayerAttributeHealth:SetAnchor(CENTER, ZO_PlayerAttribute, CENTER, 0, -33)
@@ -35,4 +35,16 @@ function UIE.Reposition()
 
     -- Combat Tips
     ZO_ActiveCombatTipsTip:SetAnchor(BOTTOM, GuiRoot, BOTTOM, 0, -300)
+end
+
+local function ToggleQuestPanel()
+    local isInTrial = KyzderpsDerps.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))] ~= nil
+
+    ZO_FocusedQuestTrackerPanel:SetHidden(isInTrial)
+end
+
+function UIE.Initialize()
+    Reposition()
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "UIEActivated", EVENT_PLAYER_ACTIVATED, ToggleQuestPanel)
 end

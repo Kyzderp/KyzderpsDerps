@@ -58,30 +58,41 @@ local DUNGEON_ZONEIDS = {
     ["1361"] = true,  -- Graven Deep
     ["1389"] = true,  -- Bal Sunnar
     ["1390"] = true,  -- Scrivener's Hall
+    ["1470"] = true,  -- Oathsworn Pit
+    ["1471"] = true,  -- Bedlam Veil
 }
 KyzderpsDerps.DUNGEON_ZONEIDS = DUNGEON_ZONEIDS
 
 -- Trial/Arena zoneIds
 local TRIAL_ZONEIDS = {
-    ["635" ] = true,  -- Dragonstar Arena
     ["636" ] = true,  -- Hel Ra Citadel
     ["638" ] = true,  -- Aetherian Archive
     ["639" ] = true,  -- Sanctum Ophidia
-    ["677" ] = true,  -- Maelstrom Arena
     ["725" ] = true,  -- Maw of Lorkhaj
     ["975" ] = true,  -- Halls of Fabrication
     ["1000"] = true,  -- Asylum Sanctorium
     ["1051"] = true,  -- Cloudrest
-    ["1082"] = true,  -- Blackrose Prison
     ["1121"] = true,  -- Sunspire
     ["1196"] = true,  -- Kyne's Aegis
-    ["1227"] = true,  -- Vateshran Hollows
     ["1263"] = true,  -- Rockgrove
     ["1344"] = true,  -- Dreadsail Reef
     ["1427"] = true,  -- Sanity's Edge
-    ["1436"] = true,  -- Endless Archive
 }
 KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
+
+local ARENA_ZONEIDS = {
+    ["635" ] = true,  -- Dragonstar Arena
+    ["677" ] = true,  -- Maelstrom Arena
+    ["1082"] = true,  -- Blackrose Prison
+    ["1227"] = true,  -- Vateshran Hollows
+    ["1436"] = true,  -- Infinite Archive
+}
+KyzderpsDerps.ARENA_ZONEIDS = ARENA_ZONEIDS
+
+local function IsInstanceId(zoneId)
+    return (DUNGEON_ZONEIDS[zoneId] or TRIAL_ZONEIDS[zoneId] or ARENA_ZONEIDS[zoneId]) ~= nil
+end
+KyzderpsDerps.IsInstanceId = IsInstanceId
 
 -- "Name" of boss (including location/groups) to the number of seconds it takes to respawn. true = default 306s
 local BOSS_NAMES = {
@@ -578,8 +589,7 @@ local function IsBossByUnitTag(unitTag)
 
     -- Skip trial or dungeon bosses
     if (GetCurrentParticipatingRaidId() ~= 0
-        or DUNGEON_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]
-        or TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))]) then
+        or IsInstanceId(tostring(GetZoneId(GetUnitZoneIndex("player"))))) then
         KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is a trial/dungeon boss.")
         return false
     end

@@ -60,7 +60,7 @@ end
 ---------------------------------------------------------------------
 local function IsDoingGroupPVE(zoneId)
     if (IsUnitInDungeon("player")) then
-        return KyzderpsDerps.DUNGEON_ZONEIDS[tostring(zoneId)] ~= nil or KyzderpsDerps.TRIAL_ZONEIDS[tostring(zoneId)] ~= nil
+        return KyzderpsDerps.IsInstanceId(tostring(zoneId)) ~= nil
     end
 end
 

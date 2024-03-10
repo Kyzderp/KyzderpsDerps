@@ -10,7 +10,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout>"
+    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker>"
 
     if (length == 0) then
         CHAT_SYSTEM:AddMessage(usage)
@@ -106,6 +106,10 @@ local function HandleKDDCommand(argString)
         KyzderpsDerps.PreLogout.doNotLoadOverride = true
         KyzderpsDerps:msg("Logging out without loading few addons...")
         Logout()
+
+    -- toggles the quest tracker panel
+    elseif (args[1] == "questtracker") then
+        ZO_FocusedQuestTrackerPanel:SetHidden(not ZO_FocusedQuestTrackerPanel:IsHidden())
 
     -- Unknown
     else
