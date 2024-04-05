@@ -213,6 +213,7 @@ local collectibleIds = {
     9012, -- Jubilee Cake 2021
     10287, -- Jubilee Cake 2022
     11089, -- Jubilee Cake 2023
+    12422, -- Jubilee Cake 2024
     0, -- None
 }
 local collectibleNames = {
@@ -222,6 +223,7 @@ local collectibleNames = {
     GetCollectibleName(9012), -- Jubilee Cake 2021
     GetCollectibleName(10287), -- Jubilee Cake 2022
     GetCollectibleName(11089), -- Jubilee Cake 2023
+    GetCollectibleName(12422), -- Jubilee Cake 2023
     "- None -", -- None
 }
 
