@@ -6,15 +6,10 @@ local Spud = KyzderpsDerps.AntiSpud
 --[[
 summon pets after dying
 resummon pets on zhajhassa
-5 piece armor
 addons not enabled
-wrong mundus
 wrong cp
 missing gear
 incomplete sets
-take off alkosh on spooder
-reequip alkosh
-low soul gems
 ]]
 
 local currentState = "NONE"

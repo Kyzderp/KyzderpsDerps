@@ -77,6 +77,7 @@ local TRIAL_ZONEIDS = {
     ["1263"] = true,  -- Rockgrove
     ["1344"] = true,  -- Dreadsail Reef
     ["1427"] = true,  -- Sanity's Edge
+    ["1478"] = true,  -- Lucent Citadel
 }
 KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
 
@@ -99,7 +100,7 @@ local BOSS_NAMES = {
 -- Dolmens - TODO: 5:18? stonefalls 6:14?
 
 -- Apocrypha
-    ["Caz'iunes the Executioner"] = 302, -- PD: The Underweave
+    ["Caz'iunes the Executioner"] = 305, -- PD: The Underweave
     ["Creepclaw"] = 302, -- PD: The Underweave
     ["Qacath the Silent"] = 302, -- PD: The Underweave
     ["Kynreve Kev'ni"] = 302, -- PD: The Underweave
@@ -236,6 +237,7 @@ local BOSS_NAMES = {
     ["Old Rust-Eye"] = 304, -- Delve: Khartag Point
     ["Phobbiicus"] = 304, -- Delve: Ashalmawia
     ["Salothan's Council"] = true, -- WB: Salothan's Council
+    ["Wuyuvus"] = 304, -- WB: Sulipund Grange
 
 -- Western Skyrim
     ["Shademother"] = 606, -- WB
