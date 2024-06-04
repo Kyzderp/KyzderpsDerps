@@ -25,6 +25,8 @@ local TRIALS_DICTIONARY = {
     ["Dreadsail Reef"] = "vDSR",
     ["Sanity's Edge"] = "vSE",
     ["Endless Archive"] = "EA",
+    ["Infinite Archive"] = "IA",
+    ["Lucent Citadel"] = "vLC",
 };
 
 local MONTHS_DICTIONARY = {
@@ -104,7 +106,11 @@ local function BuildGroupRoles()
 end
 
 local function BuildScoreFormat(trialName, score, totalSeconds, vitality, maxVitality)
-    local result = "__**" .. TRIALS_DICTIONARY[string.gsub(trialName, " %(Veteran%)", "")] .. "**__\n"
+    local abbreviation = TRIALS_DICTIONARY[string.gsub(trialName, " %(Veteran%)", "")]
+    if (not abbreviation) then
+        abbreviation = "???" -- Other languages, or if I forget to update the dict on updates oops
+    end
+    local result = "__**" .. abbreviation .. "**__\n"
 
     -- score
     result = result .. "**" .. tostring(score) .. " - "
