@@ -45,9 +45,6 @@ local zoneToAddons = {
     [1121] = {
         {name = "HowToSunspire", author = "Floliroy", enabled = function() return HowToSunspire ~= nil end, option = "checkHowToSunspire"},
     },
-    [975] = {
-        {name = "Halls of Fabrication Status Panel", author = "code65536", enabled = function() return HoFNotifier ~= nil end, option = "checkHofStatusPanel"},
-    },
 }
 
 local function OnPlayerActivated()
