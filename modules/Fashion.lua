@@ -22,7 +22,9 @@ local function EquipVampSkin()
     if (currentId ~= 0) then return end
 
     KyzderpsDerps:msg(string.format("Equipping |H1:collectible:%d|h|h to cover up your pale skin", KyzderpsDerps.savedOptions.fashion.vampSkinId)) -- 5108
-    UseCollectible(KyzderpsDerps.savedOptions.fashion.vampSkinId)
+    zo_callLater(function()
+        UseCollectible(KyzderpsDerps.savedOptions.fashion.vampSkinId)
+    end, 1000)
 end
 
 local function RestoreNonVampSkin()
@@ -30,7 +32,9 @@ local function RestoreNonVampSkin()
     if (currentId ~= 0) then
         -- No skin
         KyzderpsDerps:msg(string.format("Restoring to no skin because you are no longer a vampire"))
-        UseCollectible(currentId)
+        zo_callLater(function()
+            UseCollectible(currentId)
+        end, 1000)
     end
 end
 

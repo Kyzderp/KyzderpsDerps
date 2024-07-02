@@ -378,6 +378,12 @@ local BOSS_GROUPS = {
     ["Mynar Igna"] = "Mynar Igna / Llaals", -- PD: Forgotten Wastes
     ["Conflagrator Llaals"] = "Mynar Igna / Llaals", -- PD: Forgotten Wastes
 
+-- West Weald
+    ["Greenspeaker Baedalas"] = "Frontier's Cradle", -- WB: southwest
+    ["Rootstrider Maglin"] = "Frontier's Cradle", -- WB: southwest
+    ["Venombow Daitel"] = "Frontier's Cradle", -- WB: southwest
+    ["Keeper Taman"] = "Frontier's Cradle", -- WB: southwest
+
 -- Imperial City
     ["Lady Malygda"] = "Arboretum",
     ["Ysenda Resplendent"] = "Arboretum",
