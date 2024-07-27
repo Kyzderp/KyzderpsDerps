@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.25.4"
+KyzderpsDerps.version = "1.26.0"
 
 -- Defaults
 local defaultOptions = {
@@ -148,6 +148,8 @@ local defaultOptions = {
         openPurpleZenithar = false,
         openZenitharCurrency = false,
         -- openEmberWallet = false,
+        openPelinalsBoonBox = false,
+        openPelinalsBoonBoxInIC = false,
     },
     sync = {
         mementos = {

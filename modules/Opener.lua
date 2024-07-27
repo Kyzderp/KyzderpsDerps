@@ -23,9 +23,10 @@ end
 -- Open the container
 ---------------------------------------------------------------------
 local function CanOpenContainer()
-    if (GetSlotCooldownInfo(1) > 0 or 
-        IsInteractionUsingInteractCamera() or 
-        SCENE_MANAGER:GetCurrentScene().name == "interact" or 
+    if (GetSlotCooldownInfo(1) > 0 or
+        IsInteractionUsingInteractCamera() or
+        SCENE_MANAGER:GetCurrentScene().name == "interact" or
+        SCENE_MANAGER:GetCurrentScene().name == "mailInbox" or
         IsUnitSwimming("player") or
         IsUnitInCombat("player") or
         IsLooting()) then
@@ -42,7 +43,7 @@ local function OpenContainer(bagId, slotId)
             CallSecureProtected("UseItem", bagId, slotId)
         else
             UseItem(bagId, slotId)
-        end 
+        end
     else
         KyzderpsDerps:dbg("waiting to open container")
         zo_callLater(function()
@@ -91,6 +92,10 @@ function Opener.Initialize()
     end
     if (KyzderpsDerps.savedOptions.opener.openZenitharCurrency) then
         toLoot[187700] = true
+        shouldRegister = true
+    end
+    if (KyzderpsDerps.savedOptions.opener.openPelinalsBoonBox and (KyzderpsDerps.savedOptions.opener.openPelinalsBoonBoxInIC or not IsInImperialCity())) then
+        toLoot[192612 ] = true
         shouldRegister = true
     end
     -- Probably don't do this, because it's stolen
@@ -203,6 +208,31 @@ function Opener.GetSettings()
                 Opener.Initialize()
             end,
             width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Auto open Pelinal's Boon Box",
+            tooltip = "When you loot a Pelinal's Boon Box, automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openPelinalsBoonBox end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openPelinalsBoonBox = value
+                Opener.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "    ... in Imperial City",
+            tooltip = "Toggles whether to open Pelinal's boxes while in Imperial City, since the boxes can contain some Tel Var",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openPelinalsBoonBoxInIC end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openPelinalsBoonBoxInIC = value
+                Opener.Initialize()
+            end,
+            width = "full",
+            disabled = function() return not KyzderpsDerps.savedOptions.opener.openPelinalsBoonBox end,
         },
     }
 end

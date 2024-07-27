@@ -77,6 +77,6 @@ function Spam.InitializeLootHistory()
             EVENT_MANAGER:UnregisterForEvent(ZO_LOOT_HISTORY_NAME, EVENT_INVENTORY_SINGLE_SLOT_UPDATE)
         end
     else
-        KyzderpsDerps:dbg("Not hooking loot history because no LibFilteredChatPanel enabled.")
+        KyzderpsDerps:dbg("Not hooking loot history because no LibFilteredChatPanel and/or LibLootSummary enabled.")
     end
 end
