@@ -202,6 +202,7 @@ local BOSS_NAMES = {
     ["The Moonlit Maiden"] = 305, -- PD: Crow's Wood - Wispmother next to skyshard
     ["Buron"] = 305, -- PD: Crow's Wood - Ghost in cave
     ["Aurig Mireh"] = 307, -- WB
+    ["Dezanu / Calls-to-Nature"] = 303, -- Delve: Sheogorath's Tongue
 
 -- Stormhaven
     ["Lughar"] = 300, -- PD: Bonesnap Ruins - first ogre
@@ -349,6 +350,10 @@ local BOSS_GROUPS = {
     ["Varien"] = "Reaper's Henge", -- WB: Reaper's Henge
     ["Gravecaller Niramo"] = "Reaper's Henge", -- WB: Reaper's Henge
 
+-- Stonefalls
+    ["Dezanu"] = "Dezanu / Calls-to-Nature", -- Delve: Sheogorath's Tongue
+    ["Calls-to-Nature"] = "Dezanu / Calls-to-Nature", -- Delve: Sheogorath's Tongue
+
 -- Summerset
     ["Ruella Many-Claws"] = "GetPlayerLocationName", -- Abyssal Geyser
     ["Churug of the Abyss"] = "GetPlayerLocationName", -- Abyssal Geyser
@@ -383,6 +388,8 @@ local BOSS_GROUPS = {
     ["Rootstrider Maglin"] = "Frontier's Cradle", -- WB: southwest
     ["Venombow Daitel"] = "Frontier's Cradle", -- WB: southwest
     ["Keeper Taman"] = "Frontier's Cradle", -- WB: southwest
+    ["Fang"] = "Centurion's Rise", -- WB: mid
+    ["Talon"] = "Centurion's Rise", -- WB: mid
 
 -- Imperial City
     ["Lady Malygda"] = "Arboretum",

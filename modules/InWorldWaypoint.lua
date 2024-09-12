@@ -39,11 +39,69 @@ function KyzderpsDerps.PrintCurrentPosition()
 end
 
 ---------------------------------------------------------------------
+-- Use OSI and HarvestMap to show icons for chests in dungeons
+---------------------------------------------------------------------
+local chestPoops = {}
+local retries = 0
+local function AddChestPoops()
+    local cache = Harvest.Data:GetCurrentZoneCache().mapCaches[Harvest.mapTools:GetPlayerMapMetaData().map]
+
+    -- Retry because data might not be loaded yet. Maybe there's some event that's fired when loading is done, but I'm too lazy to look
+    if (retries > 5) then return end
+    if (not cache or not cache.pinTypeId) then
+        KyzderpsDerps:dbg("Trying chest poops again in 3 seconds")
+        retries = retries + 1
+        zo_callLater(AddChestPoops, 3000)
+        return
+    end
+    KyzderpsDerps:dbg("Refreshing chest poops")
+    retries = 0
+
+    for i, pinTypeId in pairs(cache.pinTypeId) do
+        if (pinTypeId == 6) then
+            local icon = OSI.CreatePositionIcon(cache.worldX[i]*100, cache.worldZ[i]*100-50, cache.worldY[i]*100, "HarvestMap/Textures/Map/chest.dds", 100, {1.000, 0.937, 0.380})
+            table.insert(chestPoops, icon)
+        elseif (pinTypeId == 9) then
+            local icon = OSI.CreatePositionIcon(cache.worldX[i]*100, cache.worldZ[i]*100-50, cache.worldY[i]*100, "HarvestMap/Textures/Map/heavysack.dds", 100, {0.424, 0.690, 0.360})
+            table.insert(chestPoops, icon)
+        end
+    end
+end
+
+local function RemoveChestPoops()
+    for _, icon in pairs(chestPoops) do
+        OSI.DiscardPositionIcon(icon)
+    end
+    chestPoops = {}
+end
+
+local prevMap = ""
+local function OnChestNeedsRefreshing()
+    local map = Harvest.mapTools:GetPlayerMapMetaData().map
+    if (map == prevMap) then return end
+
+    RemoveChestPoops()
+    if (IsUnitInDungeon("player")) then
+        zo_callLater(AddChestPoops, 3000)
+    end
+    prevMap = map
+end
+
+---------------------------------------------------------------------
 -- Called on initial player activated
 function KyzderpsDerps.InitializeWaypoint()
     if (OSI and OSI.CreatePositionIcon and Lib3D) then
         KyzderpsDerps:dbg("    Initializing Waypoint module...")
 
         EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "Waypoint", 1000, UpdateWaypoint)
+    end
+
+    if (OSI and Harvest) then
+        KyzderpsDerps:dbg("    Pooping on chests...")
+
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ChestPoops", EVENT_PLAYER_ACTIVATED, OnChestNeedsRefreshing)
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ChestPoops", EVENT_ZONE_CHANGED, OnChestNeedsRefreshing)
+
+        OnChestNeedsRefreshing()
     end
 end
