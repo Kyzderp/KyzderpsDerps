@@ -45,6 +45,9 @@ local zoneToAddons = {
     [1121] = {
         {name = "HowToSunspire", author = "Floliroy", enabled = function() return HowToSunspire ~= nil end, option = "checkHowToSunspire"},
     },
+    [1436] = {
+        {name = "Infinite Archive Helper", author = "andy.s", enabled = function() return IAHelper ~= nil end, option = "checkIAHelper"},
+    },
 }
 
 local function OnPlayerActivated()
