@@ -159,6 +159,13 @@ local defaultOptions = {
             ignoreInCombat = true,
         },
     },
+    worldIcons = {
+        destination = false,
+        dungeonChest = 1, -- 1 = off, 2 = not in combat, 3 = always
+        dungeonSack = 1,
+        trialChest = 1,
+        trialSack = 1,
+    },
 }
 
 local defaultValues = {
@@ -252,8 +259,8 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.Fashion.Initialize()
     KyzderpsDerps.ScoreFormat.Initialize()
     KyzderpsDerps.UIElements.Initialize()
+    KyzderpsDerps.WorldIcons.Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
-        KyzderpsDerps.InitializeWaypoint()
         if (btg) then btg.debug = true end
     end
 

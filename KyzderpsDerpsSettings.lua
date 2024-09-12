@@ -1172,6 +1172,12 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "World Icons",
+            controls = KyzderpsDerps.WorldIcons.GetSettings(),
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Pre-Logout",
             controls = KyzderpsDerps.PreLogout.GetSettings(),
         },
