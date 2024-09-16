@@ -280,6 +280,39 @@ local function CreateMiscSettings()
 
     table.insert(controls, KyzderpsDerps.Tribute.GetSettings())
     table.insert(controls, KyzderpsDerps.ScoreFormat.GetSettings())
+    table.insert(controls, {
+        type = "description",
+        title = nil,
+        text = "The |c99FF99/wayshrine|r command can be used to quickly port to a wayshrine. It will search your group, friends, and guilds for a player in the desired zone below. If none are found in that zone, it will attempt to port you to any overland zone.",
+        width = "full",
+    })
+    table.insert(controls, {
+        type = "description",
+        title = nil,
+        text = function()
+            local zoneId = KyzderpsDerps.savedOptions.misc.wayshrineZoneId
+            if (not zoneId) then
+                return zo_strformat("|cFF0000<<1>>|r is not a valid zone ID!", WINDOW_MANAGER:GetControlByName("KyzderpsDerps#WayshrineEditBox").editbox:GetText())
+            end
+            return zo_strformat("|c99FF99/wayshrine|r will try to port you to |c99FF99<<1>> (zone ID <<2>>)|r before overland zones.",
+                GetZoneNameById(zoneId), zoneId)
+        end,
+        width = "full",
+    })
+    table.insert(controls, {
+        type = "editbox",
+        name = "/wayshrine zone ID",
+        width = "full",
+        default = "849",
+        tooltip = "The zone ID that you want |c99FF99/wayshrine|r to prioritize porting you to. Examples:\n849 - Vvardenfell\n1011 - Summerset\n1443 - West Weald",
+        getFunc = function() return tostring(KyzderpsDerps.savedOptions.misc.wayshrineZoneId) end,
+        setFunc = function(id)
+            KyzderpsDerps.savedOptions.misc.wayshrineZoneId = tonumber(id)
+        end,
+        isMultiline = false,
+        isExtraWide = false,
+        reference = "KyzderpsDerps#WayshrineEditBox"
+    })
     return controls
 end
 

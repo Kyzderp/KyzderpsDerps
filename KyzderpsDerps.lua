@@ -69,6 +69,7 @@ local defaultOptions = {
         hideOnLogout = false,
         tributeTimer = true,
         printScoreFormat = false,
+        wayshrineZoneId = 849, -- Vvardenfell
     },
     preLogout = {
         loadFewAddons = false,

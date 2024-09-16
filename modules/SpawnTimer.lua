@@ -763,7 +763,7 @@ function SpawnTimer.GetSettings()
         {
             type = "description",
             title = nil,
-            text = "World and public dungeon bosses respawn approximately 5:06 after they die. Delve bosses have the same base cooldown, but they respawn earlier if a player who has not completed it enters the delve area.",
+            text = "Most world and public dungeon bosses respawn approximately 5:06 after they die. Delve bosses have the same base cooldown, but they respawn earlier if a player who has not completed it enters the delve area.",
             width = "full",
         },
         {

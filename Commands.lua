@@ -145,10 +145,100 @@ local function ToggleLuiIds()
     KyzderpsDerps:msg("Toggled showing IDs on LUI buffs/debuffs")
 end
 
+---------------------------------------------------------------------
+-- Port to zone
+---------------------------------------------------------------------
+local function IsZoneValid(zoneId)
+    local canJump = CanJumpToPlayerInZone(zoneId)
+    return zoneId == GetParentZoneId(zoneId) and canJump
+end
+
+-- Port to any player in group, friends, or guilds who is in the
+-- desired zone. As a fallback, port to any overland zone (hopefully)
+local function PortToAnyInZone()
+    local desiredZoneId = KyzderpsDerps.savedOptions.misc.wayshrineZoneId
+    if (not desiredZoneId) then
+        KyzderpsDerps:msg("Wayshrine: |cFF0000Invalid zone ID! Please check the Kyzderps setting: Miscellaneous > /wayshrine zone ID")
+        return
+    end
+
+    local playerName = GetUnitDisplayName("player")
+    local zoneName = GetZoneNameById(desiredZoneId)
+    local fallbackFunc
+
+    -- Check group
+    for i = 1, GetGroupSize() do
+        local unitTag = "group" .. tostring(i)
+        local name = GetUnitDisplayName(unitTag)
+        if (IsUnitOnline(unitTag) and name ~= playerName) then
+            local zoneId = GetZoneId(GetUnitZoneIndex(unitTag))
+            if (zoneId == desiredZoneId) then
+                KyzderpsDerps:msg(zo_strformat("Porting to group member <<1>> in <<2>>", name, zoneName))
+                JumpToGroupMember(name)
+                return
+            elseif (IsZoneValid(zoneId) and not fallbackFunc) then
+                fallbackFunc = function()
+                    KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>>; porting to group member <<2>> in <<3>> instead", zoneName, name, GetZoneNameById(zoneId)))
+                    JumpToGroupMember(name)
+                end
+            end
+        end
+    end
+
+    -- Check friends
+    for i = 1, GetNumFriends() do
+        local name, _, status = GetFriendInfo(i)
+        if (status ~= PLAYER_STATUS_OFFLINE and name ~= playerName) then
+            local _, _, _, _, _, _, _, zoneId = GetFriendCharacterInfo(i)
+            if (zoneId == desiredZoneId) then
+                KyzderpsDerps:msg(zo_strformat("Porting to friend <<1>> in <<2>>", name, zoneName))
+                JumpToFriend(name)
+                return
+            elseif (IsZoneValid(zoneId) and not fallbackFunc) then
+                fallbackFunc = function()
+                    KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>>; porting to friend <<2>> in <<3>> instead", zoneName, name, GetZoneNameById(zoneId)))
+                    JumpToFriend(name)
+                end
+            end
+        end
+    end
+
+    -- Check guilds
+    for i = 1, GetNumGuilds() do
+        local guildId = GetGuildId(i)
+        for j = 1, GetNumGuildMembers(guildId) do
+            local name, _, _, status = GetGuildMemberInfo(guildId, j)
+            if (status ~= PLAYER_STATUS_OFFLINE and name ~= playerName) then
+                local _, _, _, _, _, _, _, zoneId = GetGuildMemberCharacterInfo(guildId, j)
+                if (zoneId == desiredZoneId) then
+                    KyzderpsDerps:msg(zo_strformat("Porting to guild member <<1>> in <<2>>", name, zoneName))
+                    JumpToGuildMember(name)
+                    return
+                elseif (IsZoneValid(zoneId) and not fallbackFunc) then
+                    fallbackFunc = function()
+                        KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>>; porting to guild member <<2>> in <<3>> instead", zoneName, name, GetZoneNameById(zoneId)))
+                        JumpToGuildMember(name)
+                    end
+                end
+            end
+        end
+    end
+
+    -- Fallback to any overland zone, so you can use the wayshrine
+    if (fallbackFunc) then
+        fallbackFunc()
+        return
+    end
+
+    -- So lonely
+    KyzderpsDerps:msg("Couldn't find any players to port to :(")
+end
+
 function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/kdd"] = HandleKDDCommand
     SLASH_COMMANDS["/fixui"] = FixUI
     SLASH_COMMANDS["/ids"] = ToggleLuiIds
+    SLASH_COMMANDS["/wayshrine"] = PortToAnyInZone
 
     -- Shortcut commands
     SLASH_COMMANDS["/bastian"] = function() UseCollectible(9245) end
