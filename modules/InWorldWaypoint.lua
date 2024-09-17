@@ -46,6 +46,7 @@ end
 
 ---------------------------------------------------------------------
 -- Use OSI and HarvestMap to show icons for chests in dungeons
+-- Permission granted by Shinni :D
 ---------------------------------------------------------------------
 local inCombat = false
 local chestPoops = {}

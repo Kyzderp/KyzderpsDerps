@@ -118,7 +118,7 @@ function Loot.GetSettings()
     return {
         type = "checkbox",
         name = "Automatically |c99FF99/refreshsurvey|r",
-        tooltip = "When you loot materials for the 6th time after consuming a survey report, automatically run |c99FF99/refreshsurvey|r. This command can also be used manually. If you are in a group with someone who is in a dungeon or trial, you will port to the player and then immediately leave the instance, which will refresh the survey nodes. If there is no port available, you will preview a house you do not own, and then you will have to manually leave the home.\n\nDisclaimer: it may try to leave early if you happen to loot materials other than the 6 survey nodes. In that case, you will have to cancel the port and run it manually later.",
+        tooltip = "When you loot materials for the 6th time after consuming a survey report, automatically run |c99FF99/refreshsurvey|r. This command can also be used manually. If you are in a group with someone who is in a dungeon or trial, you will port to the player and then immediately leave the instance, which will refresh the survey nodes. If there is no port available, you will preview a house you do not own, and then you need to manually leave the home.\n\nDisclaimer: it may try to leave early if you happen to loot materials other than the 6 survey nodes. In that case, you will have to cancel the port and run it manually later. It will also stop counting nodes if you take more than 10 seconds between nodes.",
         default = false,
         getFunc = function() return KyzderpsDerps.savedOptions.misc.autoRefreshSurvey end,
         setFunc = function(value)
