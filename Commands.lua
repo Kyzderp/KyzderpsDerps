@@ -234,11 +234,13 @@ local function PortToAnyInZone()
     KyzderpsDerps:msg("Couldn't find any players to port to :(")
 end
 
+---------------------------------------------------------------------
 function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/kdd"] = HandleKDDCommand
     SLASH_COMMANDS["/fixui"] = FixUI
     SLASH_COMMANDS["/ids"] = ToggleLuiIds
     SLASH_COMMANDS["/wayshrine"] = PortToAnyInZone
+    SLASH_COMMANDS["/refreshsurvey"] = KyzderpsDerps.Loot.RefreshSurvey
 
     -- Shortcut commands
     SLASH_COMMANDS["/bastian"] = function() UseCollectible(9245) end

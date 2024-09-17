@@ -278,6 +278,7 @@ local function CreateMiscSettings()
         },
     }
 
+    table.insert(controls, KyzderpsDerps.Loot.GetSettings())
     table.insert(controls, KyzderpsDerps.Tribute.GetSettings())
     table.insert(controls, KyzderpsDerps.ScoreFormat.GetSettings())
     table.insert(controls, {

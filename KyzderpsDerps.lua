@@ -70,6 +70,7 @@ local defaultOptions = {
         tributeTimer = true,
         printScoreFormat = false,
         wayshrineZoneId = 849, -- Vvardenfell
+        autoRefreshSurvey = false,
     },
     preLogout = {
         loadFewAddons = false,
@@ -261,6 +262,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.ScoreFormat.Initialize()
     KyzderpsDerps.UIElements.Initialize()
     KyzderpsDerps.WorldIcons.Initialize()
+    KyzderpsDerps.Loot.InitializeSurvey()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         if (btg) then btg.debug = true end
     end
