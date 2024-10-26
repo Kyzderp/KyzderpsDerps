@@ -81,8 +81,6 @@ local function OnInventorySlotUpdate(_, bagId, slotIndex, isNewItem, _, inventor
             usedSurvey = true
             KyzderpsDerps:dbg("Remaining " .. tostring(GetSlotStackSize(bagId, slotIndex)))
             EVENT_MANAGER:RegisterForUpdate(Loot.name .. "SurveyTimeout", 2000, SurveyTimeout) -- The initial one should be fast
-        else
-            KyzderpsDerps:dbg("The final item of something was consumed...")
         end
     -- Yoinked from esoui/ingame/zo_loot/loothistory_manager.lua
     -- This includes any inventory item update, only display if the item was new

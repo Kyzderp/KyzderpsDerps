@@ -152,6 +152,7 @@ local defaultOptions = {
         -- openEmberWallet = false,
         openPelinalsBoonBox = false,
         openPelinalsBoonBoxInIC = false,
+        openPurplePlunderSkull = false,
     },
     sync = {
         mementos = {

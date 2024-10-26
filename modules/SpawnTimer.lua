@@ -99,6 +99,9 @@ KyzderpsDerps.IsInstanceId = IsInstanceId
 local BOSS_NAMES = {
 -- Dolmens - TODO: 5:18? stonefalls 6:14?
 
+-- Alik'r Desert
+    ["Tarrent Herano"] = true, -- Delve: Santaki
+
 -- Apocrypha
     ["Caz'iunes the Executioner"] = 305, -- PD: The Underweave
     ["Creepclaw"] = 302, -- PD: The Underweave
@@ -140,6 +143,7 @@ local BOSS_NAMES = {
     ["Overrun Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
     ["Pillaged Nirncrux Mine"] = 600, -- WB: Nirncrux Mine
     ["Packleader Sigmund"] = 304, -- Delve: Hircine's Haunt
+    ["Macharus the Defiler"] = true, -- Celestial Portal
 
 -- Deadlands
     ["The Unmaker"] = 315, -- WB: The Unmaker - doesn't become damageable until 5:15
@@ -239,6 +243,9 @@ local BOSS_NAMES = {
     ["Phobbiicus"] = 304, -- Delve: Ashalmawia
     ["Salothan's Council"] = true, -- WB: Salothan's Council
     ["Wuyuvus"] = 304, -- WB: Sulipund Grange
+
+-- West Weald
+    ["Swarmkeeper Xvarcon"] = 302, -- PD: Leftwheal Trading Post
 
 -- Western Skyrim
     ["Shademother"] = 606, -- WB
@@ -390,6 +397,13 @@ local BOSS_GROUPS = {
     ["Keeper Taman"] = "Frontier's Cradle", -- WB: southwest
     ["Fang"] = "Centurion's Rise", -- WB: mid
     ["Talon"] = "Centurion's Rise", -- WB: mid
+    ["Spitetooth"] = "Tharrikers", -- PD: Silorn
+    ["Bloodmane"] = "Tharrikers", -- PD: Silorn
+    ["Bone-Breaker"] = "Shaman / Bone-Breaker", -- PD: Silorn
+    ["Shaman Rezzutum"] = "Shaman / Bone-Breaker", -- PD: Silorn
+    ["Shrakkaher"] = "GetPlayerLocationName", -- Mirrormoor Incursion
+    ["Rrarrvok"] = "GetPlayerLocationName", -- Mirrormoor Incursion
+    ["Krrazzak"] = "GetPlayerLocationName", -- Mirrormoor Incursion
 
 -- Imperial City
     ["Lady Malygda"] = "Arboretum",

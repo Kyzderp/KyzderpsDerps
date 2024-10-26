@@ -95,7 +95,11 @@ function Opener.Initialize()
         shouldRegister = true
     end
     if (KyzderpsDerps.savedOptions.opener.openPelinalsBoonBox and (KyzderpsDerps.savedOptions.opener.openPelinalsBoonBoxInIC or not IsInImperialCity())) then
-        toLoot[192612 ] = true
+        toLoot[192612] = true
+        shouldRegister = true
+    end
+    if (KyzderpsDerps.savedOptions.opener.openPurplePlunderSkull) then
+        toLoot[190037] = true
         shouldRegister = true
     end
     -- Probably don't do this, because it's stolen
@@ -233,6 +237,18 @@ function Opener.GetSettings()
             end,
             width = "full",
             disabled = function() return not KyzderpsDerps.savedOptions.opener.openPelinalsBoonBox end,
+        },
+        {
+            type = "checkbox",
+            name = "Auto open purple Plunder Skull",
+            tooltip = "When you loot a purple Plunder Skull, automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openPurplePlunderSkull end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openPurplePlunderSkull = value
+                Opener.Initialize()
+            end,
+            width = "full",
         },
     }
 end
