@@ -250,6 +250,8 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/isobel"] = function() UseCollectible(9912) end
     SLASH_COMMANDS["/sharp"] = function() UseCollectible(11113) end
     SLASH_COMMANDS["/azandar"] = function() UseCollectible(11114) end
+    SLASH_COMMANDS["/tanlorin"] = function() UseCollectible(12172) end
+    SLASH_COMMANDS["/zerith"] = function() UseCollectible(12173) end
 
     SLASH_COMMANDS["/tythis"] = function() UseCollectible(267) end
     SLASH_COMMANDS["/nuzhimeh"] = function() UseCollectible(301) end
