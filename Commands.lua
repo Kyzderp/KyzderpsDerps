@@ -148,14 +148,62 @@ end
 ---------------------------------------------------------------------
 -- Port to zone
 ---------------------------------------------------------------------
+local overlandZones = {
+    [104] = true, -- Alik'r Desert
+    [1413] = true, -- Apocrypha
+    [1027] = true, -- Artaeum
+    [381] = true, -- Auridon
+    [281] = true, -- Bal Foyen
+    [92] = true, -- Bangkorai
+    [535] = true, -- Betnikh
+    [1191] = true, -- Blackreach
+    [1208] = true, -- Blackreach: Arkthzand Cavern
+    [1161] = true, -- Blackreach: Greymoor Caverns
+    [1261] = true, -- Blackwood
+    [280] = true, -- Bleakrock Isle
+    [980] = true, -- Clockwork City
+    [981] = true, -- The Brass Fortress
+    [347] = true, -- Coldharbour
+    [888] = true, -- Craglorn
+    [57] = true, -- Deshaan
+    [101] = true, -- Eastmarch
+    [267] = true, -- Eyevea
+    [1463] = true, -- The Scholarium
+    [1282] = true, -- Fargrave
+    [1283] = true, -- The Shambles
+    [1383] = true, -- Galen
+    [3] = true, -- Glenumbra
+    [823] = true, -- Gold Coast
+    [383] = true, -- Grahtwood
+    [108] = true, -- Greenshade
+    [816] = true, -- Hew's Bane
+    [1318] = true, -- High Isle
+    [537] = true, -- Khenarthi's Roost
+    [58] = true, -- Malabal Tor
+    [726] = true, -- Murkmire
+    [1086] = true, -- Northern Elsweyr
+    [382] = true, -- Reaper's March
+    [20] = true, -- Rivenspire
+    [117] = true, -- Shadowfen
+    [1133] = true, -- Southern Elsweyr
+    [41] = true, -- Stonefalls
+    [19] = true, -- Stormhaven
+    [534] = true, -- Stros M'Kai
+    [1011] = true, -- Summerset
+    [1414] = true, -- Telvanni Peninsula
+    [1286] = true, -- The Deadlands
+    [1207] = true, -- The Reach
+    [103] = true, -- The Rift
+    [849] = true, -- Vvardenfell
+    [1443] = true, -- West Weald
+    [1160] = true, -- Western Skyrim
+    [684] = true -- Wrothgar
+}
+
 local function IsZoneValid(zoneId)
-    local canJump = CanJumpToPlayerInZone(zoneId)
-    if (zoneId == 1475 -- For some reason, Seat of Detritus lol
-        or zoneId == 1475 -- Cyrodiil
-        ) then
-        return false
-    end
-    return zoneId == GetParentZoneId(zoneId) and canJump
+    if (not CanJumpToPlayerInZone(zoneId)) then return false end
+    
+    return overlandZones[zoneId] == true
 end
 
 -- Port to any player in group, friends, or guilds who is in the
