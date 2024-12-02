@@ -146,6 +146,9 @@ local function OnTrialComplete(_, trialName, score, totalTime)
     -- And also log it again 15 seconds later because it gets buried in muh loot spying
     EVENT_MANAGER:RegisterForUpdate("KyzFormat", 15000, function()
         CHAT_SYSTEM:AddMessage(kyzFormat)
+        if (KyzderpsDerps.savedOptions.misc.startChatScoreFormat) then
+            CHAT_SYSTEM:StartTextEntry(kyzFormat, CHAT_CHANNEL_PARTY)
+        end
         EVENT_MANAGER:UnregisterForUpdate("KyzFormat")
     end)
 end
@@ -176,15 +179,30 @@ end
 ---------------------------------------------------------------------
 function ScoreFormat.GetSettings()
     return {
-        type = "checkbox",
-        name = "Print formatted score",
-        tooltip = "Upon completion of leaderboard content such as a veteran trial, prints text that lists the name, score, time, vitality, date, and group members formatted for copy pasting to Discord (use in conjunction with an addon like pChat to copy). Also prints it again 15 seconds later in case it gets buried in other chat spam like loot spying",
-        default = true,
-        getFunc = function() return KyzderpsDerps.savedOptions.misc.printScoreFormat end,
-        setFunc = function(value)
-            KyzderpsDerps.savedOptions.misc.printScoreFormat = value
-            ScoreFormat.Initialize()
-        end,
-        width = "full",
+        {
+            type = "checkbox",
+            name = "Print formatted score",
+            tooltip = "Upon completion of leaderboard content such as a veteran trial, prints text that lists the name, score, time, vitality, date, and group members formatted for copy pasting to Discord (use in conjunction with an addon like pChat to copy). Also prints it again 15 seconds later in case it gets buried in other chat spam like loot spying",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.printScoreFormat end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.misc.printScoreFormat = value
+                ScoreFormat.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "    Start formatted score chat entry",
+            tooltip = "Also starts a chat entry (as if you are typing it) with the formatted score, for even easier copying. This happens at the same time as the 15-second late print",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.startChatScoreFormat end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.misc.startChatScoreFormat = value
+                ScoreFormat.Initialize()
+            end,
+            disabled = function() return not KyzderpsDerps.savedOptions.misc.printScoreFormat end,
+            width = "full",
+        }
     }
 end

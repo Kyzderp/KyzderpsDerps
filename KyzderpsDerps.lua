@@ -69,6 +69,7 @@ local defaultOptions = {
         hideOnLogout = false,
         tributeTimer = true,
         printScoreFormat = false,
+        startChatScoreFormat = false,
         wayshrineZoneId = 849, -- Vvardenfell
         autoRefreshSurvey = false,
     },

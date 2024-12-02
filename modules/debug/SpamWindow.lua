@@ -131,6 +131,7 @@ local typeStrings = {
     [COMBAT_UNIT_TYPE_GROUP] = "G",
     [COMBAT_UNIT_TYPE_TARGET_DUMMY] = "D",
     [COMBAT_UNIT_TYPE_OTHER] = "O",
+    [COMBAT_UNIT_TYPE_PLAYER_COMPANION] = "C",
 }
 
 local skipResults = {

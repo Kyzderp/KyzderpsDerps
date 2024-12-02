@@ -150,7 +150,11 @@ end
 ---------------------------------------------------------------------
 local function IsZoneValid(zoneId)
     local canJump = CanJumpToPlayerInZone(zoneId)
-    if (zoneId == 1475) then return false end -- For some reason, Seat of Detritus lol
+    if (zoneId == 1475 -- For some reason, Seat of Detritus lol
+        or zoneId == 1475 -- Cyrodiil
+        ) then
+        return false
+    end
     return zoneId == GetParentZoneId(zoneId) and canJump
 end
 

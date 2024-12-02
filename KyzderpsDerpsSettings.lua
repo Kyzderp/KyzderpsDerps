@@ -280,7 +280,10 @@ local function CreateMiscSettings()
 
     table.insert(controls, KyzderpsDerps.Loot.GetSettings())
     table.insert(controls, KyzderpsDerps.Tribute.GetSettings())
-    table.insert(controls, KyzderpsDerps.ScoreFormat.GetSettings())
+    local scoreFormatSettings = KyzderpsDerps.ScoreFormat.GetSettings()
+    for _, setting in ipairs(scoreFormatSettings) do
+        table.insert(controls, setting)
+    end
     table.insert(controls, {
         type = "description",
         title = nil,
