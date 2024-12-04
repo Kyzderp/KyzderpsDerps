@@ -234,7 +234,6 @@ end
 local pauseCycle = {}
 local function TryUseCollectible(abilityId, collectibleId)
     pauseCycle[abilityId] = true
-    d("using " .. tostring(collectibleId))
     UseCollectible(collectibleId, GAMEPLAY_ACTOR_CATEGORY_PLAYER)
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AwaitCollectibleResult" .. tostring(abilityId), EVENT_COLLECTIBLE_USE_RESULT, function(_, result)
@@ -243,7 +242,7 @@ local function TryUseCollectible(abilityId, collectibleId)
             zo_callLater(function() TryUseCollectible(abilityId, collectibleId) end, 50)
         elseif (result == COLLECTIBLE_USAGE_BLOCK_REASON_NOT_BLOCKED) then
             pauseCycle[abilityId] = false
-            d("success")
+            d("successfully used " .. tostring(collectibleId) .. " " .. GetCollectibleName(collectibleId))
         end
     end)
 end
@@ -270,17 +269,16 @@ local function OnSkillUsed(_, slotIndex)
         collectibleId = data.available[#data.available]
     end
 
-    zo_callLater(function() TryUseCollectible(abilityId, collectibleId) end, 100)
+    zo_callLater(function() TryUseCollectible(abilityId, collectibleId) end, 500)
 end
 
-local function ToggleCycleSkillStyles()
+local function CycleSkillStyles()
     BuildSkillStyleTable()
     d(skillStyleTable)
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "StyleCycle", EVENT_ACTION_SLOT_ABILITY_USED, OnSkillUsed)
-
 end
-KyzderpsDerps.ToggleCycleSkillStyles = ToggleCycleSkillStyles
+KyzderpsDerps.CycleSkillStyles = CycleSkillStyles -- /script KyzderpsDerps.CycleSkillStyles()
 
 
 ---------------------------------------------------------------------------------------------------
