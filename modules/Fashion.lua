@@ -109,10 +109,187 @@ end
 
 
 ---------------------------------------------------------------------------------------------------
+-- Skill Styles
+---------------------------------------------------------------------------------------------------
+local function EquipAllSkillStyles()
+    for skillType = 1, GetNumSkillTypes() do
+        for skillLineIndex = 1, GetNumSkillLines(skillType) do
+            -- The current class' 3 lines is always returned first, so skip the rest
+            if (skillType == SKILL_TYPE_CLASS and skillLineIndex > 3) then break end
+
+            for skillIndex = 1, GetNumSkillAbilities(skillType, skillLineIndex) do
+                local progressionId = GetProgressionSkillProgressionId(skillType, skillLineIndex, skillIndex)
+                local numStyles = GetNumProgressionSkillAbilityFxOverrides(progressionId)
+
+                local _, _, _, _, _, _, progressionIndex = GetSkillAbilityInfo(skillType, skillLineIndex, skillIndex)
+                local skillUnlocked = progressionIndex ~= nil
+
+                if (numStyles > 0) then
+                    local name = GetSkillAbilityInfo(skillType, skillLineIndex, skillIndex)
+                    d(zo_strformat("<<1>>-<<2>> <<3>> has <<4>> styles", skillLineIndex, skillIndex, name, numStyles))
+
+                    if (not skillUnlocked) then
+                        d("...|cFF0000BUT THE SKILL IS NOT UNLOCKED AAAAAAAAAAAA|r")
+                    end
+
+                    -- Find the newest(?) unlocked one, while printing out all and checking for current active
+                    local newestUnlocked
+                    for i = 1, numStyles do
+                        local fxIndex = numStyles + 1 - i -- Go backwards
+                        local collectibleId = GetProgressionSkillAbilityFxOverrideCollectibleIdByIndex(progressionId, fxIndex)
+                        if (IsCollectibleUnlocked(collectibleId)) then
+                            if (not newestUnlocked) then
+                                newestUnlocked = collectibleId
+                            end
+
+                            -- Don't override a style if one is already set
+                            if (IsCollectibleActive(collectibleId, GAMEPLAY_ACTOR_CATEGORY_PLAYER)) then
+                                d(zo_strformat("...|c00FF00<<1>> (<<2>>)|r", GetCollectibleName(collectibleId), collectibleId))
+                            else
+                                local applying = newestUnlocked == collectibleId and skillUnlocked
+                                d(zo_strformat("...|cFF9900<<1>> (<<2>>)<<3>>|r",
+                                    GetCollectibleName(collectibleId),
+                                    collectibleId,
+                                    applying and " |c00FF00- applying!" or ""))
+                            end
+                        else
+                            d(zo_strformat("...|cFF0000<<1>> (<<2>>)|r", GetCollectibleName(collectibleId), collectibleId))
+                        end
+                    end
+
+                    -- Apply the newest unlocked if there isn't already one
+                    if (skillUnlocked and newestUnlocked ~= nil) then
+                        UseCollectible(newestUnlocked, GAMEPLAY_ACTOR_CATEGORY_PLAYER)
+                    end
+                end
+            end
+        end
+    end
+end
+
+--[[
+A map of abilityId to the collectible IDs, but only if the skill is unlocked and the collectibles are unlocked
+{
+    abilityId = {
+        available = {0, 139213, 345435}, -- Treat 0 as no style applied
+        active = 1, -- The index, 1, 2...
+    }
+}
+]]
+local skillStyleTable = {}
+
+local function BuildSkillStyleTable()
+    d("building skill style table")
+    for skillType = 1, GetNumSkillTypes() do
+        for skillLineIndex = 1, GetNumSkillLines(skillType) do
+            -- The current class' 3 lines is always returned first, so skip the rest
+            if (skillType == SKILL_TYPE_CLASS and skillLineIndex > 3) then break end
+
+            for skillIndex = 1, GetNumSkillAbilities(skillType, skillLineIndex) do
+                local progressionId = GetProgressionSkillProgressionId(skillType, skillLineIndex, skillIndex)
+                local numStyles = GetNumProgressionSkillAbilityFxOverrides(progressionId)
+
+                -- Make sure the skill is unlocked
+                local _, _, _, _, _, _, progressionIndex = GetSkillAbilityInfo(skillType, skillLineIndex, skillIndex)
+
+                if (progressionIndex ~= nil and numStyles > 0) then
+                    -- Collect list of unlocked styles
+                    local unlockedStyles = {0}
+                    local activeStyle = 0
+                    for fxIndex = 1, numStyles do
+                        local collectibleId = GetProgressionSkillAbilityFxOverrideCollectibleIdByIndex(progressionId, fxIndex)
+                        if (IsCollectibleUnlocked(collectibleId)) then
+                            table.insert(unlockedStyles, collectibleId)
+
+                            if (IsCollectibleActive(collectibleId, GAMEPLAY_ACTOR_CATEGORY_PLAYER)) then
+                                activeStyle = fxIndex
+                            end
+                        end
+                    end
+
+                    -- Only add it to the table if there are styles unlocked, obv
+                    if (#unlockedStyles > 1) then
+                        local morph = GetProgressionSkillCurrentMorphSlot(progressionId)
+                        local abilityId = GetProgressionSkillMorphSlotAbilityId(progressionId, morph)
+                        skillStyleTable[abilityId] = {
+                            available = unlockedStyles,
+                            active = activeStyle,
+                        }
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function GetSlotTrueBoundId(index, hotbarCategory)
+    local id = GetSlotBoundId(index, hotbarCategory)
+    local actionType = GetSlotType(index, hotbarCategory)
+    if actionType == ACTION_TYPE_CRAFTED_ABILITY then
+        id = GetAbilityIdForCraftedAbilityId(id)
+    end
+    return id
+end
+
+local pauseCycle = {}
+local function TryUseCollectible(abilityId, collectibleId)
+    pauseCycle[abilityId] = true
+    d("using " .. tostring(collectibleId))
+    UseCollectible(collectibleId, GAMEPLAY_ACTOR_CATEGORY_PLAYER)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AwaitCollectibleResult" .. tostring(abilityId), EVENT_COLLECTIBLE_USE_RESULT, function(_, result)
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AwaitCollectibleResult" .. tostring(abilityId), EVENT_COLLECTIBLE_USE_RESULT)
+        if (result == COLLECTIBLE_USAGE_BLOCK_REASON_ON_COOLDOWN) then
+            zo_callLater(function() TryUseCollectible(abilityId, collectibleId) end, 50)
+        elseif (result == COLLECTIBLE_USAGE_BLOCK_REASON_NOT_BLOCKED) then
+            pauseCycle[abilityId] = false
+            d("success")
+        end
+    end)
+end
+
+local function OnSkillUsed(_, slotIndex)
+    local abilityId = GetSlotTrueBoundId(slotIndex, GetActiveHotbarCategory())
+    local data = skillStyleTable[abilityId]
+    if (not data) then return end
+
+    -- Don't try to cycle if it's currently already trying to set it
+    if (pauseCycle[abilityId] == true) then return end
+
+    -- Increment, wrapping around if needed
+    local active = data.active + 1
+    if (active >= #data.available) then
+        active = 0
+    end
+    data.active = active
+
+    -- Find the ID
+    local collectibleId = data.available[active + 1]
+    -- Deactivate the last one
+    if (collectibleId == 0) then
+        collectibleId = data.available[#data.available]
+    end
+
+    zo_callLater(function() TryUseCollectible(abilityId, collectibleId) end, 100)
+end
+
+local function ToggleCycleSkillStyles()
+    BuildSkillStyleTable()
+    d(skillStyleTable)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "StyleCycle", EVENT_ACTION_SLOT_ABILITY_USED, OnSkillUsed)
+
+end
+KyzderpsDerps.ToggleCycleSkillStyles = ToggleCycleSkillStyles
+
+
+---------------------------------------------------------------------------------------------------
 -- Initialize
 ---------------------------------------------------------------------------------------------------
 function Fashion.Initialize()
     KyzderpsDerps:dbg("    Initializing Fashion module...")
+
+    SLASH_COMMANDS["/applyskillstyles"] = EquipAllSkillStyles
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "FashionArmoryRestore", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, OnBuildLoaded)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "FashionCostumeUpdate", EVENT_COLLECTIBLE_UPDATED, OnCollectibleUpdated)
