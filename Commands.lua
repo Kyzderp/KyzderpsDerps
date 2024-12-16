@@ -283,8 +283,34 @@ local function PortToAnyInZone()
         return
     end
 
+    -- Fallback to outside owned houses that are near wayshrines
+    local decentHouses = {
+        68, -- Sugar Bowl Suite
+        32, -- Mournoth Keep
+        63, -- Enchanted Snow Globe Home
+        25, -- Cyrodilic Jungle House
+        13, -- Snugpod
+        78, -- Proudspire Manor
+        80, -- Stillwaters Retreat
+        37, -- Serenity Falls Estate
+
+        -- Requires loadscreen
+        6, -- Flaming Nix Deluxe Garret
+        19, -- Kragenhome
+        1, -- Mara's Kiss Public House
+        3, -- The Ebony Flask Inn Room
+    }
+    for _, houseId in ipairs(decentHouses) do
+        local collectibleId = GetCollectibleIdForHouse(houseId)
+        if (IsCollectibleUnlocked(collectibleId)) then
+            KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>> or overland zones; porting outside of your <<2>> instead", zoneName, GetCollectibleName(collectibleId)))
+            RequestJumpToHouse(houseId, true)
+            return
+        end
+    end
+
     -- So lonely
-    KyzderpsDerps:msg("Couldn't find any players to port to :(")
+    KyzderpsDerps:msg("Couldn't find anywhere to port to :(")
 end
 
 ---------------------------------------------------------------------

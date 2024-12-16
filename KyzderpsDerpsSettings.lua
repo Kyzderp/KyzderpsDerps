@@ -287,7 +287,7 @@ local function CreateMiscSettings()
     table.insert(controls, {
         type = "description",
         title = nil,
-        text = "The |c99FF99/wayshrine|r command can be used to quickly port to a wayshrine. It will search your group, friends, and guilds for a player in the desired zone below. If none are found in that zone, it will attempt to port you to any overland zone.",
+        text = "The |c99FF99/wayshrine|r command can be used to quickly port to a wayshrine. It will search your group, friends, and guilds for a player in the desired zone below. If none are found in that zone, it will attempt to port you to any overland zone or, failing that, outside of an owned home that's close to a wayshrine.",
         width = "full",
     })
     table.insert(controls, {
