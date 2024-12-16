@@ -158,7 +158,7 @@ local function EquipAllSkillStyles()
                     end
 
                     -- Apply the newest unlocked if there isn't already one
-                    if (skillUnlocked and newestUnlocked ~= nil) then
+                    if (skillUnlocked and newestUnlocked ~= nil and not IsCollectibleActive(newestUnlocked, GAMEPLAY_ACTOR_CATEGORY_PLAYER)) then
                         UseCollectible(newestUnlocked, GAMEPLAY_ACTOR_CATEGORY_PLAYER)
                     end
                 end
