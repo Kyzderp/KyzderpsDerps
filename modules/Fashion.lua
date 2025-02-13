@@ -126,7 +126,7 @@ local function EquipAllSkillStyles()
 
                 if (numStyles > 0) then
                     local name = GetSkillAbilityInfo(skillType, skillLineIndex, skillIndex)
-                    d(zo_strformat("<<1>>-<<2>> <<3>> has <<4>> styles", skillLineIndex, skillIndex, name, numStyles))
+                    d(zo_strformat("<<1>>-<<2>> <<3>> (progId <<5>>) has <<4>> styles", skillLineIndex, skillIndex, name, numStyles, progressionId))
 
                     if (not skillUnlocked) then
                         d("...|cFF0000BUT THE SKILL IS NOT UNLOCKED AAAAAAAAAAAA|r")

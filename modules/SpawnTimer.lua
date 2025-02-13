@@ -60,6 +60,8 @@ local DUNGEON_ZONEIDS = {
     ["1390"] = true,  -- Scrivener's Hall
     ["1470"] = true,  -- Oathsworn Pit
     ["1471"] = true,  -- Bedlam Veil
+    ["1496"] = true,  -- Exiled Redoubt
+    ["1497"] = true,  -- Lep Seclusa
 }
 KyzderpsDerps.DUNGEON_ZONEIDS = DUNGEON_ZONEIDS
 
@@ -101,6 +103,7 @@ local BOSS_NAMES = {
 
 -- Alik'r Desert
     ["Tarrent Herano"] = true, -- Delve: Santaki
+    ["Feremuzh"] = true, -- Delve: Coldrock Diggings
 
 -- Apocrypha
     ["Caz'iunes the Executioner"] = 305, -- PD: The Underweave
