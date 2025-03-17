@@ -169,6 +169,7 @@ local defaultOptions = {
         dungeonSack = 1,
         trialChest = 1,
         trialSack = 1,
+        xalvakka = false,
     },
 }
 

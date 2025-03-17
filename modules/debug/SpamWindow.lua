@@ -442,6 +442,7 @@ function KyzderpsDerps.InitializeSpam()
     lfcpFilter = LibFilteredChatPanel:CreateFilter(KyzderpsDerps.name .. "SpamDebug", "/esoui/art/treeicons/gamepad/achievement_categoryicon_events.dds", {0.9, 0.9, 0.9}, false)
 
     BuildEventList()
+
+    SLASH_COMMANDS["/kddspam"] = HandleCommand
 end
 
-SLASH_COMMANDS["/kddspam"] = HandleCommand

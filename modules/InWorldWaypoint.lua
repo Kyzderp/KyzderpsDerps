@@ -146,7 +146,91 @@ local function OnCombatStateChanged(_, combat)
 end
 
 ---------------------------------------------------------------------
+-- On boss change, check if it's Xalvakka
+---------------------------------------------------------------------
+local function GetUnitNameIfExists(unitTag)
+    if (DoesUnitExist(unitTag)) then
+        return GetUnitName(unitTag)
+    end
+end
+
+local xalvakkaIcons = {}
+local xalvakkaLabels = {} -- [label] = used,
+
+local function FindUnusedLabel()
+    local i = 1
+    for label, used in pairs(xalvakkaLabels) do
+        i = i + 1
+        if (not used) then
+            return label
+        end
+    end
+
+    local label = WINDOW_MANAGER:CreateControl("XalvakkaLabel" .. i, OSI.win, CT_LABEL)
+    label:SetFont("$(BOLD_FONT)|$(KB_54)|outline")
+    label:SetDrawLayer(DL_BACKGROUND)
+    label:SetDrawTier(DT_LOW)
+    label:SetColor(1, 1, 1, 0.8)
+    return label
+end
+
+local function DoXalvakkaIcons()
+    KyzderpsDerps:dbg("Adding Xalvakka labels")
+    local coords = {{161658, 34800, 161179}, {159807, 34800, 158763}, {158659, 34800, 160797}, {161943, 38800, 159268}, {159803, 38800, 161564}, {158790, 38800, 158695}}
+    local labels = {"A entrance", "B window", "C exit", "A window", "B entrance", "C exit"}
+
+    for i, coord in ipairs(coords) do
+        local icon = OSI.CreatePositionIcon(coord[1], coord[2], coord[3], "blank.dds", 10, {1, 1, 1})
+        if not icon.textLabel then
+            icon.textLabel = FindUnusedLabel()
+            icon.textLabel:SetParent(icon.ctrl)
+            icon.textLabel:SetAnchor(CENTER, icon.ctrl, CENTER)
+        end
+        icon.textLabel:SetHidden(false)
+        icon.textLabel:SetText(labels[i])
+
+        xalvakkaIcons[icon] = icon.textLabel
+        xalvakkaLabels[icon.textLabel] = true
+    end
+end
+KyzderpsDerps.DoXalvakkaIcons = DoXalvakkaIcons
+
+local function RemoveXalvakkaIcons()
+    KyzderpsDerps:dbg("Removing Xalvakka labels")
+    for icon, label in pairs(xalvakkaIcons) do
+        OSI.DiscardPositionIcon(icon)
+        xalvakkaLabels[label] = false
+        label:SetHidden(true)
+    end
+end
+KyzderpsDerps.RemoveXalvakkaIcons = RemoveXalvakkaIcons
+
+local prevBosses = ""
+local function OnBossesChanged()
+    local bossHash = ""
+    for i = 1, MAX_BOSSES do
+        local name = GetUnitNameIfExists("boss" .. tostring(i))
+        if (name and name ~= "") then
+            bossHash = bossHash .. name
+        end
+    end
+    if (bossHash == prevBosses) then return end
+    prevBosses = bossHash
+
+    local _, powerMax, _ = GetUnitPower("boss1", POWERTYPE_HEALTH)
+    if (powerMax == 214233024 -- HM
+        or powerMax == 53558256 -- Vet
+        or powerMax == 25084768 -- Normal
+        ) then
+        DoXalvakkaIcons()
+    else
+        RemoveXalvakkaIcons()
+    end
+end
+
+---------------------------------------------------------------------
 -- Called on initial player activated
+---------------------------------------------------------------------
 function WorldIcons.Initialize()
     if (OSI and OSI.CreatePositionIcon and Lib3D
         and KyzderpsDerps.savedOptions.worldIcons.destination) then
@@ -172,6 +256,10 @@ function WorldIcons.Initialize()
         inCombat = IsUnitInCombat("player")
         OnChestNeedsRefreshing(false)
     end
+
+    if (OSI and OSI.CreatePositionIcon and KyzderpsDerps.savedOptions.worldIcons.xalvakka) then
+        EVENT_MANAGER:RegisterForEvent(WorldIcons.name .. "XalvakkaLabels", EVENT_BOSSES_CHANGED, OnBossesChanged)
+    end
 end
 
 function WorldIcons.Uninitialize()
@@ -180,6 +268,7 @@ function WorldIcons.Uninitialize()
     EVENT_MANAGER:UnregisterForEvent(WorldIcons.name .. "ChestPoops", EVENT_PLAYER_ACTIVATED)
     EVENT_MANAGER:UnregisterForEvent(WorldIcons.name .. "ChestPoops", EVENT_ZONE_CHANGED)
     EVENT_MANAGER:UnregisterForEvent(WorldIcons.name .. "ChestPoops", EVENT_CURRENT_SUBZONE_LIST_CHANGED)
+    EVENT_MANAGER:UnregisterForEvent(WorldIcons.name .. "XalvakkaLabels", EVENT_BOSSES_CHANGED)
 end
 
 
@@ -267,6 +356,20 @@ function WorldIcons.GetSettings()
             end,
             width = "full",
             disabled = function() return OSI == nil or Harvest == nil end,
+        },
+        {
+            type = "checkbox",
+            name = "Show clone labels on Xalvakka",
+            tooltip = "Shows janky labels during the Xalvakka fight in Rockgrove with Entrance/Window/Exit and A/B/C, matching Qcell's Rockgrove Helper, for the hipsters who don't use Qcell's",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.worldIcons.xalvakka end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.worldIcons.xalvakka = value
+                WorldIcons.Uninitialize()
+                WorldIcons.Initialize()
+            end,
+            width = "full",
+            disabled = function() return OSI == nil end,
         },
     }
 end
