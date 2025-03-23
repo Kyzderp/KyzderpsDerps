@@ -44,12 +44,13 @@ local function OnCompanionRapportUpdated(_, companionId, previousRapport, curren
     if (not KyzderpsDerps.savedOptions.companion.showRapport) then return end
 
     local arrow = ""
+    local change = currentRapport - previousRapport
     if (currentRapport > previousRapport) then
-        arrow = "|c00FF00↑|r"
+        arrow = "|c00FF00↑ +"
     else
-        arrow = "|cFF0000↓|r"
+        arrow = "|cFF0000↓ "
     end
-    KyzderpsDerps:msg(zo_strformat("Rapport changed for <<1>>: <<2>> → <<3>> <<4>>", GetCompanionName(companionId), previousRapport, currentRapport, arrow))
+    KyzderpsDerps:msg(zo_strformat("Rapport changed for <<1>>: <<2>> → <<3>> <<4>><<5>>|r", GetCompanionName(companionId), previousRapport, currentRapport, arrow, change))
 end
 
 
