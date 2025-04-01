@@ -87,6 +87,27 @@ local retries = 0
 local prevShowChest = false
 local prevShowSack = false
 local function AddChestPoops(isCombatOnlyChange)
+    -- d("harvest " .. tostring(Harvest == nil))
+    -- d("harvest.Data " .. tostring(Harvest.Data == nil))
+    -- d("Harvest.Data:GetCurrentZoneCache() " .. tostring(Harvest.Data:GetCurrentZoneCache() == nil))
+    -- d("Harvest.Data:GetCurrentZoneCache().mapCaches " .. tostring(Harvest.Data:GetCurrentZoneCache().mapCaches == nil))
+    -- d("Harvest.mapTools " .. tostring(Harvest.mapTools == nil))
+    -- d("Harvest.mapTools:GetPlayerMapMetaData() " .. tostring(Harvest.mapTools:GetPlayerMapMetaData() == nil))
+    -- d("Harvest.mapTools:GetPlayerMapMetaData().map " .. tostring(Harvest.mapTools:GetPlayerMapMetaData().map == nil))
+
+    if (not Harvest
+        or not Harvest.Data
+        or not Harvest.Data:GetCurrentZoneCache()
+        or not Harvest.Data:GetCurrentZoneCache().mapCaches
+        or not Harvest.mapTools
+        or not Harvest.mapTools:GetPlayerMapMetaData()
+        or not Harvest.mapTools:GetPlayerMapMetaData().map) then
+        KyzderpsDerps:dbg("|cFF0000Something is nil REEEE (probably just harvest data not initialized?)|r")
+        KyzderpsDerps:dbg("Trying chest poops again in 3 seconds")
+        retries = retries + 1
+        zo_callLater(function() AddChestPoops(isCombatOnlyChange) end, 3000)
+        return
+    end
     local cache = Harvest.Data:GetCurrentZoneCache().mapCaches[Harvest.mapTools:GetPlayerMapMetaData().map]
     KyzderpsDerps:dbg(Harvest.mapTools:GetPlayerMapMetaData().map)
 
