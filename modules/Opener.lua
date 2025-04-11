@@ -135,7 +135,7 @@ function Opener.GetSettings()
             max = 2000,
             step = 100,
             default = 0,
-            width = full,
+            width = "full",
             getFunc = function() return KyzderpsDerps.savedOptions.opener.delay end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.opener.delay = value

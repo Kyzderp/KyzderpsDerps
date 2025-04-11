@@ -832,7 +832,7 @@ function SpawnTimer.GetSettings()
             max = 60,
             step = 1,
             default = 10,
-            width = full,
+            width = "full",
             getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.alert.seconds end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.spawnTimer.alert.seconds = value
@@ -920,7 +920,7 @@ function SpawnTimer.GetSettings()
             max = 900,
             step = 15,
             default = 150,
-            width = full,
+            width = "full",
             getFunc = function() return KyzderpsDerps.savedOptions.spawnTimer.scamp end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.spawnTimer.scamp = value

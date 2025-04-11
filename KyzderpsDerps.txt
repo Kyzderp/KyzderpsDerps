@@ -1,7 +1,7 @@
 ## Title: KyzderpsDerps
 ## A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.31.2
+## Version: 1.31.3
 ## APIVersion: 101045
 ## SavedVariables: KyzderpsDerpsSavedVariables
 ## DependsOn: LibAddonMenu-2.0>=31

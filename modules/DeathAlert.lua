@@ -201,7 +201,7 @@ function DeathAlert.GetSettings()
             max = 64,
             step = 2,
             default = 30,
-            width = full,
+            width = "full",
             getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.size end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.deathAlert.size = value

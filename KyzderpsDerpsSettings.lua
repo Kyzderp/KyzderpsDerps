@@ -377,7 +377,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     max = 72,
                     step = 2,
                     default = 48,
-                    width = full,
+                    width = "full",
                     getFunc = function() return KyzderpsDerps.savedOptions.customTargetFrame.size end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.customTargetFrame.size = value
@@ -679,7 +679,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     max = 3000,
                     step = 100,
                     default = 1000,
-                    width = full,
+                    width = "full",
                     getFunc = function() return KyzderpsDerps.savedOptions.grievous.timer end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.grievous.timer = value
@@ -1189,7 +1189,7 @@ function KyzderpsDerps:CreateSettingsMenu()
                     max = 5000,
                     step = 10,
                     default = 0,
-                    width = full,
+                    width = "full",
                     getFunc = function() return KyzderpsDerps.savedOptions.sync.mementos.delay end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.sync.mementos.delay = value

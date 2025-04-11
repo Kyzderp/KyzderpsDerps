@@ -2,8 +2,6 @@ KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.Hodor = KyzderpsDerps.Hodor or {}
 local Hodor = KyzderpsDerps.Hodor
 
-local initialized = false
-
 
 ---------------------------------------------------------------------
 -- Update player data to get them off the horn list
@@ -58,7 +56,9 @@ local function UpdateInRange()
             texture:SetParent(data.ultRow)
             texture:SetAnchor(RIGHT, data.ultRow, LEFT, -4)
 
-            if (data.ult >= 90) then
+            if ((data.ult and data.ult >= 90) -- Old Hodor, probably incorrect too
+                or (data.ult1ID == 40223 and data.ultValue / data.ult1Cost >= 0.9)
+                or (data.ult2ID == 40223 and data.ultValue / data.ult2Cost >= 0.9)) then
                 if (IsUnitInGroupSupportRange(data.tag)) then
                     local distance = HodorReflexes.player.GetDistanceToPlayerM(data.tag)
                     if (distance) then
@@ -94,6 +94,8 @@ end
 ---------------------------------------------------------------------
 -- Initialize
 ---------------------------------------------------------------------
+local origFunction
+
 function Hodor.Initialize()
     if (not HodorReflexes) then return end
     SLASH_COMMANDS["/unhorn"] = Unhorn
@@ -102,11 +104,9 @@ function Hodor.Initialize()
 
     KyzderpsDerps:dbg("    Initializing Hodor integration...")
 
-    if (initialized) then return end
+    if (origFunction ~= nil) then return end
 
-
-    initialized = true
-    local origFunction = HodorReflexes.modules.share.RefreshControls
+    origFunction = HodorReflexes.modules.share.RefreshControls
     HodorReflexes.modules.share.RefreshControls = function(...)
             UpdateInRange()
             origFunction(...)
@@ -114,6 +114,19 @@ function Hodor.Initialize()
 
     -- If it's aligned to the right of the screen it gets pushed to the left, annoying
     HodorReflexes_Share_Ultimates:SetClampedToScreen(false)
+end
+
+function Hodor.Uninitialize()
+    if (not HodorReflexes) then return end
+
+    -- Note: the function restoration only takes effect after Hodor restarts polling (like after leaving group?)
+    if (origFunction ~= nil) then
+        HodorReflexes.modules.share.RefreshControls = origFunction
+        origFunction = nil
+    end
+    HodorReflexes_Share_Ultimates:SetClampedToScreen(true)
+
+    KyzderpsDerps:dbg("    Removed Hodor integration...")
 end
 
 
@@ -131,6 +144,7 @@ function Hodor.GetSettings()
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.hodor.horn = value
 
+                Hodor.Uninitialize()
                 Hodor.Initialize()
             end,
             width = "full",
