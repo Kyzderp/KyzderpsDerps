@@ -80,6 +80,7 @@ local TRIAL_ZONEIDS = {
     ["1344"] = true,  -- Dreadsail Reef
     ["1427"] = true,  -- Sanity's Edge
     ["1478"] = true,  -- Lucent Citadel
+    ["1548"] = true,  -- Ossein Cage
 }
 KyzderpsDerps.TRIAL_ZONEIDS = TRIAL_ZONEIDS
 

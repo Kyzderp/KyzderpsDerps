@@ -4,7 +4,7 @@
 ## Version: 1.31.3
 ## APIVersion: 101045
 ## SavedVariables: KyzderpsDerpsSavedVariables
-## DependsOn: LibAddonMenu-2.0>=31
+## DependsOn: LibAddonMenu-2.0>=38
 ## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary HarvestMap
 
 KyzderpsDerps.lua
