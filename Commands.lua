@@ -221,7 +221,7 @@ local function PortToAnyInZone()
 
     -- Check group
     for i = 1, GetGroupSize() do
-        local unitTag = "group" .. tostring(i)
+        local unitTag = GetGroupUnitTagByIndex(i)
         local name = GetUnitDisplayName(unitTag)
         if (IsUnitOnline(unitTag) and name ~= playerName) then
             local zoneId = GetZoneId(GetUnitZoneIndex(unitTag))

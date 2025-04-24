@@ -27,7 +27,7 @@ local TRIALS_DICTIONARY = {
     ["Endless Archive"] = "EA",
     ["Infinite Archive"] = "IA",
     ["Lucent Citadel"] = "vLC",
-};
+}
 
 local MONTHS_DICTIONARY = {
     ["1"] = "January",
@@ -42,7 +42,7 @@ local MONTHS_DICTIONARY = {
     ["10"] = "October",
     ["11"] = "November",
     ["12"] = "December",
-};
+}
 
 ---------------------------------------------------------------------
 -- Keep track of vitality because for some reason, the completion
@@ -66,24 +66,22 @@ end
 ---------------------------------------------------------------------
 local function BuildGroupRoles()
 
-    local isInGroup = GetGroupSize() > 1;
+    local isInGroup = GetGroupSize() > 1
 
     if not isInGroup then
-        return "";
+        return ""
     end
 
-    local tanks = "";
-    local healers = "";
-    local dps = "";
-    local unknown = "";
+    local tanks = ""
+    local healers = ""
+    local dps = ""
+    local unknown = ""
 
-    local groupSize = GetGroupSize();
+    for i = 1, GetGroupSize() do
 
-    for i = 1, groupSize do
-
-        local unitTag = GetGroupUnitTagByIndex(i);
+        local unitTag = GetGroupUnitTagByIndex(i)
         local member = string.gsub(GetUnitDisplayName(unitTag), "@", "")
-        local role = GetGroupMemberSelectedRole(unitTag);
+        local role = GetGroupMemberSelectedRole(unitTag)
 
         if (role == LFG_ROLE_TANK) then
             tanks = tanks .. " " .. member
@@ -102,7 +100,7 @@ local function BuildGroupRoles()
     if (dps ~= "") then result = result .. "Dps:" .. dps .. " | " end
     if (unknown ~= "") then result = result .. "UNKNOWN:" .. unknown .. " | " end
 
-    return string.gsub(result, " %| $", "");
+    return string.gsub(result, " %| $", "")
 end
 
 local function BuildScoreFormat(trialName, score, totalSeconds, vitality, maxVitality)
@@ -119,7 +117,7 @@ local function BuildScoreFormat(trialName, score, totalSeconds, vitality, maxVit
     local time = string.format("%d:%02d:%02d",
         math.floor(totalSeconds / 3600),
         math.floor(totalSeconds / 60) % 60,
-        totalSeconds % 60);
+        totalSeconds % 60)
     result = result .. string.gsub(time, "^[0:]+", "") .. " - "
 
     -- vitality

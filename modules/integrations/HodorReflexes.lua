@@ -14,7 +14,7 @@ local function Unhorn(atName)
 
     local lowerName = string.gsub(string.lower(atName), "@", "")
     for i = 1, GetGroupSize() do
-        local unitTag = "group" .. tostring(i)
+        local unitTag = GetGroupUnitTagByIndex(i)
         if (string.gsub(string.lower(GetUnitDisplayName(unitTag)), "@", "") == lowerName) then
             if (HodorReflexes.modules.share.UpdatePlayerData) then
                 HodorReflexes.modules.share.UpdatePlayerData(unitTag, 0, 1, 0, 0, 0)
