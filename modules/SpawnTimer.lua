@@ -153,6 +153,10 @@ local BOSS_NAMES = {
     ["The Unmaker"] = 315, -- WB: The Unmaker - doesn't become damageable until 5:15
     ["Taupezu Azzida"] = 312, -- WB: The Abomination Cradle - doesn't become damageable until 5:12 ish?
 
+-- Deshaan
+    ["General Celdien"] = true, -- Delve: The Corpse Garden
+    ["Bthanual Centurion"] = true, -- Delve: Lower Bthanual
+
 -- Galen
     ["Traux / Druid Rerlas"] = true, -- Delve: Embervine
 
@@ -163,6 +167,7 @@ local BOSS_NAMES = {
     ["Bloodcraw"] = 300, -- PD: Bad Man's Hallows - Hoarvor
     ["Gaetane"] = 305, -- Delve: Ilessan Tower
     ["Valenwe"] = true, -- Delve: Cryptwatch Fort
+    ["Lilou"] = true, -- Delve: Mines of Khuras
 
 -- Gold Coast
     ["Limenauruus"] = true, -- WB: Minotaur
@@ -187,6 +192,7 @@ local BOSS_NAMES = {
 
 -- Malabal Tor
     ["Arrai"] = true, -- Delve: Shael Ruins
+    ["Adavos Dren"] = true, -- Delve: Roots of Silvenar
 
 -- Murkmire
     ["Walks-Like-Thunder"] = true, -- WB: Lurcher

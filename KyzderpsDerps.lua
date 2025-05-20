@@ -154,6 +154,7 @@ local defaultOptions = {
         openPelinalsBoonBox = false,
         openPelinalsBoonBoxInIC = false,
         openPurplePlunderSkull = false,
+        openCrowTouchedCoffer = false,
     },
     sync = {
         mementos = {

@@ -102,6 +102,10 @@ function Opener.Initialize()
         toLoot[190037] = true
         shouldRegister = true
     end
+    if (KyzderpsDerps.savedOptions.opener.openCrowTouchedCoffer) then
+        toLoot[133559] = true
+        shouldRegister = true
+    end
     -- Probably don't do this, because it's stolen
     -- if (KyzderpsDerps.savedOptions.opener.openEmberWallet) then
     --     toLoot[187747] = true
@@ -246,6 +250,18 @@ function Opener.GetSettings()
             getFunc = function() return KyzderpsDerps.savedOptions.opener.openPurplePlunderSkull end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.opener.openPurplePlunderSkull = value
+                Opener.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Auto open Crow-Touched Clockwork Coffer",
+            tooltip = "When you loot a Crow-Touched Clockwork Coffer, automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openCrowTouchedCoffer end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openCrowTouchedCoffer = value
                 Opener.Initialize()
             end,
             width = "full",
