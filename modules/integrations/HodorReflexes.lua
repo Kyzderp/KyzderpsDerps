@@ -16,19 +16,31 @@ local function Unhorn(atName)
     for i = 1, GetGroupSize() do
         local unitTag = GetGroupUnitTagByIndex(i)
         if (string.gsub(string.lower(GetUnitDisplayName(unitTag)), "@", "") == lowerName) then
+            KyzderpsDerps:msg("Updating player data for " .. unitTag .. " to maybe reset horn")
+
             if (HodorReflexes.modules.share.UpdatePlayerData) then
+                KyzderpsDerps:msg("Clearing horn data using UpdatePlayerData")
                 HodorReflexes.modules.share.UpdatePlayerData(unitTag, 0, 1, 0, 0, 0)
+            elseif (HodorReflexes.modules.share.playersData) then
+                -- Hodor 2025.05.07 opened playersData back up properly
+                KyzderpsDerps:msg("Clearing horn data using playersData")
+                local data = HodorReflexes.modules.share.playersData[GetUnitDisplayName(unitTag)]
+                if (data.ult) then
+                    data.ult = 0
+                end
+                if (data.ultValue) then
+                    data.ultValue = 0
+                end
             else
                 -- This is really hacky, but Hodor 2.0 has many things local
                 -- Pretend the target is "offline" so that the CleanGroupData is forced
-                -- Not sure if this can cause race conditions...
+                -- Not sure if this can cause issues...
+                KyzderpsDerps:msg("Clearing horn data using GroupChanged (hacky!)")
                 local orig = IsUnitOnline
                 IsUnitOnline = function(tag) if (tag == unitTag) then return false end return orig(tag) end
                 HodorReflexes.modules.share.GroupChanged()
                 IsUnitOnline = orig
             end
-
-            KyzderpsDerps:msg("Updating player data for " .. unitTag .. " to maybe reset horn")
             return
         end
     end
