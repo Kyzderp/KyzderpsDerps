@@ -2,9 +2,9 @@
 ## A collection of random utilities
 ## Author: Kyzeragon
 ## Version: 1.32.0
-## APIVersion: 101045 101046
+## APIVersion: 101046
 ## SavedVariables: KyzderpsDerpsSavedVariables
-## DependsOn: LibAddonMenu-2.0>=39
+## DependsOn: LibAddonMenu-2.0>=40
 ## OptionalDependsOn: OdySupportIcons Lib3D HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary HarvestMap
 
 KyzderpsDerps.lua

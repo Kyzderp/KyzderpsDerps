@@ -29,6 +29,11 @@ end
 
 local function RestoreNonVampSkin()
     local currentId = GetActiveCollectibleByType(COLLECTIBLE_CATEGORY_TYPE_SKIN)
+    if (currentId ~= KyzderpsDerps.savedOptions.fashion.vampSkinId and KyzderpsDerps.savedOptions.fashion.restoreAfterVampSameOnly) then
+        KyzderpsDerps:msg(string.format("Keeping current skin because it is different from the anti-vamp skin"))
+        return
+    end
+
     if (currentId ~= 0) then
         -- No skin
         KyzderpsDerps:msg(string.format("Restoring to no skin because you are no longer a vampire"))
@@ -282,6 +287,13 @@ KyzderpsDerps.CycleSkillStyles = CycleSkillStyles -- /script KyzderpsDerps.Cycle
 
 
 ---------------------------------------------------------------------------------------------------
+-- Recalling
+---------------------------------------------------------------------------------------------------
+local function CycleRecall()
+
+end
+
+---------------------------------------------------------------------------------------------------
 -- Initialize
 ---------------------------------------------------------------------------------------------------
 function Fashion.Initialize()
@@ -341,6 +353,18 @@ function Fashion.GetSettings()
                 KyzderpsDerps.savedOptions.fashion.restoreAfterVamp = value
             end,
             width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "    Only restore if \"vampire skin\" is equipped",
+            tooltip = "Only remove skin if your currently equipped skin matches the specified skin below",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.restoreAfterVampSameOnly end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.fashion.restoreAfterVampSameOnly = value
+            end,
+            width = "full",
+            disabled = function() return not KyzderpsDerps.savedOptions.fashion.restoreAfterVamp end
         },
         {
             type = "dropdown",

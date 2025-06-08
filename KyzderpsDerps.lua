@@ -125,6 +125,7 @@ local defaultOptions = {
     fashion = {
         equipSkinForVamp = false,
         restoreAfterVamp = false,
+        restoreAfterVampSameOnly = true,
         vampSkinId = 0,
         autoTabard = false,
     },
