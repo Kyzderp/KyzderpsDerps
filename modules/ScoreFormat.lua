@@ -27,6 +27,7 @@ local TRIALS_DICTIONARY = {
     ["Endless Archive"] = "EA",
     ["Infinite Archive"] = "IA",
     ["Lucent Citadel"] = "vLC",
+    ["Ossein Cage"] = "vOC",
 }
 
 local MONTHS_DICTIONARY = {
