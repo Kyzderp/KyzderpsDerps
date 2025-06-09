@@ -289,9 +289,88 @@ KyzderpsDerps.CycleSkillStyles = CycleSkillStyles -- /script KyzderpsDerps.Cycle
 ---------------------------------------------------------------------------------------------------
 -- Recalling
 ---------------------------------------------------------------------------------------------------
-local function CycleRecall()
-
+-- 1 ~ num
+local function GetRandomNumber(num)
+    return math.floor(math.random() * num + 1)
 end
+
+local recallTries = 0
+local function TryEquipRecall(collectibleToUse, isDefault)
+     if (isDefault) then
+        KyzderpsDerps:dbg("Trying to equip default recall style")
+    else
+        KyzderpsDerps:dbg(string.format("Trying to equip |H1:collectible:%d|h|h", collectibleToUse))
+    end
+
+    UseCollectible(collectibleToUse)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AwaitCollectibleResult" .. tostring(collectibleToUse), EVENT_COLLECTIBLE_USE_RESULT, function(_, result)
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AwaitCollectibleResult" .. tostring(collectibleToUse), EVENT_COLLECTIBLE_USE_RESULT)
+        if (result == COLLECTIBLE_USAGE_BLOCK_REASON_ON_COOLDOWN) then
+            if (recallTries > 5) then
+                KyzderpsDerps:msg("Couldn't equip recall style after several retries; collectibles on cooldown?")
+                return
+            end
+            recallTries = recallTries + 1
+            zo_callLater(function() TryEquipRecall(collectibleToUse, isDefault) end, 2000)
+        elseif (result == COLLECTIBLE_USAGE_BLOCK_REASON_NOT_BLOCKED) then
+            if (isDefault) then
+                KyzderpsDerps:msg("Equipped default recall style")
+            else
+                KyzderpsDerps:msg(string.format("Equipped |H1:collectible:%d|h|h", collectibleToUse))
+            end
+        end
+    end)
+end
+
+local function CycleRecall()
+    local mode = KyzderpsDerps.savedOptions.fashion.changeRecallStyle
+    if (mode == "Do nothing") then return end
+
+    -- Collect the available collectibles
+    local available = {}
+    local currentId = 0
+    local currentIndex = 0
+    for i = 1, GetTotalCollectiblesByCategoryType(COLLECTIBLE_CATEGORY_TYPE_PLAYER_FX_OVERRIDE) do
+        local collectibleId = GetCollectibleIdFromType(COLLECTIBLE_CATEGORY_TYPE_PLAYER_FX_OVERRIDE, i)
+        if (GetCollectiblePlayerFxOverrideAbilityType(collectibleId) == PLAYER_FX_OVERRIDE_ABILITY_TYPE_WAYSHRINE
+            and IsCollectibleUnlocked(collectibleId)) then
+
+            if (IsCollectibleActive(collectibleId)) then
+                currentId = collectibleId
+                -- If randomizing, we pick from ones other than the current, but still include
+                -- the ID in the available table, because using it will go to default style
+                if (mode == "Cycle" or KyzderpsDerps.savedOptions.fashion.recallIncludeDefault) then
+                    table.insert(available, collectibleId)
+                    currentIndex = #available
+                end
+            else
+                table.insert(available, collectibleId)
+            end
+        end
+    end
+
+    -- Randomize or cycle
+    local newIndex
+    if (mode == "Randomize") then
+        newIndex = GetRandomNumber(#available)
+    else -- Cycle; if none equipped then it starts over at the beginning
+        newIndex = currentIndex + 1
+        if (newIndex > #available) then
+            -- If at the end of the list, then the next one is either use the last one to deactivate...
+            if (KyzderpsDerps.savedOptions.fashion.recallIncludeDefault) then
+                newIndex = currentIndex
+            else -- ... or start over
+                newIndex = 1
+            end
+        end
+    end
+
+    local collectibleToUse = available[newIndex]
+    recallTries = 0
+    TryEquipRecall(collectibleToUse, currentId == collectibleToUse)
+end
+KyzderpsDerps.CycleRecall = CycleRecall -- /script KyzderpsDerps.CycleRecall()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialize
@@ -303,6 +382,8 @@ function Fashion.Initialize()
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "FashionArmoryRestore", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, OnBuildLoaded)
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "FashionCostumeUpdate", EVENT_COLLECTIBLE_UPDATED, OnCollectibleUpdated)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "FashionRecallStyle", EVENT_PLAYER_ACTIVATED, function() zo_callLater(CycleRecall, 2000) end)
 
     isVampire = (GetPlayerCurseType() == CURSE_TYPE_VAMPIRE)
 
@@ -344,31 +425,8 @@ function Fashion.GetSettings()
             width = "full",
         },
         {
-            type = "checkbox",
-            name = "Restore no skin after vampire",
-            tooltip = "Remove skin after you are cured of vampirism through an armory loadout",
-            default = false,
-            getFunc = function() return KyzderpsDerps.savedOptions.fashion.restoreAfterVamp end,
-            setFunc = function(value)
-                KyzderpsDerps.savedOptions.fashion.restoreAfterVamp = value
-            end,
-            width = "full",
-        },
-        {
-            type = "checkbox",
-            name = "    Only restore if \"vampire skin\" is equipped",
-            tooltip = "Only remove skin if your currently equipped skin matches the specified skin below",
-            default = true,
-            getFunc = function() return KyzderpsDerps.savedOptions.fashion.restoreAfterVampSameOnly end,
-            setFunc = function(value)
-                KyzderpsDerps.savedOptions.fashion.restoreAfterVampSameOnly = value
-            end,
-            width = "full",
-            disabled = function() return not KyzderpsDerps.savedOptions.fashion.restoreAfterVamp end
-        },
-        {
             type = "dropdown",
-            name = "Equip skin for vampire",
+            name = "    Skin to equip",
             tooltip = "Specify which skin to equip",
             choices = skinNames,
             choicesValues = skinIds,
@@ -382,6 +440,29 @@ function Fashion.GetSettings()
         },
         {
             type = "checkbox",
+            name = "Restore no skin after vampire",
+            tooltip = "Remove skin after you are cured of vampirism through an armory loadout",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.restoreAfterVamp end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.fashion.restoreAfterVamp = value
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "    Only restore if \"vampire skin\" is equipped",
+            tooltip = "Only remove skin if your currently equipped skin matches the specified skin above",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.restoreAfterVampSameOnly end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.fashion.restoreAfterVampSameOnly = value
+            end,
+            width = "full",
+            disabled = function() return not KyzderpsDerps.savedOptions.fashion.restoreAfterVamp end
+        },
+        {
+            type = "checkbox",
             name = "Costume tabard / outfit none",
             tooltip = "Equip guild tabard when you equip a costume, and unequip guild tabard when you have no costume. WTB invisible tabards",
             default = false,
@@ -390,6 +471,30 @@ function Fashion.GetSettings()
                 KyzderpsDerps.savedOptions.fashion.autoTabard = value
             end,
             width = "full",
+        },
+        {
+            type = "dropdown",
+            name = "Change recall style on loadscreen",
+            tooltip = "Upon every player activation (aka usually loadscreens), change your equipped recall style. \"Randomize\" picks a style other than your current one.",
+            choices = {"Do nothing", "Randomize", "Cycle"},
+            choicesValues = {"Do nothing", "Randomize", "Cycle"},
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.changeRecallStyle end,
+            setFunc = function(choice)
+                KyzderpsDerps.savedOptions.fashion.changeRecallStyle = choice
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "    Include default style",
+            tooltip = "",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.recallIncludeDefault end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.fashion.recallIncludeDefault = value
+            end,
+            width = "full",
+            disabled = function() return KyzderpsDerps.savedOptions.fashion.changeRecallStyle == "Do nothing" end
         },
     }
 end

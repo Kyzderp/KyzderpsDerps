@@ -128,6 +128,8 @@ local defaultOptions = {
         restoreAfterVampSameOnly = true,
         vampSkinId = 0,
         autoTabard = false,
+        changeRecallStyle = "Do nothing",
+        recallIncludeDefault = false,
     },
     chatSpam = {
         useLFCP = true,
