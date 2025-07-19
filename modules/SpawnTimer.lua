@@ -62,6 +62,8 @@ local DUNGEON_ZONEIDS = {
     ["1471"] = true,  -- Bedlam Veil
     ["1496"] = true,  -- Exiled Redoubt
     ["1497"] = true,  -- Lep Seclusa
+    ["1551"] = true,  -- Naj-Caldeesh
+    ["1552"] = true,  -- Black Gem Foundry
 }
 KyzderpsDerps.DUNGEON_ZONEIDS = DUNGEON_ZONEIDS
 
@@ -211,6 +213,9 @@ local BOSS_NAMES = {
     ["Drel"] = 305, -- PD: Sanguine's Demense
     ["The Bloody Judge"] = 305, -- PD: Sanguine's Demense
     ["Kwama Overseer"] = 304, -- Delve: Onkobra Kwama Mine
+
+-- Solstice
+    ["Voskrona Guardians"] = true, -- WB
 
 -- Stonefalls
     ["The Moonlit Maiden"] = 305, -- PD: Crow's Wood - Wispmother next to skyshard
@@ -366,6 +371,11 @@ local BOSS_GROUPS = {
 -- Reaper's March
     ["Varien"] = "Reaper's Henge", -- WB: Reaper's Henge
     ["Gravecaller Niramo"] = "Reaper's Henge", -- WB: Reaper's Henge
+
+-- Solstice
+    ["Wind-Bound Voskrona"] = "Voskrona Guardians", -- WB: Shrine of Vakkan
+    ["Flame-Bound Voskrona"] = "Voskrona Guardians", -- WB: Shrine of Vakkan
+    ["Growth-Bound Voskrona"] = "Voskrona Guardians", -- WB: Shrine of Vakkan
 
 -- Stonefalls
     ["Dezanu"] = "Dezanu / Calls-to-Nature", -- Delve: Sheogorath's Tongue
