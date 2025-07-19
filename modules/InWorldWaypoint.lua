@@ -204,9 +204,10 @@ local function DoXalvakkaIcons()
         local icon = OSI.CreatePositionIcon(coord[1], coord[2], coord[3], "blank.dds", 10, {1, 1, 1})
         if not icon.textLabel then
             icon.textLabel = FindUnusedLabel()
-            icon.textLabel:SetParent(icon.ctrl)
-            icon.textLabel:SetAnchor(CENTER, icon.ctrl, CENTER)
         end
+        icon.textLabel:SetParent(icon.ctrl)
+        icon.textLabel:ClearAnchors()
+        icon.textLabel:SetAnchor(CENTER, icon.ctrl, CENTER)
         icon.textLabel:SetHidden(false)
         icon.textLabel:SetText(labels[i])
 
