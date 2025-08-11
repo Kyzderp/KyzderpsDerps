@@ -16,7 +16,6 @@ Bindings.xml
 modules/CustomTargetName.lua
 modules/Grievous.lua
 modules/SpawnTimer.lua
-modules/DeathAlert.lua
 modules/Altoholic.lua
 modules/KHouse.lua
 modules/Companion.lua
@@ -43,6 +42,8 @@ modules/chatspam/LootHistory.lua
 modules/chatspam/Score.lua
 modules/chatspam/Interact.lua
 modules/chatspam/InfoPanel.xml
+
+modules/death/DeathAlert.lua
 
 modules/debug/SpamWindow.lua
 modules/debug/DebugUtils.lua
