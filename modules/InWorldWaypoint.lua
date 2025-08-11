@@ -183,6 +183,10 @@ local function FindUnusedLabel()
     for label, used in pairs(xalvakkaLabels) do
         i = i + 1
         if (not used) then
+            label:SetFont("$(BOLD_FONT)|$(KB_54)|outline")
+            label:SetDrawLayer(DL_BACKGROUND)
+            label:SetDrawTier(DT_LOW)
+            label:SetColor(1, 1, 1, 0.8)
             return label
         end
     end
@@ -202,17 +206,16 @@ local function DoXalvakkaIcons()
 
     for i, coord in ipairs(coords) do
         local icon = OSI.CreatePositionIcon(coord[1], coord[2], coord[3], "blank.dds", 10, {1, 1, 1})
-        if not icon.textLabel then
-            icon.textLabel = FindUnusedLabel()
-        end
-        icon.textLabel:SetParent(icon.ctrl)
-        icon.textLabel:ClearAnchors()
-        icon.textLabel:SetAnchor(CENTER, icon.ctrl, CENTER)
-        icon.textLabel:SetHidden(false)
-        icon.textLabel:SetText(labels[i])
+        local xalvakkaTextLabel = FindUnusedLabel()
+        xalvakkaTextLabel:SetParent(icon.ctrl)
+        xalvakkaTextLabel:ClearAnchors()
+        xalvakkaTextLabel:SetAnchor(CENTER, icon.ctrl, CENTER)
+        xalvakkaTextLabel:SetHidden(false)
+        xalvakkaTextLabel:SetText(labels[i])
+        KyzderpsDerps:dbg("Created " .. labels[i])
 
-        xalvakkaIcons[icon] = icon.textLabel
-        xalvakkaLabels[icon.textLabel] = true
+        xalvakkaIcons[icon] = xalvakkaTextLabel
+        xalvakkaLabels[xalvakkaTextLabel] = true
     end
 end
 KyzderpsDerps.DoXalvakkaIcons = DoXalvakkaIcons
@@ -224,6 +227,7 @@ local function RemoveXalvakkaIcons()
         xalvakkaLabels[label] = false
         label:SetHidden(true)
     end
+    xalvakkaIcons = {}
 end
 KyzderpsDerps.RemoveXalvakkaIcons = RemoveXalvakkaIcons
 
