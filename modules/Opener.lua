@@ -106,6 +106,10 @@ function Opener.Initialize()
         toLoot[133559] = true
         shouldRegister = true
     end
+    if (KyzderpsDerps.savedOptions.opener.openResearchPortfolio) then
+        toLoot[197790] = true
+        shouldRegister = true
+    end
     -- Probably don't do this, because it's stolen
     -- if (KyzderpsDerps.savedOptions.opener.openEmberWallet) then
     --     toLoot[187747] = true
@@ -262,6 +266,18 @@ function Opener.GetSettings()
             getFunc = function() return KyzderpsDerps.savedOptions.opener.openCrowTouchedCoffer end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.opener.openCrowTouchedCoffer = value
+                Opener.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Auto open Research Portfolio",
+            tooltip = "When you loot a Research Portfolio from Azandar's bonus, automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openResearchPortfolio end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openResearchPortfolio = value
                 Opener.Initialize()
             end,
             width = "full",
