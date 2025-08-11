@@ -186,6 +186,7 @@ local BOSS_NAMES = {
 -- Greenshade
     ["Maormer Camp"] = true, -- WB: Maormer Camp
     ["Domina Ssaranth"] = true, -- Delve: The Underroot
+    ["Hergor the Fallen"] = true, -- PD: Rulanyil's Fall (group event. timer just for loot cooldown)
 
 -- High Isle
     ["Mornard Falls"] = 301, -- WB: Mornard Falls (Hadolids)
