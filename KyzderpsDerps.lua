@@ -56,6 +56,7 @@ local defaultOptions = {
         enable = true,
         unlock = false,
         size = 30,
+        chatKillingBlow = false,
     },
     quickSlots = {
         enable = true,
@@ -336,6 +337,7 @@ local function Initialize()
     KyzderpsDerps.InitializeGrievous()
     KyzderpsDerps.SpawnTimer.Initialize()
     KyzderpsDerps.DeathAlert.Initialize()
+    KyzderpsDerps.ChatDeath.Initialize()
     KyzderpsDerps.Altoholic.Initialize()
     KyzderpsDerps.KHouse.Initialize()
     KyzderpsDerps.AutoRepair.Initialize()

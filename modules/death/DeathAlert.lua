@@ -168,7 +168,7 @@ end
 -- Settings
 ---------------------------------------------------------------------
 function DeathAlert.GetSettings()
-    return {
+    local settings = {
         {
             type = "checkbox",
             name = "Enable",
@@ -210,4 +210,7 @@ function DeathAlert.GetSettings()
             disabled = function() return not KyzderpsDerps.savedOptions.deathAlert.enable end,
         },
     }
+
+    table.insert(settings, KyzderpsDerps.ChatDeath.GetSetting())
+    return settings
 end

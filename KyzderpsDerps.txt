@@ -43,6 +43,7 @@ modules/chatspam/Score.lua
 modules/chatspam/Interact.lua
 modules/chatspam/InfoPanel.xml
 
+modules/death/ChatDeath.lua
 modules/death/DeathAlert.lua
 
 modules/debug/SpamWindow.lua
