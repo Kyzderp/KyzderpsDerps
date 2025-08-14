@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.34.0"
+KyzderpsDerps.version = "1.34.1"
 
 -- Defaults
 local defaultOptions = {
@@ -57,6 +57,7 @@ local defaultOptions = {
         unlock = false,
         size = 30,
         chatKillingBlow = false,
+        chatUseCharName = false,
     },
     quickSlots = {
         enable = true,

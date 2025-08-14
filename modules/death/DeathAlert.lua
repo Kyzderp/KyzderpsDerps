@@ -211,6 +211,8 @@ function DeathAlert.GetSettings()
         },
     }
 
-    table.insert(settings, KyzderpsDerps.ChatDeath.GetSetting())
+    for _, setting in ipairs(KyzderpsDerps.ChatDeath.GetSettings()) do
+        table.insert(settings, setting)
+    end
     return settings
 end

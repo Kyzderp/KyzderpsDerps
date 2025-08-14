@@ -44,10 +44,18 @@ local function OnKillingBlow(_, result, _, _, _, _, sourceName, sourceType, targ
         color = "e82020"
     end
 
+    -- @name or char name
+    local displayName
+    if (KyzderpsDerps.savedOptions.deathAlert.chatUseCharName) then
+        displayName = GetUnitName(unitTag)
+    else
+        displayName = GetUnitDisplayName(unitTag)
+    end
+
     local message = string.format("|c%s%s|r |cAAAAAAdied from|r |t100%%:100%%:%s|t |c%s%s",
         -- result == ACTION_RESULT_DIED and "DIED" or "KB",
         color,
-        GetUnitDisplayName(unitTag),
+        displayName,
         GetAbilityIcon(abilityId),
         damageTypeColors[damageType] or "444444",
         GetAbilityName(abilityId))
@@ -104,18 +112,31 @@ end
 ---------------------------------------------------------------------
 -- Settings called from DeathAlert (to combine them)
 ---------------------------------------------------------------------
-function ChatDeath.GetSetting()
+function ChatDeath.GetSettings()
     return {
-        type = "checkbox",
-        name = "Killing blow to chat",
-        tooltip = "Print killing blow on group member (if known) when they die",
-        default = false,
-        getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.chatKillingBlow end,
-        setFunc = function(value)
-            KyzderpsDerps.savedOptions.deathAlert.chatKillingBlow = value
-            Uninitialize()
-            ChatDeath.Initialize()
-        end,
-        width = "full",
+        {
+            type = "checkbox",
+            name = "Killing blow to chat",
+            tooltip = "Print killing blow on group member (if known) when they die",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.chatKillingBlow end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.deathAlert.chatKillingBlow = value
+                Uninitialize()
+                ChatDeath.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "    Use character names",
+            tooltip = "Print character names instead of @names",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.deathAlert.chatUseCharName end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.deathAlert.chatUseCharName = value
+            end,
+            width = "full",
+        },
     }
 end
