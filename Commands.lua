@@ -322,6 +322,7 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/refreshsurvey"] = KyzderpsDerps.Loot.RefreshSurvey
 
     -- Shortcut commands
+    -- TODO: change to a table... and probably add /bank /merchant
     SLASH_COMMANDS["/bastian"] = function() UseCollectible(9245) end
     SLASH_COMMANDS["/mirri"] = function() UseCollectible(9353) end
     SLASH_COMMANDS["/ember"] = function() UseCollectible(9911) end
@@ -339,6 +340,8 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/peddler"] = function() UseCollectible(8995) end
     SLASH_COMMANDS["/steward"] = function() UseCollectible(9743) end
     SLASH_COMMANDS["/delegate"] = function() UseCollectible(9744) end
+    SLASH_COMMANDS["/pyroclast"] = function() UseCollectible(11097) end
+    SLASH_COMMANDS["/xyn"] = function() UseCollectible(12414) end
 
     SLASH_COMMANDS["/armory"] = function() UseCollectible(9745) end
     SLASH_COMMANDS["/ghrasharog"] = function() UseCollectible(9745) end
