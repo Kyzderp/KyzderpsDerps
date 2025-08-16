@@ -21,7 +21,6 @@ modules/Altoholic.lua
 modules/KHouse.lua
 modules/Companion.lua
 modules/InWorldWaypoint.lua
-modules/Fashion.lua
 modules/AutoRepair.lua
 modules/Opener.lua
 modules/ScoreFormat.lua
@@ -50,6 +49,8 @@ modules/death/DeathAlert.lua
 modules/debug/SpamWindow.lua
 modules/debug/DebugUtils.lua
 modules/debug/SpamWindow.xml
+
+modules/fashion/Fashion.lua
 
 modules/integrations/BuffTheGroup.lua
 modules/integrations/HodorReflexes.lua
