@@ -132,6 +132,12 @@ local defaultOptions = {
         autoTabard = false,
         changeRecallStyle = "Do nothing",
         recallIncludeDefault = false,
+
+        oldMount = 0, -- Internal use, to store old mount
+        trampleMounts = {},
+        pveUseTrampleMount = false,
+        pvpUseTrampleMount = false,
+        excludeStickMountsInMountable = true,
     },
     chatSpam = {
         useLFCP = true,

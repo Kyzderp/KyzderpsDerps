@@ -63,6 +63,7 @@ local function IsDoingGroupPVE(zoneId)
         return KyzderpsDerps.IsInstanceId(tostring(zoneId))
     end
 end
+Spud.IsDoingGroupPVE = IsDoingGroupPVE
 
 local function IsDoingPVP()
     if (IsActiveWorldBattleground()) then
@@ -81,6 +82,7 @@ local function IsDoingPVP()
         return true
     end
 end
+Spud.IsDoingPVP = IsDoingPVP
 
 ---------------------------------------------------------------------
 -- Dungeon / Battlegrounds Finder

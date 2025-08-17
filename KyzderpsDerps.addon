@@ -50,7 +50,9 @@ modules/debug/SpamWindow.lua
 modules/debug/DebugUtils.lua
 modules/debug/SpamWindow.xml
 
+# TrampleMount must go after AntiSpud because it uses some common code
 modules/fashion/Fashion.lua
+modules/fashion/TrampleMount.lua
 
 modules/integrations/BuffTheGroup.lua
 modules/integrations/HodorReflexes.lua
