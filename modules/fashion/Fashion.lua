@@ -418,7 +418,7 @@ end
 function Fashion.GetSettings()
     BuildAvailableSkins()
 
-    return {
+    local settings = {
         {
             type = "checkbox",
             name = "Equip skin for vampire",
@@ -503,4 +503,10 @@ function Fashion.GetSettings()
             disabled = function() return KyzderpsDerps.savedOptions.fashion.changeRecallStyle == "Do nothing" end
         },
     }
+
+    for _, setting in ipairs(Fashion.GetTrampleSettings()) do
+        table.insert(settings, setting)
+    end
+
+    return settings
 end
