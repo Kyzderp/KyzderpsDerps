@@ -43,7 +43,7 @@ end
 -- Saving and activating mount
 ---------------------------------------------------------------------
 local mountTries = 0
-local function TryEquipMount(collectibleToUse)
+local function TryEquipMount(collectibleToUse, isTrample)
     KyzderpsDerps:dbg(string.format("Trying to equip |H1:collectible:%d|h|h", collectibleToUse))
     if (IsUnitInCombat("player")) then
         KyzderpsDerps:dbg("Not changing mount because in combat")
@@ -56,13 +56,17 @@ local function TryEquipMount(collectibleToUse)
         EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AwaitMountCollectibleResult" .. tostring(collectibleToUse), EVENT_COLLECTIBLE_USE_RESULT)
         if (result == COLLECTIBLE_USAGE_BLOCK_REASON_ON_COOLDOWN) then
             if (mountTries > 5) then
-                KyzderpsDerps:msg("Couldn't equip trample mount after several retries; collectibles on cooldown?")
+                KyzderpsDerps:msg("Couldn't change trample mount after several retries; collectibles on cooldown?")
                 return
             end
             mountTries = mountTries + 1
-            zo_callLater(function() TryEquipMount(collectibleToUse) end, 2000)
+            zo_callLater(function() TryEquipMount(collectibleToUse, isTrample) end, 2000)
         elseif (result == COLLECTIBLE_USAGE_BLOCK_REASON_NOT_BLOCKED) then
-            KyzderpsDerps:msg(string.format("Equipped |H1:collectible:%d|h|h. Happy trampling!", collectibleToUse))
+            if (isTrample) then
+                KyzderpsDerps:msg(string.format("Equipped |H1:collectible:%d|h|h. Happy trampling!", collectibleToUse))
+            else
+                KyzderpsDerps:msg(string.format("Restoring |H1:collectible:%d|h|h.", collectibleToUse))
+            end
         end
     end)
 end
@@ -177,6 +181,8 @@ local function OnPlayerActivated()
     local isPrevStateTrample = IsStateTrample(prevState)
     local isNewStateTrample = IsStateTrample(checkedState)
 
+    prevState = checkedState
+
     -- If restoring, don't do anything else
     if (isPrevStateTrample and not isNewStateTrample) then
         RestoreMount()
@@ -199,12 +205,15 @@ end
 ---------------------------------------------------------------------
 -- Init
 ---------------------------------------------------------------------
-function Fashion.InitializeTrampleMount()
+local function InitializeTrampleMount()
+    KyzderpsDerps:dbg("    Trampling...")
     if (KyzderpsDerps.savedOptions.fashion.pveUseTrampleMount
         or KyzderpsDerps.savedOptions.fashion.pvpUseTrampleMount) then
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "TrampleActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
+        OnPlayerActivated()
     end
 end
+Fashion.InitializeTrampleMount = InitializeTrampleMount
 
 local function UninitializeTrampleMount()
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "TrampleActivated", EVENT_PLAYER_ACTIVATED)
@@ -214,29 +223,6 @@ end
 ---------------------------------------------------------------------
 -- Settings
 ---------------------------------------------------------------------
-local selectedMountIds = {}
-local selectedMountNames = {}
-local availableMountIds = {}
-local availableMountNames = {}
-local function BuildAvailableMounts()
-    selectedMountIds = {}
-    selectedMountNames = {}
-    availableMountIds = {}
-    availableMountNames = {}
-    for index = 1, GetTotalCollectiblesByCategoryType(COLLECTIBLE_CATEGORY_TYPE_MOUNT) do
-        local collectibleId = GetCollectibleIdFromType(COLLECTIBLE_CATEGORY_TYPE_MOUNT, index)
-        if (IsCollectibleUnlocked(collectibleId)) then
-            if (KyzderpsDerps.savedOptions.fashion.trampleMounts[collectibleId]) then
-                table.insert(selectedMountIds, collectibleId)
-                table.insert(selectedMountNames, GetCollectibleName(collectibleId))
-            else
-                table.insert(availableMountIds, collectibleId)
-                table.insert(availableMountNames, GetCollectibleName(collectibleId))
-            end
-        end
-    end
-end
-
 local function IndexOf(idList, id)
     for k, v in ipairs(idList) do
         if (v == id) then
@@ -246,9 +232,44 @@ local function IndexOf(idList, id)
     return -1
 end
 
+local selectedMountIds = {}
+local selectedMountNames = {}
+local availableMountIds = {}
+local availableMountNames = {}
+local function BuildAvailableMounts()
+    selectedMountIds = {}
+    selectedMountNames = {}
+    availableMountIds = {}
+    availableMountNames = {}
+
+    local nameToId = {}
+    for index = 1, GetTotalCollectiblesByCategoryType(COLLECTIBLE_CATEGORY_TYPE_MOUNT) do
+        local collectibleId = GetCollectibleIdFromType(COLLECTIBLE_CATEGORY_TYPE_MOUNT, index)
+        if (IsCollectibleUnlocked(collectibleId)) then
+            local collectibleName = zo_strformat("<<1>>", GetCollectibleName(collectibleId))
+            if (IndexOf(KyzderpsDerps.savedOptions.fashion.trampleMounts, collectibleId) > 0) then
+                table.insert(selectedMountNames, collectibleName)
+            else
+                table.insert(availableMountNames, collectibleName)
+            end
+            nameToId[collectibleName] = collectibleId
+        end
+    end
+
+    table.sort(selectedMountNames)
+    for _, name in ipairs(selectedMountNames) do
+        table.insert(selectedMountIds, nameToId[name])
+    end
+
+    table.sort(availableMountNames)
+    for _, name in ipairs(availableMountNames) do
+        table.insert(availableMountIds, nameToId[name])
+    end
+end
+
 -- Description for trample section, with updated list of mounts
 local function GetCurrentDescription()
-    local text = "The following settings are intended to help you maximize your Trample fashion per second. You can choose to equip a random selected mount when you enter a PvE or PvP area, and then when you leave, your previous mount will be restored. So you can have trampling mammoths. Or stick horses.\n\nSelected mounts:"
+    local text = "The following settings are intended to help you maximize your Trample fashion per second. You can choose to equip a random selected mount when you enter a PvE or PvP area, and then when you leave, your previous mount will be restored. So you can have trampling mammoths. Or stick horses.\n\n|c3bdb5eSelected mounts:|r"
 
     for _, id in ipairs(KyzderpsDerps.savedOptions.fashion.trampleMounts) do
         text = text .. "\n" .. GetCollectibleName(id)
@@ -265,6 +286,32 @@ function Fashion.GetTrampleSettings()
             type = "description",
             title = "Trample Mount",
             text = GetCurrentDescription,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Change mount in PvE",
+            tooltip = "When you enter a dungeon or trial, automatically equip a random mount from the selected list below",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.pveUseTrampleMount end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.fashion.pveUseTrampleMount = value
+                UninitializeTrampleMount()
+                InitializeTrampleMount()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Change mount in PvP",
+            tooltip = "When you enter Cyrodiil, Imperial City, or a battleground, automatically equip a random mount from the selected list below",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.pvpUseTrampleMount end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.fashion.pvpUseTrampleMount = value
+                UninitializeTrampleMount()
+                InitializeTrampleMount()
+            end,
             width = "full",
         },
         {
@@ -328,34 +375,12 @@ function Fashion.GetTrampleSettings()
         },
         {
             type = "checkbox",
-            name = "Change mount in PvE",
-            tooltip = "When you enter a dungeon or trial, automatically equip a random mount from the selected list above",
-            default = false,
-            getFunc = function() return KyzderpsDerps.savedOptions.fashion.pveUseTrampleMount end,
-            setFunc = function(value)
-                KyzderpsDerps.savedOptions.fashion.pveUseTrampleMount = value
-            end,
-            width = "full",
-        },
-        {
-            type = "checkbox",
-            name = "Change mount in PvP",
-            tooltip = "When you enter Cyrodiil, Imperial City, or a battleground, automatically equip a random mount from the selected list above",
-            default = false,
-            getFunc = function() return KyzderpsDerps.savedOptions.fashion.pvpUseTrampleMount end,
-            setFunc = function(value)
-                KyzderpsDerps.savedOptions.fashion.pvpUseTrampleMount = value
-            end,
-            width = "full",
-        },
-        {
-            type = "checkbox",
             name = "Exclude stick mounts in valid areas",
-            tooltip = "When a ",
-            default = false,
-            getFunc = function() return KyzderpsDerps.savedOptions.fashion.pvpUseTrampleMount end,
+            tooltip = "If you have stick mounts selected as trample mounts, and you enter a trample-valid zone that you are able to mount in, such as HRC, IC, or Cyrodiil, exclude stick mounts from the selection",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.fashion.excludeStickMountsInMountable end,
             setFunc = function(value)
-                KyzderpsDerps.savedOptions.fashion.pvpUseTrampleMount = value
+                KyzderpsDerps.savedOptions.fashion.excludeStickMountsInMountable = value
             end,
             width = "full",
         },

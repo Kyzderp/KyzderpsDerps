@@ -394,6 +394,8 @@ function Fashion.Initialize()
     isVampire = (GetPlayerCurseType() == CURSE_TYPE_VAMPIRE)
 
     prevCostumeId = GetActiveCollectibleByType(COLLECTIBLE_CATEGORY_TYPE_COSTUME)
+
+    Fashion.InitializeTrampleMount()
 end
 
 
