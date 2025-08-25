@@ -167,6 +167,7 @@ local defaultOptions = {
         openPurplePlunderSkull = false,
         openCrowTouchedCoffer = false,
         openResearchPortfolio = false,
+        openFallenPack = false,
     },
     sync = {
         mementos = {

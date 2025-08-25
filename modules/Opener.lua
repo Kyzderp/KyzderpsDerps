@@ -110,6 +110,10 @@ function Opener.Initialize()
         toLoot[197790] = true
         shouldRegister = true
     end
+    if (KyzderpsDerps.savedOptions.opener.openFallenPack) then
+        toLoot[188144] = true
+        shouldRegister = true
+    end
     -- Probably don't do this, because it's stolen
     -- if (KyzderpsDerps.savedOptions.opener.openEmberWallet) then
     --     toLoot[187747] = true
@@ -278,6 +282,18 @@ function Opener.GetSettings()
             getFunc = function() return KyzderpsDerps.savedOptions.opener.openResearchPortfolio end,
             setFunc = function(value)
                 KyzderpsDerps.savedOptions.opener.openResearchPortfolio = value
+                Opener.Initialize()
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Auto open Fallen Knight's Pack",
+            tooltip = "When you loot a Fallen Knight's Pack from Isobel's bonus, automatically open and loot it",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.opener.openFallenPack end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.opener.openFallenPack = value
                 Opener.Initialize()
             end,
             width = "full",
