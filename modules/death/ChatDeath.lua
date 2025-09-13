@@ -55,7 +55,7 @@ local function OnKillingBlow(_, result, _, _, _, _, sourceName, sourceType, targ
     local message = string.format("|c%s%s|r |cAAAAAAdied from|r |t100%%:100%%:%s|t |c%s%s",
         -- result == ACTION_RESULT_DIED and "DIED" or "KB",
         color,
-        displayName,
+        displayName or "",
         GetAbilityIcon(abilityId),
         damageTypeColors[damageType] or "444444",
         GetAbilityName(abilityId))
