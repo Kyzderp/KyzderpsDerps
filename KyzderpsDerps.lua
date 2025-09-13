@@ -134,6 +134,7 @@ local defaultOptions = {
         recallIncludeDefault = false,
 
         oldMount = 0, -- Internal use, to store old mount
+        prevTramples = {}, -- Internal use, to be able to restore when logging in
         trampleMounts = {},
         pveUseTrampleMount = false,
         pvpUseTrampleMount = false,

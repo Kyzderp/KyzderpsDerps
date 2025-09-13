@@ -151,16 +151,23 @@ local function IsStateTrample(state)
     return false
 end
 
-local prevZoneId = 0
-local prevState
 local function OnPlayerActivated()
+    local zoneId = GetZoneId(GetUnitZoneIndex("player"))
+    local charId = GetCurrentCharacterId()
+    if (not KyzderpsDerps.savedOptions.fashion.prevTramples[charId]) then
+        KyzderpsDerps.savedOptions.fashion.prevTramples[charId] = {
+            prevZoneId = 0,
+            prevState = Spud.NONE,
+        }
+    end
+
+    local prevData = KyzderpsDerps.savedOptions.fashion.prevTramples[charId]
     -- Only continue if zone is different. That means not re-randomizing if queueing
     -- into the same dungeon, but whatevs
-    local zoneId = GetZoneId(GetUnitZoneIndex("player"))
-    if (prevZoneId == zoneId) then
+    if (prevData.prevZoneId == zoneId) then
         return
     end
-    prevZoneId = zoneId
+    prevData.prevZoneId = zoneId
 
     -- Get current state
     local checkedState
@@ -172,16 +179,10 @@ local function OnPlayerActivated()
         checkedState = Spud.NONE
     end
 
-    -- Don't do anything on first load
-    if (not prevState) then
-        prevState = checkedState
-        return
-    end
-    
-    local isPrevStateTrample = IsStateTrample(prevState)
+    local isPrevStateTrample = IsStateTrample(prevData.prevState)
     local isNewStateTrample = IsStateTrample(checkedState)
 
-    prevState = checkedState
+    prevData.prevState = checkedState
 
     -- If restoring, don't do anything else
     if (isPrevStateTrample and not isNewStateTrample) then
