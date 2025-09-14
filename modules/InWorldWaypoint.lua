@@ -35,7 +35,10 @@ function KyzderpsDerps.PrintCurrentPosition()
     local zoneId, worldX, worldY, worldZ = GetUnitRawWorldPosition( "player" )
     KyzderpsDerps:msg(zo_strformat("zoneId=<<1>> {x = <<2>>, y = <<3>>, z = <<4>>}", zoneId, worldX, worldY, worldZ))
 
-    if (OSI and OSI.CreatePositionIcon) then
+    if (CrutchAlerts and CrutchAlerts.Drawing) then
+        local key = CrutchAlerts.Drawing.CreatePlacedIcon("CrutchAlerts/assets/poop.dds", worldX, worldY, worldZ, 40)
+        zo_callLater(function() CrutchAlerts.Drawing.RemovePlacedIcon(key) end, 10000)
+    elseif (OSI and OSI.CreatePositionIcon) then
         -- KyzderpsDerps:msg("Creating an icon at that position for 10 seconds...")
         local tempIcon = OSI.CreatePositionIcon(worldX, worldY, worldZ, "odysupporticons/icons/emoji-poop.dds", 100)
         zo_callLater(function() OSI.DiscardPositionIcon(tempIcon) end, 10000)

@@ -319,6 +319,7 @@ function Fashion.GetTrampleSettings()
             type = "dropdown",
             name = "Selected mounts",
             tooltip = "Possible mounts that should be equipped when you enter a PvE or PvP area, according to your settings",
+            scrollable = 20, -- number of lines on the second open, probably a LAM bug
             choices = {},
             choicesValues = {},
             getFunc = function()
@@ -349,6 +350,7 @@ function Fashion.GetTrampleSettings()
             type = "dropdown",
             name = "Available mounts",
             tooltip = "Available mounts to add to the list",
+            scrollable = 20, -- number of lines on the second open, probably a LAM bug
             choices = {},
             choicesValues = {},
             getFunc = function()
