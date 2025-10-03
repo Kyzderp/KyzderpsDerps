@@ -71,14 +71,14 @@ local function TryEquipMount(collectibleToUse, isTrample)
     end)
 end
 
-local function ActivateMount(collectibleId)
+local function ActivateMount(collectibleId, isTrample)
     if (IsCollectibleActive(collectibleId)) then
         KyzderpsDerps:dbg("Not changing mount; it's already correct")
         return
     end
 
     mountTries = 0
-    TryEquipMount(collectibleId)
+    TryEquipMount(collectibleId, isTrample)
 end
 
 -- Save the current mount to restore later. This is NOT always called
@@ -126,13 +126,13 @@ local function RandomizeMount()
 
     -- Too lazy to make it random but different... for now
     local newIndex = GetRandomNumber(#trampleMounts)
-    ActivateMount(trampleMounts[newIndex])
+    ActivateMount(trampleMounts[newIndex], true)
 end
 
 local function RestoreMount()
     local oldMount = KyzderpsDerps.savedOptions.fashion.oldMount
     KyzderpsDerps:msg("Restoring mount to " .. GetCollectibleName(oldMount))
-    ActivateMount(oldMount)
+    ActivateMount(oldMount, false)
 end
 
 

@@ -308,8 +308,8 @@ local function OnCombatEvent(_, result, _, abilityName, _, _, sourceName, source
         end
     end
 
-    sourceName = zo_strformat("<<1>>", sourceName)
-    targetName = zo_strformat("<<1>>", targetName)
+    -- sourceName = zo_strformat("<<1>>", sourceName)
+    -- targetName = zo_strformat("<<1>>", targetName)
 
     if (sourceName == GetUnitName("player")) then
         sourceName = "|c3bdb5e" .. sourceName .. "|r"

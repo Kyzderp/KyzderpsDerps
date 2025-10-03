@@ -126,7 +126,11 @@ local function BuildScoreFormat(trialName, score, totalSeconds, vitality, maxVit
 
     -- date
     local _, _, mon, day, year = string.find(GetDateStringFromTimestamp(GetTimeStamp()), "(%d+)/(%d+)/(%d+)")
-    result = result .. MONTHS_DICTIONARY[mon] .. " " .. day .. ", " .. year .. " - \n"
+    if (MONTHS_DICTIONARY[mon]) then
+        result = result .. MONTHS_DICTIONARY[mon] .. " " .. day .. ", " .. year .. " - \n"
+    else
+        result = result .. "??? (date formats vary in other languages) - \n"
+    end
 
     -- group members
     result = result .. BuildGroupRoles()
