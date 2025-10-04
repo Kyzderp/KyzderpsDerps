@@ -595,7 +595,7 @@ local function BossKilled(groupName, bossName)
         if (KyzderpsDerps.savedOptions.spawnTimer.chat.timestamp) then
             msg = "[" .. GetTimeString() .. "] " .. msg
         end
-        CHAT_SYSTEM:AddMessage(msg)
+        CHAT_ROUTER:AddSystemMessage(msg)
     end
 end
 
@@ -712,7 +712,7 @@ end
 -- Remove a timer line and remove it from the data
 ---------------------------------------------------------------------------------------------------
 local function RemoveBoss(bossName)
-    CHAT_SYSTEM:AddMessage("You removed " .. bossName .. " from the boss timers.")
+    KyzderpsDerps:msg("You removed " .. bossName .. " from the boss timers.")
     KyzderpsDerps.savedValues.spawnTimer.timers[bossName] = nil
     PollTimer() -- Update it immediately
 end
@@ -730,7 +730,9 @@ local function PrintBoss(bossName)
 
     local startTime = KyzderpsDerps.savedValues.spawnTimer.timers[bossName].startTime
     local seconds = respawnTime - GetTimeStamp() + startTime
-    CHAT_SYSTEM:StartTextEntry(bossName .. string.format(" should respawn in %d mins %d secs", zo_floor(seconds / 60), seconds % 60))
+    if (KEYBOARD_CHAT_SYSTEM) then
+        KEYBOARD_CHAT_SYSTEM:StartTextEntry(bossName .. string.format(" should respawn in %d mins %d secs", zo_floor(seconds / 60), seconds % 60))
+    end
 end
 KyzderpsDerps.PrintBoss = PrintBoss
 

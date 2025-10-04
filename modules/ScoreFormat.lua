@@ -145,12 +145,12 @@ local function OnTrialComplete(_, trialName, score, totalTime)
     vitality = 0
     maxVitality = 0
 
-    CHAT_SYSTEM:AddMessage(kyzFormat)
+    CHAT_ROUTER:AddSystemMessage(kyzFormat)
     -- And also log it again 15 seconds later because it gets buried in muh loot spying
     EVENT_MANAGER:RegisterForUpdate("KyzFormat", 15000, function()
-        CHAT_SYSTEM:AddMessage(kyzFormat)
-        if (KyzderpsDerps.savedOptions.misc.startChatScoreFormat) then
-            CHAT_SYSTEM:StartTextEntry(kyzFormat, CHAT_CHANNEL_PARTY)
+        CHAT_ROUTER:AddSystemMessage(kyzFormat)
+        if (KyzderpsDerps.savedOptions.misc.startChatScoreFormat and KEYBOARD_CHAT_SYSTEM) then
+            KEYBOARD_CHAT_SYSTEM:StartTextEntry(kyzFormat, CHAT_CHANNEL_PARTY)
         end
         EVENT_MANAGER:UnregisterForUpdate("KyzFormat")
     end)

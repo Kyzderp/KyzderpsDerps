@@ -268,7 +268,7 @@ local function OnPlayerActivated(_, initial)
     end
     KyzderpsDerps.dbgMessages = {}
     for i = 1, #KyzderpsDerps.messages do
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.messages[i])
+        CHAT_ROUTER:AddSystemMessage(KyzderpsDerps.messages[i])
     end
     KyzderpsDerps.messages = {}
 
@@ -306,7 +306,7 @@ function KyzderpsDerps:dbg(msg)
     if (not KyzderpsDerps.savedOptions.general.debug) then return end
     if (debugFilter) then
         debugFilter:AddMessage(msg)
-    elseif (CHAT_SYSTEM.primaryContainer) then
+    elseif (CHAT_ROUTER) then
         d("|c3bdb5e[KD] |r" .. msg)
     else
         KyzderpsDerps.dbgMessages[#KyzderpsDerps.dbgMessages + 1] = "|c3bdb5e[KDDelay] |r" .. msg
@@ -318,8 +318,8 @@ KyzderpsDerps.messages = {}
 function KyzderpsDerps:msg(msg)
     if (not msg) then return end
     msg = "|c3bdb5e[Kyzderp's Derps] |caaaaaa" .. tostring(msg) .. "|r"
-    if (CHAT_SYSTEM.primaryContainer) then
-        CHAT_SYSTEM:AddMessage(msg)
+    if (CHAT_ROUTER) then
+        CHAT_ROUTER:AddSystemMessage(msg)
     else
         KyzderpsDerps.messages[#KyzderpsDerps.messages + 1] = msg
     end

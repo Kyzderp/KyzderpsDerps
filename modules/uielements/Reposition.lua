@@ -17,7 +17,9 @@ local function Reposition()
     ZO_PlayerAttributeMagicka:SetAnchor(RIGHT, ZO_PlayerAttribute, CENTER, -2, -6)
 
     -- Loot History: move up above minimap
-    ZO_LootHistoryControl_Keyboard:SetAnchor(BOTTOMRIGHT, GuiRoot, BOTTOMRIGHT, 0, -290)
+    if (ZO_LootHistoryControl_Keyboard) then
+        ZO_LootHistoryControl_Keyboard:SetAnchor(BOTTOMRIGHT, GuiRoot, BOTTOMRIGHT, 0, -290)
+    end
 
     -- Synergies: move up a bit
     ZO_SynergyTopLevelContainer:SetAnchor(BOTTOM, ZO_SynergyTopLevel, BOTTOM, 0, -300)

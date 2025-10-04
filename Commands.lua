@@ -13,7 +13,7 @@ local function HandleKDDCommand(argString)
     local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker>"
 
     if (length == 0) then
-        CHAT_SYSTEM:AddMessage(usage)
+        CHAT_ROUTER:AddSystemMessage(usage)
         return
     end
 
@@ -33,19 +33,19 @@ local function HandleKDDCommand(argString)
 
     -- played
     elseif (args[1] == "played") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildPlayed())
+        CHAT_ROUTER:AddSystemMessage(KyzderpsDerps.Altoholic.BuildPlayed())
 
     -- points
     elseif (args[1] == "points") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildPoints())
+        CHAT_ROUTER:AddSystemMessage(KyzderpsDerps.Altoholic.BuildPoints())
 
     -- totalpoints
     elseif (args[1] == "totalpoints") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildTotalPoints())
+        CHAT_ROUTER:AddSystemMessage(KyzderpsDerps.Altoholic.BuildTotalPoints())
 
     -- armory
     elseif (args[1] == "armory") then
-        CHAT_SYSTEM:AddMessage(KyzderpsDerps.Altoholic.BuildArmory())
+        CHAT_ROUTER:AddSystemMessage(KyzderpsDerps.Altoholic.BuildArmory())
 
     -- junk style pages
     elseif (args[1] == "junkstyle" or args[1] == "junkstyles") then
@@ -79,7 +79,7 @@ local function HandleKDDCommand(argString)
     -- List furnishings in a home with a filter, undocumented because could be... controversial
     elseif (args[1] == "furn") then
         if (length ~= 2) then
-            CHAT_SYSTEM:AddMessage("Usage: /kdd furn <itemnamefilter>")
+            CHAT_ROUTER:AddSystemMessage("Usage: /kdd furn <itemnamefilter>")
             return
         end
 
@@ -91,7 +91,7 @@ local function HandleKDDCommand(argString)
             if furnitureId ~= nil then
                 local link = GetPlacedFurnitureLink(furnitureId, LINK_STYLE_BRACKETS)
                 if (string.find(string.lower(GetItemLinkName(link)), string.lower(args[2]))) then
-                    CHAT_SYSTEM:AddMessage(link)
+                    CHAT_ROUTER:AddSystemMessage(link)
                 end
             end
         until furnitureId == nil
@@ -113,7 +113,7 @@ local function HandleKDDCommand(argString)
 
     -- Unknown
     else
-        CHAT_SYSTEM:AddMessage(usage)
+        CHAT_ROUTER:AddSystemMessage(usage)
     end
 end
 

@@ -15,7 +15,7 @@ local function DisplayWarning(msg)
                         "|c2E2B5FN" ..
                         "|c8B00FFG" ..
                         "|cFF00FF: " .. msg .. "|r"
-    CHAT_SYSTEM:AddMessage(chatWarning)
+    CHAT_ROUTER:AddSystemMessage(chatWarning)
 end
 
 ---------------------------------------------------------------------

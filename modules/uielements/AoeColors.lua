@@ -13,7 +13,7 @@ local function SetRGB(red, green, blue)
 end
 
 local function OnBossesChanged()
-    for i = 1, MAX_BOSSES do
+    for i = 1, BOSS_RANK_ITERATION_END do
         local name = GetUnitName("boss" .. tostring(i))
         if (name == "Lokkestiiz" or name == "洛克提兹" or name == "ロクケスティーズ"
             or name == "Pinnacle Factotum" or name == "巅峰机械人" or name == "ピナクル・ファクトタム" or name == "Perfektioniertes Faktotum") then

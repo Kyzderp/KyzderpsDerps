@@ -23,7 +23,7 @@ local function IsMountingAllowed()
         return false
     end
 
-    if (GetUnitBattlegroundAlliance("player") ~= nil and GetUnitBattlegroundAlliance("player") ~= 0) then
+    if (GetUnitBattlegroundTeam("player") ~= nil and GetUnitBattlegroundTeam("player") ~= 0) then
         return false
     end
 

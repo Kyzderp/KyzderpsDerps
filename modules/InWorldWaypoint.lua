@@ -237,7 +237,7 @@ KyzderpsDerps.RemoveXalvakkaIcons = RemoveXalvakkaIcons
 local prevBosses = ""
 local function OnBossesChanged()
     local bossHash = ""
-    for i = 1, MAX_BOSSES do
+    for i = 1, BOSS_RANK_ITERATION_END do
         local name = GetUnitNameIfExists("boss" .. tostring(i))
         if (name and name ~= "") then
             bossHash = bossHash .. name
@@ -246,7 +246,7 @@ local function OnBossesChanged()
     if (bossHash == prevBosses) then return end
     prevBosses = bossHash
 
-    local _, powerMax, _ = GetUnitPower("boss1", POWERTYPE_HEALTH)
+    local _, powerMax, _ = GetUnitPower("boss1", COMBAT_MECHANIC_FLAGS_HEALTH)
     if (powerMax == 214233024 -- HM
         or powerMax == 53558256 -- Vet
         or powerMax == 25084768 -- Normal
