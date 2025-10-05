@@ -33,8 +33,13 @@ end
 
 local function CheckMundus()
     local currentMundus, abilityId = GetMundus("player")
+    local checkEitherMundus = KyzderpsDerps.savedOptions.antispud.mundus.checkPve or KyzderpsDerps.savedOptions.antispud.mundus.checkPvp
     if (not currentMundus) then
-        Spud.Display("You have no Mundus Stone", Spud.MUNDUS)
+        if (checkEitherMundus) then
+            Spud.Display("You have no Mundus Stone", Spud.MUNDUS)
+        else
+            Spud.Display(nil, Spud.MUNDUS)
+        end
         return
     end
     Spud.DisplayWarning("You are using |cFFFFFF" .. currentMundus .. "|r")
@@ -49,6 +54,7 @@ local function CheckMundus()
         Spud.Display(string.format("You are using %s in PvP", currentMundus), Spud.MUNDUS)
     else
         if (KyzderpsDerps.savedOptions.general.experimental
+            and KyzderpsDerps.savedOptions.antispud.mundus.checkPve
             and currentState == Spud.PVE
             and GetSelectedLFGRole() ~= LFG_ROLE_TANK
             and abilityId == 13982) then
@@ -77,6 +83,7 @@ end
 ---------------------------------------------------------------------
 -- Init
 ---------------------------------------------------------------------
+local hooked = false
 function Spud.InitializeMundus()
     Spud.RegisterStateListener("Mundus", OnSpudStateChanged)
 
@@ -84,5 +91,11 @@ function Spud.InitializeMundus()
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudMundus" .. tostring(abilityId), EVENT_EFFECT_CHANGED, OnMundusBuffChanged)
         EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "AntiSpudMundus" .. tostring(abilityId), EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG_PREFIX, "player")
         EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "AntiSpudMundus" .. tostring(abilityId), EVENT_EFFECT_CHANGED, REGISTER_FILTER_ABILITY_ID, abilityId)
+    end
+
+    -- Self role change
+    if (not hooked) then
+        ZO_PostHook("UpdateSelectedLFGRole", function() CheckMundus() end)
+        hooked = true
     end
 end
