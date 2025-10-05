@@ -105,37 +105,74 @@ local function IsInNeedFoodArea()
 end
 
 ---------------------------------------------------------------------
+-- Text-only update for warning countdown
+---------------------------------------------------------------------
+local function UpdateWarningCountdown(timeEnding)
+    local remaining = timeEnding - GetGameTimeSeconds()
+
+    if (remaining < 0) then
+        -- Theoretically this shouldn't happen because the food ending event will have fired
+        EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdateCountdown")
+        Spud.Display(nil, Spud.FOOD)
+        return
+    end
+
+    Spud.Display("You could eat another bite in " .. ZO_FormatCountdownTimer(remaining), Spud.FOOD)
+end
+
+
+---------------------------------------------------------------------
 -- Check all of the user's buffs for food
 ---------------------------------------------------------------------
-local function CheckAllFood()
+local function CheckAllFood(reason)
+    KyzderpsDerps:dbg("checking food: " .. (reason or "??"))
     for i = 1, GetNumBuffs("player") do
         local _, _, timeEnding, _, _, _, _, _, _, _, abilityId = GetUnitBuffInfo("player", i)
+        -- Has food...
         if (IsFoodBuff(abilityId)) then
+            local remaining = timeEnding - GetGameTimeSeconds()
+
+            -- ... and above threshold for warning = no display
+            if (remaining / 60 > KyzderpsDerps.savedOptions.antispud.food.prewarn) then
+                EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdateCountdown")
+                Spud.Display(nil, Spud.FOOD)
+                return
+            end
+
+            if (IsInNeedFoodArea() and (not IsUnitInCombat("player") or KyzderpsDerps.savedOptions.antispud.food.prewarnInCombat)) then
+                -- Otherwise, warn and continually update the text (don't want to call
+                -- the entire function repeatedly to check buffs)
+                Spud.Display("You could eat another bite in " .. ZO_FormatCountdownTimer(remaining), Spud.FOOD)
+                EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdateCountdown")
+                EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdateCountdown", 1000, function()
+                    UpdateWarningCountdown(timeEnding)
+                end)
+                return
+            end
+
+            EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdateCountdown")
             Spud.Display(nil, Spud.FOOD)
-            -- -- Also remind if food buff is low
-            -- local remaining = timeEnding - GetGameTimeSeconds()
-            -- if (remaining < 20) then
-            --     -- TODO: how to remind about food? Also this isn't getting called or refreshed
-            --     return
-            -- end
             return
         end
     end
 
     if (IsInNeedFoodArea()) then
+        EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdateCountdown")
         Spud.Display("You are positively famished", Spud.FOOD)
         return
     end
 
+    EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdateCountdown")
     Spud.Display(nil, Spud.FOOD)
 end
+
 
 ---------------------------------------------------------------------
 -- State, effect, or bosses change
 -- When any change, we should check if user has a food buff
 ---------------------------------------------------------------------
 local function OnSpudStateChanged(oldState, newState)
-    CheckAllFood()
+    CheckAllFood("spud state changed")
 end
 
 local RESULT_TO_STRING = {
@@ -150,11 +187,31 @@ local function OnEffectChanged(_, changeType, _, _, _, _, _, _, _, _, _, _, _, _
     if (changeType ~= EFFECT_RESULT_GAINED and changeType ~= EFFECT_RESULT_FADED) then return end
     if (not IsFoodBuff(abilityId)) then return end
     KyzderpsDerps:dbg(string.format("%s %s (%d)", RESULT_TO_STRING[changeType], GetAbilityName(abilityId), abilityId))
-    CheckAllFood()
+    CheckAllFood("food effect changed")
 end
 
+local function GetUnitNameIfExists(unitTag)
+    if (DoesUnitExist(unitTag)) then
+        return GetUnitName(unitTag)
+    end
+end
+
+local prevBosses = ""
 local function OnBossesChanged()
-    CheckAllFood()
+    local bossHash = ""
+
+    for i = 1, BOSS_RANK_ITERATION_END do
+        local name = GetUnitNameIfExists("boss" .. tostring(i))
+        if (name and name ~= "") then
+            bossHash = bossHash .. name
+        end
+    end
+
+    -- Only trigger off bosses truly changing (sometimes the event fires for no apparent reason?)
+    if (bossHash ~= prevBosses) then
+        prevBosses = bossHash
+        CheckAllFood("bosses changed")
+    end
 end
 
 ---------------------------------------------------------------------
@@ -167,16 +224,36 @@ function Spud.InitializeFood()
 
     Spud.RegisterStateListener("Food", OnSpudStateChanged)
 
+    local checkFood = KyzderpsDerps.savedOptions.antispud.food.pve or KyzderpsDerps.savedOptions.antispud.food.pvp or KyzderpsDerps.savedOptions.antispud.food.boss
+
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED)
-    if (KyzderpsDerps.savedOptions.antispud.food.pve or KyzderpsDerps.savedOptions.antispud.food.pvp or KyzderpsDerps.savedOptions.antispud.food.boss) then
+    if (checkFood) then
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED, OnEffectChanged)
         EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "AntiSpudFoodEffect", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG_PREFIX, "player")
 
-        CheckAllFood()
+        CheckAllFood("initial")
     end
 
     EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodBossChanged", EVENT_BOSSES_CHANGED)
-    if (KyzderpsDerps.savedOptions.antispud.food.boss) then
+    if (checkFood and KyzderpsDerps.savedOptions.antispud.food.boss) then
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodBossChanged", EVENT_BOSSES_CHANGED, OnBossesChanged)
+    end
+
+    -- Check every 20 seconds
+    EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdate")
+    if (checkFood and KyzderpsDerps.savedOptions.antispud.food.prewarn > 0) then
+        EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdate", 20000, function() CheckAllFood("periodic") end)
+    end
+
+    -- Listen for combat state to avoid showing warning in combat
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodCombat", EVENT_PLAYER_COMBAT_STATE)
+    if (checkFood and KyzderpsDerps.savedOptions.antispud.food.prewarn > 0 and not KyzderpsDerps.savedOptions.antispud.food.prewarnInCombat) then
+        -- Combat state timeout, because sometimes it gets spammed
+        EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "AntiSpudFoodCombat", EVENT_PLAYER_COMBAT_STATE, function()
+            EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodCombatTimeout", 1000, function()
+                EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodCombatTimeout")
+                CheckAllFood("combat timeout")
+            end)
+        end)
     end
 end

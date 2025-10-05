@@ -841,6 +841,35 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
                 {
+                    type = "slider",
+                    name = "Food expiry warning",
+                    tooltip = "Approximate number of minutes before your food expires to show a warning (checked every 20 seconds). To not show any warning until the food buff is completely out, set it to 0",
+                    min = 0,
+                    max = 60,
+                    step = 1,
+                    default = 5,
+                    width = "full",
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.food.prewarn end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.food.prewarn = value
+                        KyzderpsDerps.AntiSpud.InitializeFood()
+                    end,
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.food.pve and not KyzderpsDerps.savedOptions.antispud.food.pvp and not KyzderpsDerps.savedOptions.antispud.food.boss end,
+                },
+                {
+                    type = "checkbox",
+                    name = "Warn food in combat",
+                    tooltip = "Whether to warn about upcoming food expiry while in combat. If OFF, the warning will only show outside of combat",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.food.prewarnInCombat end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.food.prewarnInCombat = value
+                        KyzderpsDerps.AntiSpud.InitializeFood()
+                    end,
+                    width = "full",
+                    disabled = function() return not KyzderpsDerps.savedOptions.antispud.food.pve and not KyzderpsDerps.savedOptions.antispud.food.pvp and not KyzderpsDerps.savedOptions.antispud.food.boss end,
+                },
+                {
                     type = "checkbox",
                     name = "Check torte in PvP areas",
                     tooltip = "Notifies you if you don't have a torte (Colovian, Molten, White-Gold) buff in PvP areas",

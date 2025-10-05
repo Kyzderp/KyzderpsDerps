@@ -116,6 +116,8 @@ local defaultOptions = {
             pve = false,
             pvp = false,
             boss = false,
+            prewarn = 5,
+            prewarnInCombat = false,
         },
         log = false,
         torte = false,
