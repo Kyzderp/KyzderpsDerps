@@ -340,7 +340,7 @@ function Opener.GetSettings()
         },
         {
             type = "editbox",
-            name = "Additional container IDs separated by commas",
+            name = "Additional container IDs, separated by commas",
             default = "",
             getFunc = function()
                 return table.concat(KyzderpsDerps.savedOptions.opener.extraIds, ",")
