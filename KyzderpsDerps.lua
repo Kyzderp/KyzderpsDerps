@@ -171,6 +171,7 @@ local defaultOptions = {
         openCrowTouchedCoffer = false,
         openResearchPortfolio = false,
         openFallenPack = false,
+        extraIds = {},
     },
     sync = {
         mementos = {

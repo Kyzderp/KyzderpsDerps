@@ -36,32 +36,55 @@ local function CanOpenContainer()
     end
 end
 
-local function OpenContainer(bagId, slotId)
+local CONTAINER_TYPES = {
+    [ITEMTYPE_CONTAINER] = true,
+    [ITEMTYPE_CONTAINER_CURRENCY] = true,
+    [ITEMTYPE_CONTAINER_STACKABLE] = true,
+}
+
+local function OpenContainer(bagId, slotIndex)
+    if (not CONTAINER_TYPES[GetItemType(bagId, slotIndex)]) then
+        local itemLink = GetItemLink(bagId, slotIndex, LINK_STYLE_BRACKETS)
+        KyzderpsDerps:msg("|cFF0000Not a container?! " .. itemLink)
+        return
+    end
+
     if (CanOpenContainer()) then
         KyzderpsDerps:dbg("trying to open container")
         if IsProtectedFunction("UseItem") then
-            CallSecureProtected("UseItem", bagId, slotId)
+            CallSecureProtected("UseItem", bagId, slotIndex)
         else
-            UseItem(bagId, slotId)
+            UseItem(bagId, slotIndex)
         end
     else
         KyzderpsDerps:dbg("waiting to open container")
         zo_callLater(function()
-            OpenContainer(bagId, slotId)
+            OpenContainer(bagId, slotIndex)
         end, 1000)
     end
 end
 
--- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotId, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
-local function OnInventorySlotUpdate(_, bagId, slotId, isNewItem, _, _, _)
-    local itemId = GetItemId(bagId, slotId)
-    if (toLoot[itemId] and not IsItemStolen(bagId, slotId)) then
-        toLootNames[GetItemName(bagId, slotId)] = true
+-- EVENT_INVENTORY_SINGLE_SLOT_UPDATE (number eventCode, Bag bagId, number slotIndex, boolean isNewItem, ItemUISoundCategory itemSoundCategory, number inventoryUpdateReason, number stackCountChange)
+local function OnInventorySlotUpdate(_, bagId, slotIndex, isNewItem, _, _, _)
+    local itemId = GetItemId(bagId, slotIndex)
+    if (toLoot[itemId] and not IsItemStolen(bagId, slotIndex)) then
+        toLootNames[GetItemName(bagId, slotIndex)] = true
         zo_callLater(function()
-            OpenContainer(bagId, slotId)
+            OpenContainer(bagId, slotIndex)
         end, KyzderpsDerps.savedOptions.opener.delay)
     end
 end
+
+local function OpenAllInBackpack()
+    local bagCache = SHARED_INVENTORY:GetOrCreateBagCache(BAG_BACKPACK)
+    for _, item in pairs(bagCache) do
+        if (toLoot[GetItemId(item.bagId, item.slotIndex)] and not IsItemStolen(item.bagId, item.slotIndex)) then
+            toLootNames[GetItemName(item.bagId, item.slotIndex)] = true
+            OpenContainer(item.bagId, item.slotIndex)
+        end
+    end
+end
+Opener.OpenAllInBackpack = OpenAllInBackpack
 
 
 ---------------------------------------------------------------------
@@ -120,6 +143,11 @@ function Opener.Initialize()
     --     shouldRegister = true
     -- end
 
+    for _, id in ipairs(KyzderpsDerps.savedOptions.opener.extraIds) do
+        toLoot[id] = true
+        shouldRegister = true
+    end
+
     if (shouldRegister) then
         EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "OpenerSlotUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnInventorySlotUpdate)
         EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "OpenerSlotUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DEFAULT)
@@ -139,6 +167,12 @@ end
 ---------------------------------------------------------------------
 function Opener.GetSettings()
     return {
+        {
+            type = "description",
+            title = "",
+            text = "Automatically open and loot all from specific containers that you obtain. You can also use |c99FF99/kdd openall|r to re-scan your inventory and open existing containers that you have set to be opened.",
+            width = "full",
+        },
         {
             type = "slider",
             name = "Delay before opening",
@@ -296,6 +330,34 @@ function Opener.GetSettings()
                 KyzderpsDerps.savedOptions.opener.openFallenPack = value
                 Opener.Initialize()
             end,
+            width = "full",
+        },
+        {
+            type = "description",
+            title = "Additional containers to open",
+            text = "You can add more IDs for containers to open here. To find the ID, link the item to chat, like |H1:item:217732:122:1:0:0:0:0:0:0:0:0:0:0:0:1:0:0:1:0:0:0|h|h, but don't send the message. Cut and paste the item link somewhere else, which will show it in plain text, and it will look something like ||H1:item:217732:122:1:0:0:0:0:0:0:0:0:0:0:0:1:0:0:1:0:0:0||h||h. The ID is the number after \"item\", in this case \"217732\". You can also find IDs by searching on a site like UESP with their item database.",
+            width = "full",
+        },
+        {
+            type = "editbox",
+            name = "Additional container IDs separated by commas",
+            default = "",
+            getFunc = function()
+                return table.concat(KyzderpsDerps.savedOptions.opener.extraIds, ",")
+            end,
+            setFunc = function(value)
+                local ids = {}
+                for _, id in ipairs({zo_strsplit(",", value)}) do
+                    id = tonumber(id)
+                    if (id) then
+                        table.insert(ids, id)
+                    end
+                end
+                KyzderpsDerps.savedOptions.opener.extraIds = ids
+                Opener.Initialize()
+            end,
+            isExtraWide = true,
+            isMultiline = true,
             width = "full",
         },
     }

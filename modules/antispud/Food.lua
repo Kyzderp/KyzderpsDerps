@@ -125,7 +125,10 @@ end
 -- Check all of the user's buffs for food
 ---------------------------------------------------------------------
 local function CheckAllFood(reason)
-    KyzderpsDerps:dbg("checking food: " .. (reason or "??"))
+    if (reason) then
+        KyzderpsDerps:dbg("checking food: " .. reason)
+    end
+
     for i = 1, GetNumBuffs("player") do
         local _, _, timeEnding, _, _, _, _, _, _, _, abilityId = GetUnitBuffInfo("player", i)
         -- Has food...
@@ -242,7 +245,7 @@ function Spud.InitializeFood()
     -- Check every 20 seconds
     EVENT_MANAGER:UnregisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdate")
     if (checkFood and KyzderpsDerps.savedOptions.antispud.food.prewarn > 0) then
-        EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdate", 20000, function() CheckAllFood("periodic") end)
+        EVENT_MANAGER:RegisterForUpdate(KyzderpsDerps.name .. "AntiSpudFoodUpdate", 20000, function() CheckAllFood() end)
     end
 
     -- Listen for combat state to avoid showing warning in combat
