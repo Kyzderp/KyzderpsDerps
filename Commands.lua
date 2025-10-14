@@ -10,7 +10,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall>"
+    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing>"
 
     if (length == 0) then
         CHAT_ROUTER:AddSystemMessage(usage)
@@ -114,6 +114,10 @@ local function HandleKDDCommand(argString)
     -- re-scans and opens containers
     elseif (args[1] == "openall") then
         KyzderpsDerps.Opener.OpenAllInBackpack()
+
+    -- opens writhing wall event crafting boxes
+    elseif (args[1] == "writhing") then
+        KyzderpsDerps.Opener.OpenAllWrithingCrafting()
 
     -- Unknown
     else

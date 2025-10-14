@@ -6,6 +6,15 @@ local Opener = KyzderpsDerps.Opener
 local toLoot = {}
 local toLootNames = {} -- Will be populated when a container is opened, to verify LootAll on correct container
 
+local toLootWrithing = {} -- Names to be populated
+local queuedWrithing = {} -- slotIndex of writhing event container to open, to stop LootAll from opening them after empty
+local function IsWrithingDone()
+    if (next(queuedWrithing)) then
+        return false
+    end
+    return true
+end
+
 
 ---------------------------------------------------------------------
 -- Loot All items once the container is opened
@@ -15,6 +24,13 @@ local function OnOpenLootWindow()
     local title = GetLootTargetInfo()
     if (toLootNames[title]) then
         LootAll()
+    elseif (toLootWrithing[title] and not IsWrithingDone()) then
+        LootAll()
+    end
+
+    if (next(toLootWrithing) and IsWrithingDone()) then
+        toLootWrithing = {}
+        KyzderpsDerps:msg("Done looting Writhing Wall event crafting boxes")
     end
 end
 
@@ -51,6 +67,7 @@ local function OpenContainer(bagId, slotIndex)
 
     if (CanOpenContainer()) then
         KyzderpsDerps:dbg("trying to open container")
+        queuedWrithing[slotIndex] = nil
         if IsProtectedFunction("UseItem") then
             CallSecureProtected("UseItem", bagId, slotIndex)
         else
@@ -85,6 +102,24 @@ local function OpenAllInBackpack()
     end
 end
 Opener.OpenAllInBackpack = OpenAllInBackpack
+
+local writhingCrafting = {
+    [219794] = true,
+    [219800] = true,
+    [219792] = true,
+}
+local function OpenAllWrithingCrafting()
+    local bagCache = SHARED_INVENTORY:GetOrCreateBagCache(BAG_BACKPACK)
+    for _, item in pairs(bagCache) do
+        if (writhingCrafting[GetItemId(item.bagId, item.slotIndex)]) then
+            toLootWrithing[GetItemName(item.bagId, item.slotIndex)] = true
+            queuedWrithing[item.slotIndex] = true
+            writhingCrafting[item.slotIndex] = true
+            OpenContainer(item.bagId, item.slotIndex)
+        end
+    end
+end
+Opener.OpenAllWrithingCrafting = OpenAllWrithingCrafting
 
 
 ---------------------------------------------------------------------

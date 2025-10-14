@@ -335,7 +335,7 @@ end
 local KDD_EVENT_NAMES = {}
 local function BuildEventList()
     for key, val in zo_insecurePairs(_G) do
-        if (string.match(key, "^EVENT_(.*)")) then
+        if (string.sub(key, 1, 6) == "EVENT_") then
             KDD_EVENT_NAMES[val] = key
         end
     end
