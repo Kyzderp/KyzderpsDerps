@@ -15,6 +15,7 @@ local function PortToKyzersHouse()
         JumpToSpecificHouse("@Kyzeragon", KYZ_HOUSE)
     end
 end
+KHouse.PortToKyzersHouse = PortToKyzersHouse
 
 
 -------------------------------------------------------------------------------
