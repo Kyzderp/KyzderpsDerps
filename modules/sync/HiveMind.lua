@@ -10,6 +10,7 @@ local HM = Sync.HiveMind
 local COMMANDS = {
     -- Port to sender
     porttome = function(fromName)
+        if (fromName == GetUnitDisplayName("player") or fromName == GetUnitName("player")) then return end
         if (IsPlayerInGroup(fromName)) then
             JumpToGroupMember(fromName)
         else
@@ -34,27 +35,35 @@ local COMMANDS = {
 
     -- Mudball
     mud = function()
-        UseCollectible(0) -- TODO
+        UseCollectible(601)
     end,
 
     -- Snowball
     snow = function()
-        UseCollectible(0) -- TODO
+        UseCollectible(6932)
     end,
 }
+
+function HM.PrintCommands()
+    for cmd, _ in pairs(COMMANDS) do
+        KyzderpsDerps:msg(cmd)
+    end
+end
 
 
 ---------------------------------------------------------------------
 -- Chat handler
 ---------------------------------------------------------------------
-local validChannels = {CHAT_CHANNEL_PARTY}
+local validChannels = {
+    [CHAT_CHANNEL_PARTY] = true,
+}
 
 local function OnChatMessage(_, channelType, fromName, text)
     if (not validChannels[channelType]) then return end
 
     local func = COMMANDS[text]
     if (func) then
-        func(fromName)
+        func(zo_strformat("<<1>>", fromName))
     end
 end
 
@@ -71,9 +80,7 @@ function HM.Initialize()
 
         -- Put hive mind guild channel in valid. This breaks if leaving or joining, but it's not like I do that often
         for i = 1, GetNumGuilds() do
-            local guildId = GetGuildId(i)
-            if (GetGuildName(guildId) == "The Flawless Conquerors") then
-                d(guildId)
+            if (GetGuildId(i) == 580319) then
                 local channel = _G["CHAT_CHANNEL_GUILD_" .. tostring(i)]
                 validChannels[channel] = true
             end

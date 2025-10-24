@@ -119,6 +119,10 @@ local function HandleKDDCommand(argString)
     elseif (args[1] == "writhing") then
         KyzderpsDerps.Opener.OpenAllWrithingCrafting()
 
+    -- i am forgerful
+    elseif (args[1] == "hive") then
+        KyzderpsDerps.Sync.HiveMind.PrintCommands()
+
     -- Unknown
     else
         CHAT_ROUTER:AddSystemMessage(usage)
