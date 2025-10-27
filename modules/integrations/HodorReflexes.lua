@@ -129,6 +129,7 @@ function Hodor.Initialize()
     KyzderpsDerps:dbg("    Initializing Hodor integration...")
 
     if (origFunction ~= nil) then return end
+    if (not HodorReflexes.modules or not HodorReflexes.modules.share or not HodorReflexes.modules.share.RefreshControls) then return end -- TODO: just to not error with hodor 2 for now
 
     origFunction = HodorReflexes.modules.share.RefreshControls
     HodorReflexes.modules.share.RefreshControls = function(...)
