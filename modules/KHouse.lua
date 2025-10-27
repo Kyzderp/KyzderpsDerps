@@ -7,6 +7,12 @@ local KHouse = KyzderpsDerps.KHouse
 -- For my alt account
 -------------------------------------------------------------------------------
 local function PortToKyzersHouse()
+    if (GetWorldName() == "EU Megaserver") then
+        KyzderpsDerps:msg(string.format("Porting to @code65536's primary"))
+        JumpToHouse("@code65536")
+        return
+    end
+
     local KYZ_HOUSE = 46
     KyzderpsDerps:msg(string.format("Porting to @Kyzeragon's %s...", GetCollectibleName(GetCollectibleIdForHouse(KYZ_HOUSE))))
     if (GetUnitDisplayName("player") == "@Kyzeragon") then
