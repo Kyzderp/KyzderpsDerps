@@ -163,7 +163,7 @@ function Hodor.GetSettings()
         {
             type = "checkbox",
             name = "Enable horn distance icon",
-            tooltip = "When enabled, a colored icon will show next to the horn list if the player almost has horn ready and is within support range. The icon shows green, yellow, or orange depending on distance to yourself. Useful for raid leads especially in vCR with tank gone in portal",
+            tooltip = "When enabled, a colored icon will show next to the horn list if the player almost has horn ready and is within support range. The icon shows green, yellow, or orange depending on distance to yourself. Useful for raid leads especially in vCR with tank gone in portal. NOTE: This is incompatible with Hodor 2.0 for now",
             default = false,
             getFunc = function() return KyzderpsDerps.savedOptions.hodor.horn end,
             setFunc = function(value)
@@ -177,7 +177,7 @@ function Hodor.GetSettings()
         {
             type = "checkbox",
             name = "Enable horn distance label",
-            tooltip = "Additionally shows the horn player's distance in meters to yourself",
+            tooltip = "Additionally shows the horn player's distance in meters to yourself. NOTE: This is incompatible with Hodor 2.0 for now",
             default = false,
             getFunc = function() return KyzderpsDerps.savedOptions.hodor.hornLabel end,
             setFunc = function(value)
