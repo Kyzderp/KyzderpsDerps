@@ -5,6 +5,14 @@ Sync.HiveMind = {}
 local HM = Sync.HiveMind
 
 ---------------------------------------------------------------------
+-- Known accounts
+---------------------------------------------------------------------
+local function GetSVTable()
+    if (not KyzderpsDerpsSavedVariables.Default) then return {} end
+    return KyzderpsDerpsSavedVariables.Default
+end
+
+---------------------------------------------------------------------
 -- Functions
 ---------------------------------------------------------------------
 local COMMANDS = {
@@ -42,6 +50,27 @@ local COMMANDS = {
     snow = function()
         UseCollectible(6932)
     end,
+
+    -- Invite all (CURRENT PLAYER ONLY)
+    inviteall = function(fromName)
+        if (fromName ~= GetUnitDisplayName("player") and fromName ~= GetUnitName("player")) then return end
+        for name, _ in pairs(GetSVTable()) do
+            KyzderpsDerps:msg("Inviting " .. name)
+            GroupInviteByName(name)
+        end
+    end,
+
+    -- Accept invite
+    acceptinvite = function()
+        AcceptGroupInvite()
+    end,
+
+    -- PTE
+    kpte = function()
+        ExitInstanceImmediately()
+    end,
+
+    -- TODO: accept share?
 }
 
 function HM.PrintCommands()
@@ -55,7 +84,7 @@ end
 -- Chat handler
 ---------------------------------------------------------------------
 local validChannels = {
-    [CHAT_CHANNEL_PARTY] = true,
+    -- [CHAT_CHANNEL_PARTY] = true,
 }
 
 local function OnChatMessage(_, channelType, fromName, text)
