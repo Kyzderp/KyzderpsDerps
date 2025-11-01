@@ -18,20 +18,29 @@ local questOptionToAccept = {
         ["How many do you need?"] = true,
         ["All right. I'll make three restoration staves."] = true,
         
+        ["How many shields do you need?"] = true,
+        ["All right. I'll make two shields."] = true,
+
+        ["How many bows will we need?"] = true,
+        ["All right. I'll make three bows."] = true,
+
         ["What kind of armor do you need?"] = true,
         ["All right. I'll craft two cuirasses."] = true,
+
+        ["What do you need from me?"] = true,
+        ["All right. I'll craft two helms."] = true,
+
+        ["What kind of weapons do you need?"] = true,
+        ["All right. I'll craft three axes."] = true,
 
         ["Why won't your friends replace their damaged armor?"] = true,
         ["All right. I'll make two epaulets."] = true,
 
-        ["How many shields do you need?"] = true,
-        ["All right. I'll make two shields."] = true,
-
         ["What do you need?"] = true,
         ["All right. I'll make two arm cops."] = true,
 
-        ["What kind of weapons do you need?"] = true,
-        ["All right. I'll craft three axes."] = true,
+        ["How many jacks do you need?"] = true,
+        ["All right. I'll make two jacks."] = true,
     },
 }
 
@@ -40,7 +49,14 @@ local questOptionToReset = {
     ["-Armorer Reistaff-"] = {
         ["How many potions do you need?"] = true,
         ["What kind of enchantments are you looking for?"] = true,
+        ["What kind of provisions do you need me to make?"] = true,
     },
+}
+
+-- Dialogue titles for which to turn in dialogue
+local questTurnIns = {
+    -- CHATTER_START_ADVANCE_COMPLETABLE_QUEST_CONDITIONS
+    ["-Armorer Reistaff-"] = true,
 }
 
 
@@ -56,18 +72,18 @@ local function OnQuestOffered()
 
     -- Accept based on option text
     if (questOptionToAccept[title] and questOptionToAccept[title][response]) then
-        KyzderpsDerps:msg("Accepting quest: " .. response)
+        KD:msg("Accepting quest: " .. response)
         AcceptOfferedQuest()
         -- Don't unregister quest offered yet; it could have more steps before actually accepting
         -- Instead, just listen for quest added, and if so end the interaction, which unregisters
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestAdded", EVENT_QUEST_ADDED, function()
             EndInteraction(INTERACTION_CONVERSATION)
-            KyzderpsDerps:msg("Chatter ended.")
+            KD:msg("Chatter ended.")
         end)
 
     -- Reset based on option text
     elseif (questOptionToReset[title] and questOptionToReset[title][response]) then
-        KyzderpsDerps:msg("Rerolling dialogue because: " .. response)
+        KD:msg("Rerolling dialogue because: " .. response)
         ResetChatter()
         EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
 
@@ -77,6 +93,14 @@ local function OnQuestOffered()
     end
 end
 
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+local function OnQuestCompleteDialog(_, journalIndex)
+    EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestCompleting", EVENT_QUEST_COMPLETE_DIALOG)
+    KD:msg("Completing quest, was journalIndex: " .. tostring(journalIndex))
+    CompleteQuest()
+end
 
 ---------------------------------------------------------------------
 -- Chatter start handler. This is just for "normal" chatter, and
@@ -94,10 +118,20 @@ local function OnChatter()
 
     -- Accept based on option text
     if (optionsToAdvance[title] and optionsToAdvance[title][optionString]) then
-        KyzderpsDerps:msg("Advancing dialogue: " .. optionString)
+        KD:msg("Advancing dialogue: " .. optionString)
         SelectChatterOption(1)
-        EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED, OnQuestOffered)
+        if (optionType == CHATTER_START_NEW_QUEST_BESTOWAL) then
+            EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED, OnQuestOffered)
+        end
+
+    -- Quest turn-in (start)
+    elseif (questTurnIns[title] and (optionType == CHATTER_START_ADVANCE_COMPLETABLE_QUEST_CONDITIONS or optionType == CHATTER_START_COMPLETE_QUEST)) then
+        KD:msg("Advancing quest turn-in: " .. optionString)
+        SelectChatterOption(1)
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestCompleting", EVENT_QUEST_COMPLETE_DIALOG, OnQuestCompleteDialog)
     end
+
+    -- TODO: quest turn-in?
 end
 
 
@@ -108,10 +142,13 @@ function Chatter.Initialize()
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN)
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END)
 
-    EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN, OnChatter)
-    EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END, function()
-        EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
-    end)
+    -- TODO: extend this to other dialogues? what else is there that could save some time?
+    if (KD.savedOptions.chatter.rerollReistaff) then
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN, OnChatter)
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END, function()
+            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+        end)
+    end
 end
 
 function Chatter.GetSettings()
@@ -119,11 +156,11 @@ function Chatter.GetSettings()
         {
             type = "checkbox",
             name = "Reroll writhing crafting quests",
-            tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only. You can adjust this or add different languages in KyzderpsDerps/modules/questchatter",
+            tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest, and turns in quests. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only. You can adjust this or add different languages in KyzderpsDerps/modules/questchatter",
             default = false,
-            getFunc = function() return KyzderpsDerps.savedOptions.chatter.rerollReistaff end,
+            getFunc = function() return KD.savedOptions.chatter.rerollReistaff end,
             setFunc = function(value)
-                    KyzderpsDerps.savedOptions.chatter.rerollReistaff = value
+                    KD.savedOptions.chatter.rerollReistaff = value
                     Chatter.Initialize()
                 end,
             width = "full",
