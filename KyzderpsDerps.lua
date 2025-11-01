@@ -360,6 +360,7 @@ local function Initialize()
     KyzderpsDerps.Poopfist.Initialize()
     KyzderpsDerps.PreLogout.Initialize()
     KyzderpsDerps.InitializeAOE()
+    KyzderpsDerps.Chatter.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")

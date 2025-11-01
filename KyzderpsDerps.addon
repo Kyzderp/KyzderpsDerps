@@ -78,3 +78,5 @@ modules/tribute/Tribute.xml
 
 modules/uielements/AoeColors.lua
 modules/uielements/Reposition.lua
+
+modules/questchatter/QuestChatter.lua
