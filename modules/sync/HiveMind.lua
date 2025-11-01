@@ -26,11 +26,6 @@ local COMMANDS = {
         end
     end,
 
-    -- Accept ready check
-    acceptready = function()
-        AcceptLFGReadyCheckNotification()
-    end,
-
     -- Port to my house
     khouse = function()
         KD.KHouse.PortToKyzersHouse()
@@ -55,14 +50,11 @@ local COMMANDS = {
     inviteall = function(fromName)
         if (fromName ~= GetUnitDisplayName("player") and fromName ~= GetUnitName("player")) then return end
         for name, _ in pairs(GetSVTable()) do
-            KyzderpsDerps:msg("Inviting " .. name)
-            GroupInviteByName(name)
+            if (name ~= GetUnitDisplayName("player")) then
+                KyzderpsDerps:msg("Inviting " .. name)
+                GroupInviteByName(name)
+            end
         end
-    end,
-
-    -- Accept invite
-    acceptinvite = function()
-        AcceptGroupInvite()
     end,
 
     -- PTE
@@ -70,7 +62,28 @@ local COMMANDS = {
         ExitInstanceImmediately()
     end,
 
-    -- TODO: accept share?
+    -- Accept whatever?
+    kyes = function()
+        local groupInvite = GetGroupInviteInfo()
+        if (groupInvite and groupInvite ~= "") then
+            AcceptGroupInvite()
+            KyzderpsDerps:msg("Accepting group invite")
+        elseif (HasLFGReadyCheckNotification()) then
+            AcceptLFGReadyCheckNotification()
+            KyzderpsDerps:msg("Accepting ready check")
+        elseif (GetOfferedQuestShareIds()) then
+            local id = GetOfferedQuestShareIds()
+            AcceptSharedQuest(id)
+            KyzderpsDerps:msg("Accepting quest " .. tostring(id))
+        else
+            KyzderpsDerps:msg("Nothing to accept")
+        end
+    end,
+
+    -- reloadui
+    krl = function()
+        ReloadUI()
+    end,
 }
 
 function HM.PrintCommands()
