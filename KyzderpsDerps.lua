@@ -192,6 +192,9 @@ local defaultOptions = {
     skills = {
         poopstomp = false,
     },
+    chatter = {
+        rerollReistaff = false,
+    },
 }
 
 local defaultValues = {

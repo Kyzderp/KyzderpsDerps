@@ -46,6 +46,8 @@ local questOptionToReset = {
 
 ---------------------------------------------------------------------
 -- Quest offered handler, called immediately after advancing dialogue
+-- Can be called multiple times because the quest could have multiple
+-- dialogues before actually being accepted
 ---------------------------------------------------------------------
 local function OnQuestOffered()
     local title = ZO_InteractWindowTargetAreaTitle:GetText()
@@ -77,7 +79,8 @@ end
 
 
 ---------------------------------------------------------------------
--- Chatter start handler. This doesn't include the starting of quests
+-- Chatter start handler. This is just for "normal" chatter, and
+-- doesn't include the starting of quests
 ---------------------------------------------------------------------
 local function OnChatter()
     local optionCount = GetChatterOptionCount()
@@ -102,8 +105,28 @@ end
 -- Init
 ---------------------------------------------------------------------
 function Chatter.Initialize()
+    EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN)
+    EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END)
+
     EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN, OnChatter)
     EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END, function()
         EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
     end)
+end
+
+function Chatter.GetSettings()
+    return {
+        {
+            type = "checkbox",
+            name = "Reroll writhing crafting quests",
+            tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only. You can adjust this or add different languages in KyzderpsDerps/modules/questchatter",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.chatter.rerollReistaff end,
+            setFunc = function(value)
+                    KyzderpsDerps.savedOptions.chatter.rerollReistaff = value
+                    Chatter.Initialize()
+                end,
+            width = "full",
+        },
+    }
 end

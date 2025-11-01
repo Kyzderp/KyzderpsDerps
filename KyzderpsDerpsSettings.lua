@@ -1264,6 +1264,12 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Dialogue Chatter",
+            controls = KyzderpsDerps.Chatter.GetSettings(),
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Miscellaneous",
             controls = CreateMiscSettings(),
         },
