@@ -55,7 +55,6 @@ local questOptionToReset = {
 
 -- Dialogue titles for which to turn in dialogue
 local questTurnIns = {
-    -- CHATTER_START_ADVANCE_COMPLETABLE_QUEST_CONDITIONS
     ["-Armorer Reistaff-"] = true,
 }
 
@@ -76,6 +75,7 @@ local function OnQuestOffered()
         AcceptOfferedQuest()
         -- Don't unregister quest offered yet; it could have more steps before actually accepting
         -- Instead, just listen for quest added, and if so end the interaction, which unregisters
+        -- TODO: could have issues with other addons that auto accept quests while we're in dialogue?
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestAdded", EVENT_QUEST_ADDED, function()
             EndInteraction(INTERACTION_CONVERSATION)
             KD:msg("Chatter ended.")
@@ -95,6 +95,7 @@ end
 
 
 ---------------------------------------------------------------------
+-- Quest turn-in, should be the final step of it
 ---------------------------------------------------------------------
 local function OnQuestCompleteDialog(_, journalIndex)
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestCompleting", EVENT_QUEST_COMPLETE_DIALOG)
@@ -130,8 +131,6 @@ local function OnChatter()
         SelectChatterOption(1)
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestCompleting", EVENT_QUEST_COMPLETE_DIALOG, OnQuestCompleteDialog)
     end
-
-    -- TODO: quest turn-in?
 end
 
 
@@ -156,7 +155,7 @@ function Chatter.GetSettings()
         {
             type = "checkbox",
             name = "Reroll writhing crafting quests",
-            tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest, and turns in quests. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only. You can adjust this or add different languages in KyzderpsDerps/modules/questchatter",
+            tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest, and turns in quests. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only.\n\nYou can adjust this or add different languages in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
             default = false,
             getFunc = function() return KD.savedOptions.chatter.rerollReistaff end,
             setFunc = function(value)
