@@ -64,6 +64,9 @@ local questTurnIns = {
 -- Can be called multiple times because the quest could have multiple
 -- dialogues before actually being accepted
 ---------------------------------------------------------------------
+local MAX_RETRIES = 20
+local numRetries = 0
+
 local function OnQuestOffered()
     local title = ZO_InteractWindowTargetAreaTitle:GetText()
 
@@ -83,7 +86,13 @@ local function OnQuestOffered()
 
     -- Reset based on option text
     elseif (questOptionToReset[title] and questOptionToReset[title][response]) then
+        if (numRetries > MAX_RETRIES) then
+            KD:msg("Stopping rerolling because exceeded max tries")
+            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            return
+        end
         KD:msg("Rerolling dialogue because: " .. response)
+        numRetries = numRetries + 1
         ResetChatter()
         EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
 
@@ -146,6 +155,7 @@ function Chatter.Initialize()
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN, OnChatter)
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END, function()
             EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            numRetries = 0
         end)
     end
 end
