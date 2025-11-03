@@ -194,6 +194,8 @@ local defaultOptions = {
     },
     chatter = {
         rerollReistaff = false,
+        usePriority = false,
+        priorityDoneToday = false,
     },
 }
 

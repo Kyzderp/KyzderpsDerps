@@ -10,7 +10,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing>"
+    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing || resetcraft>"
 
     if (length == 0) then
         CHAT_ROUTER:AddSystemMessage(usage)
@@ -118,6 +118,10 @@ local function HandleKDDCommand(argString)
     -- opens writhing wall event crafting boxes
     elseif (args[1] == "writhing") then
         KyzderpsDerps.Opener.OpenAllWrithingCrafting()
+
+    -- janky manual reset for priority craft reroll
+    elseif (args[1] == "resetcraft") then
+        KyzderpsDerps.Chatter.ResetPriority()
 
     -- i am forgerful
     elseif (args[1] == "hive") then

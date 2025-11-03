@@ -58,6 +58,17 @@ local questTurnIns = {
     ["-Armorer Reistaff-"] = true,
 }
 
+-- Quest options to prioritize, will continue rerolling until one of these is met
+-- TODO: this currently doesn't advance the next step of quest, leaving user to
+-- accept it manually
+local priorityQuestOptions = {
+    ["-Armorer Reistaff-"] = {
+        ["How many potions do you need?"] = true,
+        ["What kind of enchantments are you looking for?"] = true,
+        ["What kind of provisions do you need me to make?"] = true,
+    },
+}
+
 
 ---------------------------------------------------------------------
 -- Quest offered handler, called immediately after advancing dialogue
@@ -71,6 +82,30 @@ local function OnQuestOffered()
     local title = ZO_InteractWindowTargetAreaTitle:GetText()
 
     local dialogue, response = GetOfferedQuestInfo()
+
+    -- If priority quest has not been done, only accept priority quests
+    -- TODO: reset automatically per day
+    if (KD.savedOptions.chatter.usePriority and not KD.savedOptions.chatter.priorityDoneToday and priorityQuestOptions[title]) then
+        -- TODO: refactor
+        if (priorityQuestOptions[title][response]) then
+            KD:msg("Accepting PRIORITY quest: " .. response)
+            AcceptOfferedQuest()
+            KD.savedOptions.chatter.priorityDoneToday = true
+            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+        else
+            -- Always reset if not priority quest
+            if (numRetries > MAX_RETRIES) then
+                KD:msg("Stopping rerolling because exceeded max tries")
+                EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+                return
+            end
+            KD:msg("Rerolling dialogue because not PRIORITY: " .. response)
+            numRetries = numRetries + 1
+            ResetChatter()
+            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+        end
+        return
+    end
 
     -- Accept based on option text
     if (questOptionToAccept[title] and questOptionToAccept[title][response]) then
@@ -100,6 +135,11 @@ local function OnQuestOffered()
     else
         EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
     end
+end
+
+function Chatter.ResetPriority()
+    KD.savedOptions.chatter.priorityDoneToday = false
+    KD:msg("Priority rerolling reset")
 end
 
 
@@ -155,6 +195,7 @@ function Chatter.Initialize()
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN, OnChatter)
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END, function()
             EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestAdded", EVENT_QUEST_ADDED)
             numRetries = 0
         end)
     end
@@ -173,6 +214,18 @@ function Chatter.GetSettings()
                     Chatter.Initialize()
                 end,
             width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "    Reroll until new quests for first box",
+            tooltip = "When it is your FIRST crafting quest, reroll until it's an enchanting, provisioning, or alchemy quest. This is so the glorious box is more likely to drop the newer furnishing plans. You must RESET the first box tracking using |c99FF99/kdd resetcraft|r to start rerolling for the first box every day (I'm too busy atm to make it reset automatically and test it; this feature might come eventually. It currently also doesn't advance the next option automatically).\n\nYou can adjust which ones are accepted in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
+            default = false,
+            getFunc = function() return KD.savedOptions.chatter.usePriority end,
+            setFunc = function(value)
+                    KD.savedOptions.chatter.usePriority = value
+                end,
+            width = "full",
+            disabled = function() return not KD.savedOptions.chatter.rerollReistaff end,
         },
     }
 end
