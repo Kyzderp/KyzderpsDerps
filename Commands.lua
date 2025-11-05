@@ -329,13 +329,52 @@ local function PortToAnyInZone(desiredZoneId)
     KyzderpsDerps:msg("Couldn't find anywhere to port to :(")
 end
 
+
+---------------------------------------------------------------------
+-- /ktp sol
+---------------------------------------------------------------------
+local function FindDesiredZone(searchString)
+    searchString = string.lower(searchString)
+
+    -- Search overland zones first
+    for zoneId, _ in pairs(overlandZones) do
+        local name = string.lower(GetZoneNameById(zoneId))
+        if (string.find(name, searchString, 1, true)) then
+            KyzderpsDerps:msg(string.format("Matched zone %s (%d)", GetZoneNameById(zoneId), zoneId))
+            return zoneId
+        end
+    end
+
+    -- TODO: maybe others?
+
+    KyzderpsDerps:msg("Couldn't find overland zone matching \"" .. searchString .. "\"")
+    return nil
+end
+
+local function PortToZoneSearch(argString)
+    if (not argString or argString == "") then
+        KyzderpsDerps:msg("Usage: /ktp <partial zone name>  ||  Example: /ktp sol")
+        return
+    end
+
+    local zoneId = FindDesiredZone(argString)
+    if (zoneId) then
+        PortToAnyInZone(zoneId)
+    end
+end
+
+
 ---------------------------------------------------------------------
 function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/kdd"] = HandleKDDCommand
     SLASH_COMMANDS["/fixui"] = FixUI
     SLASH_COMMANDS["/ids"] = ToggleLuiIds
+
+    -- Porting to player
     SLASH_COMMANDS["/wayshrine"] = function() PortToAnyInZone(KyzderpsDerps.savedOptions.misc.wayshrineZoneId) end
     SLASH_COMMANDS["/currentshrine"] = function() PortToAnyInZone(GetZoneId(GetUnitZoneIndex("player"))) end
+    SLASH_COMMANDS["/ktp"] = PortToZoneSearch
+
     SLASH_COMMANDS["/refreshsurvey"] = KyzderpsDerps.Loot.RefreshSurvey
 
     -- Shortcut commands
