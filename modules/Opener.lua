@@ -107,6 +107,10 @@ local writhingCrafting = {
     [219794] = true,
     [219800] = true,
     [219792] = true,
+
+    [219796] = true, -- Enchanting
+    [219798] = true, -- Provisioning
+    [219790] = true, -- Alchemy
 }
 local function OpenAllWrithingCrafting()
     local bagCache = SHARED_INVENTORY:GetOrCreateBagCache(BAG_BACKPACK)
