@@ -201,6 +201,7 @@ local overlandZones = {
     [382] = true, -- Reaper's March
     [20] = true, -- Rivenspire
     [117] = true, -- Shadowfen
+    [1502] = true, -- Solstice
     [1133] = true, -- Southern Elsweyr
     [41] = true, -- Stonefalls
     [19] = true, -- Stormhaven
@@ -224,8 +225,7 @@ end
 
 -- Port to any player in group, friends, or guilds who is in the
 -- desired zone. As a fallback, port to any overland zone (hopefully)
-local function PortToAnyInZone()
-    local desiredZoneId = KyzderpsDerps.savedOptions.misc.wayshrineZoneId
+local function PortToAnyInZone(desiredZoneId)
     if (not desiredZoneId) then
         KyzderpsDerps:msg("Wayshrine: |cFF0000Invalid zone ID! Please check the Kyzderps setting: Miscellaneous > /wayshrine zone ID")
         return
@@ -334,7 +334,8 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/kdd"] = HandleKDDCommand
     SLASH_COMMANDS["/fixui"] = FixUI
     SLASH_COMMANDS["/ids"] = ToggleLuiIds
-    SLASH_COMMANDS["/wayshrine"] = PortToAnyInZone
+    SLASH_COMMANDS["/wayshrine"] = function() PortToAnyInZone(KyzderpsDerps.savedOptions.misc.wayshrineZoneId) end
+    SLASH_COMMANDS["/currentshrine"] = function() PortToAnyInZone(GetZoneId(GetUnitZoneIndex("player"))) end
     SLASH_COMMANDS["/refreshsurvey"] = KyzderpsDerps.Loot.RefreshSurvey
 
     -- Shortcut commands
