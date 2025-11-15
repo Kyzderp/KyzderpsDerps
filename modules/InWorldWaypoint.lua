@@ -6,6 +6,55 @@ WorldIcons.name = KyzderpsDerps.name .. "WorldIcons"
 ---------------------------------------------------------------------
 -- Map Waypoint
 ---------------------------------------------------------------------
+local function ConvertToWorldPosition(localX, localZ)
+    -- Somewhat yoinked from M0R
+    local zone, pX, pY, pZ = GetUnitRawWorldPosition("player")
+
+    -- Calculate based on some other arbitrary point
+    local playerNormalizedX, playerNormalizedY = GetRawNormalizedWorldPosition(zone, pX, pY, pZ)
+    local otherNormalizedX, otherNormalizedY = GetRawNormalizedWorldPosition(zone, pX + 100, pY, pZ + 100)
+
+    -- Linear regression through these 2 points
+    local mX =  100 / (otherNormalizedX - playerNormalizedX)
+    local bX = pX - playerNormalizedX * mX
+
+    local mY = 100 / (otherNormalizedY - playerNormalizedY)
+    local bY = pZ - playerNormalizedY * mY
+
+    -- Plug in waypoint coords
+    local worldX = mX * localX + bX
+    local worldZ = mY * localZ + bY
+
+    return worldX, worldZ
+end
+
+local function WaypointUpdateFunc(icon)
+    local localX, localZ = GetMapPlayerWaypoint()
+    if (localX == 0 and localZ == 0) then
+        icon:SetColor(1, 1, 1, 0) -- Set alpha to 0 to hide, not exactly efficient I guess
+        return
+    end
+
+    worldX, worldZ = ConvertToWorldPosition(localX, localZ)
+
+    local _, _, worldY = GetUnitRawWorldPosition("player")
+
+    icon:SetPosition(worldX, worldY, worldZ)
+    icon:SetColor(1, 1, 1, 1)
+end
+
+local function CreateCrutchWaypoint()
+    CrutchAlerts.CreateWorldTexture(
+        "esoui/art/mappins/ui_worldmap_pin_customdestination.dds",
+        0, 0, 0,
+        1, 1,
+        C.WHITE,
+        false, -- useDepthBuffer
+        true, -- faceCamera
+        nil,
+        updateFunc)
+end
+
 local worldIcon
 local function UpdateWaypoint()
     if (not Lib3D:GetCurrentZoneMeasurement()) then
@@ -261,6 +310,11 @@ end
 -- Called on initial player activated
 ---------------------------------------------------------------------
 function WorldIcons.Initialize()
+    if (CrutchAlerts and CrutchAlerts.CreateWorldTexture and KyzderpsDerps.savedOptions.worldIcons.destination) then
+        CreateCrutchWaypoint()
+        -- TODO: cleanup
+    end
+
     if (OSI and OSI.CreatePositionIcon and Lib3D
         and KyzderpsDerps.savedOptions.worldIcons.destination) then
         KyzderpsDerps:dbg("    Initializing Waypoint module...")
