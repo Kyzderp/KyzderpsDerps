@@ -35,7 +35,7 @@ local function WaypointUpdateFunc(icon)
         return
     end
 
-    worldX, worldZ = ConvertToWorldPosition(localX, localZ)
+    local worldX, worldZ = ConvertToWorldPosition(localX, localZ)
 
     local _, _, worldY = GetUnitRawWorldPosition("player")
 
@@ -44,16 +44,17 @@ local function WaypointUpdateFunc(icon)
 end
 
 local function CreateCrutchWaypoint()
-    CrutchAlerts.CreateWorldTexture(
+    CrutchAlerts.Drawing.CreateWorldTexture(
         "esoui/art/mappins/ui_worldmap_pin_customdestination.dds",
         0, 0, 0,
         1, 1,
-        C.WHITE,
+        {1, 1, 1},
         false, -- useDepthBuffer
         true, -- faceCamera
         nil,
-        updateFunc)
+        WaypointUpdateFunc)
 end
+KyzderpsDerps.CreateCrutchWaypoint = CreateCrutchWaypoint
 
 local worldIcon
 local function UpdateWaypoint()
@@ -310,7 +311,7 @@ end
 -- Called on initial player activated
 ---------------------------------------------------------------------
 function WorldIcons.Initialize()
-    if (CrutchAlerts and CrutchAlerts.CreateWorldTexture and KyzderpsDerps.savedOptions.worldIcons.destination) then
+    if (CrutchAlerts and CrutchAlerts.Drawing.CreateWorldTexture and KyzderpsDerps.savedOptions.worldIcons.destination) then
         CreateCrutchWaypoint()
         -- TODO: cleanup
     end
