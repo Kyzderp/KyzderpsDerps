@@ -6,7 +6,15 @@ WorldIcons.name = KyzderpsDerps.name .. "WorldIcons"
 ---------------------------------------------------------------------
 -- Map Waypoint
 ---------------------------------------------------------------------
+local cachedLocalX, cachedLocalZ
+local cachedWorldX, cachedWorldZ
+
 local function ConvertToWorldPosition(localX, localZ)
+    -- Check cached first
+    if (localX == cachedLocalX and localZ == cachedLocalZ) then
+        return cachedWorldX, cachedWorldZ
+    end
+
     -- Somewhat yoinked from M0R
     local zone, pX, pY, pZ = GetUnitRawWorldPosition("player")
 
@@ -24,6 +32,11 @@ local function ConvertToWorldPosition(localX, localZ)
     -- Plug in waypoint coords
     local worldX = mX * localX + bX
     local worldZ = mY * localZ + bY
+
+    cachedLocalX = localX
+    cachedLocalZ = localZ
+    cachedWorldX = worldX
+    cachedWorldZ = worldZ
 
     return worldX, worldZ
 end
@@ -54,7 +67,6 @@ local function CreateCrutchWaypoint()
         nil,
         WaypointUpdateFunc)
 end
-KyzderpsDerps.CreateCrutchWaypoint = CreateCrutchWaypoint
 
 local worldIcon
 local function UpdateWaypoint()
@@ -311,14 +323,12 @@ end
 -- Called on initial player activated
 ---------------------------------------------------------------------
 function WorldIcons.Initialize()
+    KyzderpsDerps:dbg("    Initializing Waypoint module...")
     if (CrutchAlerts and CrutchAlerts.Drawing.CreateWorldTexture and KyzderpsDerps.savedOptions.worldIcons.destination) then
         CreateCrutchWaypoint()
         -- TODO: cleanup
-    end
-
-    if (OSI and OSI.CreatePositionIcon and Lib3D
+    elseif (OSI and OSI.CreatePositionIcon and Lib3D
         and KyzderpsDerps.savedOptions.worldIcons.destination) then
-        KyzderpsDerps:dbg("    Initializing Waypoint module...")
 
         EVENT_MANAGER:RegisterForUpdate(WorldIcons.name .. "Waypoint", 1000, UpdateWaypoint)
     end
