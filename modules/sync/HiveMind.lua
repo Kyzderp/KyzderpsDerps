@@ -12,6 +12,64 @@ local function GetSVTable()
     return KyzderpsDerpsSavedVariables.Default
 end
 
+local function IsMe(name)
+    -- @name
+    if (GetSVTable()[name]) then
+        return true
+    end
+
+    -- char name
+    for _, accountData in pairs(GetSVTable()) do
+        if (accountData.Values
+            and accountData.Values.charInfo
+            and accountData.Values.charInfo.characters
+            and accountData.Values.charInfo.characters[name]) then
+            return true
+        end
+    end
+
+    return false
+end
+
+
+---------------------------------------------------------------------
+-- Misc
+---------------------------------------------------------------------
+local HAS_MULTIRIDER = {
+    ["@Kyzeragon"] = true,
+}
+
+local function IndexOf(tab, item)
+    for i, v in ipairs(tab) do
+        if (v == item) then
+            return i
+        end
+    end
+    return -1
+end
+
+local drivers = {}
+local passengers = {}
+local function SortRiders()
+    if (#drivers == 0) then
+        for name, _ in pairs(GetSVTable()) do
+            if (HAS_MULTIRIDER[name]) then
+                table.insert(drivers, name)
+            else
+                table.insert(passengers, name)
+            end
+        end
+        table.sort(drivers)
+        table.sort(passengers)
+    end
+
+    local index = IndexOf(passengers, GetUnitDisplayName("player"))
+    if (index > 0 and index <= #drivers) then
+        return drivers[index]
+    end
+end
+
+
 ---------------------------------------------------------------------
 -- Functions
 ---------------------------------------------------------------------
@@ -84,6 +142,30 @@ local COMMANDS = {
     krl = function()
         ReloadUI()
     end,
+
+    -- log out
+    klog = function()
+        Logout()
+    end,
+
+    -- quit
+    kquit = function()
+        Quit()
+    end,
+
+    -- Get on multi rider mount
+    kmount = function()
+        if (HAS_MULTIRIDER[GetUnitDisplayName("player")]) then
+            -- TODO: switch to multi rider? maybe automatically when joined group?
+            return
+        end
+
+        local driver = SortRiders()
+        if (driver) then
+            UseMountAsPassenger(driver)
+        end
+        -- TODO: do i even have more multi rider mounts?
+    end,
 }
 
 function HM.PrintCommands()
@@ -111,6 +193,18 @@ end
 
 
 ---------------------------------------------------------------------
+-- Quest share handler
+---------------------------------------------------------------------
+local function OnQuestShared()
+    local _, _, _, displayName = GetOfferedQuestShareInfo(questId)
+
+    if (IsMe(displayName)) then
+        AcceptSharedQuest(questId)
+    end
+end
+
+
+---------------------------------------------------------------------
 -- Initialize
 ---------------------------------------------------------------------
 function HM.Initialize()
@@ -127,5 +221,7 @@ function HM.Initialize()
                 validChannels[channel] = true
             end
         end
+
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "HiveMindQuestShared", EVENT_QUEST_SHARED, OnQuestShared)
     end
 end
