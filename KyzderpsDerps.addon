@@ -77,7 +77,7 @@ modules/reticle/Reticle.lua
 modules/skills/Poopfist.lua
 
 modules/sync/Sync.lua
-modules/sync/HiveMind.lua
+modules/sync/Kyzerg.lua
 
 modules/tribute/Tribute.lua
 modules/tribute/Tribute.xml

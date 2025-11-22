@@ -1,8 +1,8 @@
 local KD = KyzderpsDerps
 local Sync = KD.Sync
 
-Sync.HiveMind = {}
-local HM = Sync.HiveMind
+Sync.Kyzerg = {}
+local Kyzerg = Sync.Kyzerg
 
 ---------------------------------------------------------------------
 -- Known accounts
@@ -168,7 +168,7 @@ local COMMANDS = {
     end,
 }
 
-function HM.PrintCommands()
+function Kyzerg.PrintCommands()
     for cmd, _ in pairs(COMMANDS) do
         KyzderpsDerps:msg(cmd)
     end
@@ -208,14 +208,14 @@ end
 ---------------------------------------------------------------------
 -- Initialize
 ---------------------------------------------------------------------
-function HM.Initialize()
-    EVENT_MANAGER:UnregisterForEvent(KD.name .. "HiveMindChatMessage", EVENT_CHAT_MESSAGE_CHANNEL)
+function Kyzerg.Initialize()
+    EVENT_MANAGER:UnregisterForEvent(KD.name .. "KyzergChatMessage", EVENT_CHAT_MESSAGE_CHANNEL)
     if (KD.savedOptions.general.experimental) then
-        KD:dbg("    Initializing HiveMind module...")
+        KD:dbg("    Initializing Kyzerg module...")
 
-        EVENT_MANAGER:RegisterForEvent(KD.name .. "HiveMindChatMessage", EVENT_CHAT_MESSAGE_CHANNEL, OnChatMessage)
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergChatMessage", EVENT_CHAT_MESSAGE_CHANNEL, OnChatMessage)
 
-        -- Put hive mind guild channel in valid. This breaks if leaving or joining, but it's not like I do that often
+        -- Put zerg guild channel in valid. This breaks if leaving or joining, but it's not like I do that often
         for i = 1, GetNumGuilds() do
             if (GetGuildId(i) == 580319) then
                 local channel = _G["CHAT_CHANNEL_GUILD_" .. tostring(i)]
@@ -223,6 +223,6 @@ function HM.Initialize()
             end
         end
 
-        EVENT_MANAGER:RegisterForEvent(KD.name .. "HiveMindQuestShared", EVENT_QUEST_SHARED, OnQuestShared)
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergQuestShared", EVENT_QUEST_SHARED, OnQuestShared)
     end
 end

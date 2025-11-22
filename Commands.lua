@@ -124,8 +124,8 @@ local function HandleKDDCommand(argString)
         KyzderpsDerps.Chatter.ResetPriority()
 
     -- i am forgerful
-    elseif (args[1] == "hive") then
-        KyzderpsDerps.Sync.HiveMind.PrintCommands()
+    elseif (args[1] == "kyzerg") then
+        KyzderpsDerps.Sync.Kyzerg.PrintCommands()
 
     -- Unknown
     else
