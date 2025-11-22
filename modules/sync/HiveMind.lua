@@ -75,7 +75,7 @@ end
 ---------------------------------------------------------------------
 local COMMANDS = {
     -- Port to sender
-    porttome = function(fromName)
+    k2me = function(fromName)
         if (fromName == GetUnitDisplayName("player") or fromName == GetUnitName("player")) then return end
         if (IsPlayerInGroup(fromName)) then
             JumpToGroupMember(fromName)
@@ -90,22 +90,22 @@ local COMMANDS = {
     end,
 
     -- Port to self house
-    gohome = function()
+    khouseself = function()
         RequestJumpToHouse(GetHousingPrimaryHouse())
     end,
 
     -- Mudball
-    mud = function()
+    kmud = function()
         UseCollectible(601)
     end,
 
     -- Snowball
-    snow = function()
+    ksnow = function()
         UseCollectible(6932)
     end,
 
     -- Invite all (CURRENT PLAYER ONLY)
-    inviteall = function(fromName)
+    kinvite = function(fromName)
         if (fromName ~= GetUnitDisplayName("player") and fromName ~= GetUnitName("player")) then return end
         for name, _ in pairs(GetSVTable()) do
             if (name ~= GetUnitDisplayName("player")) then
@@ -195,11 +195,12 @@ end
 ---------------------------------------------------------------------
 -- Quest share handler
 ---------------------------------------------------------------------
-local function OnQuestShared()
+local function OnQuestShared(_, questId)
     local _, _, _, displayName = GetOfferedQuestShareInfo(questId)
 
     if (IsMe(displayName)) then
         AcceptSharedQuest(questId)
+        KD:msg("Accepting quest " .. questId .. " from " .. displayName)
     end
 end
 
