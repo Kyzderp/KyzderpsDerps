@@ -196,11 +196,11 @@ end
 -- Quest share handler
 ---------------------------------------------------------------------
 local function OnQuestShared(_, questId)
-    local _, _, _, displayName = GetOfferedQuestShareInfo(questId)
+    local questName, _, _, displayName = GetOfferedQuestShareInfo(questId)
 
     if (IsMe(displayName)) then
         AcceptSharedQuest(questId)
-        KD:msg("Accepting quest " .. questId .. " from " .. displayName)
+        KD:msg("Accepting quest " .. questName .. " (" .. questId .. ") from " .. displayName)
     end
 end
 

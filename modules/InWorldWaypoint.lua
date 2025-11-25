@@ -60,7 +60,7 @@ local function CreateCrutchWaypoint()
     CrutchAlerts.Drawing.CreateWorldTexture(
         "esoui/art/mappins/ui_worldmap_pin_customdestination.dds",
         0, 0, 0,
-        1, 1,
+        5, 5,
         {1, 1, 1},
         false, -- useDepthBuffer
         true, -- faceCamera
