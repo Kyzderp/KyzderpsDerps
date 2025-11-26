@@ -51,6 +51,7 @@ end
 local drivers = {}
 local passengers = {}
 local function SortRiders()
+    -- TODO: maybe only online in group
     if (#drivers == 0) then
         for name, _ in pairs(GetSVTable()) do
             if (HAS_MULTIRIDER[name]) then
@@ -196,11 +197,11 @@ end
 -- Quest share handler
 ---------------------------------------------------------------------
 local function OnQuestShared(_, questId)
-    local questName, _, _, displayName = GetOfferedQuestShareInfo(questId)
+    local _, _, _, displayName = GetOfferedQuestShareInfo(questId)
 
     if (IsMe(displayName)) then
         AcceptSharedQuest(questId)
-        KD:msg("Accepting quest " .. questName .. " (" .. questId .. ") from " .. displayName)
+        KD:msg("Accepting quest " .. questId .. " from " .. displayName)
     end
 end
 

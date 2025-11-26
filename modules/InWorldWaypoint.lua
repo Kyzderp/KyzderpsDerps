@@ -56,8 +56,9 @@ local function WaypointUpdateFunc(icon)
     icon:SetColor(1, 1, 1, 1)
 end
 
+local crutchWaypointKey
 local function CreateCrutchWaypoint()
-    CrutchAlerts.Drawing.CreateWorldTexture(
+    crutchWaypointKey = CrutchAlerts.Drawing.CreateWorldTexture(
         "esoui/art/mappins/ui_worldmap_pin_customdestination.dds",
         0, 0, 0,
         5, 5,
@@ -70,12 +71,6 @@ end
 
 local worldIcon
 local function UpdateWaypoint()
-    if (not Lib3D:GetCurrentZoneMeasurement()) then
-        return
-    end
-
-    local _, _, worldY = GetUnitRawWorldPosition("player")
-
     if (worldIcon) then
         OSI.DiscardPositionIcon(worldIcon)
         worldIcon = nil
@@ -86,8 +81,10 @@ local function UpdateWaypoint()
         return
     end
 
-    local worldX, worldZ = Lib3D:LocalToWorld(localX, localZ)
-    worldIcon = OSI.CreatePositionIcon(worldX * 100, worldY, worldZ * 100, "esoui/art/mappins/ui_worldmap_pin_customdestination.dds", 200)
+    local worldX, worldZ = ConvertToWorldPosition(localX, localZ)
+    local _, _, worldY = GetUnitRawWorldPosition("player")
+
+    worldIcon = OSI.CreatePositionIcon(worldX, worldY, worldZ, "esoui/art/mappins/ui_worldmap_pin_customdestination.dds", 200)
 end
 
 ---------------------------------------------------------------------
@@ -326,10 +323,8 @@ function WorldIcons.Initialize()
     KyzderpsDerps:dbg("    Initializing Waypoint module...")
     if (CrutchAlerts and CrutchAlerts.Drawing.CreateWorldTexture and KyzderpsDerps.savedOptions.worldIcons.destination) then
         CreateCrutchWaypoint()
-        -- TODO: cleanup
-    elseif (OSI and OSI.CreatePositionIcon and Lib3D
-        and KyzderpsDerps.savedOptions.worldIcons.destination) then
-
+        -- TODO: clean up
+    elseif (OSI and OSI.CreatePositionIcon and KyzderpsDerps.savedOptions.worldIcons.destination) then
         EVENT_MANAGER:RegisterForUpdate(WorldIcons.name .. "Waypoint", 1000, UpdateWaypoint)
     end
 
@@ -363,6 +358,11 @@ function WorldIcons.Uninitialize()
     EVENT_MANAGER:UnregisterForEvent(WorldIcons.name .. "ChestPoops", EVENT_ZONE_CHANGED)
     EVENT_MANAGER:UnregisterForEvent(WorldIcons.name .. "ChestPoops", EVENT_CURRENT_SUBZONE_LIST_CHANGED)
     EVENT_MANAGER:UnregisterForEvent(WorldIcons.name .. "XalvakkaLabels", EVENT_BOSSES_CHANGED)
+
+    if (crutchWaypointKey) then
+        CrutchAlerts.Drawing.RemoveWorldTexture(crutchWaypointKey)
+        crutchWaypointKey = nil
+    end
 end
 
 
@@ -374,13 +374,13 @@ function WorldIcons.GetSettings()
         {
             type = "description",
             title = nil,
-            text = "This module uses OdySupportIcons to draw icons in the world. These icons will be shown through objects and terrain.",
+            text = "This module uses CrutchAlerts or OdySupportIcons to draw icons in the world. These icons will be shown through objects and terrain.",
             width = "full",
         },
         {
             type = "checkbox",
             name = "Show destination in world",
-            tooltip = "When you use the base-game keybind to \"Set Destination\" on the world map, also show it as an icon in the world. This will display at the same height your character is at. Requires OdySupportIcons and Lib3D",
+            tooltip = "When you use the base-game keybind to \"Set Destination\" on the world map, also show it as an icon in the world. This will display at the same height your character is at. Requires CrutchAlerts 2.0.0+ OR OdySupportIcons",
             default = false,
             getFunc = function() return KyzderpsDerps.savedOptions.worldIcons.destination end,
             setFunc = function(value)
@@ -389,7 +389,7 @@ function WorldIcons.GetSettings()
                 WorldIcons.Initialize()
             end,
             width = "full",
-            disabled = function() return OSI == nil or Lib3D == nil end,
+            disabled = function() return CrutchAlerts == nil and OSI == nil end,
         },
         {
             type = "dropdown",
