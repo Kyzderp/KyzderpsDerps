@@ -163,10 +163,14 @@ local COMMANDS = {
 
         local driver = SortRiders()
         if (driver) then
+            -- TODO: use online character name
+            KyzderpsDerps:msg("Trying to use " .. driver .. "'s mount")
             UseMountAsPassenger(driver)
         end
         -- TODO: do i even have more multi rider mounts?
     end,
+
+    -- TODO: khouse out
 }
 
 function Kyzerg.PrintCommands()
@@ -197,11 +201,11 @@ end
 -- Quest share handler
 ---------------------------------------------------------------------
 local function OnQuestShared(_, questId)
-    local _, _, _, displayName = GetOfferedQuestShareInfo(questId)
+    local questName, _, _, displayName = GetOfferedQuestShareInfo(questId)
 
     if (IsMe(displayName)) then
         AcceptSharedQuest(questId)
-        KD:msg("Accepting quest " .. questId .. " from " .. displayName)
+        KD:msg("Accepting quest " .. questName .. " (" .. questId .. ") from " .. displayName)
     end
 end
 
