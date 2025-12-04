@@ -49,24 +49,33 @@ local function IndexOf(tab, item)
 end
 
 local drivers = {}
+local onlineCharNames = {}
 local passengers = {}
 local function SortRiders()
-    -- TODO: maybe only online in group
-    if (#drivers == 0) then
-        for name, _ in pairs(GetSVTable()) do
-            if (HAS_MULTIRIDER[name]) then
-                table.insert(drivers, name)
+    ZO_ClearTable(drivers)
+    ZO_ClearTable(onlineCharNames)
+    ZO_ClearTable(passengers)
+
+    -- Only online in group
+    for i = 1, GetGroupSize() do
+        local unitTag = GetGroupUnitTagByIndex(i)
+        local atName = GetUnitDisplayName(unitTag)
+        if (GetSVTable()[atName] and IsUnitOnline(unitTag)) then
+            if (HAS_MULTIRIDER[atName]) then
+                table.insert(drivers, atName)
+                onlineCharNames[atName] = GetUnitName(unitTag)
             else
                 table.insert(passengers, name)
             end
         end
-        table.sort(drivers)
-        table.sort(passengers)
     end
+
+    table.sort(drivers)
+    table.sort(passengers)
 
     local index = IndexOf(passengers, GetUnitDisplayName("player"))
     if (index > 0 and index <= #drivers) then
-        return drivers[index]
+        return onlineCharNames[drivers[index]]
     end
 end
 
@@ -163,7 +172,6 @@ local COMMANDS = {
 
         local driver = SortRiders()
         if (driver) then
-            -- TODO: use online character name
             KyzderpsDerps:msg("Trying to use " .. driver .. "'s mount")
             UseMountAsPassenger(driver)
         end
