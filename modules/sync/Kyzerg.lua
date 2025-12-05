@@ -94,9 +94,11 @@ local COMMANDS = {
         end
     end,
 
-    -- Port to my house
-    khouse = function()
-        KD.KHouse.PortToKyzersHouse()
+    -- TODO: port to crown
+
+    -- Port to house
+    khouse = function(_, text)
+        KD.KHouse.PortToHouse(string.sub(text, 1, 7))
     end,
 
     -- Port to self house
@@ -198,9 +200,12 @@ local validChannels = {
 local function OnChatMessage(_, channelType, fromName, text)
     if (not validChannels[channelType]) then return end
 
-    local func = COMMANDS[text]
+    local cmd = next(argString:gmatch("%S+"))
+    if (not cmd) then return end
+
+    local func = COMMANDS[cmd]
     if (func) then
-        func(zo_strformat("<<1>>", fromName))
+        func(zo_strformat("<<1>>", fromName), text)
     end
 end
 
