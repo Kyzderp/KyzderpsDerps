@@ -267,6 +267,9 @@ local BOSS_NAMES = {
     ["Shademother"] = 606, -- WB
     ["Tulnir"] = 301, -- PD: Labyrinthian - Exterior altar
 
+-- Wrothgar
+    ["Magnar Child-Eater"] = true, -- Delve: Argent Mine
+
 -- Cyrodiil
     ["Bear Matriarch"] = 302, -- Delve: Temple to the Divines
 

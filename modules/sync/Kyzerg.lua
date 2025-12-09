@@ -37,6 +37,7 @@ end
 ---------------------------------------------------------------------
 local HAS_MULTIRIDER = {
     ["@Kyzeragon"] = true,
+    ["@TheClawlessConqueror"] = true,
 }
 
 local function IndexOf(tab, item)
@@ -98,7 +99,7 @@ local COMMANDS = {
 
     -- Port to house
     khouse = function(_, text)
-        KD.KHouse.PortToHouse(string.sub(text, 1, 7))
+        KD.KHouse.PortToHouse(string.sub(text, 8))
     end,
 
     -- Port to self house
@@ -167,6 +168,7 @@ local COMMANDS = {
 
     -- Get on multi rider mount
     kmount = function()
+        -- TODO: don't exit out depending on how many, i.e. if only kyzer and clawless are online
         if (HAS_MULTIRIDER[GetUnitDisplayName("player")]) then
             -- TODO: switch to multi rider? maybe automatically when joined group?
             return
@@ -177,10 +179,9 @@ local COMMANDS = {
             KyzderpsDerps:msg("Trying to use " .. driver .. "'s mount")
             UseMountAsPassenger(driver)
         end
-        -- TODO: do i even have more multi rider mounts?
     end,
 
-    -- TODO: khouse out
+    -- TODO: ktp
 }
 
 function Kyzerg.PrintCommands()
@@ -200,7 +201,13 @@ local validChannels = {
 local function OnChatMessage(_, channelType, fromName, text)
     if (not validChannels[channelType]) then return end
 
-    local cmd = next(argString:gmatch("%S+"))
+    local cmd
+    for word in text:gmatch("%S+") do
+        if (word and word ~= "") then
+            cmd = word
+            break
+        end
+    end
     if (not cmd) then return end
 
     local func = COMMANDS[cmd]
