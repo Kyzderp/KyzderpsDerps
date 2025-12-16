@@ -12,7 +12,7 @@
 ## APIVersion: 101048
 ## SavedVariables: KyzderpsDerpsSavedVariables
 ## DependsOn: LibAddonMenu-2.0>=41
-## OptionalDependsOn: OdySupportIcons HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary HarvestMap CrutchAlerts
+## OptionalDependsOn: OdySupportIcons HodorReflexes BuffTheGroup LuiExtended LibFilteredChatPanel LibLootSummary HarvestMap CrutchAlerts JoGroup LibGroupCombatStats
 
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua
@@ -63,6 +63,8 @@ modules/fashion/TrampleMount.lua
 modules/integrations/BuffTheGroup.lua
 modules/integrations/HodorReflexes.lua
 modules/integrations/EnabledAddons.lua
+modules/integrations/JoGroup.lua
+modules/integrations/JoGroup.xml
 
 modules/loot/Survey.lua
 

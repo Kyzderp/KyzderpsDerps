@@ -293,6 +293,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.UIElements.Initialize()
     KyzderpsDerps.WorldIcons.Initialize()
     KyzderpsDerps.Loot.InitializeSurvey()
+    KyzderpsDerps.JoGroup.Initialize()
     if (KyzderpsDerps.savedOptions.general.experimental) then
         if (btg) then btg.debug = true end
     end
