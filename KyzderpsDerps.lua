@@ -156,6 +156,7 @@ local defaultOptions = {
         checkBRHelper = false,
         checkAsylumTracker = false,
         checkAsylumStatusPanel = false,
+        showUltOnJoGroup = false,
     },
     opener = {
         delay = 0,

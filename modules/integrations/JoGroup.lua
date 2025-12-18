@@ -6,6 +6,10 @@ local ults = {}
 JG.ults = ults
 -- /script d(KyzderpsDerps.JoGroup.ults)
 
+-- Whether UI has been refreshed after this player activation
+-- Used to do 1 refresh upon receiving data after loadscreen
+local refreshedThisActivation = false
+
 -- Same as Hodor
 local function GetPercentColor(percentValue)
     if (percentValue >= 100) then return "00FF00" end
@@ -85,6 +89,18 @@ local function UpdateWholeUI()
     end
 end
 
+-- Used when turning off
+local function HideAll()
+    for i = 1, MAX_GROUP_SIZE_THRESHOLD do
+        local frameControl = JoGroup.frame["group" .. i]
+        if (frameControl and frameControl.kddUlt) then
+            frameControl.kddUlt:SetHidden(true)
+        end
+    end
+end
+
+-- TODO: check cryptcanon
+
 --[[
 ultData = {
     ultValue = number, -- ultimate points ( 0-500 )
@@ -98,7 +114,14 @@ ultData = {
 }
 ]]
 local function OnUltUpdated(unitTag, ultData, skipUpdate)
+    -- Could be currently registered after changing setting within 1 reload
+    if (not KyzderpsDerps.savedOptions.integrations.showUltOnJoGroup) then return end
     if (not ultData) then return end
+
+    if (unitTag ~= "player" and not refreshedThisActivation) then
+        JG.RefreshAll()
+        refreshedThisActivation = true
+    end
 
     local data = ults[unitTag] or {}
     data.ultValue = ultData.ultValue
@@ -138,15 +161,19 @@ local function RefreshAllTimeout()
     end)
 end
 
+local lgcsInitialized = false
 function JG.Initialize()
-    if (not JoGroup) then return end -- TODO: setting
+    if (not JoGroup or not LibGroupCombatStats or not KyzderpsDerps.savedOptions.integrations.showUltOnJoGroup) then return end -- TODO: setting
 
-    lgcs = LibGroupCombatStats.RegisterAddon("KyzderpsDerps", {"ULT"})
-    lgcs:RegisterForEvent(LibGroupCombatStats.EVENT_GROUP_ULT_UPDATE, OnUltUpdated)
-    lgcs:RegisterForEvent(LibGroupCombatStats.EVENT_PLAYER_ULT_UPDATE, OnUltUpdated)
+    if (not lgcsInitialized) then
+        lgcs = LibGroupCombatStats.RegisterAddon("KyzderpsDerps", {"ULT"})
+        lgcs:RegisterForEvent(LibGroupCombatStats.EVENT_GROUP_ULT_UPDATE, OnUltUpdated)
+        lgcs:RegisterForEvent(LibGroupCombatStats.EVENT_PLAYER_ULT_UPDATE, OnUltUpdated)
+        lgcsInitialized = true
+    end
 
-    -- TODO: group membership changed, activation, ?
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "JGPlayerActivated", EVENT_PLAYER_ACTIVATED, function()
+        refreshedThisActivation = false
         RefreshAllTimeout()
         zo_callLater(RefreshAllTimeout, 1500)
     end)
@@ -157,4 +184,38 @@ function JG.Initialize()
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "JGConnectedStatus", EVENT_GROUP_MEMBER_CONNECTED_STATUS, RefreshAllTimeout)
 
     RefreshAll()
+
+end
+
+local function Uninitialize()
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "JGPlayerActivated", EVENT_PLAYER_ACTIVATED)
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "JGJoined", EVENT_GROUP_MEMBER_JOINED)
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "JGLeft", EVENT_GROUP_MEMBER_LEFT)
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "JGUpdate", EVENT_GROUP_UPDATE)
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "JGRoleChanged", EVENT_GROUP_MEMBER_ROLE_CHANGED)
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "JGConnectedStatus", EVENT_GROUP_MEMBER_CONNECTED_STATUS)
+
+    HideAll()
+end
+
+
+---------------------------------------------------------------------
+-- Settings
+---------------------------------------------------------------------
+function JG.GetSettings()
+    return {
+        {
+            type = "checkbox",
+            name = "[BETA] Show ult on JoGroup frames",
+            tooltip = "Shows each group member's 2 ultimate icons and lower %, matching Hodor's misc ultimate list, if ultimate info is available via LibGroupCombatStats. Requires JoGroup and LibGroupCombatStats",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.integrations.showUltOnJoGroup end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.integrations.showUltOnJoGroup = value
+                Uninitialize()
+                JG.Initialize()
+            end,
+            width = "full",
+        },
+    }
 end

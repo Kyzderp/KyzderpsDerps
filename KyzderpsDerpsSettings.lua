@@ -1294,6 +1294,12 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "JoGroup",
+            controls = KyzderpsDerps.JoGroup.GetSettings(),
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Enable Check",
             controls = KyzderpsDerps.Integrations.GetSettings(),
         },
