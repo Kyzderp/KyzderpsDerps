@@ -119,8 +119,8 @@ local function OnUltUpdated(unitTag, ultData, skipUpdate)
     if (not ultData) then return end
 
     if (unitTag ~= "player" and not refreshedThisActivation) then
-        JG.RefreshAll()
         refreshedThisActivation = true
+        JG.RefreshAll()
     end
 
     local data = ults[unitTag] or {}
