@@ -5,10 +5,10 @@
 ; https://account.elderscrollsonline.com/add-on-terms
 
 ## Title: KyzderpsDerps
-## A collection of random utilities
+## Description: A collection of random utilities
 ## Author: Kyzeragon
-## Version: 1.39.0
-## AddOnVersion: 1390
+## Version: 1.40.0
+## AddOnVersion: 1400
 ## APIVersion: 101048
 ## SavedVariables: KyzderpsDerpsSavedVariables
 ## DependsOn: LibAddonMenu-2.0>=41
