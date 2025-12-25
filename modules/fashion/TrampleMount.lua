@@ -10,8 +10,9 @@ local Spud = KyzderpsDerps.AntiSpud
 local function IsMountingAllowed()
     local zoneId = GetZoneId(GetUnitZoneIndex("player"))
 
-    -- HRC
-    if (zoneId == 636) then
+    if (zoneId == 636 -- HRC
+        or zoneId == 176 -- CoA1
+        ) then
         return true
     end
 
