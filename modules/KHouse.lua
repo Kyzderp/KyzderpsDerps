@@ -90,6 +90,11 @@ local function PortToHouse(argString)
         end
     end
 
+    -- If you put your own name for some reason (prob from Kyzerg tho)
+    if (name and string.lower(name) == string.lower(GetUnitDisplayName("player"))) then
+        name = nil
+    end
+
     KyzderpsDerps:msg(string.format("Attempting to port %s %s %s%s...",
         (outside) and "outside" or "to",
         (name == nil) and "your" or (name .. "'s"),
