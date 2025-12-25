@@ -10,6 +10,9 @@ local optionsToAdvance = {
     ["-Armorer Reistaff-"] = {
         ["What can I do to help?"] = true,
     },
+    -- ["-Breda-"] = {
+    --     ["What's another way people celebrate the New Life Festival?"] = true,
+    -- },
 }
 
 -- Quest options for which we should accept the quest
@@ -42,6 +45,9 @@ local questOptionToAccept = {
         ["How many jacks do you need?"] = true,
         ["All right. I'll make two jacks."] = true,
     },
+    -- ["-Breda-"] = {
+    --     ["All right, I'll head to Rawl'kha."] = true,
+    -- },
 }
 
 -- Quest options for which we should reset the dialogue
@@ -51,6 +57,16 @@ local questOptionToReset = {
         ["What kind of enchantments are you looking for?"] = true,
         ["What kind of provisions do you need me to make?"] = true,
     },
+    -- ["-Breda-"] = {
+    --     ["How would I do that?"] = true,
+    --     ["What sort of pin?"] = true,
+    --     ["All right, I'll head to Bergama."] = true,
+    --     ["What sort of performances?"] = true,
+    --     ["Who is this year's target?"] = true,
+    --     ["All right, I'll celebrate the Stonetooth Bash."] = true,
+    --     ["All right, I'll walk the War Orphan's Sojourn."] = true,
+    --     ["That sounds simple enough. What would I do?"] = true,
+    -- },
 }
 
 -- Dialogue titles for which to turn in dialogue
@@ -126,10 +142,12 @@ local function OnQuestOffered()
             EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
             return
         end
-        KD:msg("Rerolling dialogue because: " .. response)
-        numRetries = numRetries + 1
-        ResetChatter()
-        EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+        -- zo_callLater(function()
+            KD:msg("Rerolling dialogue because: " .. response)
+            numRetries = numRetries + 1
+            ResetChatter()
+            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+        -- end, 2000)
 
     -- Unregister handler if nothing matches: user gets to deal with it
     else
@@ -168,7 +186,7 @@ local function OnChatter()
 
     -- Accept based on option text
     if (optionsToAdvance[title] and optionsToAdvance[title][optionString]) then
-        KD:msg("Advancing dialogue: " .. optionString)
+        -- KD:msg("Advancing dialogue: " .. optionString)
         SelectChatterOption(1)
         if (optionType == CHATTER_START_NEW_QUEST_BESTOWAL) then
             EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED, OnQuestOffered)
