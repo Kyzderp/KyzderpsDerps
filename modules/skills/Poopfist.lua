@@ -12,7 +12,7 @@ function KyzderpsDerps.Poopfist.Initialize()
     local origGetSlotTexture = GetSlotTexture
     GetSlotTexture = function(actionSlotIndex, hotbarCategory)
         local abilityId = GetSlotBoundId(actionSlotIndex, hotbarCategory)
-        if abilityId == POOPSTOMP_ID then
+        if (abilityId == POOPSTOMP_ID) then
             return POOPSTOMP_PATH
         end
         return origGetSlotTexture(actionSlotIndex, hotbarCategory)
@@ -35,7 +35,7 @@ function KyzderpsDerps.Poopfist.Initialize()
             end
 
             local abilityId = GetSlotBoundId(actionSlotIndex, hotbarCategory)
-            if (GetSlotBoundId(actionSlotIndex, hotbarCategory) ~= POOPSTOMP_ID) then
+            if (abilityId ~= POOPSTOMP_ID) then
                 return
             end
 
