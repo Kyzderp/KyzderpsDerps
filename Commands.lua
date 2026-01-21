@@ -1,6 +1,12 @@
 KyzderpsDerps = KyzderpsDerps or {}
 
 ---------------------------------------------------------------------
+local function StartsWith(str, prefix)
+    return string.sub(str, 1, #prefix) == prefix
+end
+
+
+---------------------------------------------------------------------
 -- Commands
 local function HandleKDDCommand(argString)
     local args = {}
@@ -336,7 +342,16 @@ end
 local function FindDesiredZone(searchString)
     searchString = string.lower(searchString)
 
-    -- Search overland zones first
+    -- Search beginning of name first
+    for zoneId, _ in pairs(overlandZones) do
+        local name = string.lower(GetZoneNameById(zoneId))
+        if (StartsWith(name, searchString)) then
+            KyzderpsDerps:msg(string.format("Matched zone %s (%d)", GetZoneNameById(zoneId), zoneId))
+            return zoneId
+        end
+    end
+
+    -- Search full name
     for zoneId, _ in pairs(overlandZones) do
         local name = string.lower(GetZoneNameById(zoneId))
         if (string.find(name, searchString, 1, true)) then
