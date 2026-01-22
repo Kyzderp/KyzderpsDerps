@@ -35,11 +35,6 @@ end
 ---------------------------------------------------------------------
 -- Misc
 ---------------------------------------------------------------------
-local HAS_MULTIRIDER = {
-    ["@Kyzeragon"] = true,
-    ["@TheClawlessConqueror"] = true,
-}
-
 local function IndexOf(tab, item)
     for i, v in ipairs(tab) do
         if (v == item) then
@@ -49,10 +44,15 @@ local function IndexOf(tab, item)
     return -1
 end
 
+local function NameIsPlayer(name)
+    return GetUnitName("player") == name or GetUnitDisplayName("player") == name
+end
+
 local drivers = {}
 local onlineCharNames = {}
 local passengers = {}
-local function SortRiders()
+local riders = {}
+local function SortRiders(fromName)
     ZO_ClearTable(drivers)
     ZO_ClearTable(onlineCharNames)
     ZO_ClearTable(passengers)
@@ -61,22 +61,34 @@ local function SortRiders()
     for i = 1, GetGroupSize() do
         local unitTag = GetGroupUnitTagByIndex(i)
         local atName = GetUnitDisplayName(unitTag)
-        if (GetSVTable()[atName] and IsUnitOnline(unitTag)) then
-            if (HAS_MULTIRIDER[atName]) then
+        if (IsMe(atName) and IsUnitOnline(unitTag)) then
+            onlineCharNames[atName] = GetUnitName(unitTag)
+
+            local mountedState, isRidingGroupMount, hasFreePassengerSlot = GetTargetMountedStateInfo(atName)
+            if (mountedState == MOUNTED_STATE_MOUNT_RIDER and isRidingGroupMount and hasFreePassengerSlot) then
                 table.insert(drivers, atName)
-                onlineCharNames[atName] = GetUnitName(unitTag)
             else
-                table.insert(passengers, name)
+                table.insert(passengers, atName)
             end
+            -- -- Alternate between driver and passenger
+            -- if (#drivers <= #passengers) then
+            --     table.insert(drivers, atName)
+            -- else
+            --     table.insert(passengers, atName)
+            -- end
         end
     end
 
     table.sort(drivers)
     table.sort(passengers)
+    d("drivers", drivers)
+    d("passengers", passengers)
 
     local index = IndexOf(passengers, GetUnitDisplayName("player"))
     if (index > 0 and index <= #drivers) then
         return onlineCharNames[drivers[index]]
+    else
+        d(index)
     end
 end
 
@@ -119,7 +131,7 @@ local COMMANDS = {
 
     -- Invite all (CURRENT PLAYER ONLY)
     kinvite = function(fromName)
-        if (fromName ~= GetUnitDisplayName("player") and fromName ~= GetUnitName("player")) then return end
+        if (not NameIsPlayer(fromName)) then return end
         for name, _ in pairs(GetSVTable()) do
             if (name ~= GetUnitDisplayName("player")) then
                 KyzderpsDerps:msg("Inviting " .. name)
