@@ -17,8 +17,9 @@
 KyzderpsDerps.lua
 KyzderpsDerpsSettings.lua
 KyzderpsDerps.xml
-Commands.lua
 Bindings.xml
+
+commands/Commands.lua
 
 modules/CustomTargetName.lua
 modules/Grievous.lua
