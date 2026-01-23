@@ -389,6 +389,7 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/wayshrine"] = function() PortToAnyInZone(KyzderpsDerps.savedOptions.misc.wayshrineZoneId) end
     SLASH_COMMANDS["/currentshrine"] = function() PortToAnyInZone(GetZoneId(GetUnitZoneIndex("player"))) end
     SLASH_COMMANDS["/ktp"] = PortToZoneSearch
+    SLASH_COMMANDS["/ktpp"] = KyzderpsDerps.PortToPlayer
 
     SLASH_COMMANDS["/refreshsurvey"] = KyzderpsDerps.Loot.RefreshSurvey
 

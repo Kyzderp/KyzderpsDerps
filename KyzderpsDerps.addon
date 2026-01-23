@@ -20,6 +20,7 @@ KyzderpsDerps.xml
 Bindings.xml
 
 commands/Commands.lua
+commands/KTPP.lua
 
 modules/CustomTargetName.lua
 modules/Grievous.lua
