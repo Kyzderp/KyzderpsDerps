@@ -180,12 +180,6 @@ local COMMANDS = {
 
     -- Get on multi rider mount
     kmount = function()
-        -- TODO: don't exit out depending on how many, i.e. if only kyzer and clawless are online
-        if (HAS_MULTIRIDER[GetUnitDisplayName("player")]) then
-            -- TODO: switch to multi rider? maybe automatically when joined group?
-            return
-        end
-
         local driver = SortRiders()
         if (driver) then
             KyzderpsDerps:msg("Trying to use " .. driver .. "'s mount")

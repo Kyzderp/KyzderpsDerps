@@ -103,12 +103,13 @@ local function RandomizeMount()
 
     -- Filter out stick mounts if applicable
     if (KyzderpsDerps.savedOptions.fashion.excludeStickMountsInMountable and IsMountingAllowed()) then
+        KyzderpsDerps:dbg("mounting is allowed")
         local stickMounts = {
-            5870, -- Novelty Stick Horse
-            5879, -- Novelty Stick Guar
-            5880, -- Novelty Stick Dragon
-            7291, -- Nightmare Stick Horse
-            9829, -- Stitchedwell Stick Guar
+            [5870] = true, -- Novelty Stick Horse
+            [5879] = true, -- Novelty Stick Guar
+            [5880] = true, -- Novelty Stick Dragon
+            [7291] = true, -- Nightmare Stick Horse
+            [9829] = true, -- Stitchedwell Stick Guar
         }
         local newMounts = {}
         for _, id in ipairs(trampleMounts) do
