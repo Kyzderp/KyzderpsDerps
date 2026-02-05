@@ -28,7 +28,7 @@ local function IsMountingAllowed()
         return false
     end
 
-    if (zoneId == 912) then -- Imperial City proper. Could prob just reverse this...
+    if (zoneId == 912 or zoneId == 584) then -- Imperial City proper. Could prob just reverse this...
         return true 
     end
 

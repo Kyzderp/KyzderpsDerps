@@ -29,6 +29,45 @@ displaying = {
 local displaying = {}
 
 ---------------------------------------------------------------------
+-- Snooze the currently displaying for 1 hour
+local snoozed = {} -- {[MUNDUS] = 19328139}
+
+local function IsSnoozed(priority)
+    if (not snoozed[priority]) then return false end
+    return snoozed[priority] > GetGameTimeSeconds()
+end
+
+local function UpdateSnoozed()
+    for priority, targetTime in pairs(snoozed) do
+        if (targetTime <= GetGameTimeSeconds()) then
+            snoozed[priority] = nil
+            KyzderpsDerps:msg(string.format("\"%s\" is done sleeping.", priority))
+        end
+    end
+    Spud.UpdateDisplay()
+end
+
+function Spud.SnoozeCurrent()
+    -- First find which is displaying
+    local current
+    for _, priority in ipairs(priorities) do
+        if (displaying[priority] and not IsSnoozed(priority)) then
+            current = priority
+            break
+        end
+    end
+
+    -- Save target time, update current display, and also call update later
+    snoozed[current] = GetGameTimeSeconds() + 3600
+    Spud.UpdateDisplay()
+    EVENT_MANAGER:RegisterForUpdate("KyzderpsAntiSpudSnooze" .. current, 3600000, function()
+        EVENT_MANAGER:UnregisterForUpdate("KyzderpsAntiSpudSnooze" .. current)
+        UpdateSnoozed()
+    end)
+    KyzderpsDerps:msg(string.format("Snoozing \"%s\" for 1 hour. Reloading UI or logging out will un-snooze.", current))
+end
+
+---------------------------------------------------------------------
 local function UpdateDisplay()
     for _, priority in ipairs(priorities) do
         if (displaying[priority] and not IsSnoozed(priority)) then
@@ -44,48 +83,10 @@ local function UpdateDisplay()
     -- Otherwise clear it
     AntiSpudEquipped:SetHidden(true)
 end
+Spud.UpdateDisplay = UpdateDisplay
 
 local function Display(text, priority)
     displaying[priority] = text
     UpdateDisplay()
 end
 Spud.Display = Display
-
----------------------------------------------------------------------
--- Snooze the currently displaying for 1 hour
-local snoozed = {} -- {[MUNDUS] = 19328139}
-
-local function IsSnoozed(priority)
-    if (not snoozed[priority]) then return false end
-    return snoozed[priority] > GetGameTimeSeconds()
-end
-
-local function UpdateSnoozed()
-    for priority, targetTime in pairs(snoozed) do
-        if (targetTime <= GetGameTimeSeconds()) then
-            snoozed[priority] = nil
-        end
-    end
-    UpdateDisplay()
-end
-
-function Spud.SnoozeCurrent()
-    -- First find which is displaying
-    local current
-    for _, priority in ipairs(priorities) do
-        if (displaying[priority] and not IsSnoozed(priority)) then
-            current = priority
-            break
-        end
-    end
-
-    -- Save target time, update current display, and also call update later
-    snoozed[current] = GetGameTimeSeconds() + 3600
-    UpdateDisplay()
-    EVENT_MANAGER:RegisterForUpdate("KyzderpsAntiSpudSnooze" .. current, 3600000, function()
-        EVENT_MANAGER:UnregisterForUpdate("KyzderpsAntiSpudSnooze" .. current)
-        UpdateSnoozed()
-    end)
-    KyzderpsDerps.msg(string.format("Snoozing \"%s\" for 1 hour. Reloading UI will un-snooze.", current))
-end
-
