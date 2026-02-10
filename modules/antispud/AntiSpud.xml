@@ -10,7 +10,7 @@
                 <Button name="$(parent)Snooze" alpha="1" topmost="true" color="C6C29F">
                     <Textures normal="/esoui/art/miscellaneous/timer_64.dds" color="C6C29F"/>
                     <Anchor point="TOP" relativeTo="$(parent)" relativePoint="BOTTOM"/>
-                    <Dimensions x="40" y="40"/>
+                    <Dimensions x="32" y="32"/>
                     <OnClicked>KyzderpsDerps.AntiSpud.SnoozeCurrent()</OnClicked>
                     <OnMouseEnter>
                         ZO_Tooltips_ShowTextTooltip(self, LEFT, "Snooze this warning for 1 hour")

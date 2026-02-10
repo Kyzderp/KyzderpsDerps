@@ -41,7 +41,7 @@ local function UpdateSnoozed()
     for priority, targetTime in pairs(snoozed) do
         if (targetTime <= GetGameTimeSeconds()) then
             snoozed[priority] = nil
-            KyzderpsDerps:msg(string.format("\"%s\" is done sleeping.", priority))
+            KyzderpsDerps:msg(string.format("\"%s\" has finished taking a nap.", priority))
         end
     end
     Spud.UpdateDisplay()

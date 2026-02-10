@@ -28,12 +28,12 @@ local function IsMountingAllowed()
         return false
     end
 
-    if (zoneId == 912 or zoneId == 584) then -- Imperial City proper. Could prob just reverse this...
-        return true 
+    if (zoneId == 643) then -- Sewers
+        return false
     end
 
     if (IsInImperialCity()) then
-        return false
+        return true
     end
 
     return true

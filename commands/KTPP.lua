@@ -2,7 +2,7 @@ local function StartsWith(str, prefix)
     return string.sub(str, 1, #prefix) == prefix
 end
 
-local function StripAtAndLower(name)
+local function StripAtAndLower(atName)
     if (StartsWith(atName, "@")) then
         return string.lower(string.sub(atName, 2))
     end
