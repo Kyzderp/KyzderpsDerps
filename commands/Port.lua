@@ -161,7 +161,7 @@ local function PortOutsideHouse()
     for _, houseId in ipairs(decentHouses) do
         local collectibleId = GetCollectibleIdForHouse(houseId)
         if (IsCollectibleUnlocked(collectibleId)) then
-            KD:msg(zo_strformat("Porting outside of your <<1>> instead", GetCollectibleName(collectibleId)))
+            KD:msg(zo_strformat("No players or zone found, porting outside of your <<1>> instead", GetCollectibleName(collectibleId)))
             RequestJumpToHouse(houseId, true)
             return true
         end
@@ -186,7 +186,7 @@ local portTypes = {
 local function PortToTarget(target)
     local portType = portTypes[target.type]
     portType.portFunc(target.atName)
-    KD:msg(zo_strformat(portType.format, target.atName, target.zoneId))
+    KD:msg(zo_strformat(portType.format, target.atName, GetZoneNameById(target.zoneId)))
 end
 
 -- Search targets for player
@@ -198,7 +198,7 @@ local function TryPortToPlayerName(argString, exact, beginning)
     argString = string.lower(argString)
 
     for _, target in ipairs(targetPlayers) do
-        local loweredName = string.lower(target.name)
+        local loweredName = string.lower(target.atName)
         if (exact) then
             -- Exact name only
             if (argString == loweredName) then
@@ -229,7 +229,11 @@ end
 -- Port to a player in the zone, or a fallback. Will always be handled, unless
 -- there's really nowhere to port.
 -- zoneId can be nil
-local function PortToPlayerInZone(zoneId)
+local function PortToPlayerInZone(zoneId, collectTargets)
+    if (collectTargets) then
+        CollectTargets()
+    end
+
     local fallbackTarget
     for _, target in ipairs(targetPlayers) do
         if (target.zoneId == zoneId) then

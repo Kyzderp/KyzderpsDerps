@@ -180,8 +180,8 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/ids"] = ToggleLuiIds
 
     -- Porting to player
-    SLASH_COMMANDS["/wayshrine"] = function() KyzderpsDerps.PortToPlayerInZone(KyzderpsDerps.savedOptions.misc.wayshrineZoneId) end
-    SLASH_COMMANDS["/currentshrine"] = function() KyzderpsDerps.PortToPlayerInZone(GetZoneId(GetUnitZoneIndex("player"))) end
+    SLASH_COMMANDS["/wayshrine"] = function() KyzderpsDerps.PortToPlayerInZone(KyzderpsDerps.savedOptions.misc.wayshrineZoneId, true) end
+    SLASH_COMMANDS["/currentshrine"] = function() KyzderpsDerps.PortToPlayerInZone(GetZoneId(GetUnitZoneIndex("player")), true) end
     SLASH_COMMANDS["/ktp"] = KyzderpsDerps.PortToAny
     SLASH_COMMANDS["/ktpp"] = function(argString)
         if (not StartsWith(argString, "@")) then
