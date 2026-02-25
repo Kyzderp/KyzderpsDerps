@@ -161,6 +161,7 @@ local BOSS_NAMES = {
 
 -- Galen
     ["Traux / Druid Rerlas"] = true, -- Delve: Embervine
+    ["Bahltur"] = 311, -- Delve: Fauns' Thicket
 
 -- Glenumbra
     ["Rutmange"] = 305, -- PD: Bad Man's Hallows - Skeever
@@ -245,6 +246,7 @@ local BOSS_NAMES = {
 -- Telvanni Peninsula
     ["Staxuira"] = 311, -- PD: Gorne (has a long spawn animation)
     ["Stupulag / Gujelag"] = 304, -- PD: Gorne
+    ["Zaedare the Afflicted"] = 310, -- Delve: Anchre Egg Mine
 
 -- The Deadlands
     ["Wandering Havocrel"] = 360, -- Wandering WBs seem to be 6 mins ish and random spawn point
