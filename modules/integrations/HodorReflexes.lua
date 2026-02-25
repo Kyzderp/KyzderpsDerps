@@ -40,6 +40,11 @@ local function Unhorn(atName)
                 IsUnitOnline = function(tag) if (tag == unitTag) then return false end return orig(tag) end
                 HodorReflexes.modules.share.GroupChanged()
                 IsUnitOnline = orig
+            elseif (HodorReflexes.playersData) then
+                -- Hodor rewrite saves by character name
+                KyzderpsDerps:msg("Clearing horn data using HodorReflexes.playersData")
+                local charName = GetUnitName(unitTag)
+                HodorReflexes.playersData[charName] = nil
             else
                 KyzderpsDerps:msg("Doesn't support current Hodor version. TODO!!")
             end
