@@ -167,217 +167,11 @@ local function ToggleLuiIds()
     KyzderpsDerps:msg("Toggled showing IDs on LUI buffs/debuffs")
 end
 
----------------------------------------------------------------------
--- Port to zone
----------------------------------------------------------------------
-local overlandZones = {
-    [104] = true, -- Alik'r Desert
-    [1413] = true, -- Apocrypha
-    [1027] = true, -- Artaeum
-    [381] = true, -- Auridon
-    [281] = true, -- Bal Foyen
-    [92] = true, -- Bangkorai
-    [535] = true, -- Betnikh
-    [1191] = true, -- Blackreach
-    [1208] = true, -- Blackreach: Arkthzand Cavern
-    [1161] = true, -- Blackreach: Greymoor Caverns
-    [1261] = true, -- Blackwood
-    [280] = true, -- Bleakrock Isle
-    [980] = true, -- Clockwork City
-    [981] = true, -- The Brass Fortress
-    [347] = true, -- Coldharbour
-    [888] = true, -- Craglorn
-    [57] = true, -- Deshaan
-    [101] = true, -- Eastmarch
-    [267] = true, -- Eyevea
-    [1463] = true, -- The Scholarium
-    [1282] = true, -- Fargrave
-    [1283] = true, -- The Shambles
-    [1383] = true, -- Galen
-    [3] = true, -- Glenumbra
-    [823] = true, -- Gold Coast
-    [383] = true, -- Grahtwood
-    [108] = true, -- Greenshade
-    [816] = true, -- Hew's Bane
-    [1318] = true, -- High Isle
-    [537] = true, -- Khenarthi's Roost
-    [58] = true, -- Malabal Tor
-    [726] = true, -- Murkmire
-    [1086] = true, -- Northern Elsweyr
-    [382] = true, -- Reaper's March
-    [20] = true, -- Rivenspire
-    [117] = true, -- Shadowfen
-    [1502] = true, -- Solstice
-    [1133] = true, -- Southern Elsweyr
-    [41] = true, -- Stonefalls
-    [19] = true, -- Stormhaven
-    [534] = true, -- Stros M'Kai
-    [1011] = true, -- Summerset
-    [1414] = true, -- Telvanni Peninsula
-    [1286] = true, -- The Deadlands
-    [1207] = true, -- The Reach
-    [103] = true, -- The Rift
-    [849] = true, -- Vvardenfell
-    [1443] = true, -- West Weald
-    [1160] = true, -- Western Skyrim
-    [684] = true -- Wrothgar
-}
-
-local function IsZoneValid(zoneId)
-    if (not CanJumpToPlayerInZone(zoneId)) then return false end
-    
-    return overlandZones[zoneId] == true
-end
-
--- Port to any player in group, friends, or guilds who is in the
--- desired zone. As a fallback, port to any overland zone (hopefully)
-local function PortToAnyInZone(desiredZoneId)
-    if (not desiredZoneId) then
-        KyzderpsDerps:msg("Wayshrine: |cFF0000Invalid zone ID! Please check the Kyzderps setting: Miscellaneous > /wayshrine zone ID")
-        return
-    end
-
-    local playerName = GetUnitDisplayName("player")
-    local zoneName = GetZoneNameById(desiredZoneId)
-    local fallbackFunc
-
-    -- Check group
-    for i = 1, GetGroupSize() do
-        local unitTag = GetGroupUnitTagByIndex(i)
-        local name = GetUnitDisplayName(unitTag)
-        if (IsUnitOnline(unitTag) and name ~= playerName) then
-            local zoneId = GetZoneId(GetUnitZoneIndex(unitTag))
-            if (zoneId == desiredZoneId) then
-                KyzderpsDerps:msg(zo_strformat("Porting to group member <<1>> in <<2>>", name, zoneName))
-                JumpToGroupMember(name)
-                return
-            elseif (IsZoneValid(zoneId) and not fallbackFunc) then
-                fallbackFunc = function()
-                    KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>>; porting to group member <<2>> in <<3>> instead", zoneName, name, GetZoneNameById(zoneId)))
-                    JumpToGroupMember(name)
-                end
-            end
-        end
-    end
-
-    -- Check friends
-    for i = 1, GetNumFriends() do
-        local name, _, status = GetFriendInfo(i)
-        if (status ~= PLAYER_STATUS_OFFLINE and name ~= playerName) then
-            local _, _, _, _, _, _, _, zoneId = GetFriendCharacterInfo(i)
-            if (zoneId == desiredZoneId) then
-                KyzderpsDerps:msg(zo_strformat("Porting to friend <<1>> in <<2>>", name, zoneName))
-                JumpToFriend(name)
-                return
-            elseif (IsZoneValid(zoneId) and not fallbackFunc) then
-                fallbackFunc = function()
-                    KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>>; porting to friend <<2>> in <<3>> instead", zoneName, name, GetZoneNameById(zoneId)))
-                    JumpToFriend(name)
-                end
-            end
-        end
-    end
-
-    -- Check guilds
-    for i = 1, GetNumGuilds() do
-        local guildId = GetGuildId(i)
-        for j = 1, GetNumGuildMembers(guildId) do
-            local name, _, _, status = GetGuildMemberInfo(guildId, j)
-            if (status ~= PLAYER_STATUS_OFFLINE and name ~= playerName) then
-                local _, _, _, _, _, _, _, zoneId = GetGuildMemberCharacterInfo(guildId, j)
-                if (zoneId == desiredZoneId) then
-                    KyzderpsDerps:msg(zo_strformat("Porting to guild member <<1>> in <<2>>", name, zoneName))
-                    JumpToGuildMember(name)
-                    return
-                elseif (IsZoneValid(zoneId) and not fallbackFunc) then
-                    fallbackFunc = function()
-                        KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>>; porting to guild member <<2>> in <<3>> instead", zoneName, name, GetZoneNameById(zoneId)))
-                        JumpToGuildMember(name)
-                    end
-                end
-            end
-        end
-    end
-
-    -- Fallback to any overland zone, so you can use the wayshrine
-    if (fallbackFunc) then
-        fallbackFunc()
-        return
-    end
-
-    -- Fallback to outside owned houses that are near wayshrines
-    local decentHouses = {
-        68, -- Sugar Bowl Suite
-        32, -- Mournoth Keep
-        63, -- Enchanted Snow Globe Home
-        25, -- Cyrodilic Jungle House
-        13, -- Snugpod
-        78, -- Proudspire Manor
-        80, -- Stillwaters Retreat
-        37, -- Serenity Falls Estate
-
-        -- Requires loadscreen
-        6, -- Flaming Nix Deluxe Garret
-        19, -- Kragenhome
-        1, -- Mara's Kiss Public House
-        3, -- The Ebony Flask Inn Room
-    }
-    for _, houseId in ipairs(decentHouses) do
-        local collectibleId = GetCollectibleIdForHouse(houseId)
-        if (IsCollectibleUnlocked(collectibleId)) then
-            KyzderpsDerps:msg(zo_strformat("Unable to find any players in <<1>> or overland zones; porting outside of your <<2>> instead", zoneName, GetCollectibleName(collectibleId)))
-            RequestJumpToHouse(houseId, true)
-            return
-        end
-    end
-
-    -- So lonely
-    KyzderpsDerps:msg("Couldn't find anywhere to port to :(")
-end
-
 
 ---------------------------------------------------------------------
--- /ktp sol
----------------------------------------------------------------------
-local function FindDesiredZone(searchString)
-    searchString = string.lower(searchString)
-
-    -- Search beginning of name first
-    for zoneId, _ in pairs(overlandZones) do
-        local name = string.lower(GetZoneNameById(zoneId))
-        if (StartsWith(name, searchString)) then
-            KyzderpsDerps:msg(string.format("Matched zone %s (%d)", GetZoneNameById(zoneId), zoneId))
-            return zoneId
-        end
-    end
-
-    -- Search full name
-    for zoneId, _ in pairs(overlandZones) do
-        local name = string.lower(GetZoneNameById(zoneId))
-        if (string.find(name, searchString, 1, true)) then
-            KyzderpsDerps:msg(string.format("Matched zone %s (%d)", GetZoneNameById(zoneId), zoneId))
-            return zoneId
-        end
-    end
-
-    -- TODO: maybe others?
-
-    KyzderpsDerps:msg("Couldn't find overland zone matching \"" .. searchString .. "\"")
-    return nil
+local function StartsWith(str, prefix)
+    return string.sub(str, 1, #prefix) == prefix
 end
-
-local function PortToZoneSearch(argString)
-    if (not argString or argString == "") then
-        KyzderpsDerps:msg("Usage: /ktp <partial zone name>  ||  Example: /ktp sol")
-        return
-    end
-
-    local zoneId = FindDesiredZone(argString)
-    if (zoneId) then
-        PortToAnyInZone(zoneId)
-    end
-end
-
 
 ---------------------------------------------------------------------
 function KyzderpsDerps.InitializeCommands()
@@ -386,10 +180,15 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/ids"] = ToggleLuiIds
 
     -- Porting to player
-    SLASH_COMMANDS["/wayshrine"] = function() PortToAnyInZone(KyzderpsDerps.savedOptions.misc.wayshrineZoneId) end
-    SLASH_COMMANDS["/currentshrine"] = function() PortToAnyInZone(GetZoneId(GetUnitZoneIndex("player"))) end
-    SLASH_COMMANDS["/ktp"] = PortToZoneSearch
-    SLASH_COMMANDS["/ktpp"] = KyzderpsDerps.PortToPlayer
+    SLASH_COMMANDS["/wayshrine"] = function() KyzderpsDerps.PortToPlayerInZone(KyzderpsDerps.savedOptions.misc.wayshrineZoneId) end
+    SLASH_COMMANDS["/currentshrine"] = function() KyzderpsDerps.PortToPlayerInZone(GetZoneId(GetUnitZoneIndex("player"))) end
+    SLASH_COMMANDS["/ktp"] = KyzderpsDerps.PortToAny
+    SLASH_COMMANDS["/ktpp"] = function(argString)
+        if (not StartsWith(argString, "@")) then
+            argString = "@" .. argString
+        end
+        KyzderpsDerps.PortToAny(argString)
+    end
 
     SLASH_COMMANDS["/refreshsurvey"] = KyzderpsDerps.Loot.RefreshSurvey
 
