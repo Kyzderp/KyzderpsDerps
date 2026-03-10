@@ -31,12 +31,19 @@ local function UpdateSkillPoints()
     local currentChar = GetUnitName("player")
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].availPoints = GetAvailableSkillPoints()
 
-    -- Total points using skill respec cost heuristic
-    local possibleTotalPoints = GetSkillRespecCost(SKILL_POINT_ALLOCATION_MODE_FULL) / 50
-    if (possibleTotalPoints ~= 0 and -- If it's 0 then it's probably a free spec event. Could also be no points allocated but ehh
-        possibleTotalPoints == math.floor(possibleTotalPoints)) then -- Must be integer, or it's probably a cheap respec event
-        KyzderpsDerps.savedValues.charInfo.characters[currentChar].totalPoints = possibleTotalPoints + GetAvailableSkillPoints()
+    -- Collect total skill points using skills data manager, since respecs are now free
+    local totalUsed = 0
+    for skillType = 1, GetNumSkillTypes() do
+        for skillLineIndex = 1, GetNumSkillLines(skillType) do
+            local skillLineId = GetSkillLineId(skillType, skillLineIndex)
+            local _, _, isActive = GetSkillLineDynamicInfo(skillType, skillLineIndex)
+            if (isActive) then
+                local skillLineData = SKILLS_DATA_MANAGER:GetSkillLineDataById(skillLineId)
+                totalUsed = totalUsed + skillLineData:GetNumPointsAllocated()
+            end
+        end
     end
+    KyzderpsDerps.savedValues.charInfo.characters[currentChar].totalPoints = totalUsed + GetAvailableSkillPoints()
 end
 
 local function UpdatePlayedTime()
