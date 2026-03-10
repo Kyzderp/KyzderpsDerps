@@ -45,6 +45,7 @@ local function Unhorn(atName)
                 KyzderpsDerps:msg("Clearing horn data using HodorReflexes.playersData")
                 local charName = GetUnitName(unitTag)
                 HodorReflexes.playersData[charName] = nil
+                -- TODO: might have to do it in LGCS actually
             else
                 KyzderpsDerps:msg("Doesn't support current Hodor version. TODO!!")
             end

@@ -184,6 +184,11 @@ function KyzderpsDerps.InitializeCommands()
     SLASH_COMMANDS["/currentshrine"] = function() KyzderpsDerps.PortToPlayerInZone(GetZoneId(GetUnitZoneIndex("player")), true) end
     SLASH_COMMANDS["/ktp"] = KyzderpsDerps.PortToAny
     SLASH_COMMANDS["/ktpp"] = function(argString)
+        if (argString == "") then
+            KyzderpsDerps:msg("Usage: /ktpp <@name>")
+            KyzderpsDerps:msg("Note: You can now use /ktp to port to both players in zones and specific players, but /ktpp will only search for specific player.")
+            return
+        end
         if (not StartsWith(argString, "@")) then
             argString = "@" .. argString
         end
