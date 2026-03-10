@@ -78,8 +78,6 @@ modules/quickslot/Indicator.xml
 
 modules/reticle/Reticle.lua
 
-modules/skills/Poopfist.lua
-
 modules/sync/Sync.lua
 modules/sync/Kyzerg.lua
 

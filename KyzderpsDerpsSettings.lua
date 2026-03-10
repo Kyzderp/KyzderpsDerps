@@ -1246,12 +1246,6 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
-            name = "Skills",
-            controls = KyzderpsDerps.Poopfist.GetSettings(),
-        },
-        -------------------------------------------------------------------------------
-        {
-            type = "submenu",
             name = "Pre-Logout",
             controls = KyzderpsDerps.PreLogout.GetSettings(),
         },

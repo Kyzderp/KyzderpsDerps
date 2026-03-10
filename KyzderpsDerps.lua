@@ -190,9 +190,6 @@ local defaultOptions = {
         trialSack = 1,
         xalvakka = false,
     },
-    skills = {
-        poopstomp = false,
-    },
     chatter = {
         rerollReistaff = false,
         usePriority = false,
@@ -364,7 +361,6 @@ local function Initialize()
     KyzderpsDerps.Opener.Initialize()
     KyzderpsDerps.Integrations.Initialize()
     KyzderpsDerps.Tribute.Initialize()
-    KyzderpsDerps.Poopfist.Initialize()
     KyzderpsDerps.PreLogout.Initialize()
     KyzderpsDerps.InitializeAOE()
     KyzderpsDerps.Chatter.Initialize()
