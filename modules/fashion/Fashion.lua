@@ -89,7 +89,7 @@ local function OnCollectibleUpdated(_, collectibleId)
             if (GetNumBagFreeSlots(BAG_BACKPACK) == 0) then
                 KyzderpsDerps:msg(string.format("Could not unequip %s because you have no space in your backpack.", link))
             else
-                KyzderpsDerps:msg(string.format("Unequipping %s. WTB invisible tabards ZOS pls.", link))
+                KyzderpsDerps:msg(string.format("Unequipping %s.", link))
                 RequestUnequipItem(BAG_WORN, EQUIP_SLOT_COSTUME)
             end
         else
@@ -101,7 +101,7 @@ local function OnCollectibleUpdated(_, collectibleId)
                     local itemLink = GetItemLink(item.bagId, item.slotIndex, LINK_STYLE_BRACKETS)
                     local itemType, specializedType = GetItemLinkItemType(itemLink)
                     if (itemType == ITEMTYPE_TABARD and specializedType == SPECIALIZED_ITEMTYPE_TABARD) then
-                        KyzderpsDerps:msg(string.format("Equipping %s for the nameplate!", itemLink))
+                        KyzderpsDerps:msg(string.format("Equipping %s, which will override your currently equipped Guild Nameplate.", itemLink))
                         RequestEquipItem(BAG_BACKPACK, item.slotIndex, BAG_WORN, EQUIP_SLOT_COSTUME)
                         return
                     end
