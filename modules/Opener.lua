@@ -61,7 +61,7 @@ local CONTAINER_TYPES = {
 local function OpenContainer(bagId, slotIndex)
     if (not CONTAINER_TYPES[GetItemType(bagId, slotIndex)]) then
         local itemLink = GetItemLink(bagId, slotIndex, LINK_STYLE_BRACKETS)
-        KyzderpsDerps:msg("|cFF0000Not a container?! " .. itemLink)
+        KyzderpsDerps:dbg("|cFF0000Not a container?! maybe event double fired: " .. itemLink)
         return
     end
 
