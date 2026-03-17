@@ -187,7 +187,10 @@ local COMMANDS = {
         end
     end,
 
-    -- TODO: ktp
+    -- ktp
+    ktp = function(_, text)
+        KD.PortToAny(string.sub(text, 5))
+    end,
 }
 
 function Kyzerg.PrintCommands()

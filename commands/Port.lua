@@ -192,16 +192,17 @@ end
 -- Search targets for player
 -- Returns true for handled
 local function TryPortToPlayerName(argString, exact, beginning)
-    if (not StartsWith(argString, "@")) then
-        argString = "@" .. argString
+    local partial = argString
+    if (not StartsWith(partial, "@") and beginning) then
+        partial = "@" .. partial
     end
-    argString = string.lower(argString)
+    partial = string.lower(partial)
 
     for _, target in ipairs(targetPlayers) do
         local loweredName = string.lower(target.atName)
         if (exact) then
             -- Exact name only
-            if (argString == loweredName) then
+            if (partial == loweredName) then
                 PortToTarget(target)
                 return true
             end
@@ -209,13 +210,13 @@ local function TryPortToPlayerName(argString, exact, beginning)
             -- Partial allowed
             if (beginning) then
                 -- Must begin with
-                if (StartsWith(loweredName, argString)) then
+                if (StartsWith(loweredName, partial)) then
                     PortToTarget(target)
                     return true
                 end
             else
                 -- Match any part
-                if (string.find(loweredName, argString, 1, true)) then
+                if (string.find(loweredName, partial, 1, true)) then
                     PortToTarget(target)
                     return true
                 end
