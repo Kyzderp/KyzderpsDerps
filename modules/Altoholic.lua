@@ -39,7 +39,9 @@ local function UpdateSkillPoints()
             local _, _, isActive = GetSkillLineDynamicInfo(skillType, skillLineIndex)
             if (isActive) then
                 local skillLineData = SKILLS_DATA_MANAGER:GetSkillLineDataById(skillLineId)
-                totalUsed = totalUsed + skillLineData:GetNumPointsAllocated()
+                if (skillLineData and skillLineData.GetNumPointsAllocated) then
+                    totalUsed = totalUsed + skillLineData:GetNumPointsAllocated()
+                end
             end
         end
     end
