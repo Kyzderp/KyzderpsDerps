@@ -22,17 +22,20 @@ local function GetSelfIndexInWave()
     local points = {}
     local avgX = 0
     local avgZ = 0
-    for i, GetGroupSize() do
+    for i = 1, GetGroupSize() do
         local unitTag = GetGroupUnitTagByIndex(i)
         if (IsUnitOnline(unitTag)) then
             local _, x, y, z = GetUnitRawWorldPosition(unitTag)
-            table.insert({unitTag = unitTag, x = x, z = z})
+            table.insert(points, {unitTag = unitTag, x = x, z = z})
             avgX = avgX + x
             avgZ = avgZ + z
         end
     end
     avgX = avgX / #points
     avgZ = avgZ / #points
+
+    -- There could be a mismatch between index, probably, so sort by name
+    table.sort(points, function(a, b) return GetUnitDisplayName(a.unitTag) < GetUnitDisplayName(b.unitTag) end)
 
     -- idk just making up an algorithm that should be reasonable enough
     -- Find farthest point from the average, it will be the start
@@ -80,12 +83,9 @@ end
 local function HandleWave(fromName, text)
     -- KDD wave |H1:collectible:10235|h|h 200
     local id, interval
-    for match in string.gmatch(text, "^KDD wave |H1:collectible:(%d+)|h|h (%d+)$") do
-        if (not id) then
-            id = tonumber(match)
-        else
-            interval = tonumber(match)
-        end
+    for first, second in string.gmatch(text, "^KDD wave |H1:collectible:(%d+)|h|h (%d+)$") do
+        id = tonumber(first)
+        interval = tonumber(second)
     end
 
     if (not id or not interval) then return false end
@@ -133,7 +133,7 @@ local function HandleCommandWave(argString)
     for i = 1, GetTotalCollectiblesByCategoryType(COLLECTIBLE_CATEGORY_TYPE_MEMENTO) do
         local id = GetCollectibleIdFromType(COLLECTIBLE_CATEGORY_TYPE_MEMENTO, i)
         if (string.find(string.lower(GetCollectibleName(id)), search, 1, true)) then
-            StartChatInput(string.format("KDD wave %s 200", GetCollectibleLink(id, LINK_STYLE_BRACKETS)), CHAT_CHANNEL_PARTY)
+            StartChatInput(string.format("KDD wave %s 300", GetCollectibleLink(id, LINK_STYLE_BRACKETS)), CHAT_CHANNEL_PARTY)
             return
         end
     end

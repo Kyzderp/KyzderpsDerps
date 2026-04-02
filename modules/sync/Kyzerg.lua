@@ -65,7 +65,7 @@ local function SortRiders(fromName)
             onlineCharNames[atName] = GetUnitName(unitTag)
 
             local mountedState, isRidingGroupMount, hasFreePassengerSlot = GetTargetMountedStateInfo(atName)
-            KyzderpsDerps:dbg(zo_strformat("<<1>>: mountedState <<2>> isRidingGroupMount <<3>> hasFreePassengerSlot <<4>>", atName, mountedState, isRidingGroupMount, hasFreePassengerSlot))
+            KyzderpsDerps:dbg(zo_strformat("<<1>>: mountedState <<2>> isRidingGroupMount <<3>> hasFreePassengerSlot <<4>>", atName, mountedState, isRidingGroupMount and "true" or "false", hasFreePassengerSlot and "true" or "false"))
             if (mountedState == MOUNTED_STATE_MOUNT_RIDER and isRidingGroupMount and hasFreePassengerSlot) then
                 table.insert(drivers, atName)
             else
