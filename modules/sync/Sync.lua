@@ -63,13 +63,15 @@ local function GetSelfIndexInWave()
                 closestDist = dist
                 closestIndex = i
             end
+            KyzderpsDerps:dbg(string.format("%s <--> %s: ", GetUnitDisplayName(currPoint.unitTag), GetUnitDisplayName(point.unitTag), dist))
         end
 
-        currPoint = table.remove(points, i)
+        currPoint = table.remove(points, closestIndex)
+        KyzderpsDerps:dbg(GetUnitDisplayName(currPoint.unitTag))
         table.insert(order, GetUnitDisplayName(currPoint.unitTag))
     end
 
-    d(order)
+    -- d(order)
 
     -- Find the index of yourself
     for i, name in ipairs(order) do
@@ -85,7 +87,7 @@ local function HandleWave(fromName, text)
     local id, interval
     for first, second in string.gmatch(text, "^KDD wave |H1:collectible:(%d+)|h|h (%d+)$") do
         id = tonumber(first)
-        interval = tonumber(second)
+        interval = zo_clamp(tonumber(second), 0, 5000)
     end
 
     if (not id or not interval) then return false end
