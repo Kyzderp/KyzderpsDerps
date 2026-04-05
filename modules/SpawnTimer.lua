@@ -176,6 +176,7 @@ local BOSS_NAMES = {
     ["Limenauruus"] = true, -- WB: Minotaur
     ["Ironfang"] = true, -- Delve: Garlas Agea
     ["Exulus"] = true, -- Delve: Hrota Cave
+    ["Kvatch Arena"] = 330, -- WB TODO
 
 -- Grahtwood
     ["Great Thorn"] = 300, -- PD: Rood Sunder Ruins
@@ -335,6 +336,10 @@ local BOSS_GROUPS = {
     ["Vonshala"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
     ["Sumeer"] = "GetPlayerLocationName", -- Dolmen - Dremora traveler
 
+-- Bangkorai
+    ["Zaman"] = "Telesubi Ruins", -- WB: Liches
+    ["Qumehdi"] = "Telesubi Ruins", -- WB: Liches
+
 -- Blackwood
     ["Bhrum"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
     ["Koska"] = "Bhrum / Koska", -- WB: Minotaurs at Shardius's Excavation
@@ -356,6 +361,10 @@ local BOSS_GROUPS = {
 -- Galen
     ["Traux the Ancient"] = "Traux / Druid Rerlas", -- Delve: Embervine
     ["Druid Rerlas"] = "Traux / Druid Rerlas", -- Delve: Embervine
+
+-- Gold Coast
+    ["Order Champion"] = "Kvatch Arena",
+    ["Knight Commander Panthius"] = "Kvatch Arena",
 
 -- Greenshade
     ["Neiral"] = "Maormer Camp", -- WB: Maormer Camp
