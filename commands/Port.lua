@@ -60,7 +60,8 @@ local overlandZones = {
     [849] = true, -- Vvardenfell
     [1443] = true, -- West Weald
     [1160] = true, -- Western Skyrim
-    [684] = true -- Wrothgar
+    [684] = true, -- Wrothgar
+    [1146] = true, -- Tideholm
 }
 
 
@@ -179,9 +180,9 @@ local function ShowUsage()
 end
 
 local portTypes = {
-    [TYPE_GROUP] = {portFunc = JumpToGroupMember, format = "Porting to group member <<1>> in <<2>>"},
-    [TYPE_FRIEND] = {portFunc = JumpToFriend, format = "Porting to friend <<1>> in <<2>>"},
-    [TYPE_GUILD] = {portFunc = JumpToGuildMember, format = "Porting to guild member <<1>> in <<2>>"},
+    [TYPE_GROUP] = {portFunc = JumpToGroupMember, format = "Porting to group member <<1>> in |c00FFFF<<2>>"},
+    [TYPE_FRIEND] = {portFunc = JumpToFriend, format = "Porting to friend <<1>> in |c00FFFF<<2>>"},
+    [TYPE_GUILD] = {portFunc = JumpToGuildMember, format = "Porting to guild member <<1>> in |c00FFFF<<2>>"},
 }
 local function PortToTarget(target)
     local portType = portTypes[target.type]
@@ -235,29 +236,32 @@ local function PortToPlayerInZone(zoneId, collectTargets)
         CollectTargets()
     end
 
-    local fallbackTarget
+    local fallbackSameZoneTarget, fallbackTarget
     for _, target in ipairs(targetPlayers) do
         if (target.zoneId == zoneId) then
             PortToTarget(target)
             return
         end
 
-        -- Save fallback
+        -- Save fallbacks
+        if (not fallbackSameZoneTarget and overlandZones[target.zoneId] and target.zoneId == GetZoneId(GetUnitZoneIndex("player"))) then
+            fallbackSameZoneTarget = target
+        end
         if (not fallbackTarget and overlandZones[target.zoneId]) then
             fallbackTarget = target
         end
     end
 
-    -- If none found, use first overland zone as fallback
-    if (fallbackTarget) then
+    -- If none found, use same overland zone as fallback, otherwise first overland zone as fallback
+    if (fallbackSameZoneTarget or fallbackTarget) then
         if (zoneId) then
             KD:msg(zo_strformat("Unable to find any players in <<1>>; using fallback.", GetZoneNameById(zoneId)))
-            PortToTarget(fallbackTarget)
+            PortToTarget(fallbackSameZoneTarget or fallbackTarget)
             return
         else
             -- Called only for final fallback
             KD:msg("Unable to find a matching player or zone name; using fallback.")
-            PortToTarget(fallbackTarget)
+            PortToTarget(fallbackSameZoneTarget or fallbackTarget)
             return
         end
     end
