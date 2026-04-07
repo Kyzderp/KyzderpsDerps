@@ -73,6 +73,7 @@ local defaultOptions = {
         printScoreFormat = false,
         startChatScoreFormat = false,
         wayshrineZoneId = 849, -- Vvardenfell
+        openMapForFallback = false,
         autoRefreshSurvey = false,
     },
     preLogout = {

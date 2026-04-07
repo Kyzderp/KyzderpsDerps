@@ -137,11 +137,53 @@ end
 
 
 ---------------------------------------------------------------------
+-- Interacting with wayshrine after fallback
+---------------------------------------------------------------------
+local firstPlayerActivated = false
+
+local function OnFastTravelInteract(zoneId)
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "FastTravel", EVENT_START_FAST_TRAVEL_INTERACTION)
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "FastTravelPlayerActivated", EVENT_PLAYER_ACTIVATED)
+
+    KyzderpsDerps:msg(string.format("Opening map to |c00FFFF%s |cAAAAAA(%d) because that's what you wanted... right?", GetZoneNameById(zoneId), zoneId))
+    WORLD_MAP_MANAGER:SetMapById(GetMapIdByZoneId(zoneId))
+end
+
+local function OnPlayerActivated()
+    if (firstPlayerActivated) then
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "FastTravel", EVENT_START_FAST_TRAVEL_INTERACTION)
+        EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "FastTravelPlayerActivated", EVENT_PLAYER_ACTIVATED)
+        firstPlayerActivated = false
+        KyzderpsDerps:dbg("more than 1 port after fallback map open intention; cancelling")
+        return
+    end
+
+    firstPlayerActivated = true
+end
+
+-- If user had actually wanted to go to some zone, but no players were available there,
+-- then assume the next interaction with a wayshrine is an intention to port to the
+-- originally desired zone, so open the map to that zone
+local function StartFallbackFastTravel(zoneId)
+    KyzderpsDerps:dbg("will try to open to " .. zoneId .. " next time")
+    EVENT_MANAGER:UnregisterForEvent(KyzderpsDerps.name .. "FastTravel", EVENT_START_FAST_TRAVEL_INTERACTION)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "FastTravel", EVENT_START_FAST_TRAVEL_INTERACTION,
+        function() OnFastTravelInteract(zoneId) end)
+
+    -- This function is called as soon as the command is sent, so we'll have 1 player
+    -- activation after the initial port. After the 2nd player activation, assume the
+    -- map open is no longer wanted and cancel it
+    firstPlayerActivated = false
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "FastTravelPlayerActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
+end
+
+
+---------------------------------------------------------------------
 -- Final fallback
 ---------------------------------------------------------------------
 -- Fallback to outside owned houses that are near wayshrines
 -- Returns true if handled
-local function PortOutsideHouse()
+local function PortOutsideHouse(ifFallbackDesiredZoneId)
     local decentHouses = {
         68, -- Sugar Bowl Suite
         32, -- Mournoth Keep
@@ -164,6 +206,11 @@ local function PortOutsideHouse()
         if (IsCollectibleUnlocked(collectibleId)) then
             KD:msg(zo_strformat("No players or zone found, porting outside of your <<1>> instead", GetCollectibleName(collectibleId)))
             RequestJumpToHouse(houseId, true)
+
+            -- For opening map
+            if (ifFallbackDesiredZoneId and KyzderpsDerps.savedOptions.misc.openMapForFallback) then
+                StartFallbackFastTravel(ifFallbackDesiredZoneId)
+            end
             return true
         end
     end
@@ -184,10 +231,17 @@ local portTypes = {
     [TYPE_FRIEND] = {portFunc = JumpToFriend, format = "Porting to friend <<1>> in |c00FFFF<<2>>"},
     [TYPE_GUILD] = {portFunc = JumpToGuildMember, format = "Porting to guild member <<1>> in |c00FFFF<<2>>"},
 }
-local function PortToTarget(target)
+
+-- ifFallbackDesiredZoneId: if this was a port to a zone that resulted in fallback, the zoneId
+local function PortToTarget(target, ifFallbackDesiredZoneId)
     local portType = portTypes[target.type]
     portType.portFunc(target.atName)
     KD:msg(zo_strformat(portType.format, target.atName, GetZoneNameById(target.zoneId)))
+
+    -- For opening map
+    if (ifFallbackDesiredZoneId and KyzderpsDerps.savedOptions.misc.openMapForFallback) then
+        StartFallbackFastTravel(ifFallbackDesiredZoneId)
+    end
 end
 
 -- Search targets for player
@@ -256,7 +310,7 @@ local function PortToPlayerInZone(zoneId, collectTargets)
     if (fallbackSameZoneTarget or fallbackTarget) then
         if (zoneId) then
             KD:msg(zo_strformat("Unable to find any players in <<1>>; using fallback.", GetZoneNameById(zoneId)))
-            PortToTarget(fallbackSameZoneTarget or fallbackTarget)
+            PortToTarget(fallbackSameZoneTarget or fallbackTarget, zoneId)
             return
         else
             -- Called only for final fallback
@@ -267,7 +321,7 @@ local function PortToPlayerInZone(zoneId, collectTargets)
     end
 
     -- If no zone fallback, use a house
-    if (PortOutsideHouse()) then return end
+    if (PortOutsideHouse(zoneId)) then return end
 
     -- Really? No houses?
     if (zoneId) then

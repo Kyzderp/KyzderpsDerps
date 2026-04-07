@@ -321,6 +321,23 @@ local function CreateMiscSettings()
         isExtraWide = false,
         reference = "KyzderpsDerps#WayshrineEditBox"
     })
+    table.insert(controls, {
+        type = "description",
+        title = nil,
+        text = "Similarly, |c99FF99/ktp|r allows you to port to a player or zone, with fallbacks. For example, |c99FF99/ktp reap|r will try to port you to a player who is in Reaper's March, and |c99FF99/ktp kyzer|r will try to port to a group member, friend, or guild member with a name containing |c99FF99kyzer|r.",
+        width = "full",
+    })
+    table.insert(controls, {
+        type = "checkbox",
+        name = "Auto-select zone at wayshrine if fallback",
+        tooltip = "If you try to use |c99FF99/wayshrine|r or |c99FF99/ktp|r to port to a specific zone, but no one could be found in the zone so it ported you to a fallback instead, automatically select the originally intended zone on the map when you interact with a wayshrine. For example, if I |c99FF99/ktp reap|r because I wanted to go to Reaper's March, but the fallback ported me to someone in Solstice instead, then, when I interact with the wayshrine, the map will automatically change to Reaper's March so I can select a wayshrine from there",
+        default = false,
+        getFunc = function() return KyzderpsDerps.savedOptions.misc.openMapForFallback end,
+        setFunc = function(value)
+            KyzderpsDerps.savedOptions.misc.openMapForFallback = value
+        end,
+        width = "full",
+    })
     return controls
 end
 

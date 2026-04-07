@@ -2,6 +2,7 @@ KyzderpsDerps = KyzderpsDerps or {}
 
 local lfcpFilter
 local combatSpam = true
+local excludeCombat = false
 
 ----------------------------------------------------------------------
 -- /script all()
@@ -341,7 +342,7 @@ local function BuildEventList()
     end
 end
 
--- esoui/libraries/globals/debugutils.lua
+-- copied from esoui/libraries/globals/debugutils.lua
 local function OnAnyEvent(...)
     local arg = { ... }    
     local numArgs = #arg
@@ -352,13 +353,15 @@ local function OnAnyEvent(...)
     end
     
     local eventName = arg[1]
-    
+
     if(KDD_EVENT_NAMES) -- nice, we can get a string look up for this event code!  (TODO: just expose these as strings?)
     then
         eventName = KDD_EVENT_NAMES[eventName] or eventName
     end
 
     if (string.match(eventName, "^EVENT_GUILD_MEMBER(.*)")) then
+        return
+    elseif (excludeCombat and (eventName == "EVENT_COMBAT_EVENT" or eventName == "EVENT_EFFECT_CHANGED")) then
         return
     end
     
@@ -408,22 +411,27 @@ local function HandleCommand(argString)
         length = length + 1
     end
 
-    local usage = "/kddspam <start || stop || combat || all>"
+    local usage = "/kddspam <stop || combat || nocombat || all>"
 
     if (length == 0) then
         d(usage)
         return
     end
 
-    if (args[1] == "start") then
-        StartDebugging()
-    elseif (args[1] == "stop") then
+    if (args[1] == "stop") then
         StopDebugging()
     elseif (args[1] == "combat") then
+        excludeCombat = false
         combatSpam = true
         StopDebugging()
         StartDebugging()
+    elseif (args[1] == "nocombat") then
+        excludeCombat = true
+        combatSpam = false
+        StopDebugging()
+        StartDebugging()
     elseif (args[1] == "all") then
+        excludeCombat = false
         combatSpam = false
         StopDebugging()
         StartDebugging()
