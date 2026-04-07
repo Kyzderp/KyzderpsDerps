@@ -331,17 +331,16 @@ local function CycleRecall()
     local available = {}
     local currentId = 0
     local currentIndex = 0
-    local hasAvailable = false
     for i = 1, GetTotalCollectiblesByCategoryType(COLLECTIBLE_CATEGORY_TYPE_PLAYER_FX_OVERRIDE) do
         local collectibleId = GetCollectibleIdFromType(COLLECTIBLE_CATEGORY_TYPE_PLAYER_FX_OVERRIDE, i)
         if (GetCollectiblePlayerFxOverrideAbilityType(collectibleId) == PLAYER_FX_OVERRIDE_ABILITY_TYPE_WAYSHRINE
             and IsCollectibleUnlocked(collectibleId)) then
-            hasAvailable = true
             if (IsCollectibleActive(collectibleId)) then
                 currentId = collectibleId
                 -- If randomizing, we pick from ones other than the current, but still include
                 -- the ID in the available table, because using it will go to default style
                 if (mode == "Cycle" or KyzderpsDerps.savedOptions.fashion.recallIncludeDefault) then
+                    isCurrentIncluded = true
                     table.insert(available, collectibleId)
                     currentIndex = #available
                 end
@@ -351,7 +350,8 @@ local function CycleRecall()
         end
     end
 
-    if (not hasAvailable or #available == 0 or (#available == 1 and not KyzderpsDerps.savedOptions.fashion.recallIncludeDefault)) then
+    if (#available == 0) then
+        -- d(available)
         KyzderpsDerps:dbg("No recall styles available")
         return
     end
