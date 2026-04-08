@@ -339,7 +339,7 @@ local function CycleRecall()
                 currentId = collectibleId
                 -- If randomizing, we pick from ones other than the current, but still include
                 -- the ID in the available table, because using it will go to default style
-                if (mode == "Cycle" or KyzderpsDerps.savedOptions.fashion.recallIncludeDefault) then
+                if (KyzderpsDerps.savedOptions.fashion.recallIncludeDefault) then
                     isCurrentIncluded = true
                     table.insert(available, collectibleId)
                     currentIndex = #available
