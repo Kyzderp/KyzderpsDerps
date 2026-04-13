@@ -63,7 +63,7 @@ local function GetSelfIndexInWave()
                 closestDist = dist
                 closestIndex = i
             end
-            KyzderpsDerps:dbg(string.format("%s <--> %s: ", GetUnitDisplayName(currPoint.unitTag), GetUnitDisplayName(point.unitTag), dist))
+            KyzderpsDerps:dbg(string.format("%s <--> %s: %f", GetUnitDisplayName(currPoint.unitTag), GetUnitDisplayName(point.unitTag), dist))
         end
 
         currPoint = table.remove(points, closestIndex)

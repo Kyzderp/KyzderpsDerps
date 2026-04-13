@@ -62,6 +62,7 @@ local overlandZones = {
     [1160] = true, -- Western Skyrim
     [684] = true, -- Wrothgar
     [1146] = true, -- Tideholm
+    [1463] = true, -- The Scholarium
 }
 
 
