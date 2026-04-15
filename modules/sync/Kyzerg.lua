@@ -235,14 +235,27 @@ end
 
 
 ---------------------------------------------------------------------
+---------------------------------------------------------------------
+local function OnFocusChanged(_, hasFocus)
+    if (hasFocus) then
+        StopAllMovement()
+    end
+end
+
+
+---------------------------------------------------------------------
 -- Initialize
 ---------------------------------------------------------------------
 function Kyzerg.Initialize()
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "KyzergChatMessage", EVENT_CHAT_MESSAGE_CHANNEL)
+
+    EVENT_MANAGER:UnregisterForEvent(KD.name .. "KyzergFocus", EVENT_GAME_FOCUS_CHANGED)
+
     if (KD.savedOptions.general.experimental) then
         KD:dbg("    Initializing Kyzerg module...")
 
         EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergChatMessage", EVENT_CHAT_MESSAGE_CHANNEL, OnChatMessage)
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergFocus", EVENT_GAME_FOCUS_CHANGED, OnFocusChanged)
 
         -- Put zerg guild channel in valid. This breaks if leaving or joining, but it's not like I do that often
         for i = 1, GetNumGuilds() do
