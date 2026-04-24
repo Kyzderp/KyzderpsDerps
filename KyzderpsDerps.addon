@@ -28,7 +28,7 @@ modules/SpawnTimer.lua
 modules/Altoholic.lua
 modules/KHouse.lua
 modules/Companion.lua
-modules/InWorldWaypoint.lua
+modules/drawing/InWorldWaypoint.lua
 modules/AutoRepair.lua
 modules/Opener.lua
 modules/ScoreFormat.lua
