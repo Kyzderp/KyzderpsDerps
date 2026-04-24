@@ -186,6 +186,11 @@ local COMMANDS = {
     ktp = function(_, text)
         KD.PortToAny(string.sub(text, 5))
     end,
+
+    -- krez
+    krez = function()
+        Revive()
+    end,
 }
 
 function Kyzerg.PrintCommands()
