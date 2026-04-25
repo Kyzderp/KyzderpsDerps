@@ -16,7 +16,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing || resetcraft>"
+    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing || resetcraft || pocket>"
 
     if (length == 0) then
         CHAT_ROUTER:AddSystemMessage(usage)
@@ -132,6 +132,18 @@ local function HandleKDDCommand(argString)
     -- i am forgerful
     elseif (args[1] == "kyzerg") then
         KyzderpsDerps.Sync.Kyzerg.PrintCommands()
+
+    -- attach jogroup frame to the unit (for pocket healing!)
+    elseif (args[1] == "pocket") then
+        if (length ~= 2) then
+            KyzderpsDerps:msg("Usage: /kdd pocket <@name> | /kdd pocket clear ")
+            return
+        end
+        if (args[2] == "clear") then
+            KyzderpsDerps.JoGroup.ClearPockets()
+        else
+            KyzderpsDerps.JoGroup.Pocket(args[2])
+        end
 
     -- Unknown
     else

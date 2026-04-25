@@ -200,6 +200,58 @@ end
 
 
 ---------------------------------------------------------------------
+-- Pocket healing
+---------------------------------------------------------------------
+local function StartsWith(str, prefix)
+    return string.sub(str, 1, #prefix) == prefix
+end
+
+local pockets = {}
+function JG.Pocket(name)
+    if (not CrutchAlerts or not CrutchAlerts.Drawing or not CrutchAlerts.Drawing.AttachControl) then
+        KyzderpsDerps:msg("Requires CrutchAlerts v2.16.0+")
+        return
+    end
+    if (not JoGroup) then
+        KyzderpsDerps:msg("Requires JoGroup")
+        return
+    end
+
+    if (not StartsWith(name, "@")) then
+        name = "@" .. name
+    end
+
+    local unitTag
+    for i = 1, GetGroupSize() do
+        local tag = GetGroupUnitTagByIndex(i)
+        if (IsUnitOnline(tag) and GetUnitDisplayName(tag) == name) then
+            unitTag = tag
+            break
+        end
+    end
+
+    if (not unitTag) then
+        KyzderpsDerps:msg("Couldn't find online group member " .. name)
+        return
+    end
+
+    pockets[unitTag] = true
+    CrutchAlerts.Drawing.AttachControl(JoGroup.frame[unitTag], unitTag, "KDDPocket" .. unitTag)
+end
+
+function JG.ClearPockets()
+    if (not JoGroup) then
+        KyzderpsDerps:msg("Requires JoGroup")
+        return
+    end
+    for unitTag, _ in pairs(pockets) do
+        CrutchAlerts.Drawing.UnattachControl(JoGroup.frame[unitTag], "KDDPocket" .. unitTag)
+    end
+    JoGroup.ReAnchor()
+end
+
+
+---------------------------------------------------------------------
 -- Settings
 ---------------------------------------------------------------------
 function JG.GetSettings()
