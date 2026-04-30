@@ -231,6 +231,7 @@ end
 ---------------------------------------------------------------------
 local function OnQuestShared(_, questId)
     local questName, _, _, displayName = GetOfferedQuestShareInfo(questId)
+    KD:msg(displayName .. " shared " .. questName .. " (" .. questId .. ")")
 
     if (IsMe(displayName)) then
         AcceptSharedQuest(questId)

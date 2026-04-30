@@ -196,6 +196,9 @@ local defaultOptions = {
         usePriority = false,
         priorityDoneToday = false,
     },
+    tomes = {
+        enableTotals = false,
+    },
 }
 
 local defaultValues = {
@@ -293,6 +296,11 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.WorldIcons.Initialize()
     KyzderpsDerps.Loot.InitializeSurvey()
     KyzderpsDerps.JoGroup.Initialize()
+
+    if (KyzderpsDerps.savedOptions.tomes.enableTotals) then
+        KyzderpsDerps.Tomes.Initialize()
+    end
+
     if (KyzderpsDerps.savedOptions.general.experimental) then
         if (btg) then btg.debug = true end
     end

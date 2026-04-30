@@ -81,6 +81,8 @@ modules/reticle/Reticle.lua
 modules/sync/Sync.lua
 modules/sync/Kyzerg.lua
 
+modules/tomes/Tomes.lua
+
 modules/tribute/Tribute.lua
 modules/tribute/Tribute.xml
 

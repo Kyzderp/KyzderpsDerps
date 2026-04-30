@@ -288,6 +288,7 @@ local function CreateMiscSettings()
     for _, setting in ipairs(scoreFormatSettings) do
         table.insert(controls, setting)
     end
+    table.insert(controls, KyzderpsDerps.Tomes.GetSettings())
     table.insert(controls, {
         type = "description",
         title = nil,
