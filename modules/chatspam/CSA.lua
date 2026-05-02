@@ -24,9 +24,20 @@ local alertCategories = {
 }
 
 ---------------------------------------------------------------------
+local function StartsWith(str, prefix)
+    if (not str) then return false end
+    return string.sub(str, 1, #prefix) == prefix
+end
+
 local function HookCenterScreenAnnounce(s, messageParams)
     local mainText = messageParams:GetMainText()
     local secondaryText = messageParams:GetSecondaryText()
+
+    if (KyzderpsDerps.savedOptions.misc.suppressKillEnemiesNM
+        and (StartsWith(mainText, "Kill Enemies in the Night Market:")
+            or StartsWith(mainText, "Kill More Enemies in the Night Market:"))) then
+        return true
+    end
 
     if (mainText ~= nil or secondaryText ~= nil) then
         if (LibFilteredChatPanel) then

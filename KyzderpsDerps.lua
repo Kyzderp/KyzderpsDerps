@@ -5,7 +5,7 @@
 
 KyzderpsDerps = KyzderpsDerps or {}
 KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.45.0"
+KyzderpsDerps.version = "1.46.0"
 
 -- Defaults
 local defaultOptions = {
@@ -75,6 +75,7 @@ local defaultOptions = {
         wayshrineZoneId = 849, -- Vvardenfell
         openMapForFallback = false,
         autoRefreshSurvey = false,
+        suppressKillEnemiesNM = false,
     },
     preLogout = {
         loadFewAddons = false,

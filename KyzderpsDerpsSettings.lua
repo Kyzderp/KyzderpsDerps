@@ -259,6 +259,17 @@ local function CreateMiscSettings()
         },
         {
             type = "checkbox",
+            name = "Block \"Kill Enemies in the Night Market\"",
+            tooltip = "Prevent the \"Kill Enemies in the Night Market\" text from showing up in center-screen announcements",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.misc.suppressKillEnemiesNM end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.misc.suppressKillEnemiesNM = value
+            end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
             name = "In-combat reticle",
             tooltip = "Turn the reticle red while you are in combat",
             default = false,
