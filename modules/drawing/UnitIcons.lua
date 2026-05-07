@@ -8,6 +8,7 @@ local function StartsWith(str, prefix)
     return string.sub(str, 1, #prefix) == prefix
 end
 
+-- TODO: companion doesn't work. use companion activated and deactivated
 local function GetIconTexture(unitTag)
     if (StartsWith(unitTag, "playerpet")) then
         return "CrutchAlerts/assets/poop.dds"
@@ -37,10 +38,11 @@ end
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
 function WI.InitializeUnitIcons()
+    if (not KD.savedOptions.general.experimental) then return end
     if (not CrutchAlerts or not CrutchAlerts.SetAttachedIconForUnit) then
         return
     end
 
-    EVENT_MANAGER:RegisterForEvent(WI.name .. "UnitCreated", OnUnitCreated)
-    EVENT_MANAGER:RegisterForEvent(WI.name .. "UnitDestroyed", OnUnitDestroyed)
+    EVENT_MANAGER:RegisterForEvent(WI.name .. "UnitCreated", EVENT_UNIT_CREATED, OnUnitCreated)
+    EVENT_MANAGER:RegisterForEvent(WI.name .. "UnitDestroyed", EVENT_UNIT_DESTROYED, OnUnitDestroyed)
 end

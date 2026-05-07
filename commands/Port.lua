@@ -63,6 +63,7 @@ local overlandZones = {
     [684] = true, -- Wrothgar
     [1146] = true, -- Tideholm
     [1463] = true, -- The Scholarium
+    [1559] = true, -- Night Market
 }
 
 
