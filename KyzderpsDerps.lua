@@ -295,6 +295,7 @@ local function OnPlayerActivated(_, initial)
     KyzderpsDerps.ScoreFormat.Initialize()
     KyzderpsDerps.UIElements.Initialize()
     KyzderpsDerps.WorldIcons.Initialize()
+    KyzderpsDerps.WorldIcons.InitializeUnitIcons()
     KyzderpsDerps.Loot.InitializeSurvey()
     KyzderpsDerps.JoGroup.Initialize()
 
