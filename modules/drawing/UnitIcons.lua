@@ -45,4 +45,7 @@ function WI.InitializeUnitIcons()
 
     EVENT_MANAGER:RegisterForEvent(WI.name .. "UnitCreated", EVENT_UNIT_CREATED, OnUnitCreated)
     EVENT_MANAGER:RegisterForEvent(WI.name .. "UnitDestroyed", EVENT_UNIT_DESTROYED, OnUnitDestroyed)
+
+    EVENT_MANAGER:RegisterForEvent(WI.name .. "CompanionActivated", EVENT_COMPANION_ACTIVATED, function() OnUnitCreated(nil, "companion") end)
+    EVENT_MANAGER:RegisterForEvent(WI.name .. "CompanionDeactivated", EVENT_COMPANION_DEACTIVATED, function() OnUnitDestroyed(nil, "companion") end)
 end
