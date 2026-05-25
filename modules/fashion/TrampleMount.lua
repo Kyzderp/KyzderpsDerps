@@ -12,6 +12,7 @@ local function IsMountingAllowed()
 
     if (zoneId == 636 -- HRC
         or zoneId == 176 -- CoA1
+        or zoneId == 681 -- CoA2
         or zoneId == 973 -- BRF
         ) then
         return true
