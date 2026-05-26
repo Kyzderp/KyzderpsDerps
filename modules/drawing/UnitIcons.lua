@@ -11,6 +11,9 @@ end
 -- TODO: companion doesn't work. use companion activated and deactivated
 local function GetIconTexture(unitTag)
     if (StartsWith(unitTag, "playerpet")) then
+        if (GetUnitName(unitTag) == "Wild Guardian") then
+            return "/esoui/art/icons/ability_warden_018_c.dds"
+        end
         return "CrutchAlerts/assets/poop.dds"
     end
     if (unitTag == "companion") then

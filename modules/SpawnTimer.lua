@@ -395,6 +395,8 @@ local BOSS_GROUPS = {
     ["Wind-Bound Voskrona"] = "Voskrona Guardians", -- WB: Shrine of Vakkan
     ["Flame-Bound Voskrona"] = "Voskrona Guardians", -- WB: Shrine of Vakkan
     ["Growth-Bound Voskrona"] = "Voskrona Guardians", -- WB: Shrine of Vakkan
+    ["The Tender"] = "Tender / Ogrim", -- PD: Calindvale Gardens
+    ["Ensnared Ogrim"] = "Tender / Ogrim", -- PD: Calindvale Gardens
 
 -- Stonefalls
     ["Dezanu"] = "Dezanu / Calls-to-Nature", -- Delve: Sheogorath's Tongue
