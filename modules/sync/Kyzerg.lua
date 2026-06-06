@@ -62,10 +62,11 @@ local function SortRiders(fromName)
         local unitTag = GetGroupUnitTagByIndex(i)
         local atName = GetUnitDisplayName(unitTag)
         if (IsMe(atName) and IsUnitOnline(unitTag)) then
-            onlineCharNames[atName] = GetUnitName(unitTag)
+            local charName = GetUnitName(unitTag)
+            onlineCharNames[atName] = charName
 
-            local mountedState, isRidingGroupMount, hasFreePassengerSlot = GetTargetMountedStateInfo(atName)
-            KyzderpsDerps:dbg(zo_strformat("<<1>>: mountedState <<2>> isRidingGroupMount <<3>> hasFreePassengerSlot <<4>>", atName, mountedState, isRidingGroupMount and "true" or "false", hasFreePassengerSlot and "true" or "false"))
+            local mountedState, isRidingGroupMount, hasFreePassengerSlot = GetTargetMountedStateInfo(charName)
+            KyzderpsDerps:dbg(zo_strformat("<<1>>: mountedState <<2>> isRidingGroupMount <<3>> hasFreePassengerSlot <<4>>", charName, mountedState, isRidingGroupMount and "true" or "false", hasFreePassengerSlot and "true" or "false"))
             if (mountedState == MOUNTED_STATE_MOUNT_RIDER and isRidingGroupMount and hasFreePassengerSlot) then
                 table.insert(drivers, atName)
             else
