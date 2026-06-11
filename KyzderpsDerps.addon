@@ -91,3 +91,5 @@ modules/uielements/AoeColors.lua
 modules/uielements/Reposition.lua
 
 modules/questchatter/QuestChatter.lua
+
+modules/combat/Combat.lua

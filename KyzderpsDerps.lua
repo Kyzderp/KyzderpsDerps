@@ -200,6 +200,9 @@ local defaultOptions = {
     tomes = {
         enableTotals = false,
     },
+    combat = {
+        satiateHunger = false,
+    },
 }
 
 local defaultValues = {
@@ -375,6 +378,7 @@ local function Initialize()
     KyzderpsDerps.PreLogout.Initialize()
     KyzderpsDerps.InitializeAOE()
     KyzderpsDerps.Chatter.Initialize()
+    KyzderpsDerps.Combat.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")

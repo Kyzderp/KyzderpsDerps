@@ -751,6 +751,12 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Combat",
+            controls = KyzderpsDerps.Combat.GetSettings(),
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Anti-Spud",
             controls = {
                 {
