@@ -58,9 +58,9 @@ function Spud.SnoozeCurrent()
     end
 
     -- Save target time, update current display, and also call update later
-    snoozed[current] = GetGameTimeSeconds() + 3600
+    snoozed[current] = GetGameTimeSeconds() + KyzderpsDerps.savedOptions.antispud.snoozeTime
     Spud.UpdateDisplay()
-    EVENT_MANAGER:RegisterForUpdate("KyzderpsAntiSpudSnooze" .. current, 3600000, function()
+    EVENT_MANAGER:RegisterForUpdate("KyzderpsAntiSpudSnooze" .. current, KyzderpsDerps.savedOptions.antispud.snoozeTime * 1000, function()
         EVENT_MANAGER:UnregisterForUpdate("KyzderpsAntiSpudSnooze" .. current)
         UpdateSnoozed()
     end)

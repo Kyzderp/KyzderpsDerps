@@ -766,6 +766,20 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
                 {
+                    type = "slider",
+                    name = "Snooze time",
+                    tooltip = "The number of minutes the \"Snooze\" button would snooze the notification for",
+                    min = 0,
+                    max = 600,
+                    step = 10,
+                    default = 60,
+                    width = "full",
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.snoozeTime / 60 end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.snoozeTime = value * 60
+                    end,
+                },
+                {
                     type = "checkbox",
                     name = "Check equipped items",
                     tooltip = "Checks your equipped items and notifies you if you are missing pieces, or maybe wearing too many or too few pieces",

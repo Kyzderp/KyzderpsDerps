@@ -89,6 +89,7 @@ local defaultOptions = {
         showSummonResult = true,
     },
     antispud = {
+        snoozeTime = 3600, -- seconds to snooze for
         equipped = {
             enable = false,
             printToChat = false,
