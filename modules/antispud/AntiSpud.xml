@@ -13,7 +13,7 @@
                     <Dimensions x="32" y="32"/>
                     <OnClicked>KyzderpsDerps.AntiSpud.SnoozeCurrent()</OnClicked>
                     <OnMouseEnter>
-                        ZO_Tooltips_ShowTextTooltip(self, LEFT, "Snooze this warning for 1 hour")
+                        ZO_Tooltips_ShowTextTooltip(self, LEFT, "Snooze this warning (configure length of time in settings)")
                     </OnMouseEnter>
                     <OnMouseExit>
                         ZO_Tooltips_HideTextTooltip()

@@ -64,7 +64,7 @@ function Spud.SnoozeCurrent()
         EVENT_MANAGER:UnregisterForUpdate("KyzderpsAntiSpudSnooze" .. current)
         UpdateSnoozed()
     end)
-    KyzderpsDerps:msg(string.format("Snoozing \"%s\" for 1 hour. Reloading UI or logging out will un-snooze.", current))
+    KyzderpsDerps:msg(string.format("Snoozing \"%s\" for %d minutes. Reloading UI or logging out will un-snooze.", current, math.floor(KyzderpsDerps.savedOptions.antispud.snoozeTime / 60)))
 end
 
 ---------------------------------------------------------------------
