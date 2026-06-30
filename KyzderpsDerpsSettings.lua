@@ -784,12 +784,24 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "checkbox",
-                    name = "Include in-housing combat",
-                    tooltip = "Considers being in combat while in player housing as PvE, for dummy parsing purposes",
+                    name = "Include in-housing dummy",
+                    tooltip = "Considers being in combat with a dummy in player housing as PvE for some checks, e.g. food and mundus",
                     default = true,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVE end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVE = value
+                        KyzderpsDerps.AntiSpud.CheckState("settings")
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Include in-housing duels",
+                    tooltip = "Considers being in PvP combat in player housing as PvP for some checks, e.g. food and mundus",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVP end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVP = value
                         KyzderpsDerps.AntiSpud.CheckState("settings")
                     end,
                     width = "full",

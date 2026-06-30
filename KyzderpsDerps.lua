@@ -109,6 +109,7 @@ local defaultOptions = {
         state = {
             includeActivityFinder = true,
             includeHouseCombatPVE = true,
+            includeHouseCombatPVP = true,
         },
         mundus = {
             checkPve = false,

@@ -46,16 +46,16 @@ local function CheckMundus()
 
     local currentState = Spud.GetCurrentState()
 
-    if (currentState == Spud.PVE and KyzderpsDerps.savedOptions.antispud.mundus.checkPve
+    if (Spud.IsCurrentStateAnyPVE() and KyzderpsDerps.savedOptions.antispud.mundus.checkPve
         and not KyzderpsDerps.savedOptions.antispud.mundus.pve[abilityId]) then
         Spud.Display(string.format("You are using %s in PvE", currentMundus), Spud.MUNDUS)
-    elseif (currentState == Spud.PVP and KyzderpsDerps.savedOptions.antispud.mundus.checkPvp
+    elseif (Spud.IsCurrentStateAnyPVP() and KyzderpsDerps.savedOptions.antispud.mundus.checkPvp
         and not KyzderpsDerps.savedOptions.antispud.mundus.pvp[abilityId]) then
         Spud.Display(string.format("You are using %s in PvP", currentMundus), Spud.MUNDUS)
     else
         if (KyzderpsDerps.savedOptions.general.experimental
             and KyzderpsDerps.savedOptions.antispud.mundus.checkPve
-            and currentState == Spud.PVE
+            and Spud.IsCurrentStateAnyPVE()
             and GetSelectedLFGRole() ~= LFG_ROLE_TANK
             and abilityId == 13982) then
             -- Kyzer does not want Atro on non-tank

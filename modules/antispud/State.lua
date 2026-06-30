@@ -1,10 +1,13 @@
 KyzderpsDerps = KyzderpsDerps or {}
+local KD = KyzderpsDerps
 
-KyzderpsDerps.AntiSpud = KyzderpsDerps.AntiSpud or {}
-local Spud = KyzderpsDerps.AntiSpud
+KD.AntiSpud = KD.AntiSpud or {}
+local Spud = KD.AntiSpud
 
 Spud.PVE = "PVE"
 Spud.PVP = "PVP"
+Spud.HOUSING_PVE = "dummy"
+Spud.HOUSING_PVP = "housing duel"
 Spud.NONE = "NONE"
 
 local currentState = Spud.NONE
@@ -12,6 +15,23 @@ local currentState = Spud.NONE
 function Spud.GetCurrentState()
     return currentState
 end
+
+function Spud.IsCurrentStateContentPVE()
+    return currentState == Spud.PVE
+end
+
+function Spud.IsCurrentStateAnyPVE()
+    return currentState == Spud.PVE or (KD.savedOptions.antispud.includeHouseCombatPVE and currentState == Spud.HOUSING_PVE)
+end
+
+function Spud.IsCurrentStateContentPVP()
+    return currentState == Spud.PVP
+end
+
+function Spud.IsCurrentStateAnyPVP()
+    return currentState == Spud.PVP or (KD.savedOptions.antispud.includeHouseCombatPVP and currentState == Spud.HOUSING_PVP)
+end
+
 
 ---------------------------------------------------------------------
 -- State Listeners
@@ -24,7 +44,7 @@ local listeners = {}
 -- string newState
 function Spud.RegisterStateListener(name, callback)
     if (listeners[name]) then
-        KyzderpsDerps:dbg("|cFF0000Spud state listener " .. name .. " already exists|r")
+        KD:dbg("|cFF0000Spud state listener " .. name .. " already exists|r")
         return
     end
 
@@ -33,10 +53,10 @@ end
 
 local function FireStateListeners(newState, reason)
     if (newState == currentState) then
-        KyzderpsDerps:dbg("|cFF0000Spud state is already " .. newState .. "|r")
+        KD:dbg("|cFF0000Spud state is already " .. newState .. "|r")
         return
     end
-    KyzderpsDerps:dbg(string.format("State: %s → %s Reason: %s", currentState, newState, tostring(reason)))
+    KD:dbg(string.format("State: %s → %s Reason: %s", currentState, newState, tostring(reason)))
 
     local prevState = currentState
     currentState = newState
@@ -60,7 +80,7 @@ end
 ---------------------------------------------------------------------
 local function IsDoingGroupPVE(zoneId)
     if (IsUnitInDungeon("player")) then
-        return KyzderpsDerps.IsInstanceId(tostring(zoneId))
+        return KD.IsInstanceId(tostring(zoneId))
     end
 end
 Spud.IsDoingGroupPVE = IsDoingGroupPVE
@@ -110,7 +130,7 @@ local function GetCurrentFinderType()
     elseif (activityType == LFG_ACTIVITY_TRIBUTE_CASUAL or activityType == LFG_ACTIVITY_TRIBUTE_COMPETITIVE) then
         return Spud.NONE
     else
-        KyzderpsDerps:dbg(string.format("|cFF0000THIS SHOULDN'T BE POSSIBLE? %d", activityType))
+        KD:dbg(string.format("|cFF0000THIS SHOULDN'T BE POSSIBLE? %d", activityType))
         return Spud.NONE
     end
 end
@@ -120,7 +140,7 @@ end
 ---------------------------------------------------------------------
 local function CheckState(reason)
     local finderType = Spud.NONE
-    if (KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder) then
+    if (KD.savedOptions.antispud.state.includeActivityFinder) then
         finderType = GetCurrentFinderType()
         if (finderType == Spud.NONE) then
             -- Also check Cyro / IC queue
@@ -139,8 +159,12 @@ local function CheckState(reason)
             checkedState = Spud.PVE
         elseif (IsDoingPVP()) then
             checkedState = Spud.PVP
-        elseif (KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVE and GetCurrentZoneHouseId() ~= 0 and IsUnitInCombat("player")) then
-            checkedState = Spud.PVE -- Consider in combat in house as PVE
+        elseif (GetCurrentZoneHouseId() ~= 0) then
+            if (IsUnitPvPFlagged("player")) then
+                checkedState = Spud.HOUSING_PVP -- Dueling
+            elseif (IsUnitInCombat("player")) then
+                checkedState = Spud.HOUSING_PVE -- Otherwise dummy
+            end
         else
             checkedState = Spud.NONE
         end
@@ -171,9 +195,9 @@ local prevZoneId
 local function OnPlayerActivated()
     local zoneId = GetZoneId(GetUnitZoneIndex("player"))
     if (prevZoneId) then
-        KyzderpsDerps:dbg(string.format("|c00FF00Left zone %s (%d)|r", GetZoneNameById(prevZoneId), prevZoneId))
+        KD:dbg(string.format("|c00FF00Left zone %s (%d)|r", GetZoneNameById(prevZoneId), prevZoneId))
     end
-    KyzderpsDerps:dbg(string.format("|c00FF00Entered zone %s (%d)|r", GetPlayerActiveZoneName(), zoneId))
+    KD:dbg(string.format("|c00FF00Entered zone %s (%d)|r", GetPlayerActiveZoneName(), zoneId))
     prevZoneId = zoneId
 
     CheckState("activation")
@@ -183,13 +207,13 @@ end
 -- Init
 ---------------------------------------------------------------------
 function Spud.InitializeState()
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "SpudActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
     OnPlayerActivated()
 
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
 
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignJoined", EVENT_CAMPAIGN_QUEUE_JOINED, OnCampaignQueueChanged)
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignLeft", EVENT_CAMPAIGN_QUEUE_LEFT, OnCampaignQueueChanged)
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "SpudCampaignJoined", EVENT_CAMPAIGN_QUEUE_JOINED, OnCampaignQueueChanged)
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "SpudCampaignLeft", EVENT_CAMPAIGN_QUEUE_LEFT, OnCampaignQueueChanged)
 
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCombat", EVENT_PLAYER_COMBAT_STATE, OnCombatStateChanged)
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "SpudCombat", EVENT_PLAYER_COMBAT_STATE, OnCombatStateChanged)
 end

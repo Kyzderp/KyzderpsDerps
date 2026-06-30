@@ -5,7 +5,7 @@ local Spud = KyzderpsDerps.AntiSpud
 ---------------------------------------------------------------------
 local function CheckLog()
     if (KyzderpsDerps.savedOptions.antispud.log
-        and Spud.GetCurrentState() == Spud.PVE
+        and Spud.GetCurrentState() == Spud.PVE -- don't include dummy here
         and not IsEncounterLogEnabled()) then
         Spud.Display("You are not logging", Spud.LOG)
     else

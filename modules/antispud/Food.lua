@@ -88,11 +88,11 @@ end
 ---------------------------------------------------------------------
 local function IsInNeedFoodArea()
     local currentState = Spud.GetCurrentState()
-    if (currentState == Spud.PVE and KyzderpsDerps.savedOptions.antispud.food.pve) then
+    if (Spud.IsCurrentStateAnyPVE() and KyzderpsDerps.savedOptions.antispud.food.pve) then
         return true
     end
 
-    if (currentState == Spud.PVP and KyzderpsDerps.savedOptions.antispud.food.pvp) then
+    if (Spud.IsCurrentStateAnyPVP() and KyzderpsDerps.savedOptions.antispud.food.pvp) then
         return true
     end
 
