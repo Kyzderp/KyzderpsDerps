@@ -16,7 +16,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing || resetcraft || pocket>"
+    local usage = "Usage: /kdd <settings || grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing || resetcraft || pocket>"
 
     if (length == 0) then
         CHAT_ROUTER:AddSystemMessage(usage)
@@ -28,6 +28,9 @@ local function HandleKDDCommand(argString)
     -- Toggle grievous retaliation overlay
     if (args[1] == "grievous") then
         GrievousRetaliation:SetHidden(not GrievousRetaliation:IsHidden())
+
+    elseif (args[1] == "settings") then
+        LibAddonMenu2:OpenToPanel(KyzderpsDerpsOptions)
 
     -- toggle bosstimer
     elseif (args[1] == "bosstimer") then
