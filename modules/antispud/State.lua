@@ -139,6 +139,8 @@ local function CheckState(reason)
             checkedState = Spud.PVE
         elseif (IsDoingPVP()) then
             checkedState = Spud.PVP
+        elseif (KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVE and GetCurrentZoneHouseId() ~= 0 and IsUnitInCombat("player")) then
+            checkedState = Spud.PVE -- Consider in combat in house as PVE
         else
             checkedState = Spud.NONE
         end
@@ -148,6 +150,7 @@ local function CheckState(reason)
         FireStateListeners(checkedState, reason)
     end
 end
+Spud.CheckState = CheckState
 
 ---------------------------------------------------------------------
 -- Events to trigger state check
@@ -158,6 +161,10 @@ end
 
 local function OnCampaignQueueChanged()
     CheckState("campaign")
+end
+
+local function OnCombatStateChanged()
+    CheckState("combat")
 end
 
 local prevZoneId
@@ -181,6 +188,8 @@ function Spud.InitializeState()
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudActivityFinder", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnFinderStatusUpdate)
 
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignJoined",  EVENT_CAMPAIGN_QUEUE_JOINED, OnCampaignQueueChanged)
-    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignLeft",  EVENT_CAMPAIGN_QUEUE_LEFT, OnCampaignQueueChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignJoined", EVENT_CAMPAIGN_QUEUE_JOINED, OnCampaignQueueChanged)
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCampaignLeft", EVENT_CAMPAIGN_QUEUE_LEFT, OnCampaignQueueChanged)
+
+    EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudCombat", EVENT_PLAYER_COMBAT_STATE, OnCombatStateChanged)
 end

@@ -766,6 +766,35 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
                 {
+                    type = "description",
+                    title = "|c08BD1DGeneral Settings|r",
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Include queued activity",
+                    tooltip = "Includes Activity Finder and Cyrodiil/Imperial City campaigns in the PvE/PvP checks. For example, if you queue for a dungeon, AntiSpud will check your mundus as if you were in a PvE activity already. If you queue for a Cyrodiil campaign, AntiSpud will check your mundus as if you were in PvP already",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder = value
+                        KyzderpsDerps.AntiSpud.CheckState("settings")
+                    end,
+                    width = "full",
+                },
+                {
+                    type = "checkbox",
+                    name = "Include in-housing combat",
+                    tooltip = "Considers being in combat while in player housing as PvE, for dummy parsing purposes",
+                    default = true,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVE end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.state.includeHouseCombatPVE = value
+                        KyzderpsDerps.AntiSpud.CheckState("settings")
+                    end,
+                    width = "full",
+                },
+                {
                     type = "slider",
                     name = "Snooze time",
                     tooltip = "The number of minutes the \"Snooze\" button would snooze the notification for",
@@ -778,6 +807,11 @@ function KyzderpsDerps:CreateSettingsMenu()
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.snoozeTime = value * 60
                     end,
+                },
+                {
+                    type = "description",
+                    title = "|c08BD1DThings to Check|r",
+                    width = "full",
                 },
                 {
                     type = "checkbox",
@@ -847,12 +881,6 @@ function KyzderpsDerps:CreateSettingsMenu()
                         KyzderpsDerps.savedOptions.antispud.equipped.spaulder = value
                         KyzderpsDerps.AntiSpud.UpdateSpaulderDisplay()
                     end,
-                    width = "full",
-                },
-                {
-                    type = "description",
-                    title = "Food / Drink Buff",
-                    text = "Notifies you if you do not have an active food or drink buff in PvE/PvP or are at a boss.",
                     width = "full",
                 },
                 {
@@ -933,12 +961,6 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
                 {
-                    type = "description",
-                    title = "Encounter Log",
-                    text = "Notifies you if you are not logging while in a PvE area.",
-                    width = "full",
-                },
-                {
                     type = "checkbox",
                     name = "Check encounter log",
                     tooltip = "Notifies you if you are not logging while in a PvE area",
@@ -947,24 +969,6 @@ function KyzderpsDerps:CreateSettingsMenu()
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.log = value
                         KyzderpsDerps.AntiSpud.CheckLog()
-                    end,
-                    width = "full",
-                },
-                {
-                    type = "description",
-                    title = "Mundus Stone",
-                    text = "Notifies you if you are in or queued for (if \"Include activity finder\" is enabled) a PvE or PvP activity but do not have the specified Mundus Stone buffs.",
-                    width = "full",
-                },
-                {
-                    type = "checkbox",
-                    name = "Include queued activity",
-                    tooltip = "Includes Activity Finder and Cyrodiil/Imperial City campaigns in the PvE/PvP checks. For example, if you queue for a dungeon, AntiSpud will check your mundus as if you were in a PvE activity already. If you queue for a Cyrodiil campaign, AntiSpud will check your mundus as if you were in PvP already",
-                    default = true,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.state.includeActivityFinder = value
-                        KyzderpsDerps.AntiSpud.CheckMundus()
                     end,
                     width = "full",
                 },
