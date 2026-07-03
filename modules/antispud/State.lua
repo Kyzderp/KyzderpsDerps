@@ -21,7 +21,7 @@ function Spud.IsCurrentStateContentPVE()
 end
 
 function Spud.IsCurrentStateAnyPVE()
-    return currentState == Spud.PVE or (KD.savedOptions.antispud.includeHouseCombatPVE and currentState == Spud.HOUSING_PVE)
+    return currentState == Spud.PVE or (KD.savedOptions.antispud.state.includeHouseCombatPVE and currentState == Spud.HOUSING_PVE)
 end
 
 function Spud.IsCurrentStateContentPVP()
@@ -29,7 +29,7 @@ function Spud.IsCurrentStateContentPVP()
 end
 
 function Spud.IsCurrentStateAnyPVP()
-    return currentState == Spud.PVP or (KD.savedOptions.antispud.includeHouseCombatPVP and currentState == Spud.HOUSING_PVP)
+    return currentState == Spud.PVP or (KD.savedOptions.antispud.state.includeHouseCombatPVP and currentState == Spud.HOUSING_PVP)
 end
 
 

@@ -9,6 +9,10 @@ local TORTE_BUFFS = {
     [147687] = true, -- Colovian War Torte
     [147733] = true, -- Molten War Torte
     [147734] = true, -- White-Gold War Torte
+    [137733] = true, -- Alliance War Skill Line Scroll, Major
+    [147466] = true, -- Alliance Skill Gain -- TODO: verify, from uesp
+    [147467] = true, -- Alliance Skill Gain, Grand -- TODO: verify, from uesp
+    [147797] = true, -- Alliance Skill Gain 150% Boost -- TODO: verify, from uesp
 }
 
 local function IsTorteBuff(abilityId)
