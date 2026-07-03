@@ -237,6 +237,8 @@ function JG.Pocket(name)
 
     pockets[unitTag] = true
     CrutchAlerts.Drawing.AttachControl(JoGroup.frame[unitTag], unitTag, "KDDPocket" .. unitTag)
+
+    JoGroup.savedVars.colours.customColour = true -- TODO: setting gradient colors is weird af when in space? zos bug?
 end
 
 function JG.ClearPockets()
@@ -248,6 +250,8 @@ function JG.ClearPockets()
         CrutchAlerts.Drawing.UnattachControl(JoGroup.frame[unitTag], "KDDPocket" .. unitTag)
     end
     JoGroup.ReAnchor()
+
+    JoGroup.savedVars.colours.customColour = false
 end
 
 
