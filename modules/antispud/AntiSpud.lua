@@ -34,6 +34,7 @@ function Spud.Initialize()
 
     Spud.InitializeSpaulder()
     Spud.InitializeMundus()
+    Spud.InitializeSkills()
     Spud.InitializeFood()
     Spud.InitializeTorte()
     Spud.InitializeLog()

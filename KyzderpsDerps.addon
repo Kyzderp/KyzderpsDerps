@@ -37,6 +37,7 @@ modules/antispud/AntiSpud.lua
 modules/antispud/State.lua
 modules/antispud/Display.lua
 modules/antispud/Mundus.lua
+modules/antispud/Skills.lua
 modules/antispud/Equipped.lua
 modules/antispud/Spaulder.lua
 modules/antispud/Food.lua
