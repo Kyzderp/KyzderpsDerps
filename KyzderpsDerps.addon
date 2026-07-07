@@ -93,3 +93,5 @@ modules/uielements/Reposition.lua
 modules/questchatter/QuestChatter.lua
 
 modules/combat/Combat.lua
+
+modules/gamepad/Vibrations.lua

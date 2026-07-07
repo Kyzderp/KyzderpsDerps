@@ -2,10 +2,11 @@
 -- KyzderpsDerps
 -- @author Kyzeragon
 -----------------------------------------------------------
-
-KyzderpsDerps = KyzderpsDerps or {}
-KyzderpsDerps.name = "KyzderpsDerps"
-KyzderpsDerps.version = "1.47.0"
+KyzderpsDerps = {
+    name = "KyzderpsDerps",
+    version = "1.47.0",
+}
+local KD = KyzderpsDerps
 
 -- Defaults
 local defaultOptions = {
@@ -381,6 +382,7 @@ local function Initialize()
     KyzderpsDerps.InitializeAOE()
     KyzderpsDerps.Chatter.Initialize()
     KyzderpsDerps.Combat.Initialize()
+    KD.InitializeVibrations()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
