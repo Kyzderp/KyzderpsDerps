@@ -899,6 +899,21 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
                 {
+                    type = "dropdown",
+                    name = "Check pure class mastery",
+                    tooltip = "Notifies you when you have class masteries available but have not allocated the points",
+                    multiSelect = true,
+                    choices = spudStateChoices,
+                    choicesValues = spudStateValues,
+                    getFunc = function() return
+                        KD.AntiSpud.StateValueToTable(KD.savedOptions.antispud.skills.classMastery)
+                    end,
+                    setFunc = function(tab)
+                        KD.savedOptions.antispud.skills.classMastery = KD.AntiSpud.StateTableToValue(tab)
+                        KD.AntiSpud.CheckSkills()
+                    end,
+                },
+                {
                     type = "checkbox",
                     name = "Check food in PvE areas",
                     tooltip = "Notifies you if you don't have a food buff in PvE areas",
@@ -1130,19 +1145,6 @@ function KyzderpsDerps:CreateSettingsMenu()
                     end,
                     width = "half",
                     disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPvp end,
-                },
-                {
-                    type = "dropdown",
-                    name = "Check pure class mastery",
-                    multiSelect = true,
-                    choices = spudStateChoices,
-                    choicesValues = spudStateValues,
-                    getFunc = function() return
-                        KD.AntiSpud.StateValueToTable(KD.savedOptions.antispud.skills.classMastery)
-                    end,
-                    setFunc = function(tab)
-                        KD.savedOptions.antispud.skills.classMastery = KD.AntiSpud.StateTableToValue(tab)
-                    end,
                 },
             }
         },

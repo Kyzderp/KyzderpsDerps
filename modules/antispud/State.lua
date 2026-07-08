@@ -45,7 +45,7 @@ local function BuildSettings()
     local order = {Spud.PVE, Spud.PVP, Spud.HOUSING_PVE, Spud.HOUSING_PVP, Spud.NONE}
     for _, state in ipairs(order) do
         table.insert(choices, state)
-        table.insert(choicesValues, BITMASKS[state])
+        table.insert(choicesValues, state)
     end
 
     return choices, choicesValues

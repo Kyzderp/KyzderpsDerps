@@ -33,6 +33,7 @@ local function CheckSkills()
         Spud.Display(nil, Spud.SKILLS)
     end
 end
+Spud.CheckSkills = CheckSkills
 
 
 ---------------------------------------------------------------------
