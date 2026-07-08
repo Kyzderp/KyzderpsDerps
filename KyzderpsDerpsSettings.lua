@@ -2,6 +2,7 @@
 -- Kyzderp's Derps
 -- @author Kyzeragon
 -----------------------------------------------------------
+local KD = KyzderpsDerps
 
 -- Return a new array of just NPC names, to be used in dropdown
 local function getNpcNames()
@@ -365,6 +366,8 @@ function KyzderpsDerps:CreateSettingsMenu()
         registerForRefresh = true,
         registerForDefaults = true,
     }
+
+    local spudStateChoices, spudStateValues = KD.AntiSpud.BuildSettings()
 
     -- Set the actual panel data
     local optionsData = {
@@ -1127,6 +1130,19 @@ function KyzderpsDerps:CreateSettingsMenu()
                     end,
                     width = "half",
                     disabled = function() return not KyzderpsDerps.savedOptions.antispud.mundus.checkPvp end,
+                },
+                {
+                    type = "dropdown",
+                    name = "Check pure class mastery",
+                    multiSelect = true,
+                    choices = spudStateChoices,
+                    choicesValues = spudStateValues,
+                    getFunc = function() return
+                        KD.AntiSpud.StateValueToTable(KD.savedOptions.antispud.skills.classMastery)
+                    end,
+                    setFunc = function(tab)
+                        KD.savedOptions.antispud.skills.classMastery = KD.AntiSpud.StateTableToValue(tab)
+                    end,
                 },
             }
         },

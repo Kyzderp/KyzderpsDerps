@@ -127,6 +127,9 @@ local defaultOptions = {
         },
         log = false,
         torte = false,
+        skills = {
+            classMastery = 0,
+        },
     },
     hodor = {
         horn = false,

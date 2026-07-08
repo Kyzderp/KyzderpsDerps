@@ -1,14 +1,11 @@
-KyzderpsDerps = KyzderpsDerps or {}
 local KD = KyzderpsDerps
-
-KD.AntiSpud = KD.AntiSpud or {}
 local Spud = KD.AntiSpud
 
 Spud.PVE = "PVE"
 Spud.PVP = "PVP"
-Spud.HOUSING_PVE = "dummy"
-Spud.HOUSING_PVP = "housing duel"
-Spud.NONE = "NONE"
+Spud.HOUSING_PVE = "Housing dummy"
+Spud.HOUSING_PVP = "Housing duel"
+Spud.NONE = "Overland / elsewhere"
 
 local currentState = Spud.NONE
 
@@ -31,6 +28,58 @@ end
 function Spud.IsCurrentStateAnyPVP()
     return currentState == Spud.PVP or (KD.savedOptions.antispud.state.includeHouseCombatPVP and currentState == Spud.HOUSING_PVP)
 end
+
+
+---------------------------------------------------------------------
+local BITMASKS = {
+    [Spud.PVE] = 1,
+    [Spud.PVP] = 2,
+    [Spud.HOUSING_PVE] = 4,
+    [Spud.HOUSING_PVP] = 8,
+    [Spud.NONE] = 16,
+}
+
+local function BuildSettings()
+    local choices = {}
+    local choicesValues = {}
+    local order = {Spud.PVE, Spud.PVP, Spud.HOUSING_PVE, Spud.HOUSING_PVP, Spud.NONE}
+    for _, state in ipairs(order) do
+        table.insert(choices, state)
+        table.insert(choicesValues, BITMASKS[state])
+    end
+
+    return choices, choicesValues
+end
+Spud.BuildSettings = BuildSettings
+
+-- Whether the specified state's bit is set in the setting
+-- Returns true or false, or nil if the role is not valid
+local function IsStateSet(setting, state)
+    return BitAnd(setting, BITMASKS[state]) ~= 0
+end
+Spud.IsStateSet = IsStateSet
+
+-- Converts a value like 6 to {Spud.PVP, Spud.HOUSING_PVE}
+local function StateValueToTable(setting)
+    local tab = {}
+    for state, _ in pairs(BITMASKS) do
+        if (IsStateSet(setting, state)) then
+            table.insert(tab, state)
+        end
+    end
+    return tab
+end
+Spud.StateValueToTable = StateValueToTable
+
+-- Converts a table like {Spud.PVP, Spud.HOUSING_PVE} to 6
+local function StateTableToValue(tab)
+    local val = 0
+    for _, state in ipairs(tab) do
+        val = val + BITMASKS[state]
+    end
+    return val
+end
+Spud.StateTableToValue = StateTableToValue
 
 
 ---------------------------------------------------------------------

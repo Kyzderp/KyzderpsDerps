@@ -1,8 +1,10 @@
-KyzderpsDerps = KyzderpsDerps or {}
+local KD = KyzderpsDerps
 
-KyzderpsDerps.AntiSpud = KyzderpsDerps.AntiSpud or {}
-local Spud = KyzderpsDerps.AntiSpud
+KD.AntiSpud = {}
+local Spud = KD.AntiSpud
 
+
+---------------------------------------------------------------------
 --[[
 summon pets after dying
 resummon pets on zhajhassa
@@ -24,13 +26,13 @@ function Spud.DisplayWarning(message)
                         "|c2E2B5FN" ..
                         "|c8B00FFG" ..
                         "|r: " .. message
-    KyzderpsDerps:dbg(chatWarning)
+    KD:dbg(chatWarning)
 end
 
 ---------------------------------------------------------------------
 -- Entry
 function Spud.Initialize()
-    KyzderpsDerps:dbg("    Initializing AntiSpud module...")
+    KD:dbg("    Initializing AntiSpud module...")
 
     Spud.InitializeSpaulder()
     Spud.InitializeMundus()
@@ -39,7 +41,7 @@ function Spud.Initialize()
     Spud.InitializeTorte()
     Spud.InitializeLog()
 
-    if (KyzderpsDerps.savedOptions.antispud.equipped.enable) then
+    if (KD.savedOptions.antispud.equipped.enable) then
         Spud.InitializeEquipped()
     end
 
