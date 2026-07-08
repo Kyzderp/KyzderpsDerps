@@ -57,7 +57,6 @@ Spud.BuildSettings = BuildSettings
 local function IsStateSet(setting, state)
     return BitAnd(setting, BITMASKS[state]) ~= 0
 end
-Spud.IsStateSet = IsStateSet
 
 -- Converts a value like 6 to {Spud.PVP, Spud.HOUSING_PVE}
 local function StateValueToTable(setting)
@@ -80,6 +79,11 @@ local function StateTableToValue(tab)
     return val
 end
 Spud.StateTableToValue = StateTableToValue
+
+local function IsCurrentStateEnabledInSetting(setting)
+    return IsStateSet(setting, Spud.GetCurrentState())
+end
+Spud.IsCurrentStateEnabledInSetting = IsCurrentStateEnabledInSetting
 
 
 ---------------------------------------------------------------------
