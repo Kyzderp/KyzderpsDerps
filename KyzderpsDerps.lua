@@ -210,6 +210,11 @@ local defaultOptions = {
     combat = {
         satiateHunger = false,
     },
+    overland = {
+        dynamicEventChat = false,
+        dynamicEventSound = false,
+        dynamicEventCrutch = false,
+    },
 }
 
 local defaultValues = {
@@ -386,6 +391,7 @@ local function Initialize()
     KyzderpsDerps.Chatter.Initialize()
     KyzderpsDerps.Combat.Initialize()
     KD.InitializeVibrations()
+    KD.WorldEvent.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")

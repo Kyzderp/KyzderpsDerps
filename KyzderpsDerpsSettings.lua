@@ -736,6 +736,12 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "Dynamic Events",
+            controls = KyzderpsDerps.WorldEvent.GetSettings(),
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Death Alert",
             controls = KyzderpsDerps.DeathAlert.GetSettings(),
         },
