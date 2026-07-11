@@ -461,6 +461,11 @@ local BOSS_GROUPS = {
     ["Mazaluhad"] = "Temple District",
 }
 
+local BOSS_BLACKLIST = {
+    ["Orilo"] = true, -- Glenumbra DE
+    ["Bandit Swashbuckler Captain"] = true, -- Auridon DE
+}
+
 
 ---------------------------------------------------------------------------------------------------
 -- Hide panel while in menus
@@ -667,6 +672,11 @@ local function IsBossByUnitTag(unitTag)
     -- Skip bosses in the ignore list
     if (KyzderpsDerps.savedOptions.spawnTimer.ignoreList[bossName]) then
         KyzderpsDerps:dbg("Skipping " .. bossName .. " because it is in the ignore filter.")
+        return false
+    end
+
+    -- Skip bosses in hardcoded ignore list
+    if (BOSS_BLACKLIST[bossName]) then
         return false
     end
 
