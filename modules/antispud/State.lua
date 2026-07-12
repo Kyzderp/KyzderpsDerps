@@ -208,7 +208,9 @@ local function CheckState(reason)
     else
         -- If we're not queued, just use the zone as the check
         local zoneId = GetZoneId(GetUnitZoneIndex("player"))
-        if (IsDoingGroupPVE(zoneId)) then
+        if (IsCurrentCampaignVengeanceRuleset()) then
+            checkedState = Spud.NONE -- no point doing antispud in vengeance
+        elseif (IsDoingGroupPVE(zoneId)) then
             checkedState = Spud.PVE
         elseif (IsDoingPVP()) then
             checkedState = Spud.PVP
