@@ -214,6 +214,7 @@ local defaultOptions = {
         dynamicEventChat = false,
         dynamicEventSound = false,
         dynamicEventCrutch = false,
+        dynamicEventSpawnTimer = false,
     },
 }
 

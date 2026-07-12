@@ -1,6 +1,6 @@
-KyzderpsDerps = KyzderpsDerps or {}
-KyzderpsDerps.SpawnTimer = KyzderpsDerps.SpawnTimer or {}
-local SpawnTimer = KyzderpsDerps.SpawnTimer
+local KD = KyzderpsDerps
+KD.SpawnTimer = {}
+local SpawnTimer = KD.SpawnTimer
 
 local running = false
 
@@ -785,6 +785,14 @@ local function ManualBossKilled(bossName)
     end
     BossKilled(groupName, bossName)
 end
+
+local function CustomBossKilled(bossName, timer)
+    if (timer) then
+        BOSS_NAMES[bossName] = timer
+    end
+    BossKilled(bossName, bossName)
+end
+SpawnTimer.CustomBossKilled = CustomBossKilled
 
 ---------------------------------------------------------------------------------------------------
 -- Initialize

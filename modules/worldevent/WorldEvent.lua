@@ -43,7 +43,8 @@ local function IsDE(worldEventInstanceId)
     local worldEventType = GetWorldEventType(worldEventId)
     d(zo_strformat("instanceid <<1>> eventid <<2>> type <<3>>", worldEventInstanceId, worldEventId, WORLD_EVENT_TYPES[worldEventType]))
 
-    return DYNAMIC_EVENT_DATA[worldEventId]
+    -- worldEventId seems no longer available (is 0) after deactivated
+    return DYNAMIC_EVENT_DATA[worldEventInstanceId]
 end
 
 local function CheckDE(worldEventInstanceId)
@@ -53,7 +54,7 @@ local function CheckDE(worldEventInstanceId)
             PlaySound(SOUNDS.BATTLEGROUND_CAPTURE_FLAG_TAKEN_OWN_TEAM)
         end
         if (KD.savedOptions.overland.dynamicEventChat) then
-            KD:msg("Dynamic event active!")
+            KD:msg(zo_strformat("<<1>> dynamic event active!", GetZoneNameById(GetZoneId(GetUnitZoneIndex("player")))))
         end
         if (KD.savedOptions.overland.dynamicEventCrutch and CrutchAlerts and CrutchAlerts.DisplayProminentSpin) then
             CrutchAlerts.DisplayProminentSpin("DYNAMIC EVENT", {1, 0, 0}, 1)
@@ -66,6 +67,15 @@ end
 
 local function OnWorldEventActivated(_, worldEventInstanceId)
     CheckDE(worldEventInstanceId)
+end
+
+local function OnWorldEventDeactivated(_, worldEventInstanceId)
+    d("deactivated " .. worldEventInstanceId)
+    if (IsDE(worldEventInstanceId) and KD.savedOptions.spawnTimer.enable and KD.savedOptions.overland.dynamicEventSpawnTimer) then
+        KD:msg(zo_strformat("Adding timer since <<1>> dynamic event ended. This is only accurate for the current instance; different instances of the same zone are on their own timers.", GetZoneNameById(GetZoneId(GetUnitZoneIndex("player")))))
+        local bossName = zo_strformat("<<1>> Dynamic Event", GetZoneNameById(GetZoneId(GetUnitZoneIndex("player"))))
+        KD.SpawnTimer.CustomBossKilled(bossName, 1800)
+    end
 end
 
 local function OnPlayerActivated()
@@ -85,8 +95,22 @@ end
 ---------------------------------------------------------------------
 function WE.Initialize()
     EVENT_MANAGER:RegisterForEvent(KD.name .. "WorldEventActivated", EVENT_WORLD_EVENT_ACTIVATED, OnWorldEventActivated)
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "WorldEventDeactivated", EVENT_WORLD_EVENT_DEACTIVATED, OnWorldEventDeactivated)
     -- EVENT_MANAGER:RegisterForEvent(KD.name .. "WorldEventPlayerActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
     -- OnPlayerActivated()
+
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "WorldEventStepChanged", EVENT_WORLD_EVENT_STEP_CHANGED, function(_, worldEventInstanceId, newStepDefId)
+        d("step changed " .. worldEventInstanceId)
+        d(GetWorldEventStepName(worldEventInstanceId, newStepDefId))
+        d(GetWorldEventStepDescription(newStepDefId))
+    end)
+    EVENT_MANAGER:RegisterForEvent(KD.name .. "WorldEventStepProgressChanged", EVENT_WORLD_EVENT_STEP_PROGRESS_CHANGED, function(_, worldEventInstanceId, stepDefId, newCurrentProgress, newMaxProgress)
+        d(zo_strformat("<<1>> progress: <<2>> / <<3>>", GetWorldEventStepName(worldEventInstanceId, newStepDefId), newCurrentProgress, newMaxProgress))
+    end)
+
+    -- * EVENT_WORLD_EVENT_DEACTIVATED (*integer* _worldEventInstanceId_)
+    -- * EVENT_WORLD_EVENT_STEP_CHANGED (*integer* _worldEventInstanceId_, *integer* _newStepDefId_)
+    -- * EVENT_WORLD_EVENT_STEP_PROGRESS_CHANGED (*integer* _worldEventInstanceId_, *integer* _stepDefId_, *integer* _newCurrentProgress_, *integer* _newMaxProgress_)
 end
 
 
@@ -128,6 +152,18 @@ function WE.GetSettings()
             end,
             width = "full",
             disabled = function() return CrutchAlerts == nil or CrutchAlerts.DisplayProminentSpin == nil end,
+        },
+        {
+            type = "checkbox",
+            name = "Track time since DE ended",
+            tooltip = "Similar to boss spawn timers, tracks the time since a dynamic event ended in your current zone. The respawn time is approximately 30 minutes. Note that this timer is per-instance, so if you port away and back, you might not be in the same instance anymore. Requires Boss Timer to be enabled",
+            default = false,
+            getFunc = function() return KD.savedOptions.overland.dynamicEventSpawnTimer end,
+            setFunc = function(value)
+                KD.savedOptions.overland.dynamicEventSpawnTimer = value
+            end,
+            width = "full",
+            disabled = function() return not KD.savedOptions.spawnTimer.enable end,
         },
     }
 end
