@@ -33,15 +33,15 @@ stonefalls
 [15:33:06] activated: instanceid 110 eventid 110 type STATIC_MONSTER
 ]]
 local DYNAMIC_EVENT_DATA = {
-    [98] = true, -- auridon
-    [96] = true, -- glenumbra
-    [95] = true, -- stonefalls
+    [98] = "Auridon DE", -- auridon
+    [96] = "Glenumbra DE", -- glenumbra
+    [95] = "Stonefalls DE", -- stonefalls
 }
 
 local function IsDE(worldEventInstanceId)
     local worldEventId = GetWorldEventId(worldEventInstanceId)
     local worldEventType = GetWorldEventType(worldEventId)
-    d(zo_strformat("instanceid <<1>> eventid <<2>> type <<3>>", worldEventInstanceId, worldEventId, WORLD_EVENT_TYPES[worldEventType]))
+    KD:dbg(zo_strformat("instanceid <<1>> eventid <<2>> type <<3>>", worldEventInstanceId, worldEventId, WORLD_EVENT_TYPES[worldEventType]))
 
     -- worldEventId seems no longer available (is 0) after deactivated
     return DYNAMIC_EVENT_DATA[worldEventInstanceId]
@@ -70,11 +70,11 @@ local function OnWorldEventActivated(_, worldEventInstanceId)
 end
 
 local function OnWorldEventDeactivated(_, worldEventInstanceId)
-    d("deactivated " .. worldEventInstanceId)
-    if (IsDE(worldEventInstanceId) and KD.savedOptions.spawnTimer.enable and KD.savedOptions.overland.dynamicEventSpawnTimer) then
+    KD:dbg("deactivated " .. worldEventInstanceId)
+    local deName = IsDE(worldEventInstanceId)
+    if (deName and KD.savedOptions.spawnTimer.enable and KD.savedOptions.overland.dynamicEventSpawnTimer) then
         KD:msg(zo_strformat("Adding timer since <<1>> dynamic event ended. This is only accurate for the current instance; different instances of the same zone are on their own timers.", GetZoneNameById(GetZoneId(GetUnitZoneIndex("player")))))
-        local bossName = zo_strformat("<<1>> Dynamic Event", GetZoneNameById(GetZoneId(GetUnitZoneIndex("player"))))
-        KD.SpawnTimer.CustomBossKilled(bossName, 1800)
+        KD.SpawnTimer.CustomBossKilled(deName)
     end
 end
 
@@ -100,12 +100,12 @@ function WE.Initialize()
     -- OnPlayerActivated()
 
     EVENT_MANAGER:RegisterForEvent(KD.name .. "WorldEventStepChanged", EVENT_WORLD_EVENT_STEP_CHANGED, function(_, worldEventInstanceId, newStepDefId)
-        d("step changed " .. worldEventInstanceId)
-        d(GetWorldEventStepName(worldEventInstanceId, newStepDefId))
-        d(GetWorldEventStepDescription(newStepDefId))
+        KD:dbg("step changed " .. worldEventInstanceId)
+        KD:dbg(GetWorldEventStepName(worldEventInstanceId, newStepDefId))
+        KD:dbg(GetWorldEventStepDescription(newStepDefId))
     end)
     EVENT_MANAGER:RegisterForEvent(KD.name .. "WorldEventStepProgressChanged", EVENT_WORLD_EVENT_STEP_PROGRESS_CHANGED, function(_, worldEventInstanceId, stepDefId, newCurrentProgress, newMaxProgress)
-        d(zo_strformat("<<1>> progress: <<2>> / <<3>>", GetWorldEventStepName(worldEventInstanceId, newStepDefId), newCurrentProgress, newMaxProgress))
+        KD:dbg(zo_strformat("<<1>> progress: <<2>> / <<3>>", GetWorldEventStepName(worldEventInstanceId, stepDefId), newCurrentProgress, newMaxProgress))
     end)
 
     -- * EVENT_WORLD_EVENT_DEACTIVATED (*integer* _worldEventInstanceId_)
@@ -156,7 +156,7 @@ function WE.GetSettings()
         {
             type = "checkbox",
             name = "Track time since DE ended",
-            tooltip = "Similar to boss spawn timers, tracks the time since a dynamic event ended in your current zone. The respawn time is approximately 30 minutes. Note that this timer is per-instance, so if you port away and back, you might not be in the same instance anymore. Requires Boss Timer to be enabled",
+            tooltip = "Similar to boss spawn timers, tracks the time since a dynamic event ended in your current zone. The respawn time is approximately 30 minutes. Note that this timer is per-instance, so if you port away and back, you might not be in the same instance anymore. Requires Boss Timer to be enabled because I'm lazy",
             default = false,
             getFunc = function() return KD.savedOptions.overland.dynamicEventSpawnTimer end,
             setFunc = function(value)

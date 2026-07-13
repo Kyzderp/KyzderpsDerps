@@ -302,6 +302,11 @@ local BOSS_NAMES = {
     ["Memorial District"] = 900,
     ["Nobles District"] = 900,
     ["Temple District"] = 900,
+
+-- Dynamic Events
+    ["Auridon DE"] = 1980,
+    ["Glenumbra DE"] = 1980,
+    ["Stonefalls DE"] = 1980,
 }
 
 -- Boss actual names to name of the group. GetPlayerLocationName = should use output of that method
@@ -786,6 +791,7 @@ local function ManualBossKilled(bossName)
     BossKilled(groupName, bossName)
 end
 
+-- TODO: timer doesn't persist across reloads, so this is bad for long timers that get cleaned up
 local function CustomBossKilled(bossName, timer)
     if (timer) then
         BOSS_NAMES[bossName] = timer
