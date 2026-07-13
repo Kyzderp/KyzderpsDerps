@@ -304,8 +304,8 @@ local BOSS_NAMES = {
     ["Temple District"] = 900,
 
 -- Dynamic Events
-    ["Auridon DE"] = 1980,
-    ["Glenumbra DE"] = 1980,
+    ["Auridon DE"] = 1860,
+    ["Glenumbra DE"] = 1800,
     ["Stonefalls DE"] = 1980,
 }
 
