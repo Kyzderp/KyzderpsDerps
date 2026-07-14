@@ -12,8 +12,9 @@ Spud.SPAULDER = "Spaulder"
 Spud.TORTE = "Torte"
 Spud.LOG = "Logging"
 Spud.SKILLS = "Skills"
+Spud.SETUP = "Setup"
 
-local priorities = {Spud.MUNDUS, Spud.MISSING, Spud.FRONTBAR, Spud.BACKBAR, Spud.SKILLS, Spud.FOOD, Spud.SPAULDER, Spud.TORTE, Spud.LOG}
+local priorities = {Spud.MUNDUS, Spud.MISSING, Spud.FRONTBAR, Spud.BACKBAR, Spud.SKILLS, Spud.SETUP, Spud.FOOD, Spud.SPAULDER, Spud.TORTE, Spud.LOG}
 
 --[[
 displaying = {

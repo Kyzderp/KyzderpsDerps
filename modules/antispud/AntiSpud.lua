@@ -40,6 +40,7 @@ function Spud.Initialize()
     Spud.InitializeFood()
     Spud.InitializeTorte()
     Spud.InitializeLog()
+    Spud.InitializeGearSetup()
 
     if (KD.savedOptions.antispud.equipped.enable) then
         Spud.InitializeEquipped()

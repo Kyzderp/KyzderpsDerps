@@ -43,6 +43,7 @@ modules/antispud/Spaulder.lua
 modules/antispud/Food.lua
 modules/antispud/Torte.lua
 modules/antispud/Log.lua
+modules/antispud/GearSetup.lua
 modules/antispud/AntiSpud.xml
 
 modules/chatspam/ChatSpam.lua
