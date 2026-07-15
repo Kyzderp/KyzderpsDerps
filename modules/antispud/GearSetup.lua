@@ -4,7 +4,9 @@ local Spud = KD.AntiSpud
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
 local function OnSetupNeedsChanging()
-    Spud.Display("Have you changed your setup?", Spud.SETUP)
+    if (Spud.IsCurrentStateContentPVE()) then
+        Spud.Display("Have you changed your setup?", Spud.SETUP)
+    end
 end
 
 local function OnSetupChanged()
@@ -49,7 +51,8 @@ local function OnBossesChanged()
     end
 
     -- Only trigger off bosses truly changing (sometimes the event fires for no apparent reason?)
-    if (bossHash ~= prevBosses and bossHash == "" or prevBosses == "") then
+    if (bossHash ~= prevBosses and (bossHash == "" or prevBosses == "")) then
+        KD:dbg("[" .. prevBosses .. "] -> [" .. bossHash .. "]")
         prevBosses = bossHash
         -- TODO: trigger only after combat ends?
         OnSetupNeedsChanging()
