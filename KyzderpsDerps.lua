@@ -125,7 +125,7 @@ local defaultOptions = {
             prewarn = 5,
             prewarnInCombat = false,
         },
-        log = false,
+        log = 0,
         torte = false,
         skills = {
             classMastery = 0,
@@ -457,6 +457,13 @@ local function Initialize()
     -- TODO: remove this at some point
     -- I accidentally left this in the top level in defaults, so this is for clearing people's SV
     KyzderpsDerps.savedOptions.printScoreFormat = nil
+
+    -- Migrate antispud log to per-state bits
+    if (KD.savedOptions.antispud.log == true) then
+        KD.savedOptions.antispud.log = 1
+    elseif (KD.savedOptions.antispud.log == false) then
+        KD.savedOptions.antispud.log = 0
+    end
 
     -- This needs to go after the options changes obviously... dumb programmer
     KyzderpsDerps:CreateSettingsMenu()

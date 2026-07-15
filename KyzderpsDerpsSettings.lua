@@ -997,16 +997,19 @@ function KyzderpsDerps:CreateSettingsMenu()
                     width = "full",
                 },
                 {
-                    type = "checkbox",
+                    type = "dropdown",
                     name = "Check encounter log",
-                    tooltip = "Notifies you if you are not logging while in a PvE area",
-                    default = false,
-                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.log end,
-                    setFunc = function(value)
-                        KyzderpsDerps.savedOptions.antispud.log = value
-                        KyzderpsDerps.AntiSpud.CheckLog()
+                    tooltip = "Notifies you if you are not logging in specific areas",
+                    multiSelect = true,
+                    choices = spudStateChoices,
+                    choicesValues = spudStateValues,
+                    getFunc = function() return
+                        KD.AntiSpud.StateValueToTable(KD.savedOptions.antispud.log)
                     end,
-                    width = "full",
+                    setFunc = function(tab)
+                        KD.savedOptions.antispud.log = KD.AntiSpud.StateTableToValue(tab)
+                        KD.AntiSpud.CheckLog()
+                    end,
                 },
                 {
                     type = "checkbox",
