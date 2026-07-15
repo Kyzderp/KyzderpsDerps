@@ -11,8 +11,8 @@ local function OnSetupChanged()
     Spud.Display(nil, Spud.SETUP)
 end
 
-local function OnCombatStateChanged()
-    if (IsUnitInCombat("player")) then
+local function OnCombatStateChanged(_, inCombat)
+    if (inCombat) then
         Spud.Display(nil, Spud.SETUP)
     end
 end
@@ -60,6 +60,7 @@ end
 ---------------------------------------------------------------------
 -- Init
 ---------------------------------------------------------------------
+local agPrehooked = false
 function Spud.InitializeGearSetup()
     KD:dbg("    Initializing AntiSpud Gear Setup...")
 
@@ -69,6 +70,11 @@ function Spud.InitializeGearSetup()
 
     local checkSetup = KD.savedOptions.general.experimental -- TODO
 
+    if (checkSetup and not agPrehooked and AG and AG.LoadSetInternal) then
+        ZO_PreHook(AG, "LoadSetInternal", OnSetupChanged)
+        agPrehooked = true
+    end
+
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "AntiSpudSetupBossChanged", EVENT_BOSSES_CHANGED)
     if (checkSetup) then
         EVENT_MANAGER:RegisterForEvent(KD.name .. "AntiSpudSetupBossChanged", EVENT_BOSSES_CHANGED, OnBossesChanged)
@@ -77,13 +83,7 @@ function Spud.InitializeGearSetup()
     -- Listen for combat state to avoid showing warning in combat
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "AntiSpudSetupCombat", EVENT_PLAYER_COMBAT_STATE)
     if (checkSetup) then
-        -- Combat state timeout, because sometimes it gets spammed
-        EVENT_MANAGER:RegisterForEvent(KD.name .. "AntiSpudSetupCombat", EVENT_PLAYER_COMBAT_STATE, function()
-            EVENT_MANAGER:RegisterForUpdate(KD.name .. "AntiSpudSetupCombatTimeout", 1000, function()
-                EVENT_MANAGER:UnregisterForUpdate(KD.name .. "AntiSpudSetupCombatTimeout")
-                OnCombatStateChanged()
-            end)
-        end)
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "AntiSpudSetupCombat", EVENT_PLAYER_COMBAT_STATE, OnCombatStateChanged)
     end
 
     -- Clear message when gear changes
