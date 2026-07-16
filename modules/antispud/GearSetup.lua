@@ -90,8 +90,10 @@ function Spud.InitializeGearSetup()
     end
 
     -- Clear message when gear changes
-    EVENT_MANAGER:RegisterForEvent(KD.name .. "SpudSetupEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnSlotUpdated)
-    EVENT_MANAGER:AddFilterForEvent(KD.name .. "SpudSetupEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE,
-        REGISTER_FILTER_BAG_ID, BAG_WORN,
-        REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DEFAULT)
+    if (checkSetup) then
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "SpudSetupEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnSlotUpdated)
+        EVENT_MANAGER:AddFilterForEvent(KD.name .. "SpudSetupEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE,
+            REGISTER_FILTER_BAG_ID, BAG_WORN,
+            REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DEFAULT)
+    end
 end

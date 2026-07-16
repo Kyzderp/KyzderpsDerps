@@ -320,7 +320,7 @@ local function PortToPlayerInZone(zoneId, collectTargets)
             return
         else
             -- Called only for final fallback
-            KD:msg("Unable to find a matching player or zone name; using fallback.")
+            KD:msg("Unable to find a matching player or zone name or the zone is inaccessible; using fallback.")
             PortToTarget(fallbackSameZoneTarget or fallbackTarget)
             return
         end
@@ -333,7 +333,7 @@ local function PortToPlayerInZone(zoneId, collectTargets)
     if (zoneId) then
         KD:msg(zo_strformat("Unable to find any players in <<1>> nor overland zones, nor do you own any decent houses. Maybe consider buying the Sugar Bowl Suite? :D", GetZoneNameById(zoneId)))
     else
-        KD:msg("Unable to find a matching player or zone. No players found in overland zones, nor do you own any decent houses. Maybe consider buying the Sugar Bowl Suite? :D")
+        KD:msg("Unable to find a matching player or zone or the zone is inaccessible. No players found in overland zones, nor do you own any decent houses. Maybe consider buying the Sugar Bowl Suite? :D")
     end
 end
 KD.PortToPlayerInZone = PortToPlayerInZone
