@@ -72,6 +72,7 @@ modules/integrations/JoGroup.xml
 modules/integrations/MoreMarkers.lua
 
 modules/loot/Survey.lua
+modules/loot/GroupLoot.lua
 
 modules/prelogout/PreLogout.lua
 

@@ -394,6 +394,7 @@ local function Initialize()
     KD.InitializeVibrations()
     KD.WorldEvent.Initialize()
     KD.MoreMarkers.Initialize()
+    KD.GroupLoot.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")
