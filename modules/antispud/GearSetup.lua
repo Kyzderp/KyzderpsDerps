@@ -3,9 +3,14 @@ local Spud = KD.AntiSpud
 
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
+local shouldCheckOnNextCombatEnd = false
 local function OnSetupNeedsChanging()
     if (Spud.IsCurrentStateContentPVE()) then
-        Spud.Display("Have you changed your setup?", Spud.SETUP)
+        if (IsUnitInCombat("player")) then
+            shouldCheckOnNextCombatEnd = true
+        else
+            Spud.Display("Have you changed your setup?", Spud.SETUP)
+        end
     end
 end
 
@@ -16,6 +21,9 @@ end
 local function OnCombatStateChanged(_, inCombat)
     if (inCombat) then
         Spud.Display(nil, Spud.SETUP)
+    elseif (shouldCheckOnNextCombatEnd) then
+        shouldCheckOnNextCombatEnd = false
+        OnSetupNeedsChanging()
     end
 end
 
@@ -74,7 +82,7 @@ function Spud.InitializeGearSetup()
     local checkSetup = KD.savedOptions.general.experimental -- TODO
 
     if (checkSetup and not agPrehooked and AG and AG.LoadSetInternal) then
-        ZO_PreHook(AG, "LoadSetInternal", OnSetupChanged)
+        ZO_PreHook(AG, "LoadSet", OnSetupChanged)
         agPrehooked = true
     end
 
