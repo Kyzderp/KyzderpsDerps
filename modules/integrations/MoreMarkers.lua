@@ -19,7 +19,7 @@ local function CheckBoss()
     local zoneId = GetZoneId(GetUnitZoneIndex("player"))
     if (zoneId ~= 1263) then return end -- Rockgrove only
 
-    if (IsOax) then
+    if (IsOax()) then
         M0RMarkers.loadProfile("Preset: vRG Oax Safe Zones")
     else
         M0RMarkers.unloadEverything()

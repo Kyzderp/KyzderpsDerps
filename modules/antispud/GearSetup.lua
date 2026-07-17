@@ -62,7 +62,7 @@ local function OnBossesChanged()
     if (bossHash ~= prevBosses and (bossHash == "" or prevBosses == "")) then
         KD:dbg("[" .. prevBosses .. "] -> [" .. bossHash .. "]")
         prevBosses = bossHash
-        -- TODO: trigger only after combat ends?
+        -- TODO: don't do it on wipe (boss respawn)
         OnSetupNeedsChanging()
     end
 end
