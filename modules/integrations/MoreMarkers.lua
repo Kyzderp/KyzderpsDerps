@@ -29,6 +29,12 @@ end
 
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
+local function GetUnitNameIfExists(unitTag)
+    if (DoesUnitExist(unitTag)) then
+        return GetUnitName(unitTag)
+    end
+end
+
 local prevBosses = ""
 local function OnBossesChanged()
     local bossHash = ""

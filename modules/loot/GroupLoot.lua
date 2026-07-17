@@ -14,7 +14,7 @@ local YUGE_LOOT = {
 -- * EVENT_LOOT_RECEIVED (*string* _receivedBy_, *string* _itemName_, *integer* _quantity_, *[ItemUISoundCategory|#ItemUISoundCategory]* _soundCategory_, *[LootItemType|#LootItemType]* _lootType_, *bool* _self_, *bool* _isPickpocketLoot_, *string* _questItemIcon_, *integer* _itemId_, *bool* _isStolen_)
 local function OnLootReceived(_, receivedBy, itemName, quantity, _, lootType, self, _, _, itemId, isStolen)
     local text = YUGE_LOOT[itemId]
-    if (not itemId) then return end
+    if (not text) then return end
 
     CrutchAlerts.DisplayProminentSpin(text, {1, 0, 0}, 1)
     CrutchAlerts.DisplayProminentSpin(text, {0, 1, 0}, 2)
