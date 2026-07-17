@@ -393,6 +393,7 @@ local function Initialize()
     KyzderpsDerps.Combat.Initialize()
     KD.InitializeVibrations()
     KD.WorldEvent.Initialize()
+    KD.MoreMarkers.Initialize()
 
     -- Key bindings
     ZO_CreateStringId("SI_BINDING_NAME_KDD_CLEARSEARCH", "Clear Search Text")

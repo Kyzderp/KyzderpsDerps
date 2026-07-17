@@ -69,6 +69,7 @@ modules/integrations/HodorReflexes.lua
 modules/integrations/EnabledAddons.lua
 modules/integrations/JoGroup.lua
 modules/integrations/JoGroup.xml
+modules/integrations/MoreMarkers.lua
 
 modules/loot/Survey.lua
 

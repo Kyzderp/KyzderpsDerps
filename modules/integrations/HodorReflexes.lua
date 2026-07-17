@@ -141,12 +141,14 @@ function Hodor.Initialize()
 
     origFunction = HodorReflexes.modules.share.RefreshControls
     HodorReflexes.modules.share.RefreshControls = function(...)
-            UpdateInRange()
-            origFunction(...)
-        end
+        UpdateInRange()
+        origFunction(...)
+    end
 
     -- If it's aligned to the right of the screen it gets pushed to the left, annoying
-    HodorReflexes_Share_Ultimates:SetClampedToScreen(false)
+    if (HodorReflexes_Share_Ultimates) then
+        HodorReflexes_Share_Ultimates:SetClampedToScreen(false)
+    end
 end
 
 function Hodor.Uninitialize()
@@ -157,7 +159,10 @@ function Hodor.Uninitialize()
         HodorReflexes.modules.share.RefreshControls = origFunction
         origFunction = nil
     end
-    HodorReflexes_Share_Ultimates:SetClampedToScreen(true)
+
+    if (HodorReflexes_Share_Ultimates) then
+        HodorReflexes_Share_Ultimates:SetClampedToScreen(true)
+    end
 
     KyzderpsDerps:dbg("    Removed Hodor integration...")
 end
