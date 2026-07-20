@@ -48,6 +48,10 @@ local questOptionToAccept = {
     -- ["-Breda-"] = {
     --     ["All right, I'll head to Rawl'kha."] = true,
     -- },
+    ["-Tip Board-"] = {
+        ["<Read the contract.>"] = true,
+        ["<Make a note of the requested items.>"] = true,
+    },
 }
 
 -- Quest options for which we should reset the dialogue
@@ -67,11 +71,16 @@ local questOptionToReset = {
     --     ["All right, I'll walk the War Orphan's Sojourn."] = true,
     --     ["That sounds simple enough. What would I do?"] = true,
     -- },
+    ["-Tip Board-"] = {
+        ["<Keep reading.>"] = true,
+        ["<Make a note of the request.>"] = true,
+    },
 }
 
 -- Dialogue titles for which to turn in dialogue
 local questTurnIns = {
     ["-Armorer Reistaff-"] = true,
+    ["-Kari-"] = true,
 }
 
 -- Quest options to prioritize, will continue rerolling until one of these is met
@@ -107,18 +116,18 @@ local function OnQuestOffered()
             KD:msg("Accepting PRIORITY quest: " .. response)
             AcceptOfferedQuest()
             KD.savedOptions.chatter.priorityDoneToday = true
-            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            -- EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
         else
             -- Always reset if not priority quest
             if (numRetries > MAX_RETRIES) then
                 KD:msg("Stopping rerolling because exceeded max tries")
-                EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+                -- EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
                 return
             end
             KD:msg("Rerolling dialogue because not PRIORITY: " .. response)
             numRetries = numRetries + 1
             ResetChatter()
-            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            -- EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
         end
         return
     end
@@ -139,19 +148,19 @@ local function OnQuestOffered()
     elseif (questOptionToReset[title] and questOptionToReset[title][response]) then
         if (numRetries > MAX_RETRIES) then
             KD:msg("Stopping rerolling because exceeded max tries")
-            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            -- EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
             return
         end
         -- zo_callLater(function()
             KD:msg("Rerolling dialogue because: " .. response)
             numRetries = numRetries + 1
             ResetChatter()
-            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            -- EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
         -- end, 2000)
 
     -- Unregister handler if nothing matches: user gets to deal with it
     else
-        EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+        -- EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
     end
 end
 
@@ -186,11 +195,11 @@ local function OnChatter()
 
     -- Accept based on option text
     if (optionsToAdvance[title] and optionsToAdvance[title][optionString]) then
-        -- KD:msg("Advancing dialogue: " .. optionString)
+        KD:msg("Advancing dialogue: " .. optionString)
         SelectChatterOption(1)
-        if (optionType == CHATTER_START_NEW_QUEST_BESTOWAL) then
-            EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED, OnQuestOffered)
-        end
+        -- if (optionType == CHATTER_START_NEW_QUEST_BESTOWAL) then
+        --     EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED, OnQuestOffered)
+        -- end
 
     -- Quest turn-in (start)
     elseif (questTurnIns[title] and (optionType == CHATTER_START_ADVANCE_COMPLETABLE_QUEST_CONDITIONS or optionType == CHATTER_START_COMPLETE_QUEST)) then
@@ -212,10 +221,11 @@ function Chatter.Initialize()
     if (KD.savedOptions.chatter.rerollReistaff) then
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN, OnChatter)
         EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END, function()
-            EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
+            -- EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
             EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestAdded", EVENT_QUEST_ADDED)
             numRetries = 0
         end)
+        EVENT_MANAGER:RegisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED, OnQuestOffered)
     end
 end
 
@@ -223,8 +233,10 @@ function Chatter.GetSettings()
     return {
         {
             type = "checkbox",
-            name = "Reroll writhing crafting quests",
-            tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest, and turns in quests. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only.\n\nYou can adjust this or add different languages in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
+            name = "Reroll for Covetous Countess",
+            -- name = "Reroll writhing crafting quests",
+            tooltip = "When you interact with the Thieves Guild tip board, automatically accepts or rerolls the quest until you get Covetous Countess, and turns in quests.  English client only.\n\nYou can adjust this or add different languages in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
+            -- tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest, and turns in quests. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only.\n\nYou can adjust this or add different languages in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
             default = false,
             getFunc = function() return KD.savedOptions.chatter.rerollReistaff end,
             setFunc = function(value)
@@ -233,17 +245,17 @@ function Chatter.GetSettings()
                 end,
             width = "full",
         },
-        {
-            type = "checkbox",
-            name = "    Reroll until new quests for first box",
-            tooltip = "When it is your FIRST crafting quest, reroll until it's an enchanting, provisioning, or alchemy quest. This is so the glorious box is more likely to drop the newer furnishing plans. You must RESET the first box tracking using |c99FF99/kdd resetcraft|r to start rerolling for the first box every day (I'm too busy atm to make it reset automatically and test it; this feature might come eventually. It currently also doesn't advance the next option automatically).\n\nYou can adjust which ones are accepted in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
-            default = false,
-            getFunc = function() return KD.savedOptions.chatter.usePriority end,
-            setFunc = function(value)
-                    KD.savedOptions.chatter.usePriority = value
-                end,
-            width = "full",
-            disabled = function() return not KD.savedOptions.chatter.rerollReistaff end,
-        },
+        -- {
+        --     type = "checkbox",
+        --     name = "    Reroll until new quests for first box",
+        --     tooltip = "When it is your FIRST crafting quest, reroll until it's an enchanting, provisioning, or alchemy quest. This is so the glorious box is more likely to drop the newer furnishing plans. You must RESET the first box tracking using |c99FF99/kdd resetcraft|r to start rerolling for the first box every day (I'm too busy atm to make it reset automatically and test it; this feature might come eventually. It currently also doesn't advance the next option automatically).\n\nYou can adjust which ones are accepted in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
+        --     default = false,
+        --     getFunc = function() return KD.savedOptions.chatter.usePriority end,
+        --     setFunc = function(value)
+        --             KD.savedOptions.chatter.usePriority = value
+        --         end,
+        --     width = "full",
+        --     disabled = function() return not KD.savedOptions.chatter.rerollReistaff end,
+        -- },
     }
 end
