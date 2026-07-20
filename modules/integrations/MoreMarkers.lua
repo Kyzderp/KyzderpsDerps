@@ -61,7 +61,7 @@ function MM.Initialize()
     if (not M0RMarkers or not M0RMarkers.loadProfile or not M0RMarkers.unloadEverything) then return end
     KD:dbg("    Initializing More Markers integrations...")
 
-    local hookMM = KD.savedOptions.general.experimental
+    local hookMM = KD.savedOptions.integrations.mmOax
     EVENT_MANAGER:UnregisterForEvent(MM.name .. "BossChanged", EVENT_BOSSES_CHANGED)
     EVENT_MANAGER:UnregisterForEvent(MM.name .. "PlayerActivated", EVENT_PLAYER_ACTIVATED)
     if (hookMM) then
@@ -74,5 +74,18 @@ end
 -- Settings
 ---------------------------------------------------------------------
 function MM.GetSettings()
-    return
+    return {
+        {
+            type = "checkbox",
+            name = "Only use Oax Safe Zone in RG",
+            tooltip = "Loads only the \"Preset: vRG Oax Safe Zones\" preset when you are at Oaxiltso, otherwise loads no profiles in the rest of Rockgrove. Just because seeing the circles through the floor at Bahsei bothers me",
+            default = false,
+            getFunc = function() return KyzderpsDerps.savedOptions.integrations.mmOax end,
+            setFunc = function(value)
+                KyzderpsDerps.savedOptions.integrations.mmOax = value
+                MM.Initialize()
+            end,
+            width = "full",
+        },
+    }
 end

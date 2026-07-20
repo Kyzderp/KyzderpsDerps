@@ -166,6 +166,7 @@ local defaultOptions = {
         checkAsylumTracker = false,
         checkAsylumStatusPanel = false,
         showUltOnJoGroup = false,
+        mmOax = false,
     },
     opener = {
         delay = 0,

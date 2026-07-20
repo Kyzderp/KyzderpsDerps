@@ -1388,6 +1388,12 @@ function KyzderpsDerps:CreateSettingsMenu()
         -------------------------------------------------------------------------------
         {
             type = "submenu",
+            name = "More Markers",
+            controls = KyzderpsDerps.MoreMarkers.GetSettings(),
+        },
+        -------------------------------------------------------------------------------
+        {
+            type = "submenu",
             name = "Enable Check",
             controls = KyzderpsDerps.Integrations.GetSettings(),
         },
