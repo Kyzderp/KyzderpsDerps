@@ -295,6 +295,7 @@ local function CreateMiscSettings()
     }
 
     table.insert(controls, KyzderpsDerps.Loot.GetSettings())
+    table.insert(controls, KyzderpsDerps.GroupLoot.GetSettings())
     table.insert(controls, KyzderpsDerps.Tribute.GetSettings())
     local scoreFormatSettings = KyzderpsDerps.ScoreFormat.GetSettings()
     for _, setting in ipairs(scoreFormatSettings) do

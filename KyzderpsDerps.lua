@@ -217,6 +217,9 @@ local defaultOptions = {
         dynamicEventCrutch = false,
         dynamicEventSpawnTimer = false,
     },
+    groupLoot = {
+        obnoxiousHighValue = false,
+    },
 }
 
 local defaultValues = {
