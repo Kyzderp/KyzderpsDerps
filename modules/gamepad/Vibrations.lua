@@ -1,6 +1,7 @@
 local KD = KyzderpsDerps
 
 local function ColorNumber(motorValue)
+    motorValue = motorValue or 0
     return string.format("|cFF%02x00%f|r", math.floor((1 - motorValue) * 255), motorValue)
 end
 

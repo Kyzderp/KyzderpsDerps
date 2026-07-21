@@ -96,6 +96,15 @@ local priorityQuestOptions = {
 
 
 ---------------------------------------------------------------------
+local function GetTitleAndBody()
+    if (IsInGamepadPreferredMode()) then
+        return "-" .. ZO_InteractWindow_GamepadTitle:GetText() .. "-", ZO_InteractWindow_GamepadContainerText:GetText()
+    else
+        return ZO_InteractWindowTargetAreaTitle:GetText(), ZO_InteractWindowTargetAreaBodyText:GetText()
+    end
+end
+
+---------------------------------------------------------------------
 -- Quest offered handler, called immediately after advancing dialogue
 -- Can be called multiple times because the quest could have multiple
 -- dialogues before actually being accepted
@@ -104,7 +113,7 @@ local MAX_RETRIES = 20
 local numRetries = 0
 
 local function OnQuestOffered()
-    local title = ZO_InteractWindowTargetAreaTitle:GetText()
+    local title = GetTitleAndBody()
 
     local dialogue, response = GetOfferedQuestInfo()
 
@@ -190,8 +199,7 @@ local function OnChatter()
     -- Checking only first option should be fine?
     local optionString, optionType = GetChatterOption(1)
 
-    local title = ZO_InteractWindowTargetAreaTitle:GetText()
-    local body = ZO_InteractWindowTargetAreaBodyText:GetText()
+    local title, body = GetTitleAndBody()
 
     -- Accept based on option text
     if (optionsToAdvance[title] and optionsToAdvance[title][optionString]) then
@@ -216,6 +224,7 @@ end
 function Chatter.Initialize()
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterBegin", EVENT_CHATTER_BEGIN)
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterEnd", EVENT_CHATTER_END)
+    EVENT_MANAGER:UnregisterForEvent(KD.name .. "ChatterQuestOffered", EVENT_QUEST_OFFERED)
 
     -- TODO: extend this to other dialogues? what else is there that could save some time?
     if (KD.savedOptions.chatter.rerollReistaff) then
