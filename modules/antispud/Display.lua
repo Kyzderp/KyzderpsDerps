@@ -49,15 +49,18 @@ local function UpdateSnoozed()
     Spud.UpdateDisplay()
 end
 
-function Spud.SnoozeCurrent()
-    -- First find which is displaying
-    local current
+local function GetCurrentDisplaying()
     for _, priority in ipairs(priorities) do
         if (displaying[priority] and not IsSnoozed(priority)) then
-            current = priority
-            break
+            return priority
         end
     end
+end
+
+function Spud.SnoozeCurrent()
+    -- First find which is displaying
+    local current = GetCurrentDisplaying()
+    if (not current) then return end -- Could happen via keybind
 
     -- Save target time, update current display, and also call update later
     snoozed[current] = GetGameTimeSeconds() + KyzderpsDerps.savedOptions.antispud.snoozeTime
@@ -67,6 +70,14 @@ function Spud.SnoozeCurrent()
         UpdateSnoozed()
     end)
     KyzderpsDerps:msg(string.format("Snoozing \"%s\" for %d minutes. Reloading UI or logging out will un-snooze.", current, math.floor(KyzderpsDerps.savedOptions.antispud.snoozeTime / 60)))
+end
+
+function Spud.DismissCurrent()
+    -- First find which is displaying
+    local current = GetCurrentDisplaying()
+    if (not current) then return end -- Could happen via keybind
+
+    Spud.Display(nil, current)
 end
 
 ---------------------------------------------------------------------

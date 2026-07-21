@@ -29,7 +29,7 @@
                     <Textures normal="/esoui/art/hud/radialicon_cancel_up.dds" mouseOver="/esoui/art/hud/radialicon_cancel_over.dds" />
                     <Anchor point="LEFT" relativeTo="$(parent)Snooze" relativePoint="RIGHT" offsetX="-10" />
                     <Dimensions x="54" y="54"/>
-                    <OnClicked>AntiSpudEquipped:SetHidden(true)</OnClicked>
+                    <OnClicked>KyzderpsDerps.AntiSpud.DismissCurrent()</OnClicked>
                 </Button>
             </Controls>
         </TopLevelControl>

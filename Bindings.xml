@@ -29,7 +29,10 @@
                 <Down>KyzderpsDerps.PrintCurrentPosition()</Down>
             </Action>
             <Action name="KDD_ANTISPUD_DISMISS">
-                <Down>AntiSpudEquipped:SetHidden(true)</Down>
+                <Down>KyzderpsDerps.AntiSpud.DismissCurrent()</Down>
+            </Action>
+            <Action name="KDD_ANTISPUD_SNOOZE">
+                <Down>KyzderpsDerps.AntiSpud.SnoozeCurrent()</Down>
             </Action>
         </Category>
     </Layer>
