@@ -35,7 +35,7 @@ local function CheckMundus()
     local currentMundus, abilityId = GetMundus("player")
     local checkEitherMundus = KyzderpsDerps.savedOptions.antispud.mundus.checkPve or KyzderpsDerps.savedOptions.antispud.mundus.checkPvp
     if (not currentMundus) then
-        if (checkEitherMundus) then
+        if (checkEitherMundus and not IsCurrentCampaignVengeanceRuleset()) then
             Spud.Display("You have no Mundus Stone", Spud.MUNDUS)
         else
             Spud.Display(nil, Spud.MUNDUS)
