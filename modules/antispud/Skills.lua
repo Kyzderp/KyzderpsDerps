@@ -16,12 +16,15 @@ local function CheckSkills()
                 if (isActive and IsClassMasterySkillLine(skillLineId)) then
                     -- current active class mastery line
                     -- nb: 356
-                    local available = SKILL_POINT_ALLOCATION_MANAGER:GetAvailableClassMasteryPointsForSkillLine(SKILLS_DATA_MANAGER:GetActiveClassMasterySkillLine(1))
-                    if (available > 0) then
-                        local className = GetClassName(GetUnitGender("player"), GetUnitClassId("player"))
-                        Spud.Display(zo_strformat("You are a pure <<1>> but you have\n<<2>> unallocated class mastery point<<3>>",
-                                className, available, available == 1 and "" or "s"), Spud.SKILLS)
-                        hasProblems = true
+                    local skillLineData = SKILLS_DATA_MANAGER:GetActiveClassMasterySkillLine(1)
+                    if (skillLineData) then
+                        local available = SKILL_POINT_ALLOCATION_MANAGER:GetAvailableClassMasteryPointsForSkillLine(skillLineData)
+                        if (available > 0) then
+                            local className = GetClassName(GetUnitGender("player"), GetUnitClassId("player"))
+                            Spud.Display(zo_strformat("You are a pure <<1>> but you have\n<<2>> unallocated class mastery point<<3>>",
+                                    className, available, available == 1 and "" or "s"), Spud.SKILLS)
+                            hasProblems = true
+                        end
                     end
                     break
                 end
