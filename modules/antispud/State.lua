@@ -5,6 +5,7 @@ Spud.PVE = "PVE"
 Spud.PVP = "PVP"
 Spud.HOUSING_PVE = "Housing dummy"
 Spud.HOUSING_PVP = "Housing duel"
+Spud.VENGEANCE = "Vengeance"
 Spud.NONE = "Overland / elsewhere"
 
 local currentState = Spud.NONE
@@ -37,12 +38,13 @@ local BITMASKS = {
     [Spud.HOUSING_PVE] = 4,
     [Spud.HOUSING_PVP] = 8,
     [Spud.NONE] = 16,
+    [Spud.VENGEANCE] = 32,
 }
 
 local function BuildSettings()
     local choices = {}
     local choicesValues = {}
-    local order = {Spud.PVE, Spud.PVP, Spud.HOUSING_PVE, Spud.HOUSING_PVP, Spud.NONE}
+    local order = {Spud.PVE, Spud.PVP, Spud.HOUSING_PVE, Spud.HOUSING_PVP, Spud.VENGEANCE, Spud.NONE}
     for _, state in ipairs(order) do
         table.insert(choices, state)
         table.insert(choicesValues, state)
@@ -209,7 +211,7 @@ local function CheckState(reason)
         -- If we're not queued, just use the zone as the check
         local zoneId = GetZoneId(GetUnitZoneIndex("player"))
         if (IsCurrentCampaignVengeanceRuleset()) then
-            checkedState = Spud.NONE -- no point doing antispud in vengeance
+            checkedState = Spud.VENGEANCE
         elseif (IsDoingGroupPVE(zoneId)) then
             checkedState = Spud.PVE
         elseif (IsDoingPVP()) then
