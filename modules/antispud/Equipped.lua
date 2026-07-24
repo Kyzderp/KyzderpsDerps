@@ -200,9 +200,8 @@ function Spud.InitializeEquipped()
     KyzderpsDerps:dbg("    Initializing AntiSpud Equipped...")
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "SpudEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnSlotUpdated)
-    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "SpudEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE,
-        REGISTER_FILTER_BAG_ID, BAG_WORN,
-        REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DEFAULT)
+    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "SpudEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_WORN)
+    EVENT_MANAGER:AddFilterForEvent(KyzderpsDerps.name .. "SpudEquipped", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_INVENTORY_UPDATE_REASON, INVENTORY_UPDATE_REASON_DEFAULT)
 
     EVENT_MANAGER:RegisterForEvent(KyzderpsDerps.name .. "ArmoryEquipped", EVENT_ARMORY_BUILD_RESTORE_RESPONSE, CheckAllSlots)
 
