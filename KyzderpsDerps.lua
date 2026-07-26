@@ -220,6 +220,9 @@ local defaultOptions = {
     groupLoot = {
         obnoxiousHighValue = false,
     },
+    gamepad = {
+        ratchet = false,
+    },
 }
 
 local defaultValues = {
@@ -396,6 +399,7 @@ local function Initialize()
     KyzderpsDerps.Chatter.Initialize()
     KyzderpsDerps.Combat.Initialize()
     KD.InitializeVibrations()
+    KD.Gamepad.Initialize()
     KD.WorldEvent.Initialize()
     KD.MoreMarkers.Initialize()
     KD.GroupLoot.Initialize()

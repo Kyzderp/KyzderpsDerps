@@ -98,5 +98,6 @@ modules/questchatter/QuestChatter.lua
 modules/combat/Combat.lua
 
 modules/gamepad/Vibrations.lua
+modules/gamepad/GamepadUI.lua
 
 modules/worldevent/WorldEvent.lua
