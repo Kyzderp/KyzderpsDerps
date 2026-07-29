@@ -224,6 +224,9 @@ local defaultOptions = {
     gamepad = {
         ratchet = false,
     },
+    kyzerg = {
+        group = false,
+    },
 }
 
 local defaultValues = {

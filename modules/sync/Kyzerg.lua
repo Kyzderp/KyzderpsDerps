@@ -57,20 +57,26 @@ local function SortRiders(fromName)
     ZO_ClearTable(onlineCharNames)
     ZO_ClearTable(passengers)
 
+    local isPassenger = false
+
     -- Only online in group
     for i = 1, GetGroupSize() do
         local unitTag = GetGroupUnitTagByIndex(i)
         local atName = GetUnitDisplayName(unitTag)
-        if (IsMe(atName) and IsUnitOnline(unitTag)) then
+        -- if (IsMe(atName) and IsUnitOnline(unitTag)) then
+        if (IsUnitOnline(unitTag)) then
             local charName = GetUnitName(unitTag)
             onlineCharNames[atName] = charName
 
             local mountedState, isRidingGroupMount, hasFreePassengerSlot = GetTargetMountedStateInfo(charName)
             KyzderpsDerps:dbg(zo_strformat("<<1>>: mountedState <<2>> isRidingGroupMount <<3>> hasFreePassengerSlot <<4>>", charName, mountedState, isRidingGroupMount and "true" or "false", hasFreePassengerSlot and "true" or "false"))
             if (mountedState == MOUNTED_STATE_MOUNT_RIDER and isRidingGroupMount and hasFreePassengerSlot) then
-                table.insert(drivers, atName)
+                table.insert(drivers, unitTag)
             else
-                table.insert(passengers, atName)
+                table.insert(passengers, unitTag)
+                if (AreUnitsEqual(unitTag, "player")) then
+                    isPassenger = true
+                end
             end
         end
     end
@@ -80,12 +86,32 @@ local function SortRiders(fromName)
     d("drivers", drivers)
     d("passengers", passengers)
 
-    local index = IndexOf(passengers, GetUnitDisplayName("player"))
-    if (index > 0 and index <= #drivers) then
-        return onlineCharNames[drivers[index]]
-    else
-        d(index)
+    -- look for closest driver
+    local driver
+    local distance = math.huge
+    if (isPassenger) then
+        local _, pX, pY, pZ = GetUnitRawWorldPosition("player")
+        for _, unitTag in ipairs(drivers) do
+            if (IsUnitInGroupSupportRange(unitTag)) then
+                local _, x, y, z = GetUnitRawWorldPosition(unitTag)
+                local dist = math.pow(x - pX, 2) + math.pow(y - pY, 2) + math.pow(z - pZ, 2)
+                d(GetUnitDisplayName(unitTag) .. " " .. dist)
+                if (dist < distance) then
+                    driver = unitTag
+                    distance = dist
+                end
+            end
+        end
     end
+
+    return GetUnitDisplayName(driver)
+
+    -- local index = IndexOf(passengers, GetUnitDisplayName("player"))
+    -- if (index > 0 and index <= #drivers) then
+    --     return onlineCharNames[drivers[index]]
+    -- else
+    --     d(index)
+    -- end
 end
 
 
@@ -205,7 +231,7 @@ end
 -- Chat handler
 ---------------------------------------------------------------------
 local validChannels = {
-    -- [CHAT_CHANNEL_PARTY] = true,
+    [CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group, -- /script KyzderpsDerps.savedOptions.kyzerg.group = true
 }
 
 local function OnChatMessage(_, channelType, fromName, text)
