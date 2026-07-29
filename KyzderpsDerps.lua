@@ -106,6 +106,7 @@ local defaultOptions = {
                 pp = false,
             },
             spaulder = false,
+            noJudgement = false,
         },
         state = {
             includeActivityFinder = true,

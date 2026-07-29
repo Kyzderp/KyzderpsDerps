@@ -859,12 +859,26 @@ function KyzderpsDerps:CreateSettingsMenu()
                 },
                 {
                     type = "checkbox",
-                    name = "Print equipped sets",
+                    name = "    Print equipped sets",
                     tooltip = "Print equipped sets along with how many pieces you are wearing to your chatbox when equipment changes",
                     default = false,
                     getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.printToChat end,
                     setFunc = function(value)
                         KyzderpsDerps.savedOptions.antispud.equipped.printToChat = value
+                    end,
+                    width = "full",
+                    disabled = function()
+                        return not KyzderpsDerps.savedOptions.antispud.equipped.enable
+                    end,
+                },
+                {
+                    type = "checkbox",
+                    name = "    No judgement",
+                    tooltip = "Doesn't notify you about your missing gear as the red anti-spud text, but other things like printing to chat or integrations still work, if applicable. Because jet doesn't want to be judged",
+                    default = false,
+                    getFunc = function() return KyzderpsDerps.savedOptions.antispud.equipped.noJudgement end,
+                    setFunc = function(value)
+                        KyzderpsDerps.savedOptions.antispud.equipped.noJudgement = value
                     end,
                     width = "full",
                     disabled = function()
