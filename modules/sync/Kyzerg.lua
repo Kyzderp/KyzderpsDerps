@@ -114,6 +114,14 @@ local function SortRiders(fromName)
     -- end
 end
 
+local function KMount()
+    local driver = SortRiders()
+    if (driver) then
+        KyzderpsDerps:msg("Trying to use " .. driver .. "'s mount")
+        UseMountAsPassenger(driver)
+    end
+end
+
 
 ---------------------------------------------------------------------
 -- Functions
@@ -163,9 +171,7 @@ local COMMANDS = {
     end,
 
     -- PTE
-    kpte = function()
-        ExitInstanceImmediately()
-    end,
+    kpte = ExitInstanceImmediately,
 
     -- Accept whatever?
     kyes = function()
@@ -186,28 +192,16 @@ local COMMANDS = {
     end,
 
     -- reloadui
-    krl = function()
-        ReloadUI()
-    end,
+    krl = ReloadUI,
 
     -- log out
-    klog = function()
-        Logout()
-    end,
+    klog = Logout,
 
     -- quit
-    kquit = function()
-        Quit()
-    end,
+    kquit = Quit,
 
     -- Get on multi rider mount
-    kmount = function()
-        local driver = SortRiders()
-        if (driver) then
-            KyzderpsDerps:msg("Trying to use " .. driver .. "'s mount")
-            UseMountAsPassenger(driver)
-        end
-    end,
+    kmount = KMount,
 
     -- ktp
     ktp = function(_, text)
@@ -215,9 +209,7 @@ local COMMANDS = {
     end,
 
     -- krez
-    krez = function()
-        Revive()
-    end,
+    krez = Revive,
 }
 
 function Kyzerg.PrintCommands()
@@ -230,9 +222,7 @@ end
 ---------------------------------------------------------------------
 -- Chat handler
 ---------------------------------------------------------------------
-local validChannels = {
-    [CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group, -- /script KyzderpsDerps.savedOptions.kyzerg.group = true
-}
+local validChannels = {}
 
 local function OnChatMessage(_, channelType, fromName, text)
     if (not validChannels[channelType]) then return end
@@ -297,6 +287,8 @@ function Kyzerg.Initialize()
                 validChannels[channel] = true
             end
         end
+        validChannels[CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group, -- /script KyzderpsDerps.savedOptions.kyzerg.group = true
+        SLASH_COMMANDS["/kmount"] = KMount
 
         EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergQuestShared", EVENT_QUEST_SHARED, OnQuestShared)
     end
