@@ -287,7 +287,7 @@ function Kyzerg.Initialize()
                 validChannels[channel] = true
             end
         end
-        validChannels[CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group, -- /script KyzderpsDerps.savedOptions.kyzerg.group = true
+        validChannels[CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group -- /script KyzderpsDerps.savedOptions.kyzerg.group = true
         SLASH_COMMANDS["/kmount"] = KMount
 
         EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergQuestShared", EVENT_QUEST_SHARED, OnQuestShared)
