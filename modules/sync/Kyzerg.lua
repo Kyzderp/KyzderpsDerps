@@ -52,7 +52,7 @@ local drivers = {}
 local onlineCharNames = {}
 local passengers = {}
 local riders = {}
-local function SortRiders(fromName)
+local function FindNearestDriver(fromName)
     ZO_ClearTable(drivers)
     ZO_ClearTable(onlineCharNames)
     ZO_ClearTable(passengers)
@@ -105,17 +105,10 @@ local function SortRiders(fromName)
     end
 
     return GetUnitDisplayName(driver)
-
-    -- local index = IndexOf(passengers, GetUnitDisplayName("player"))
-    -- if (index > 0 and index <= #drivers) then
-    --     return onlineCharNames[drivers[index]]
-    -- else
-    --     d(index)
-    -- end
 end
 
 local function KMount()
-    local driver = SortRiders()
+    local driver = FindNearestDriver()
     if (driver) then
         KyzderpsDerps:msg("Trying to use " .. driver .. "'s mount")
         UseMountAsPassenger(driver)
@@ -200,8 +193,21 @@ local COMMANDS = {
     -- quit
     kquit = Quit,
 
-    -- Get on multi rider mount
+    -- Get on multi rider mount as passenger
     kmount = KMount,
+
+    -- Equip multi rider mount
+    kmm = function()
+        local multiMounts = { -- Incomprehensive. Just the ones I have
+        }
+
+        for _, id in ipairs(multiMounts) do
+            if (IsCollectibleUnlocked(id) and not IsCollectibleActive(id, GAMEPLAY_ACTOR_CATEGORY_PLAYER)) then
+                UseCollectible(id)
+                return
+            end
+        end
+    end,
 
     -- ktp
     ktp = function(_, text)
@@ -271,25 +277,33 @@ end
 ---------------------------------------------------------------------
 function Kyzerg.Initialize()
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "KyzergChatMessage", EVENT_CHAT_MESSAGE_CHANNEL)
-
     EVENT_MANAGER:UnregisterForEvent(KD.name .. "KyzergFocus", EVENT_GAME_FOCUS_CHANGED)
+    EVENT_MANAGER:UnregisterForEvent(KD.name .. "KyzergQuestShared", EVENT_QUEST_SHARED)
 
-    if (KD.savedOptions.general.experimental) then
+    if (KD.savedOptions.general.experimental or KD.savedOptions.kyzerg.group) then
         KD:dbg("    Initializing Kyzerg module...")
 
         EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergChatMessage", EVENT_CHAT_MESSAGE_CHANNEL, OnChatMessage)
-        EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergFocus", EVENT_GAME_FOCUS_CHANGED, OnFocusChanged)
 
-        -- Put zerg guild channel in valid. This breaks if leaving or joining, but it's not like I do that often
-        for i = 1, GetNumGuilds() do
-            if (GetGuildId(i) == 580319) then
-                local channel = _G["CHAT_CHANNEL_GUILD_" .. tostring(i)]
-                validChannels[channel] = true
+        if (KD.savedOptions.general.experimental) then
+            -- Stop moving when tabbing back in
+            EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergFocus", EVENT_GAME_FOCUS_CHANGED, OnFocusChanged)
+
+            -- Put zerg guild channel in valid. This breaks if leaving or joining, but it's not like I do that often
+            for i = 1, GetNumGuilds() do
+                if (GetGuildId(i) == 580319) then
+                    local channel = _G["CHAT_CHANNEL_GUILD_" .. tostring(i)]
+                    validChannels[channel] = true
+                end
             end
+
+            -- Auto accept quests from myself
+            EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergQuestShared", EVENT_QUEST_SHARED, OnQuestShared)
         end
-        validChannels[CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group -- /script KyzderpsDerps.savedOptions.kyzerg.group = true
+
+        validChannels[CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group
         SLASH_COMMANDS["/kmount"] = KMount
 
-        EVENT_MANAGER:RegisterForEvent(KD.name .. "KyzergQuestShared", EVENT_QUEST_SHARED, OnQuestShared)
     end
 end
+-- /script KyzderpsDerps.savedOptions.kyzerg.group = true KyzderpsDerps.Sync.Kyzerg.Initialize()
