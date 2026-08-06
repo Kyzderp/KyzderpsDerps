@@ -199,6 +199,11 @@ local COMMANDS = {
     -- Equip multi rider mount
     kmm = function()
         local multiMounts = { -- Incomprehensive. Just the ones I have
+            13897, -- Duo-Dynamo Dungeon Delver Spider
+            6972, -- Duo-Dynamo Dwarven Spider
+            13552, -- Duo-Dynamo Hollowsteel Spider
+            11887, -- Nightmare Pillion Courser
+            10254, -- Wayrest Vanner Pillion Steed
         }
 
         for _, id in ipairs(multiMounts) do
