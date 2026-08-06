@@ -199,6 +199,7 @@ local COMMANDS = {
     -- Equip multi rider mount
     kmm = function()
         local multiMounts = { -- Incomprehensive. Just the ones I have
+            13808, -- Warparty Timber Mammoth
             13897, -- Duo-Dynamo Dungeon Delver Spider
             6972, -- Duo-Dynamo Dwarven Spider
             13552, -- Duo-Dynamo Hollowsteel Spider
