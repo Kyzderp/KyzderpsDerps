@@ -223,6 +223,7 @@ local defaultOptions = {
     },
     gamepad = {
         ratchet = false,
+        modifyVibes = false,
     },
     kyzerg = {
         group = false,

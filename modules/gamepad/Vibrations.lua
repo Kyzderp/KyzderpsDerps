@@ -6,6 +6,8 @@ local function ColorNumber(motorValue)
 end
 
 local function MySetGamepadVibration(duration, firstMotor, secondMotor, thirdMotor, fourthMotor, debugSourceInfo)
+    if (not KD.savedOptions.gamepad.modifyVibes) then return end
+
     if (duration > 0) then
         KD:dbg(string.format("%d - %s %s %s %s - " .. tostring(debugSourceInfo),
             duration,
@@ -34,8 +36,10 @@ local function MySetGamepadVibration(duration, firstMotor, secondMotor, thirdMot
     end
 end
 
+local hooked
 function KD.InitializeVibrations()
-    if (KD.savedOptions.general.experimental) then
+    if (KD.savedOptions.gamepad.modifyVibes and not hooked) then
+        hooked = true
         ZO_PreHook("SetGamepadVibration", MySetGamepadVibration)
     end
 end

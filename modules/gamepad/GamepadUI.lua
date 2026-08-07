@@ -65,5 +65,17 @@ function GP.GetSettings()
             end,
             width = "full",
         },
+        {
+            type = "checkbox",
+            name = "Modify vibrations",
+            tooltip = "If you have controller vibrations enabled, this stops small rumbles from playing, like when spurring your mount, falling without fall damage, fishing \"nibbles\" before the bite, etc.\n\"Small\" is defined as vibrations shorter than 500 milliseconds, with vibration strength of <= 0.25 in both motors.\n\nAdditionally, this suppresses even smaller rumbles while lockpicking but increases the intensity of the more intense rumbles.\n\nAlso modifies the fishing bite to be shorter but more intense.",
+            default = false,
+            getFunc = function() return KD.savedOptions.gamepad.modifyVibes end,
+            setFunc = function(value)
+                KD.savedOptions.gamepad.modifyVibes = value
+                KD.InitializeVibrations()
+            end,
+            width = "full",
+        },
     }
 end
