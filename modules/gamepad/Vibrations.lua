@@ -29,6 +29,7 @@ local function MySetGamepadVibration(duration, firstMotor, secondMotor, thirdMot
     end
 
     if (duration == 2500 and firstMotor == 0.01 and secondMotor == 0.05) then
+        SetGamepadVibration(1000, 1, 1, 0, 0, "KDDfishing")
         return true
     end
 end
