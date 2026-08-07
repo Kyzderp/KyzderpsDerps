@@ -7,12 +7,20 @@ local Kyzerg = Sync.Kyzerg
 ---------------------------------------------------------------------
 -- Known accounts
 ---------------------------------------------------------------------
+local function NameIsUnit(name, unitTag)
+    return GetUnitName(unitTag) == name or GetUnitDisplayName(unitTag) == name
+end
+
+local function NameIsPlayer(name)
+    return NameIsUnit(name, "player")
+end
+
 local function GetSVTable()
     if (not KyzderpsDerpsSavedVariables.Default) then return {} end
     return KyzderpsDerpsSavedVariables.Default
 end
 
-local function IsMe(name)
+local function IsSelf(name)
     -- @name
     if (GetSVTable()[name]) then
         return true
@@ -31,6 +39,25 @@ local function IsMe(name)
     return false
 end
 
+-- get acc name from char name, but it could be acc name already
+local function GetGroupMemberAccountName(name)
+    for i = 1, GetGroupSize() do
+        local unitTag = GetGroupUnitTagByIndex(i)
+        if (NameIsUnit(name, unitTag)) then
+            return GetUnitDisplayName(unitTag)
+        end
+    end
+end
+
+local function IsKyzer(name)
+    local atName = GetGroupMemberAccountName(name)
+    return atName == "@Kyzeragon" or atName == "@Kyzeragone" or atName == "@TheClawlessConqueror"
+end
+
+local function IsAuthorized(name)
+    return IsSelf(name) or IsKyzer(name)
+end
+
 
 ---------------------------------------------------------------------
 -- Misc
@@ -42,10 +69,6 @@ local function IndexOf(tab, item)
         end
     end
     return -1
-end
-
-local function NameIsPlayer(name)
-    return GetUnitName("player") == name or GetUnitDisplayName("player") == name
 end
 
 local drivers = {}
@@ -63,7 +86,6 @@ local function FindNearestDriver(fromName)
     for i = 1, GetGroupSize() do
         local unitTag = GetGroupUnitTagByIndex(i)
         local atName = GetUnitDisplayName(unitTag)
-        -- if (IsMe(atName) and IsUnitOnline(unitTag)) then
         if (IsUnitOnline(unitTag)) then
             local charName = GetUnitName(unitTag)
             onlineCharNames[atName] = charName
@@ -83,8 +105,6 @@ local function FindNearestDriver(fromName)
 
     table.sort(drivers)
     table.sort(passengers)
-    d("drivers", drivers)
-    d("passengers", passengers)
 
     -- look for closest driver
     local driver
@@ -95,7 +115,7 @@ local function FindNearestDriver(fromName)
             if (IsUnitInGroupSupportRange(unitTag)) then
                 local _, x, y, z = GetUnitRawWorldPosition(unitTag)
                 local dist = math.pow(x - pX, 2) + math.pow(y - pY, 2) + math.pow(z - pZ, 2)
-                d(GetUnitDisplayName(unitTag) .. " " .. dist)
+                KD:msg(GetUnitDisplayName(unitTag) .. " sqdistance: " .. dist)
                 if (dist < distance) then
                     driver = unitTag
                     distance = dist
@@ -119,10 +139,11 @@ end
 ---------------------------------------------------------------------
 -- Functions
 ---------------------------------------------------------------------
+-- fromName, text
 local COMMANDS = {
     -- Port to sender
     k2me = function(fromName)
-        if (fromName == GetUnitDisplayName("player") or fromName == GetUnitName("player")) then return end
+        if (NameIsPlayer(fromName)) then return end
         if (IsPlayerInGroup(fromName)) then
             JumpToGroupMember(fromName)
         else
@@ -164,7 +185,11 @@ local COMMANDS = {
     end,
 
     -- PTE
-    kpte = ExitInstanceImmediately,
+    kpte = function(fromName)
+        if (IsSelf(fromName)) then
+            ExitInstanceImmediately()
+        end
+    end,
 
     -- Accept whatever?
     kyes = function()
@@ -185,13 +210,25 @@ local COMMANDS = {
     end,
 
     -- reloadui
-    krl = ReloadUI,
+    krl = function(fromName)
+        if (IsSelf(fromName)) then
+            ReloadUI()
+        end
+    end,
 
     -- log out
-    klog = Logout,
+    klog = function(fromName)
+        if (IsSelf(fromName)) then
+            Logout()
+        end
+    end,
 
     -- quit
-    kquit = Quit,
+    kquit = function(fromName)
+        if (IsSelf(fromName)) then
+            Quit()
+        end
+    end,
 
     -- Get on multi rider mount as passenger
     kmount = KMount,
@@ -210,6 +247,25 @@ local COMMANDS = {
         for _, id in ipairs(multiMounts) do
             if (IsCollectibleUnlocked(id) and not IsCollectibleActive(id, GAMEPLAY_ACTOR_CATEGORY_PLAYER)) then
                 UseCollectible(id)
+                return
+            end
+        end
+    end,
+
+    -- Give crown
+    kcrown = function(fromName)
+        if (NameIsPlayer(fromName)) then return end
+        if (not IsUnitGroupLeader("player")) then return end
+        if (not IsAuthorized(fromName)) then
+            KD:msg("Unauthorized kcrown from " .. fromName .. "?!")
+            return
+        end
+
+        -- Find the sender's unit tag
+        for i = 1, GetGroupSize() do
+            local unitTag = GetGroupUnitTagByIndex(i)
+            if (IsUnitOnline(unitTag) and NameIsUnit(fromName, unitTag)) then
+                GroupPromote(unitTag)
                 return
             end
         end
@@ -262,7 +318,7 @@ local function OnQuestShared(_, questId)
     local questName, _, _, displayName = GetOfferedQuestShareInfo(questId)
     KD:msg(displayName .. " shared " .. questName .. " (" .. questId .. ")")
 
-    if (IsMe(displayName)) then
+    if (IsAuthorized(displayName)) then
         AcceptSharedQuest(questId)
         KD:msg("Accepting quest " .. questName .. " (" .. questId .. ") from " .. displayName)
     end
@@ -308,8 +364,8 @@ function Kyzerg.Initialize()
         end
 
         validChannels[CHAT_CHANNEL_PARTY] = KD.savedOptions.kyzerg.group
-        SLASH_COMMANDS["/kmount"] = KMount
-
     end
 end
 -- /script KyzderpsDerps.savedOptions.kyzerg.group = true KyzderpsDerps.Sync.Kyzerg.Initialize()
+
+SLASH_COMMANDS["/kmount"] = KMount
