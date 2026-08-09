@@ -158,6 +158,7 @@ function Opener.Initialize()
     end
     if (KyzderpsDerps.savedOptions.opener.openPelinalsBoonBox and (KyzderpsDerps.savedOptions.opener.openPelinalsBoonBoxInIC or not IsInImperialCity())) then
         toLoot[192612] = true
+        toLoot[225336] = true -- newer ID
         shouldRegister = true
     end
     if (KyzderpsDerps.savedOptions.opener.openPurplePlunderSkull) then

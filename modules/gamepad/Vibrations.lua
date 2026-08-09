@@ -20,7 +20,7 @@ local function MySetGamepadVibration(duration, firstMotor, secondMotor, thirdMot
     if (debugSourceInfo == "KDDfishing" or debugSourceInfo == "KDDlockpick") then return end -- because we call this too
 
     if (debugSourceInfo == "lockpick feedback") then
-        if (firstMotor <= 0.2 and secondMotor <= 0.2) then
+        if (firstMotor <= 0.18 and secondMotor <= 0.18) then
             return true
         else
             SetGamepadVibration(duration, zo_clamp(firstMotor * 2, 0, 1), zo_clamp(secondMotor * 2, 0, 1), 0, 0, "KDDlockpick")

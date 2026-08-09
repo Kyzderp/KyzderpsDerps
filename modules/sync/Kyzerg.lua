@@ -246,6 +246,7 @@ local COMMANDS = {
 
         for _, id in ipairs(multiMounts) do
             if (IsCollectibleUnlocked(id) and not IsCollectibleActive(id, GAMEPLAY_ACTOR_CATEGORY_PLAYER)) then
+                KD:msg(string.format("Equipping %s (%d)", GetCollectibleName(id), id))
                 UseCollectible(id)
                 return
             end
