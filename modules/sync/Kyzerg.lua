@@ -157,6 +157,7 @@ local function FindNearestDriver(fromName)
 end
 
 local function KMount()
+    if (IsMounted() or IsGroupMountPassenger()) then return end
     local driver = FindNearestDriver()
     if (driver) then
         KD:msg("Trying to use " .. driver .. "'s mount")
@@ -213,7 +214,7 @@ local COMMANDS = {
     end,
 
     -- Port to self house
-    khouseself = function()
+    khouseself = function(fromName)
         if (not IsSelfOrJWPD2(fromName)) then
             KD:msg("Unauthorized khouseself from " .. fromName)
             return
@@ -222,7 +223,7 @@ local COMMANDS = {
     end,
 
     -- Mudball
-    kmud = function()
+    kmud = function(fromName)
         if (not IsSelfOrJWPD2(fromName)) then
             KD:msg("Unauthorized kmud from " .. fromName)
             return
@@ -231,7 +232,7 @@ local COMMANDS = {
     end,
 
     -- Snowball
-    ksnow = function()
+    ksnow = function(fromName)
         if (not IsSelfOrJWPD2(fromName)) then
             KD:msg("Unauthorized ksnow from " .. fromName)
             return
@@ -264,7 +265,7 @@ local COMMANDS = {
     end,
 
     -- Accept whatever?
-    kyes = function()
+    kyes = function(fromName)
         if (not IsSelfOrJWPD2(fromName)) then
             KD:msg("Unauthorized kyes from " .. fromName)
             return
@@ -310,7 +311,7 @@ local COMMANDS = {
     kmount = KMount,
 
     -- Equip multi rider mount
-    kmm = function()
+    kmm = function(fromName)
         if (not IsSelfOrJWPD2(fromName)) then
             KD:msg("Unauthorized kmm from " .. fromName)
             return
