@@ -421,6 +421,7 @@ local function Initialize()
     ZO_CreateStringId("SI_BINDING_NAME_KDD_QUICKSLOT_8", "Select Quickslot 8")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_ANTISPUD_DISMISS", "Dismiss AntiSpud Notification")
     ZO_CreateStringId("SI_BINDING_NAME_KDD_ANTISPUD_SNOOZE", "Snooze AntiSpud Notification")
+    ZO_CreateStringId("SI_BINDING_NAME_KDD_KMOUNT", "Use nearest multi-rider mount")
 
     -- BEHOLD! My stuff.
     if (KyzderpsDerps.savedOptions.general.experimental) then
