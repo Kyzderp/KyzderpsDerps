@@ -49,5 +49,5 @@ function KDC.GetSettings()
         table.insert(settings, setting)
     end
 
-    return setting
+    return settings
 end
