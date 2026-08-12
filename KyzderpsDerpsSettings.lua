@@ -278,29 +278,6 @@ local function CreateMiscSettings()
             end,
             width = "full",
         },
-        {
-            type = "checkbox",
-            name = "In-combat reticle",
-            tooltip = "Turn the reticle red while you are in combat",
-            default = false,
-            getFunc = function() return KyzderpsDerps.savedOptions.misc.combatReticle end,
-            setFunc = function(value)
-                KyzderpsDerps.savedOptions.misc.combatReticle = value
-            end,
-            width = "full",
-        },
-        {
-            type = "checkbox",
-            name = "Automatic repair kit",
-            tooltip = "Automatically use a repair kit to repair gear that drops to 1% durability",
-            default = true,
-            getFunc = function() return KyzderpsDerps.savedOptions.misc.repair end,
-            setFunc = function(value)
-                KyzderpsDerps.savedOptions.misc.repair = value
-                KyzderpsDerps.AutoRepair.Initialize()
-            end,
-            width = "full",
-        },
     }
 
     table.insert(controls, KyzderpsDerps.Loot.GetSettings())
