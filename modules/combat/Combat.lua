@@ -14,7 +14,7 @@ function KDC.Initialize()
 end
 
 function KDC.GetSettings()
-    return {
+    local settings = {
         {
             type = "checkbox",
             name = "Automatic repair kit",
@@ -44,4 +44,10 @@ function KDC.GetSettings()
             width = "full",
         },
     }
+
+    for _, setting in ipairs(KyzderpsDerps.ScoreFormat.GetSettings()) do
+        table.insert(settings, setting)
+    end
+
+    return setting
 end
