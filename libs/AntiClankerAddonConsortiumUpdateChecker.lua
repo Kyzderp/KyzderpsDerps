@@ -5,7 +5,7 @@ if type(_G[NAME]) == "number" and _G[NAME] >= VERSION then return end
 _G[NAME] = VERSION
 
 local KNOWN_VERSIONS = {
-	["CombatAlerts"]          = 204130,
+	["CombatAlerts"]          = 205010,
 	["CrutchAlerts"]          = 22300,
 	["GroupBuffPanels"]       = 203000,
 	["KyzderpsDerps"]         = 1501,
