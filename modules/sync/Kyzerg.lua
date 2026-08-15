@@ -205,7 +205,7 @@ local COMMANDS = {
     -- TODO: port to crown
 
     -- Port to house
-    khouse = function(_, text)
+    khouse = function(fromName, text)
         if (not IsSelfOrJWPD2(fromName)) then
             KD:msg("Unauthorized khouse from " .. fromName)
             return
@@ -355,7 +355,7 @@ local COMMANDS = {
     end,
 
     -- ktp
-    ktp = function(_, text)
+    ktp = function(fromName, text)
         if (not IsSelfOrJWPD2(fromName)) then
             KD:msg("Unauthorized ktp from " .. fromName)
             return
