@@ -19,7 +19,7 @@ KyzderpsDerpsSettings.lua
 KyzderpsDerps.xml
 Bindings.xml
 
-libs/AntiClankerAddonConsortiumUpdateChecker.lua
+PC/AntiClankerAddonConsortiumUpdateChecker.lua
 
 commands/Commands.lua
 commands/Port.lua
