@@ -1,17 +1,17 @@
 local NAME = "AntiClankerAddonConsortiumUpdateChecker"
-local VERSION = 1
+local VERSION = 3
 
 if type(_G[NAME]) == "number" and _G[NAME] >= VERSION then return end
 _G[NAME] = VERSION
 
 local KNOWN_VERSIONS = {
-	["CombatAlerts"]          = 205010,
-	["CrutchAlerts"]          = 22300,
+	["CombatAlerts"]          = 205020,
+	["CrutchAlerts"]          = 22400,
 	["GroupBuffPanels"]       = 203000,
 	["KyzderpsDerps"]         = 1501,
 	["LibGroupCombatStats"]   = 20260726,
 	["M0RMarkers"]            = 210,
-	["Raidificator"]          = 407010,
+	["Raidificator"]          = 407020,
 }
 
 local MESSAGE = {
@@ -47,7 +47,7 @@ local function CheckVersions( )
 			local expectedVersion = KNOWN_VERSIONS[addonName]
 
 			if installedVersion < expectedVersion then
-				-- Only notify the same version up to 3 times
+				-- Only notify the same version up to 3 times (assuming the SV table is defined)
 				local sv = GetSV(addonName)
 
 				local notifiedVersion = (sv and sv.notifiedVersion) or 0
@@ -78,10 +78,12 @@ end
 ---------------------------------------------------------------------
 local function CreateSettingsMenu()
 	local LAM = LibAddonMenu2
+	if (not LAM) then return end
+
 	local panelData = {
 		type = "panel",
 		name = "ACAC Update Checker",
-		author = "@code65536, Kyzeragon",
+		author = "Kyzeragon, @code65536",
 		version = tostring(VERSION),
 	}
 
@@ -122,8 +124,6 @@ end
 EVENT_MANAGER:UnregisterForEvent(NAME, EVENT_PLAYER_ACTIVATED) -- In case we are overriding an older version embedded in another addon
 
 EVENT_MANAGER:RegisterForEvent(NAME, EVENT_PLAYER_ACTIVATED, function()
-	EVENT_MANAGER:UnregisterForEvent(NAME, EVENT_PLAYER_ACTIVATED)
-
 	CreateSettingsMenu()
 
 	if (ACACUpdateCheckDisabled == nil) then
