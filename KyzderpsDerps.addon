@@ -22,6 +22,7 @@ Bindings.xml
 PC/AntiClankerAddonConsortiumUpdateChecker.lua
 
 commands/Commands.lua
+commands/Assistants.lua
 commands/Port.lua
 
 modules/CustomTargetName.lua
