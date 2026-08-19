@@ -70,13 +70,25 @@ function KD.InitializeAssistantCommands()
         for cmd, id in pairs(assistants) do
             SLASH_COMMANDS["/" .. cmd] = function() UseCollectible(id) end
             if (IsCollectibleUnlocked(id)) then
-                table.insert(available, id)
+                local questState = GetCollectibleAssociatedQuestState(id)
+                if (questState ~= COLLECTIBLE_ASSOCIATED_QUEST_STATE_INACTIVE and questState ~= COLLECTIBLE_ASSOCIATED_QUEST_STATE_ACCEPTED) then
+                    table.insert(available, id)
+                end
             end
         end
 
         -- Randomizer for overall command like /banker
         if (#available > 0) then
             SLASH_COMMANDS["/" .. aType] = function()
+                -- If one of this type is active, just unsummon
+                for _, id in ipairs(available) do
+                    if (IsCollectibleActive(id)) then
+                        UseCollectible(id)
+                        return
+                    end
+                end
+
+                -- Otherwise, randomize
                 UseCollectible(available[math.random(1, #available)])
             end
         end
