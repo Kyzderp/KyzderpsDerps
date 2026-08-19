@@ -7,6 +7,10 @@ local Kyzerg = Sync.Kyzerg
 ---------------------------------------------------------------------
 -- Known accounts
 ---------------------------------------------------------------------
+local function FormatName(name)
+    return zo_strformat("<<1>>", name)
+end
+
 local function NameIsUnit(name, unitTag)
     return GetUnitName(unitTag) == name or GetUnitDisplayName(unitTag) == name
 end
@@ -408,12 +412,13 @@ local attnChannel
 local function OnChatMessage(_, channelType, fromName, text)
     -- jwpd2 autoinvite
     if (attnChannel == channelType and text == "jwpd2") then
+        if (NameIsPlayer(fromName)) then return end
         -- Only invite if jwpd2 and self available
         if (IsJWPD2FromGuild(fromName) and GetPlayerStatus() == PLAYER_STATUS_ONLINE) then
             -- and is group leader or not in group
             if (GetGroupSize() < 2 or IsUnitGroupLeader("player")) then
                 local atName, characterName = GetGuildMemberAccountAndCharName(fromName)
-                GroupInviteByName(characterName)
+                GroupInviteByName(FormatName(characterName))
             end
         end
         return
@@ -476,7 +481,7 @@ function Kyzerg.Initialize()
         -- Add attn for jwpd2
         if (IsPlayerJWPD2()) then
             for i = 1, GetNumGuilds() do
-                if (GetGuildId(i) == 12345) then -- TODO
+                if (GetGuildId(i) == 555581) then
                     attnChannel = _G["CHAT_CHANNEL_GUILD_" .. tostring(i)]
                 end
             end
