@@ -13,6 +13,7 @@ local defaultOptions = {
     general = {
         debug = false,
         experimental = false,
+        assistantCommands = true,
     },
     ui = {
         reposition = false,

@@ -5,6 +5,7 @@ local MERCHANT = "merchant"
 local DECON = "decon"
 local ARMORY = "armory"
 local FENCE = "fence"
+local COMPANION = "companion"
 
 local KNOWN_ASSISTANTS = {
     [ARMORY] = {
@@ -46,9 +47,22 @@ local KNOWN_ASSISTANTS = {
         ["pirharri"] = 300, -- Pirharri the Smuggler
         ["cambio"] = 14204, -- Cambio Zammes, Rooster in Exile
     },
+
+    [COMPANION] = {
+        ["bastian"] = 9245,
+        ["mirri"] = 9353,
+        ["ember"] = 9911,
+        ["isobel"] = 9912,
+        ["sharp"] = 11113,
+        ["azandar"] = 11114,
+        ["tanlorin"] = 12172,
+        ["zerith"] = 12173,
+    },
 }
 
 function KD.InitializeAssistantCommands()
+    if (not KD.savedOptions.general.assistantCommands) then return end
+
     -- TODO: maybe rerun this when updated?
     for aType, assistants in pairs(KNOWN_ASSISTANTS) do
         local available = {}

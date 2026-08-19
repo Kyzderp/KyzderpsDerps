@@ -244,6 +244,16 @@ local function CreateMiscSettings()
             width = "full",
         },
         {
+            type = "checkbox",
+            name = "Enable ally summon commands",
+            tooltip = "Adds commands such as /ezabi and /xyn to summon or desummon allies. Also adds the /banker, /merchant, /decon, /armory, /fence, and /companion commands, which randomly chooses one of your unlocked allies of that type",
+            default = true,
+            getFunc = function() return KyzderpsDerps.savedOptions.general.assistantCommands end,
+            setFunc = function(value) KyzderpsDerps.savedOptions.general.assistantCommands = value end,
+            width = "full",
+            requiresReload = true,
+        },
+        {
             type = "dropdown",
             name = "Use collectible on login",
             tooltip = "Specify a collectible to use when you first load into a character",
