@@ -1,5 +1,5 @@
 local NAME = "AntiClankerAddonConsortiumUpdateChecker"
-local VERSION = 3
+local VERSION = 4
 
 if type(_G[NAME]) == "number" and _G[NAME] >= VERSION then return end
 _G[NAME] = VERSION
@@ -8,7 +8,7 @@ local KNOWN_VERSIONS = {
 	["CombatAlerts"]          = 205020,
 	["CrutchAlerts"]          = 22400,
 	["GroupBuffPanels"]       = 203000,
-	["KyzderpsDerps"]         = 1501,
+	["KyzderpsDerps"]         = 1510,
 	["LibGroupCombatStats"]   = 20260726,
 	["M0RMarkers"]            = 210,
 	["Raidificator"]          = 407020,
