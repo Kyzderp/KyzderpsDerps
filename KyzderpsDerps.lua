@@ -172,6 +172,7 @@ local defaultOptions = {
     },
     opener = {
         delay = 0,
+        includeStolen = false,
         openMirriBag = false,
         openGunnySack = false,
         openToxinSatchel = false,
