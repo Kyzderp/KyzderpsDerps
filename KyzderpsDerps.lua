@@ -132,6 +132,7 @@ local defaultOptions = {
         skills = {
             classMastery = 0,
         },
+        checkSetupChange = false,
     },
     hodor = {
         horn = false,
