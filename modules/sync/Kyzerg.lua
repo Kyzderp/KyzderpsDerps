@@ -407,7 +407,7 @@ end
 -- Chat handler
 ---------------------------------------------------------------------
 local validChannels = {}
-local attnChannel
+local attnChannel, fcChannel
 
 local function OnChatMessage(_, channelType, fromName, text)
     -- jwpd2 autoinvite
@@ -420,6 +420,16 @@ local function OnChatMessage(_, channelType, fromName, text)
                 local atName, characterName = GetGuildMemberAccountAndCharName(fromName)
                 GroupInviteByName(FormatName(characterName))
             end
+        end
+        return
+    end
+
+    if (channelType == fcChannel and text == "x") then
+        if (NameIsPlayer(fromName)) then return end
+        -- and is group leader or not in group
+        if (GetGroupSize() < 2 or IsUnitGroupLeader("player")) then
+            local atName, characterName = GetGuildMemberAccountAndCharName(fromName)
+            GroupInviteByName(FormatName(characterName))
         end
         return
     end
@@ -495,6 +505,7 @@ function Kyzerg.Initialize()
             for i = 1, GetNumGuilds() do
                 if (GetGuildId(i) == 580319) then -- FC
                     local channel = _G["CHAT_CHANNEL_GUILD_" .. tostring(i)]
+                    fcChannel = channel
                     validChannels[channel] = true
                 end
             end
