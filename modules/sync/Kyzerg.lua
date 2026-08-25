@@ -296,16 +296,16 @@ local COMMANDS = {
         local groupInvite = GetGroupInviteInfo()
         if (groupInvite and groupInvite ~= "") then
             AcceptGroupInvite()
-            KyzderpsDerps:msg("Accepting group invite")
+            KD:msg("Accepting group invite")
         elseif (HasLFGReadyCheckNotification()) then
             AcceptLFGReadyCheckNotification()
-            KyzderpsDerps:msg("Accepting ready check")
+            KD:msg("Accepting ready check")
         elseif (GetOfferedQuestShareIds()) then
             local id = GetOfferedQuestShareIds()
             AcceptSharedQuest(id)
-            KyzderpsDerps:msg("Accepting quest " .. tostring(id))
+            KD:msg("Accepting quest " .. tostring(id))
         else
-            KyzderpsDerps:msg("Nothing to accept")
+            KD:msg("Nothing to accept")
         end
     end,
 
@@ -398,7 +398,7 @@ local COMMANDS = {
 
 function Kyzerg.PrintCommands()
     for cmd, _ in pairs(COMMANDS) do
-        KyzderpsDerps:msg(cmd)
+        KD:msg(cmd)
     end
 end
 
