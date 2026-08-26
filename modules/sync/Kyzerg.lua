@@ -333,31 +333,6 @@ local COMMANDS = {
     -- Get on multi rider mount as passenger
     kmount = KMount,
 
-    -- Equip multi rider mount
-    kmm = function(fromName)
-        if (not IsSelfOrJWPD2(fromName)) then
-            KD:msg("Unauthorized kmm from " .. fromName)
-            return
-        end
-
-        local multiMounts = { -- Incomprehensive. Just the ones I have
-            13808, -- Warparty Timber Mammoth
-            13897, -- Duo-Dynamo Dungeon Delver Spider
-            6972, -- Duo-Dynamo Dwarven Spider
-            13552, -- Duo-Dynamo Hollowsteel Spider
-            11887, -- Nightmare Pillion Courser
-            10254, -- Wayrest Vanner Pillion Steed
-        }
-
-        for _, id in ipairs(multiMounts) do
-            if (IsCollectibleUnlocked(id) and not IsCollectibleActive(id, GAMEPLAY_ACTOR_CATEGORY_PLAYER)) then
-                KD:msg(string.format("Equipping %s (%d)", GetCollectibleName(id), id))
-                UseCollectible(id)
-                return
-            end
-        end
-    end,
-
     -- Give crown
     kcrown = function(fromName)
         if (NameIsPlayer(fromName)) then return end

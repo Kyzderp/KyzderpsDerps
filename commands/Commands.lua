@@ -151,13 +151,24 @@ local function HandleKDDCommand(argString)
 
     -- Equip multi rider mount
     elseif (args[1] == "multi") then
-        local multiMounts = { -- Incomprehensive. Just the ones I have
+        local multiMounts = {
             13808, -- Warparty Timber Mammoth
             13897, -- Duo-Dynamo Dungeon Delver Spider
             6972, -- Duo-Dynamo Dwarven Spider
             13552, -- Duo-Dynamo Hollowsteel Spider
             11887, -- Nightmare Pillion Courser
             10254, -- Wayrest Vanner Pillion Steed
+            12662, -- Black Fredas Pillion Walker
+            11959, -- Dark Brotherhood Crew Steed
+            8512, -- Duo-Dynamo Argent Spider
+            8379, -- Duo-Dynamo Burnished Spider
+            9576, -- Grand Pillion Draft Horse
+            13504, -- Grimshadow Pillion Moose
+            10708, -- Hew's Bane Pillion Palfrey
+            10586, -- Mara's Pledge Mare
+            11643, -- Seaghost Pillion Moose
+            10384, -- Skingrad Pillion Courser
+            12661, -- Spiritwalker Pillion Elk
         }
 
         for _, id in ipairs(multiMounts) do
@@ -167,6 +178,7 @@ local function HandleKDDCommand(argString)
                 return
             end
         end
+        KD:msg("No multi-rider mounts available (or data hasn't been added, yell at Kyzer?)")
 
     -- Unknown
     else
