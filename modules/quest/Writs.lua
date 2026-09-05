@@ -102,7 +102,7 @@ local function MoveItemAndPrint(bagId, slotIndex)
             PlaceInTransfer()
         end
     else
-        KD:msg(zo_strformat("Not enough space in bank for <<1>>x<<2>>", itemLink, numInBackpack))
+        KD:msg(zo_strformat("|r|cFF0000Not enough space|r |cAAAAAAin bank for <<1>>x<<2>>", itemLink, numInBackpack))
     end
 end
 
