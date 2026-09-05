@@ -1,6 +1,9 @@
 local KD = KyzderpsDerps
-KD.Chatter = {}
-local Chatter = KD.Chatter
+KD.Quests = {
+    Chatter = {},
+}
+local Quests = KD.Quests
+local Chatter = Quests.Chatter
 
 ---------------------------------------------------------------------
 -- Dialogue that should be handled, by title first
@@ -238,14 +241,12 @@ function Chatter.Initialize()
     end
 end
 
-function Chatter.GetSettings()
+function Quests.GetSettings()
     return {
         {
             type = "checkbox",
             name = "Reroll for Covetous Countess",
-            -- name = "Reroll writhing crafting quests",
             tooltip = "When you interact with the Thieves Guild tip board, automatically accepts or rerolls the quest until you get Covetous Countess, and turns in quests.  English client only.\n\nYou can adjust this or add different languages in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
-            -- tooltip = "When you interact with Armorer Reistaff, automatically accepts or rerolls the quest, and turns in quests. Currently, enchanting, provisioning, and alchemy quests are rerolled, while only blacksmithing, woodworking, and clothier quests are accepted. English client only.\n\nYou can adjust this or add different languages in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
             default = false,
             getFunc = function() return KD.savedOptions.chatter.rerollReistaff end,
             setFunc = function(value)
@@ -254,17 +255,50 @@ function Chatter.GetSettings()
                 end,
             width = "full",
         },
-        -- {
-        --     type = "checkbox",
-        --     name = "    Reroll until new quests for first box",
-        --     tooltip = "When it is your FIRST crafting quest, reroll until it's an enchanting, provisioning, or alchemy quest. This is so the glorious box is more likely to drop the newer furnishing plans. You must RESET the first box tracking using |c99FF99/kdd resetcraft|r to start rerolling for the first box every day (I'm too busy atm to make it reset automatically and test it; this feature might come eventually. It currently also doesn't advance the next option automatically).\n\nYou can adjust which ones are accepted in KyzderpsDerps/modules/questchatter/QuestChatter.lua",
-        --     default = false,
-        --     getFunc = function() return KD.savedOptions.chatter.usePriority end,
-        --     setFunc = function(value)
-        --             KD.savedOptions.chatter.usePriority = value
-        --         end,
-        --     width = "full",
-        --     disabled = function() return not KD.savedOptions.chatter.rerollReistaff end,
-        -- },
+        {
+            type = "description",
+            title = "|c08BD1DAlchemy Writs|r",
+            text = "Stop accidentally wasting Columbine on daily alchemy writs.",
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Warn multi-effect Essences of Health",
+            tooltip = "When you pick up the daily writ quest that requires Essence of Health (quest ID 6101), displays a message in chat if you have Essences of Health in your inventory that have a certain number of effects, specified below. This is to help avoid wasting tri-stat pots on writ turn-ins",
+            default = false,
+            getFunc = function() return KD.savedOptions.writs.warnEssenceOfHealth end,
+            setFunc = function(value)
+                    KD.savedOptions.writs.warnEssenceOfHealth = value
+                    Quests.Writs.Initialize()
+                end,
+            width = "full",
+        },
+        {
+            type = "checkbox",
+            name = "Deposit multi-effect Essences of Health",
+            tooltip = "When you have a daily writ quest that requires Essence of Health (quest ID 6101) and you interact with a bank, deposits the Essences of Health in your inventory that have a certain number of effects, specified below. This is to help avoid wasting tri-stat pots on writ turn-ins",
+            default = false,
+            getFunc = function() return KD.savedOptions.writs.depositEssenceOfHealth end,
+            setFunc = function(value)
+                    KD.savedOptions.writs.depositEssenceOfHealth = value
+                    Quests.Writs.Initialize()
+                end,
+            width = "full",
+        },
+        {
+            type = "slider",
+            name = "Number of effects",
+            tooltip = "The minimum number of effects an Essence of Health should have to be considered expensive. For example, if this setting is set to 2, then Essences of Health that have 2 or 3 effects will show warnings or be deposited in your bank",
+            min = 1,
+            max = 3,
+            step = 1,
+            default = 2,
+            width = "full",
+            getFunc = function() return KD.savedOptions.writs.numEssenceOfHealthEffects end,
+            setFunc = function(value)
+                KD.savedOptions.writs.numEssenceOfHealthEffects = value
+            end,
+            disabled = function() return not KD.savedOptions.writs.warnEssenceOfHealth and not KD.savedOptions.writs.depositEssenceOfHealth end,
+        },
     }
 end

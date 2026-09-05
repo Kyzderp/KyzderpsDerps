@@ -96,7 +96,8 @@ modules/tribute/Tribute.xml
 modules/uielements/AoeColors.lua
 modules/uielements/Reposition.lua
 
-modules/questchatter/QuestChatter.lua
+modules/quest/QuestChatter.lua
+modules/quest/Writs.lua
 
 modules/combat/Combat.lua
 

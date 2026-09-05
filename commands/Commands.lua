@@ -131,7 +131,7 @@ local function HandleKDDCommand(argString)
 
     -- janky manual reset for priority craft reroll
     elseif (args[1] == "resetcraft") then
-        KD.Chatter.ResetPriority()
+        KD.Quests.Chatter.ResetPriority()
 
     -- i am forgerful
     elseif (args[1] == "kyzerg") then
