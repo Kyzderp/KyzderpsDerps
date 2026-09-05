@@ -2,6 +2,7 @@ local KD = KyzderpsDerps
 KD.Quests.Writs = {}
 local Writs = KD.Quests.Writs
 
+
 ---------------------------------------------------------------------
 local function DisplayWarning(msg)
     local chatWarning = "|cFF0000W" ..
@@ -39,26 +40,15 @@ end
 
 ---------------------------------------------------------------------
 --[[
-* DoesItemFulfillJournalQuestCondition(*[Bag|#Bag]* _bagId_, *integer* _slotIndex_, *luaindex* _journalQuestIndex_, *luaindex* _stepIndex_, *luaindex* _conditionIndex_)
-** _Returns:_ *bool* _fulfillsCondition_
-
 /script for i = 1, GetNumJournalQuests() do
 d(i .. " " .. GetJournalQuestId(i) .. " " .. GetJournalQuestName(i))
 end
-
 
 casts
 6101 Essence of Health + Nirnroot
 
 lliram
 6102 Drain Health Poison IX + Lorkhan's
-
-
-/script EVENT_MANAGER:RegisterForEvent("questtest", EVENT_QUEST_ADDED, function(_, journalIndex, questName)
-local questId = GetJournalQuestId(journalIndex)
-d(questId .. " " .. questName)
-end)
-
 
 PTS:
 rykozan 6099 Essence of Stamina + mudcrab
@@ -90,68 +80,6 @@ local function ScanForEssenceOfHealth(callback)
         end
     end
 end
-
--- TODO: test 2+ stacks of same pot
--- local function FindBankSlot(slotsToDepositIn, sourceBag, sourceSlot, numToDeposit, destBag)
---     local sourceId = GetItemUniqueId(sourceBag, sourceSlot)
---     -- local sourceLink = GetItemLink(sourceBag, sourceLink, LINK_STYLE_BRACKETS)
-
---     -- Search for stackable first
---     local bagCache = SHARED_INVENTORY:GetOrCreateBagCache(destBag)
---     for _, item in pairs(bagCache) do
---         -- local bankLink = GetItemLink(item.bagId, item.slotIndex, LINK_STYLE_BRACKETS)
---         -- if (bankLink == sourceLink) then
---         if (GetItemUniqueId(item.bagId, item.slotIndex) == sourceId) then
---             -- Same item
---             local stack, maxStack = GetSlotStackSize(item.bagId, item.slotIndex)
---             local available = maxStack - stack
---             if (available > 0) then
---                 local count = math.min(available, numToDeposit)
---                 table.insert(slotsToDepositIn, {bag = item.bagId, slot = item.slotIndex, count = count})
---                 numToDeposit = numToDeposit - count
---                 if (numToDeposit <= 0) then
---                     break
---                 end
---             end
---         end
---     end
-
---     -- Nowhere to stack, find empty
---     if (numToDeposit > 0) then
---         local emptySlot = FindFirstEmptySlotInBag(destBag)
---         if (emptySlot) then
---             table.insert(slotsToDepositIn, {bag = destBag, slot = emptySlot, count = numToDeposit})
---             numToDeposit = 0
---         end
---     end
-
---     return numToDeposit
--- end
-
--- * RequestMoveItem *protected* (*[Bag|#Bag]* _sourceBag_, *integer* _sourceSlot_, *[Bag|#Bag]* _destBag_, *integer* _destSlot_, *integer* _stackCount_)
--- local slotsToDepositIn = {}
--- local function MoveItemAndPrint(bagId, slotIndex, numEffects)
---     local itemLink = GetItemLink(bagId, slotIndex, LINK_STYLE_BRACKETS)
-
---     ZO_ClearTable(slotsToDepositIn)
---     local numInBackpack = GetItemLinkStacks(itemLink)
---     KD:dbg("trying to deposit " .. numInBackpack)
-
---     local remainingToDeposit = FindBankSlot(slotsToDepositIn, bagId, slotIndex, numInBackpack, BAG_BANK)
---     if (remainingToDeposit > 0) then
---         KD:dbg(remainingToDeposit .. " remaining after checking BAG_BANK")
---         remainingToDeposit = FindBankSlot(slotsToDepositIn, bagId, slotIndex, remainingToDeposit, BAG_SUBSCRIBER_BANK)
---     end
---     if (remainingToDeposit > 0) then
---         KD:msg(zo_strformat("Couldn't move <<1>> because there isn't enough space for the entire stack", itemLink))
---         return
---     end
-
---     for _, data in ipairs(slotsToDepositIn) do
---         KD:msg(zo_strformat("Trying to move <<1>>x<<2>> to bank <<3>> slot <<4>>", itemLink, data.count, data.bag, data.slot))
---         CallSecureProtected("RequestMoveItem", bagId, slotIndex, data.bag, data.slot, data.count)
---     end
--- end
 
 -- Since we're moving the whole stack, we don't have to mess with the annoying RequestMoveItem
 -- somewhat yoinked from esoui/ingame/inventory/inventoryslot.lua
