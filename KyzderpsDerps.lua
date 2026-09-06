@@ -4,7 +4,7 @@
 -----------------------------------------------------------
 KyzderpsDerps = {
     name = "KyzderpsDerps",
-    version = "1.52.0",
+    version = "1.53.0",
 }
 local KD = KyzderpsDerps
 
