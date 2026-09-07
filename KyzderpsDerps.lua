@@ -350,6 +350,25 @@ local function OnPlayerActivated(_, initial)
             KyzderpsDerps:msg("You haven't unlocked " .. GetCollectibleLink(KyzderpsDerps.savedOptions.misc.loginCollectible, LINK_STYLE_BRACKETS))
         end
     end
+
+    if (LibRadialMenu) then
+        local LRM = LibRadialMenu
+        LRM:RegisterAddon("KyzderpsDerps", "Kyzderp's Derps")
+        LRM:RegisterEntry(
+            "KyzderpsDerps",
+            "Use /wayshrine",
+            "/wayshrine",
+            "/esoui/art/icons/poi/poi_wayshrine_complete.dds",
+            KD.PortWayshrine,
+            "Ports to a player in your favorite zone. Change the zone in Kyzderp's Derps settings.")
+        LRM:RegisterEntry(
+            "KyzderpsDerps",
+            "Use /currentshrine",
+            "/currentshrine",
+            "/esoui/art/icons/poi/poi_wayshrine_incomplete.dds",
+            KD.PortCurrentShrine,
+            "Ports to a player in your current zone, with fallbacks to any other free ports.")
+    end
 end
 
 -- Collect messages for displaying later when addon is not fully loaded

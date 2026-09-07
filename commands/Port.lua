@@ -405,3 +405,11 @@ local function PortToAny(argString)
     PortToPlayerInZone()
 end
 KD.PortToAny = PortToAny
+
+function KD.PortWayshrine()
+    PortToPlayerInZone(KD.savedOptions.misc.wayshrineZoneId, true)
+end
+
+function KD.PortCurrentShrine()
+    PortToPlayerInZone(GetZoneId(GetUnitZoneIndex("player")), true)
+end
