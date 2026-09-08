@@ -368,6 +368,13 @@ local function OnPlayerActivated(_, initial)
             "/esoui/art/icons/poi/poi_wayshrine_incomplete.dds",
             KD.PortCurrentShrine,
             "Ports to a player in your current zone, with fallbacks to any other free ports.")
+        LRM:RegisterEntry(
+            "KyzderpsDerps",
+            "Use /guessshrine",
+            "/guessshrine",
+            "/esoui/art/compass/repeatablequest_icon_door_assisted.dds",
+            KD.GuessPortZoneFromQuest,
+            "Tries to find a zone name in the journal description of your focused quest, and then tries to port to a player in that zone, with fallbacks to any other free ports.")
     end
 end
 
