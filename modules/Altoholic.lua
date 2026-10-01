@@ -50,7 +50,6 @@ end
 
 local function UpdatePlayedTime()
     local currentChar = GetUnitName("player")
-    KyzderpsDerps.savedValues.playedChart.characters[currentChar] = GetSecondsPlayed()
     KyzderpsDerps.savedValues.charInfo.characters[currentChar].playedTime = GetSecondsPlayed() -- Start migrating
 end
 
@@ -115,7 +114,8 @@ function Altoholic.BuildPlayed()
     local totalTime = 0
 
     -- sort by descending amount played
-    for name, seconds in spairs(KyzderpsDerps.savedValues.playedChart.characters, function(t, a, b) return t[b] < t[a] end) do
+    for name, info in spairs(KyzderpsDerps.savedValues.charInfo.characters, function(t, a, b) return t[b].playedTime < t[a].playedTime end) do
+        local seconds = info.playedTime
         totalTime = totalTime + seconds
         result = result .. "\n|cFFFFFF" .. name .. " -|r "
         result = result .. ZO_FormatTime(seconds, TIME_FORMAT_STYLE_DESCRIPTIVE_MINIMAL, TIME_FORMAT_PRECISION_SECONDS)
@@ -219,7 +219,7 @@ function Altoholic.Initialize()
 
     -- Get rid of this weird bug that happened at some point, maybe not initialized?
     KyzderpsDerps.savedValues.charInfo.characters["LocalPlayer"] = nil
-    KyzderpsDerps.savedValues.playedChart.characters["LocalPlayer"] = nil
+    KyzderpsDerps.savedValues.playedChart = nil
 
     -- TODO: prune the data to get rid of old or renamed characters that no longer exist
 
