@@ -274,9 +274,7 @@ local defaultValues = {
         x = GuiRoot:GetWidth() / 3 * 2,
         y = GuiRoot:GetHeight() / 3,
     },
-    charInfo = {
-        characters = {},
-    },
+    charIdInfo = {},
     chestsLooted = {
         x = GuiRoot:GetWidth() - 300,
         y = 0,
