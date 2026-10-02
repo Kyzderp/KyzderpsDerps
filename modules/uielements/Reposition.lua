@@ -43,7 +43,8 @@ UIE.Reposition = Reposition -- /script KyzderpsDerps.UIElements.Reposition()
 local function ToggleQuestPanel()
     local isInTrial = KyzderpsDerps.TRIAL_ZONEIDS[tostring(GetZoneId(GetUnitZoneIndex("player")))] ~= nil
 
-    ZO_FocusedQuestTrackerPanel:SetHidden(isInTrial)
+    SetSetting(SETTING_TYPE_UI, UI_SETTING_SHOW_QUEST_TRACKER, isInTrial and "false" or "true", SETTINGS_SET_OPTION_DO_NOT_SAVE_TO_PERSISTED_DATA)
+    -- ZO_FocusedQuestTrackerPanel:SetHidden(isInTrial)
 end
 
 function UIE.Initialize()
