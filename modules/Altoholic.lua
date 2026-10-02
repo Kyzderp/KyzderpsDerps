@@ -248,8 +248,8 @@ function Altoholic.Initialize()
             local oldInfo = KD.savedValues.charInfo and (KD.savedValues.charInfo.characters[name] or KD.savedValues.charInfo.characters[formattedName])
             if (oldInfo) then
                 KD.savedValues.charIdInfo[charId] = ZO_DeepTableCopy(oldInfo)
+                KD.savedValues.charIdInfo[charId].lastKnownName = formattedName
             end
-            KD.savedValues.charIdInfo[charId].lastKnownName = formattedName
         end
     end
 

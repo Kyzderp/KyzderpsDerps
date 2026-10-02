@@ -17,7 +17,7 @@ local function HandleKDDCommand(argString)
         length = length + 1
     end
 
-    local usage = "Usage: /kdd <settings || grievous || bosstimer || played || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing || resetcraft || pocket || multi || flex>"
+    local usage = "Usage: /kdd <settings || grievous || bosstimer || played || playedall || points || totalpoints || armory || junkstyle || hidelogout || normlogout || questtracker || openall || writhing || resetcraft || pocket || multi || flex>"
 
     if (length == 0) then
         CHAT_ROUTER:AddSystemMessage(usage)
