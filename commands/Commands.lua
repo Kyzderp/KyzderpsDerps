@@ -43,7 +43,12 @@ local function HandleKDDCommand(argString)
 
     -- played
     elseif (args[1] == "played") then
-        CHAT_ROUTER:AddSystemMessage(KD.Altoholic.BuildPlayed())
+        local played = KD.Altoholic.BuildPlayed()
+        CHAT_ROUTER:AddSystemMessage(played)
+
+    -- playedall
+    elseif (args[1] == "playedall") then
+        CHAT_ROUTER:AddSystemMessage(KD.Altoholic.BuildPlayedAll())
 
     -- points
     elseif (args[1] == "points") then

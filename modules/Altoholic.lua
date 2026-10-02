@@ -107,14 +107,27 @@ end
 ---------------------------------------------------------------------
 -- Build the entire string for all played
 ---------------------------------------------------------------------
-function Altoholic.BuildPlayed()
-    UpdatePlayedTime()
+function Altoholic.BuildPlayed(accName)
+    accName = accName or GetUnitDisplayName("player")
+    if (accName == GetUnitDisplayName("player")) then
+        UpdatePlayedTime()
+    end
+
+    -- Get SV
+    local tab = KyzderpsDerpsSavedVariables.Default[accName]
+    if (not tab) then
+        return "|cFF0000Unknown account name: " .. accName, 0
+    end
+    tab = tab["$AccountWide"].Values.charIdInfo
+    if (not tab) then
+        return "|cFF0000Account " .. accName .. " hasn't been migrated to character IDs yet!", 0
+    end
 
     local result = "=== Time Played ==="
     local totalTime = 0
 
     -- sort by descending amount played
-    for charId, info in spairs(KD.savedValues.charIdInfo, function(t, a, b) return t[b].playedTime < t[a].playedTime end) do
+    for charId, info in spairs(tab, function(t, a, b) return t[b].playedTime < t[a].playedTime end) do
         local seconds = info.playedTime
         local name = info.lastKnownName
         totalTime = totalTime + seconds
@@ -128,7 +141,18 @@ function Altoholic.BuildPlayed()
     result = result .. ZO_FormatTime(totalTime, TIME_FORMAT_STYLE_DESCRIPTIVE_MINIMAL, TIME_FORMAT_PRECISION_SECONDS)
     result = result .. "|cFFFFFF" .. string.format(" (%.2f hours)", totalTime / 3600) .. "|r"
 
-    return result
+    return result, totalTime
+end
+
+function Altoholic.BuildPlayedAll()
+    local totalTime = 0
+    for accName, _ in pairs(KyzderpsDerpsSavedVariables.Default) do
+        local str, time = Altoholic.BuildPlayed(accName)
+        CHAT_ROUTER:AddSystemMessage(zo_strformat("vvv <<1>> vvv\n<<2>>\n^^^ <<1>> ^^^", accName, str))
+        totalTime = totalTime + time
+    end
+
+    CHAT_ROUTER:AddSystemMessage(string.format("|c00FF00Total TOTAL time -|r %s |c00FF00(%.2f hours)|r", ZO_FormatTime(totalTime, TIME_FORMAT_STYLE_DESCRIPTIVE_MINIMAL, TIME_FORMAT_PRECISION_SECONDS), totalTime / 3600))
 end
 
 
