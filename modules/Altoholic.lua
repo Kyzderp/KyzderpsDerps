@@ -219,14 +219,13 @@ function Altoholic.Initialize()
     if (ZO_IsTableEmpty(KD.savedValues.charIdInfo)) then
         for index = 1, GetNumCharacters() do
             local name, _, _, _, _, _, charId = GetCharacterInfo(index)
+            local formattedName = zo_strformat("<<1>>", name)
 
-            local oldInfo = KD.savedValues.charInfo and KD.savedValues.charInfo.characters[name]
+            local oldInfo = KD.savedValues.charInfo and (KD.savedValues.charInfo.characters[name] or KD.savedValues.charInfo.characters[formattedName])
             if (oldInfo) then
                 KD.savedValues.charIdInfo[charId] = ZO_DeepTableCopy(oldInfo)
-            else
-                KD.savedValues.charIdInfo[charId] = {}
             end
-            KD.savedValues.charIdInfo[charId].lastKnownName = name
+            KD.savedValues.charIdInfo[charId].lastKnownName = formattedName
         end
     end
 
@@ -238,7 +237,7 @@ function Altoholic.Initialize()
     -- yeah it's probably nicer to loop through GetCharacterInfo to display most updated char names,
     -- but this way the SVs also have a name for readability for people (me) who like to dig around
     -- in there, and also lets me be lazy and not have to update as much code
-    KD.savedValues.charIdInfo[GetCurrentCharacterId()].lastKnownName = GetUnitName("player")
+    KD.savedValues.charIdInfo[GetCurrentCharacterId()].lastKnownName = zo_strformat("<<1>>", GetUnitName("player"))
 
     -- Get rid of this weird bug that happened at some point, maybe not initialized?
     if (KD.savedValues.charInfo) then
