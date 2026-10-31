@@ -213,6 +213,7 @@ local defaultOptions = {
         warnEssenceOfHealth = false,
         depositEssenceOfHealth = false,
         numEssenceOfHealthEffects = 2,
+        warnMasterWritXP = false,
     },
     tomes = {
         enableTotals = false,
