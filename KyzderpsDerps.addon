@@ -100,6 +100,7 @@ modules/quest/QuestChatter.lua
 modules/quest/Writs.lua
 
 modules/combat/Combat.lua
+modules/combat/PlayerStats.lua
 
 modules/gamepad/Vibrations.lua
 modules/gamepad/GamepadUI.lua

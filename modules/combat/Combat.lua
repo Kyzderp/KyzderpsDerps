@@ -11,6 +11,7 @@ end
 
 function KDC.Initialize()
     EVENT_MANAGER:RegisterForEvent(KD.name .. "CombatActivated", EVENT_PLAYER_ACTIVATED, OnPlayerActivated)
+    KDC.PlayerStats.Initialize()
 end
 
 function KDC.GetSettings()
